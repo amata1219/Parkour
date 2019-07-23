@@ -14,7 +14,7 @@ import com.google.common.collect.ImmutableList;
 import amata1219.amalib.color.RGB;
 import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.schedule.Async;
-import amata1219.amalib.space.Space;
+import amata1219.amalib.space.Region;
 import net.minecraft.server.v1_13_R2.EntityPlayer;
 import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_13_R2.ParticleParam;
@@ -27,7 +27,7 @@ public class BordorDisplayer {
 	private int index1, index2;
 	private BukkitTask task;
 
-	public BordorDisplayer(Space space, RGB color){
+	public BordorDisplayer(Region space, RGB color){
 		ImmutableLocation lesser = space.lesserBoundaryCorner;
 		ImmutableLocation greater = space.greaterBoundaryCorner;
 
