@@ -12,7 +12,7 @@ import net.minecraft.server.v1_13_R2.PacketDataSerializer;
 import net.minecraft.server.v1_13_R2.PacketListenerPlayOut;
 import net.minecraft.server.v1_13_R2.ParticleParam;
 
-public class PacketPlayOutWorldParticles implements Packet<PacketListenerPlayOut> {
+public class ParticlePacket implements Packet<PacketListenerPlayOut> {
 
 	private static final Random RANDOM = new Random();
 
@@ -28,7 +28,7 @@ public class PacketPlayOutWorldParticles implements Packet<PacketListenerPlayOut
 	public final float green;
 	public final float blue;
 
-	public PacketPlayOutWorldParticles(float x, float y, float z, RGB based) {
+	public ParticlePacket(float x, float y, float z, RGB based) {
 		this.x = x;
 		this.y = y;
 		this.z = z;

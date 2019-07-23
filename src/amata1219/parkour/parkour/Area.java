@@ -15,7 +15,7 @@ public class Area {
 
 	public final Space space;
 	public final RGB color;
-	public final List<PacketPlayOutWorldParticles> list;
+	public final List<ParticlePacket> list;
 
 	public static Area fromString(World world, String text){
 		int[] a = Arrays.stream(text.split(",")).mapToInt(Integer::parseInt).toArray();
@@ -31,29 +31,23 @@ public class Area {
 		ImmutableLocation lesser = space.lesserBoundaryCorner;
 		ImmutableLocation greater = space.greaterBoundaryCorner;
 
-		ImmutableList.Builder<PacketPlayOutWorldParticles> builder = ImmutableList.builder();
+		ImmutableList.Builder<ParticlePacket> builder = ImmutableList.builder();
 
 		float height = (float) lesser.getY() + 1;
 
 		for(float x = (float) lesser.getX(); x <= greater.getX() + 1; x += 0.5f)
-			builder.add(new PacketPlayOutWorldParticles(x, height, (float) lesser.getZ(), color));
-	}
+			builder.add(new ParticlePacket(x, height, (float) lesser.getZ(), color));
 
-	/*
-	 * extra = 1
-	 * data = (Object) null;
-	 * CraftPlayer
-	 * public <T> void spawnParticle(Particle particle, double x, double y, double z, int count, double offsetX,
-			double offsetY, double offsetZ, double extra, T data) {
-		if (data != null && !particle.getDataType().isInstance(data)) {
-			throw new IllegalArgumentException("data should be " + particle.getDataType() + " got " + data.getClass());
-		} else {
-			PacketPlayOutWorldParticles packetplayoutworldparticles = new PacketPlayOutWorldParticles(
-					CraftParticle.toNMS(particle, data), true, (float) x, (float) y, (float) z, (float) offsetX,
-					(float) offsetY, (float) offsetZ, (float) extra, count);
-			this.getHandle().playerConnection.sendPacket(packetplayoutworldparticles);
-		}
+		for(float z = (float) lesser.getZ(); z <= greater.getZ() + 1; z += 0.5f)
+			builder.add(new ParticlePacket((float) greater.getX(), height, z, color));
+
+		for(float x = (float) greater.getX(); x >= lesser.getX(); x -= 0.5f)
+			builder.add(new ParticlePacket(x, height, (float) lesser.getZ(), color));
+
+		for(float z = (float) greater.getZ(); z >= lesser.getZ(); z -= 0.5f)
+			builder.add(new ParticlePacket((float) greater.getX(), height, z, color));
+
+		list = builder.build();
 	}
-	 */
 
 }

@@ -23,12 +23,16 @@ public class User {
 
 	//各アスレのチェックポイント
 	public final Map<String, List<Location>> points = new HashMap<>();
+
 	/*
 	 * ParkourName#CheckPoints
 	 * ステージいらない→stage,list<parkour>は他の管理クラスに作る
 	 * containsKeyOfStage?
 	 * containsKeyOfParkour?
 	 * getCheckPoints.get(num)
+	 *
+	 * LastParkour: name
+	 *
 	 */
 
 	public User(UUID uuid){

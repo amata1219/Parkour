@@ -8,6 +8,7 @@ import net.minecraft.server.v1_13_R2.IRegistry;
 import net.minecraft.server.v1_13_R2.Packet;
 import net.minecraft.server.v1_13_R2.PacketDataSerializer;
 import net.minecraft.server.v1_13_R2.PacketListenerPlayOut;
+import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_13_R2.Particle;
 import net.minecraft.server.v1_13_R2.ParticleParam;
 import net.minecraft.server.v1_13_R2.Particles;
@@ -50,9 +51,16 @@ public class SamplePacket implements Packet<PacketListenerPlayOut> {
 		this.e = var6;//offsetY green
 		this.f = var7;//offsetZ blue
 		this.g = var8;//extra
-		this.h = var9;//count
+		this.h = var9;//count CraftPlayer
+
+		/*
+		 * new PacketPlayOutWorldParticles(
+					CraftParticle.toNMS(particle, data), true, (float) x, (float) y, (float) z, (float) offsetX,
+					(float) offsetY, (float) offsetZ, (float) extra, count);
+		 */
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void a(PacketDataSerializer var0) throws IOException {
 		Object var1 = (Particle) IRegistry.PARTICLE_TYPE.fromId(var0.readInt());
 		if (var1 == null) {
