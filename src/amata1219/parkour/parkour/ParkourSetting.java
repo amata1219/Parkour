@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bukkit.World;
 
-import amata1219.amalib.space.Region;
+import amata1219.amalib.region.Region;
 import amata1219.amalib.yaml.Yaml;
 
 public class ParkourSetting {

@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.bukkit.World;
 
 import amata1219.amalib.color.RGB;
-import amata1219.amalib.space.Region;
+import amata1219.amalib.region.Region;
 
 public class Area {
 

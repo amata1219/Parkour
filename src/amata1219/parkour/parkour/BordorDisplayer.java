@@ -13,8 +13,8 @@ import com.google.common.collect.ImmutableList;
 
 import amata1219.amalib.color.RGB;
 import amata1219.amalib.location.ImmutableLocation;
+import amata1219.amalib.region.Region;
 import amata1219.amalib.schedule.Async;
-import amata1219.amalib.space.Region;
 import net.minecraft.server.v1_13_R2.EntityPlayer;
 import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_13_R2.ParticleParam;
@@ -31,21 +31,21 @@ public class BordorDisplayer {
 		ImmutableLocation lesser = space.lesserBoundaryCorner;
 		ImmutableLocation greater = space.greaterBoundaryCorner;
 
-		ParticlePacketListBuilder builder = new ParticlePacketListBuilder(color, (float) lesser.getY() + 1);
+		ParticlePacketListBuilder builder = new ParticlePacketListBuilder(color, (float) lesser.getEntityY() + 1);
 
 		float unit = 1f / 3f;
 
-		for(float x = (float) lesser.getX(); x <= greater.getX() + 1; x += unit)
-			builder.make(x, (float) lesser.getZ());
+		for(float x = (float) lesser.getEntityX(); x <= greater.getEntityX() + 1; x += unit)
+			builder.make(x, (float) lesser.getEntityZ());
 
-		for(float z = (float) lesser.getZ(); z <= greater.getZ() + 1; z += unit)
-			builder.make((float) greater.getX(), z);
+		for(float z = (float) lesser.getEntityZ(); z <= greater.getEntityZ() + 1; z += unit)
+			builder.make((float) greater.getEntityX(), z);
 
-		for(float x = (float) greater.getX(); x >= lesser.getX(); x -= unit)
-			builder.make(x, (float) lesser.getZ());
+		for(float x = (float) greater.getEntityX(); x >= lesser.getEntityX(); x -= unit)
+			builder.make(x, (float) lesser.getEntityZ());
 
-		for(float z = (float) greater.getZ(); z >= lesser.getZ(); z -= unit)
-			builder.make((float) greater.getX(), z);
+		for(float z = (float) greater.getEntityZ(); z >= lesser.getEntityZ(); z -= unit)
+			builder.make((float) greater.getEntityX(), z);
 
 		particles = builder.build();
 

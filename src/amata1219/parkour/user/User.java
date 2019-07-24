@@ -5,12 +5,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
+import amata1219.amalib.text.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
@@ -21,7 +23,7 @@ public class User {
 	public final UUID uuid;
 
 	//ランク
-	public final int rank;
+	public int rank;
 
 	//個人設定
 	public final UserSetting setting;
@@ -29,25 +31,11 @@ public class User {
 	//各アスレのチェックポイント
 	public final Map<String, List<Location>> points = new HashMap<>();
 
-	/*
-	 * ParkourName#CheckPoints
-	 * ステージいらない→stage,list<parkour>は他の管理クラスに作る
-	 * containsKeyOfStage?
-	 * containsKeyOfParkour?
-	 * getCheckPoints.get(num)
-	 *
-	 * LastParkour: name
-	 *
-	 */
-
-	public User(UUID uuid){
-		//初回ログイン時にyamlを生成してそれを読み込む形にするか検討中
-		this.uuid = uuid;
-	}
-
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
 		this.uuid = UUID.fromString(yaml.name);
+
+		rank = yaml.getInt("Rank");
 
 		//個人設定はYamlに基づき生成する
 		setting = new UserSetting(yaml);
@@ -82,6 +70,22 @@ public class User {
 			points.add(location);
 		else
 			points.set(number, location);
+	}
+
+	public void save(Yaml yaml){
+		yaml.set("Rank", rank);
+		yaml.set("Hide users", setting.hideUsers);
+
+		for(Entry<String, List<Location>> entry : this.points.entrySet()){
+			List<String> points = entry.getValue()
+					.stream()
+					.map(location -> StringTemplate.format("$0,$1,$2,$3,$4", location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()))
+					.collect(Collectors.toList());
+
+			yaml.set(StringTemplate.format("CheckPoints.$0", entry.getKey()), points);
+		}
+
+		yaml.update();
 	}
 
 }
