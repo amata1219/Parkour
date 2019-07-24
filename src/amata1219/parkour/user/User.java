@@ -25,11 +25,11 @@ public class User {
 	//ランク
 	public int rank;
 
+	//各アスレのチェックポイント
+	public final Map<String, List<Location>> checkPoints = new HashMap<>();
+
 	//個人設定
 	public final UserSetting setting;
-
-	//各アスレのチェックポイント
-	public final Map<String, List<Location>> points = new HashMap<>();
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
@@ -65,7 +65,7 @@ public class User {
 	//numberは0から始まる
 	public void setCheckPoint(Parkour parkour, int number, Location location){
 		String parkourName = parkour.name;
-		List<Location> points = this.points.containsKey(parkourName) ? this.points.get(parkourName) : this.points.put(parkourName, new ArrayList<>());
+		List<Location> points = checkPoints.containsKey(parkourName) ? checkPoints.get(parkourName) : checkPoints.put(parkourName, new ArrayList<>());
 		if(points.size() >= number)
 			points.add(location);
 		else
@@ -76,7 +76,7 @@ public class User {
 		yaml.set("Rank", rank);
 		yaml.set("Hide users", setting.hideUsers);
 
-		for(Entry<String, List<Location>> entry : this.points.entrySet()){
+		for(Entry<String, List<Location>> entry : checkPoints.entrySet()){
 			List<String> points = entry.getValue()
 					.stream()
 					.map(location -> StringTemplate.format("$0,$1,$2,$3,$4", location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()))
