@@ -8,6 +8,8 @@ import org.bukkit.World;
 
 import amata1219.amalib.region.Region;
 import amata1219.amalib.yaml.Yaml;
+import amata1219.parkour.Main;
+import amata1219.parkour.stage.Stage;
 
 public class Parkour {
 
@@ -41,6 +43,10 @@ public class Parkour {
 
 		for(String text : yaml.getStringList("Check areas"))
 			checkAreas.add(GraphicalRegion.fromString(this, text));
+	}
+
+	public Stage getStage(){
+		return Main.getStageSet().parkourNamesToStagesMap.get(name);
 	}
 
 }

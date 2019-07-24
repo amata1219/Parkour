@@ -25,6 +25,9 @@ public class User {
 	//ランク
 	public int rank;
 
+	//現在プレイ中のステージ
+	public Parkour currentlyPlayingParkour;
+
 	//各アスレのチェックポイント
 	public final Map<String, List<Location>> checkPoints = new HashMap<>();
 

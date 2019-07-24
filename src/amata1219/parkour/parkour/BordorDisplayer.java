@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.Color;
 import org.bukkit.craftbukkit.v1_13_R2.CraftParticle;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -11,7 +12,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.google.common.collect.ImmutableList;
 
-import amata1219.amalib.color.RGB;
 import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.schedule.Async;
@@ -27,7 +27,7 @@ public class BordorDisplayer {
 	private int index1, index2;
 	private BukkitTask task;
 
-	public BordorDisplayer(Region space, RGB color){
+	public BordorDisplayer(Region space, Color color){
 		ImmutableLocation lesser = space.lesserBoundaryCorner;
 		ImmutableLocation greater = space.greaterBoundaryCorner;
 
@@ -106,18 +106,18 @@ public class BordorDisplayer {
 		private static final boolean FLAG = true;
 		private static final ParticleParam PARTICLE = CraftParticle.toNMS(org.bukkit.Particle.REDSTONE, null);
 
-		private final RGB color;
+		private final Color color;
 		private final float y;
 
 		private final ImmutableList.Builder<PacketPlayOutWorldParticles> builder = ImmutableList.builder();
 
-		private ParticlePacketListBuilder(RGB color, float y){
+		private ParticlePacketListBuilder(Color color, float y){
 			this.color = color;
 			this.y = y;
 		}
 
 		public void make(float x, float z){
-			builder.add(new PacketPlayOutWorldParticles(PARTICLE, FLAG, x, y, z, mix(color.red), mix(color.green), mix(color.blue), EXTRA, COUNT));
+			builder.add(new PacketPlayOutWorldParticles(PARTICLE, FLAG, x, y, z, mix(color.getRed()), mix(color.getGreen()), mix(color.getBlue()), EXTRA, COUNT));
 		}
 
 		public List<PacketPlayOutWorldParticles> build(){
