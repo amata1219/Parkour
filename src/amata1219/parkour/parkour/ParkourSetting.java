@@ -7,13 +7,8 @@ import org.bukkit.World;
 
 import amata1219.amalib.space.Region;
 import amata1219.amalib.yaml.Yaml;
-import amata1219.parkour.Main;
-import amata1219.parkour.stage.Stage;
 
 public class ParkourSetting {
-
-	//ステージ
-	public final Stage stage;
 
 	//空間
 	public final Region region;
@@ -28,8 +23,6 @@ public class ParkourSetting {
 	public final List<Area> areas = new ArrayList<>();
 
 	public ParkourSetting(Parkour parkour, Yaml yaml){
-		stage = Main.getStageSet().stages.get(yaml.getString("Stage"));
-
 		World world = parkour.world;
 
 		region = Region.fromString(world, yaml.getString("Region"));

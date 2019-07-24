@@ -1,14 +1,19 @@
 package amata1219.parkour.user;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 import amata1219.amalib.yaml.Yaml;
+import amata1219.parkour.Main;
+import amata1219.parkour.parkour.Parkour;
 
 public class User {
 
@@ -56,9 +61,27 @@ public class User {
 
 		//各アスレ名毎に処理する
 		for(String parkourName : section.getKeys(false)){
-			//Parkourの管理クラスから対応したワールドを取得する
-			//getList()→toLocation→put
+			Parkour parkour = Main.getParkourSet().parkourMap.get(parkourName);
+			List<Location> points = section.getStringList(parkourName)
+											.stream()
+											.map(point -> point.split(","))
+											.map(coordinates -> Arrays.stream(coordinates).mapToDouble(Double::parseDouble).toArray())
+											.map(coordinates -> new Location(parkour.world, coordinates[0], coordinates[1], coordinates[2], (float) coordinates[3], (float) coordinates[4]))
+											.collect(Collectors.toList());
+
+			for(int number = 0; number < points.size(); number++)
+				setCheckPoint(parkour, number, points.get(number));
 		}
+	}
+
+	//numberは0から始まる
+	public void setCheckPoint(Parkour parkour, int number, Location location){
+		String parkourName = parkour.name;
+		List<Location> points = this.points.containsKey(parkourName) ? this.points.get(parkourName) : this.points.put(parkourName, new ArrayList<>());
+		if(points.size() >= number)
+			points.add(location);
+		else
+			points.set(number, location);
 	}
 
 }

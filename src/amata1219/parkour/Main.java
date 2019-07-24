@@ -1,12 +1,14 @@
 package amata1219.parkour;
 
 import amata1219.amalib.Plugin;
+import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.stage.StageSet;
 
 public class Main extends Plugin {
 
 	private static Main plugin;
 	private static StageSet stageSet;
+	private static ParkourSet parkourSet;
 
 	@Override
 	public void onEnable(){
@@ -23,8 +25,8 @@ public class Main extends Plugin {
 		/*
 		 * ロードの順番
 		 *
-		 * 1. ステージ
-		 * 2. パルクール
+		 * 1. パルクール
+		 * 2. ステージ
 		 * 3. ユーザー
 		 *
 		 */
@@ -41,6 +43,10 @@ public class Main extends Plugin {
 
 	public static StageSet getStageSet(){
 		return stageSet;
+	}
+
+	public static ParkourSet getParkourSet(){
+		return parkourSet;
 	}
 
 }

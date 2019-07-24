@@ -22,8 +22,6 @@ public class Parkour {
 		world = Bukkit.getWorld(yaml.getString("World"));
 
 		setting = new ParkourSetting(this, yaml);
-
-		setting.stage.parkourList.add(this);
 	}
 
 }
