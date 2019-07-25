@@ -11,24 +11,23 @@ import org.bukkit.entity.Player;
 
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
-import amata1219.amalib.inventory.ui.option.InventoryLine;
 import amata1219.amalib.text.StringTemplate;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.User;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class CheckPointsInStageUI implements InventoryUI {
+public class LastCheckPointsUI implements InventoryUI {
 
 	private final User user;
 
-	public CheckPointsInStageUI(User user){
+	public LastCheckPointsUI(User user){
 		this.user = user;
 	}
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
-		return build(InventoryLine.necessaryInventoryLine(user.currentlyPlayingParkour.getStage().parkourList.size()), (l) -> {
+		return build(user.currentlyPlayingParkour.getStage().parkourList.size(), (l) -> {
 			//今いるステージのパルクールリストを取得する
 			List<Parkour> parkourList = user.currentlyPlayingParkour.getStage().parkourList;
 

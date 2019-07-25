@@ -3,6 +3,7 @@ package amata1219.parkour.parkour;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.amalib.region.Region;
@@ -20,8 +21,11 @@ public class ParkourSet {
 	public final ChunksToObjectsMap<GraphicalRegion> chunksToCheckAreasMap = new ChunksToObjectsMap<>();
 
 	public ParkourSet(){
+		if(!folder.exists())
+			folder.mkdir();
+
 		//各パルクールコンフィグ毎に処理をする
-		for(File file : folder.listFiles()){
+		for(File file : Optional.ofNullable(folder.listFiles()).orElse(new File[]{})){
 			//ファイルに基づきYamlを生成する
 			Yaml yaml = new Yaml(plugin, file);
 

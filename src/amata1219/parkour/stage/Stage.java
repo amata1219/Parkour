@@ -12,12 +12,13 @@ public class Stage {
 	//ステージ名
 	public final String name;
 
-	//パルクールのリスト
+	//アスレのリスト
 	public final List<Parkour> parkourList;
 
 	public Stage(Yaml yaml){
 		name = yaml.name;
 
+		//アスレ名をそれに対応したアスレに変換しリスト化する
 		parkourList = yaml.getStringList("ParkourList")
 							.stream()
 							.map(Main.getParkourSet().parkourMap::get)

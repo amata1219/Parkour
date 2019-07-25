@@ -73,6 +73,7 @@ public class User {
 											.map(coordinates -> new Location(parkour.world, coordinates[0], coordinates[1], coordinates[2], (float) coordinates[3], (float) coordinates[4]))
 											.collect(Collectors.toList());
 
+			//エリア番号と結び付けてチェックポイントをセットする
 			for(int number = 0; number < points.size(); number++)
 				setCheckPoint(parkour, number, points.get(number));
 		}

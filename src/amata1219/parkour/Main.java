@@ -1,13 +1,14 @@
 package amata1219.parkour;
 
 import amata1219.amalib.Plugin;
+import amata1219.parkour.listener.CreateUserInstanceListener;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.stage.StageSet;
 import amata1219.parkour.user.UserSet;
 
 public class Main extends Plugin {
 
-	//https://twitter.com/share?url=https://minecraft.jp/servers/azisaba.net&text=
+	//https://twitter.com/share?url=https://minecraft.jp/servers/azisaba.net&text=ここにテキスト
 	//アスレTP時にチャットに送信
 
 	private static Main plugin;
@@ -17,30 +18,20 @@ public class Main extends Plugin {
 
 	@Override
 	public void onEnable(){
-		super.onEnable();
-
 		plugin = this;
+
+		parkourSet = new ParkourSet();
+		stageSet = new StageSet();
+		userSet = new UserSet();
 
 		registerCommands(
 
 		);
 
 		registerListeners(
-
+			new CreateUserInstanceListener()
 		);
 
-		parkourSet = new ParkourSet();
-		stageSet = new StageSet();
-		userSet = new UserSet();
-
-		/*
-		 * ロードの順番
-		 *
-		 * 1. パルクール
-		 * 2. ステージ
-		 * 3. ユーザー
-		 *
-		 */
 	}
 
 	@Override

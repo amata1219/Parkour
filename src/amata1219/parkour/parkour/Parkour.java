@@ -4,22 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.World;
 
 import amata1219.amalib.region.Region;
+import amata1219.amalib.text.StringSplit;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.stage.Stage;
 
 public class Parkour {
 
-	//パルクール名
+	//アスレ名
 	public final String name;
 
 	//ワールド
 	public final World world;
 
-	//空間
+	//アスレの領域
 	public final Region region;
 
 	//スタートライン
@@ -28,7 +30,7 @@ public class Parkour {
 	//ゴールライン
 	public final GraphicalRegion goalLine;
 
-	//チェックエリアリスト
+	//チェックエリアのリスト
 	public final List<GraphicalRegion> checkAreas = new ArrayList<>();
 
 	public Parkour(Yaml yaml){
@@ -36,15 +38,27 @@ public class Parkour {
 
 		world = Bukkit.getWorld(yaml.getString("World"));
 
+		//領域を作成する
 		region = Region.fromString(world, yaml.getString("Region"));
 
-		startLine = GraphicalRegion.fromString(this, yaml.getString("Start line"));
-		goalLine = GraphicalRegion.fromString(this, yaml.getString("Goal line"));
+		//テキストをカンマ毎に分割しそれぞれを数値に変換する
+		int[] colors = StringSplit.splitToIntArguments(yaml.getString("Color"));
 
+		//カラーを作成する
+		Color color = Color.fromRGB(colors[0], colors[1], colors[2]);
+
+		//スタートラインを作成する
+		startLine = GraphicalRegion.fromString(this, color, yaml.getString("Start line"));
+
+		//ゴールラインを作成する
+		goalLine = GraphicalRegion.fromString(this, color, yaml.getString("Goal line"));
+
+		//各チェックエリアを作成してリストに詰め込む
 		for(String text : yaml.getStringList("Check areas"))
-			checkAreas.add(GraphicalRegion.fromString(this, text));
+			checkAreas.add(GraphicalRegion.fromString(this, color, text));
 	}
 
+	//このマップがあるステージを返す
 	public Stage getStage(){
 		return Main.getStageSet().parkourNamesToStagesMap.get(name);
 	}
