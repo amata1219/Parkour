@@ -25,6 +25,9 @@ public class User {
 	//ランク
 	public int rank;
 
+	//コイン
+	public int coin;
+
 	//現在プレイ中のステージ
 	public Parkour currentlyPlayingParkour;
 
@@ -40,19 +43,29 @@ public class User {
 
 		rank = yaml.getInt("Rank");
 
+		coin = yaml.getInt("Coin");
+
+		Map<String, Parkour> parkourMap = Main.getParkourSet().parkourMap;
+
+		//最終ログアウト時にプレイしていたアスレを現在プレイ中のステージとする
+		currentlyPlayingParkour = parkourMap.get(yaml.getString("Last played parkour name"));
+
 		//個人設定はYamlに基づき生成する
 		setting = new UserSetting(yaml);
 
 		//セクションが存在しなければ戻る
-		if(!yaml.isConfigurationSection("CheckPoints"))
+		if(!yaml.isConfigurationSection("Check points"))
 			return;
 
 		//セクションを取得する
-		ConfigurationSection section = yaml.getConfigurationSection("CheckPoints");
+		ConfigurationSection section = yaml.getConfigurationSection("Check points");
 
 		//各アスレ名毎に処理する
 		for(String parkourName : section.getKeys(false)){
-			Parkour parkour = Main.getParkourSet().parkourMap.get(parkourName);
+			//アスレ名と対応したアスレを取得する
+			Parkour parkour = parkourMap.get(parkourName);
+
+			//チェックポイントを文字列から座標に変換してリスト化する
 			List<Location> points = section.getStringList(parkourName)
 											.stream()
 											.map(point -> point.split(","))
@@ -68,24 +81,36 @@ public class User {
 	//numberは0から始まる
 	public void setCheckPoint(Parkour parkour, int number, Location location){
 		String parkourName = parkour.name;
+
+		//パルクールに対応したチェックポイントリストを取得、存在しなければ新規作成する
 		List<Location> points = checkPoints.containsKey(parkourName) ? checkPoints.get(parkourName) : checkPoints.put(parkourName, new ArrayList<>());
+
 		if(points.size() >= number)
+			//新しいチェックポイントであればそのまま追加
 			points.add(location);
 		else
+			//既に存在しているチェックポイントであれば更新する
 			points.set(number, location);
 	}
 
 	public void save(Yaml yaml){
 		yaml.set("Rank", rank);
+		yaml.set("Coin", coin);
+
+		//現在プレイ中のアスレを最後に遊んだアスレとして記録する
+		yaml.set("Last played parkour name", currentlyPlayingParkour != null ? currentlyPlayingParkour.name : null);
+
 		yaml.set("Hide users", setting.hideUsers);
 
 		for(Entry<String, List<Location>> entry : checkPoints.entrySet()){
+			//座標を文字列に変換しリスト化する
 			List<String> points = entry.getValue()
 					.stream()
 					.map(location -> StringTemplate.format("$0,$1,$2,$3,$4", location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()))
 					.collect(Collectors.toList());
 
-			yaml.set(StringTemplate.format("CheckPoints.$0", entry.getKey()), points);
+			//対応したアスレ名の階層にチェックポイントリストをセットする
+			yaml.set(StringTemplate.format("Check points.$0", entry.getKey()), points);
 		}
 
 		yaml.update();

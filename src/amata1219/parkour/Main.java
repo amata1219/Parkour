@@ -7,6 +7,9 @@ import amata1219.parkour.user.UserSet;
 
 public class Main extends Plugin {
 
+	//https://twitter.com/share?url=https://minecraft.jp/servers/azisaba.net&text=
+	//アスレTP時にチャットに送信
+
 	private static Main plugin;
 	private static StageSet stageSet;
 	private static ParkourSet parkourSet;
