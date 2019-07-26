@@ -77,7 +77,7 @@ public class BordorDisplayer {
 
 		final int size = particles.size();
 
-		task = Async.write(() -> {
+		task = Async.define(() -> {
 			if(size >= index1)
 				index1 = 0;
 			else if(size >= index2)
