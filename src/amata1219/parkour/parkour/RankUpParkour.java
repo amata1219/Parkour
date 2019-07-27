@@ -2,7 +2,7 @@ package amata1219.parkour.parkour;
 
 import org.bukkit.ChatColor;
 
-public enum Update {
+public enum RankUpParkour {
 
 	Update1(ChatColor.GREEN, 10, 10),
 	Update2(ChatColor.YELLOW, 50, 50),
@@ -23,7 +23,7 @@ public enum Update {
 	public final int firstRewardCoins;
 	public final int secondAndSubsequentTimesRewardCoins;
 
-	private Update(ChatColor color, int firstRewardCoins, int secondAndSubsequentTimesRewardCoins){
+	private RankUpParkour(ChatColor color, int firstRewardCoins, int secondAndSubsequentTimesRewardCoins){
 		this.color = color;
 		this.firstRewardCoins = firstRewardCoins;
 		this.secondAndSubsequentTimesRewardCoins = secondAndSubsequentTimesRewardCoins;

@@ -1,6 +1,7 @@
 package amata1219.parkour;
 
 import amata1219.amalib.Plugin;
+import amata1219.parkour.command.ParkourCommand;
 import amata1219.parkour.command.SetDirectionCommand;
 import amata1219.parkour.listener.CreateUserInstanceListener;
 import amata1219.parkour.parkour.ParkourSet;
@@ -26,6 +27,7 @@ public class Main extends Plugin {
 		userSet = new UserSet();
 
 		registerCommands(
+			new ParkourCommand(),
 			new SetDirectionCommand()
 		);
 

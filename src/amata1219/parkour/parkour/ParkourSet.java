@@ -32,19 +32,31 @@ public class ParkourSet {
 			//Yamlに基づきパルクールを生成する
 			Parkour parkour = new Parkour(yaml);
 
-			//パルクールマップに追加する
-			parkourMap.put(yaml.name, parkour);
-
-			//スタートラインを登録する
-			registerChunksToRegionsMap(parkour.startLine, chunksToStartLinesMap);
-
-			//ゴールラインを登録する
-			registerChunksToRegionsMap(parkour.goalLine, chunksToGoalLinesMap);
-
-			//チェックエリアを登録する
-			for(GraphicalRegion checkArea : parkour.checkAreas)
-				registerChunksToRegionsMap(checkArea, chunksToCheckAreasMap);
+			registerParkour(parkour);
 		}
+	}
+
+	public void registerParkour(Parkour parkour){
+		//パルクールマップに追加する
+		parkourMap.put(parkour.name, parkour);
+
+		//スタートラインを登録する
+		registerChunksToRegionsMap(parkour.startLine, chunksToStartLinesMap);
+
+		//ゴールラインを登録する
+		registerChunksToRegionsMap(parkour.finishLine, chunksToGoalLinesMap);
+
+		//チェックエリアを登録する
+		for(GraphicalRegion checkArea : parkour.checkAreas)
+			registerChunksToRegionsMap(checkArea, chunksToCheckAreasMap);
+	}
+
+	public boolean isParkourRegistered(String parkourName){
+		return parkourMap.containsKey(parkourName);
+	}
+
+	public Parkour getParkour(String parkourName){
+		return parkourMap.get(parkourName);
 	}
 
 	private void registerChunksToRegionsMap(GraphicalRegion graphicalRegion, ChunksToObjectsMap<GraphicalRegion> chunksToRegionsMap){

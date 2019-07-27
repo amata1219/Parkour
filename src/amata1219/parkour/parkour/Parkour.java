@@ -28,7 +28,7 @@ public class Parkour {
 	public final GraphicalRegion startLine;
 
 	//ゴールライン
-	public final GraphicalRegion goalLine;
+	public final GraphicalRegion finishLine;
 
 	//チェックエリアのリスト
 	public final List<GraphicalRegion> checkAreas = new ArrayList<>();
@@ -50,8 +50,8 @@ public class Parkour {
 		//スタートラインを作成する
 		startLine = GraphicalRegion.fromString(this, color, yaml.getString("Start line"));
 
-		//ゴールラインを作成する
-		goalLine = GraphicalRegion.fromString(this, color, yaml.getString("Goal line"));
+		//フィニッシュラインを作成する
+		finishLine = GraphicalRegion.fromString(this, color, yaml.getString("Finish line"));
 
 		//各チェックエリアを作成してリストに詰め込む
 		for(String text : yaml.getStringList("Check areas"))
