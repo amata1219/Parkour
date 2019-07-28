@@ -1,6 +1,7 @@
 package amata1219.parkour.command;
 
 import java.io.File;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -14,18 +15,31 @@ import amata1219.amalib.text.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.parkour.ParkourSet;
+import amata1219.parkour.stage.Stage;
 
 public class ParkourCommand implements Command {
 
 	private final Main plugin = Main.getPlugin();
-	private final ParkourSet parkourSet = Main.getParkourSet();
 	private final File folder = new File(plugin.getDataFolder() + File.separator + "ParkourList");
+	private final Map<String, Parkour> parkourMap = Main.getParkourSet().parkourMap;
+	private final Map<String, Stage> stages = Main.getStageSet().stages;
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {
 		//第1引数をアスレ名として取得する
 		String parkourName = args.next();
+
+		//アスレ名とは関係無い機能の処理をする
+		switch(parkourName){
+		case "help":
+		case "commands":
+		case "usage":
+		case "howtouse":
+			sender.warn(": Not implemented error > 実装されていません。");
+			return;
+		default:
+			break;
+		}
 
 		//第2引数で分岐する
 		switch(args.next()){
@@ -42,10 +56,22 @@ public class ParkourCommand implements Command {
 			new Yaml(plugin, file);
 
 			sender.info(StringTemplate.format(": Success > $0.ymlを作成しました。", parkourName));
+			sender.info(StringTemplate.format(": Next > [$0]の設定を編集し登録して下さい。", parkourName));
+			return;
+		}case "delete":{
+			//アスレが登録されていればエラーとする
+			if(!parkourMap.containsKey(parkourName)){
+				sender.warn(StringTemplate.format(": Value error > [$0]の登録を解除して下さい。", parkourName));
+				return;
+			}
+
+			new File(folder, StringTemplate.format("$0.yml", parkourName)).delete();
+
+			sender.info(StringTemplate.format(": Success > $0.ymlを削除しました。", parkourName));
 			return;
 		}case "editfile":{
 			//アスレが登録されていればエラーとする
-			if(parkourSet.isParkourRegistered(parkourName)){
+			if(parkourMap.containsKey(parkourName)){
 				sender.warn(StringTemplate.format(": Value error > [$0]の登録を解除して下さい(/parkour $0 unregister)。", parkourName));
 				return;
 			}
@@ -67,6 +93,8 @@ public class ParkourCommand implements Command {
 				String worldName = args.next();
 
 				World world = Bukkit.getWorld(worldName);
+
+				//ワールドが存在しなければエラーとする
 				if(world == null){
 					sender.warn(StringTemplate.format(": Value error > [$0]は存在しません。", worldName));
 					return;
@@ -112,12 +140,15 @@ public class ParkourCommand implements Command {
 					coordinates[index + 3] -= coordinates[index];
 				}
 
+				//各値をカンマ区切りで結合する
+				String result = StringJoin.join(coordinates, ",");
+
 				//領域を書き換える
-				yaml.set("Region", StringJoin.join(coordinates, ","));
+				yaml.set("Region", result);
 
 				yaml.save();
 
-				sender.info(StringTemplate.format(": Success > [$0]のpos1。", parkourName));
+				sender.info(StringTemplate.format(": Success > [$0]の領域を[$1]に設定しました。", parkourName, result));
 				return;
 			}case "pos2":{
 				int[] xyz = new int[3];
@@ -150,13 +181,18 @@ public class ParkourCommand implements Command {
 					coordinates[index + 3] -= coordinates[index];
 				}
 
+				//各値をカンマ区切りで結合する
+				String result = StringJoin.join(coordinates, ",");
+
 				//領域を書き換える
-				yaml.set("Region", StringJoin.join(coordinates, ","));
+				yaml.set("Region", result);
 
 				yaml.save();
+
+				sender.info(StringTemplate.format(": Success > [$0]の領域を[$1]に設定しました。", parkourName, result));
 				return;
 			}case "startline":{
-				String[] xyzxyz = new String[6];
+				int[] xyzxyz = new int[6];
 				for(int index = 0; index < 6; index++){
 					//引数が存在しない又は整数型で表現出来なければエラーとする
 					if(!args.hasNextInt()){
@@ -164,29 +200,30 @@ public class ParkourCommand implements Command {
 						return;
 					}
 
-					//各引数を取得する
-					String coordinate = args.next();
-
 					//対応したインデックスに値を代入する
-					xyzxyz[index] = coordinate;
+					xyzxyz[index] = args.nextInt();
 				}
 
 				//領域を表現する座標を各値に分割し整数型に変換する
 				int[] coordinates = StringSplit.splitToIntArguments(yaml.getString("Region"));
 
 				//スタートラインを表現する座標を各値に分割する
-				String[] startLine = yaml.getString("Start line").split(",");
+				int[] startLine = StringSplit.splitToIntArguments(yaml.getString("Start line"));
 
 				//各値を相対座標化して書き換える
 				for(int index = 0; index < 6; index++)
-					startLine[index] = String.valueOf(Integer.parseInt(xyzxyz[index]) - coordinates[index < 3 ? index : index - 3]);
+					startLine[index] = xyzxyz[index] - coordinates[index < 3 ? index : index - 3];
 
-				yaml.set("Start line", String.join(",", startLine));
+				String result = StringJoin.join(startLine, ",");
+
+				yaml.set("Start line", result);
 
 				yaml.save();
+
+				sender.info(StringTemplate.format(": Success > [$0]のスタートラインを[$1]に設定しました。", parkourName, result));
 				return;
 			}case "finishline":{
-				String[] xyzxyz = new String[6];
+				int[] xyzxyz = new int[6];
 				for(int index = 0; index < 6; index++){
 					//引数が存在しない又は整数型で表現出来なければエラーとする
 					if(!args.hasNextInt()){
@@ -194,29 +231,29 @@ public class ParkourCommand implements Command {
 						return;
 					}
 
-					//各引数を取得する
-					String coordinate = args.next();
-
 					//対応したインデックスに値を代入する
-					xyzxyz[index] = coordinate;
+					xyzxyz[index] = args.nextInt();
 				}
 
 				//領域を表現する座標を各値に分割し整数型に変換する
 				int[] coordinates = StringSplit.splitToIntArguments(yaml.getString("Region"));
 
 				//スタートラインを表現する座標を各値に分割する
-				String[] finishLine = yaml.getString("Finish line").split(",");
+				int[] finishLine = StringSplit.splitToIntArguments(yaml.getString("Finish line"));
 
 				//各値を相対座標化して書き換える
 				for(int index = 0; index < 6; index++)
-					finishLine[index] = String.valueOf(Integer.parseInt(xyzxyz[index]) - coordinates[index < 3 ? index : index - 3]);
+					finishLine[index] = xyzxyz[index] - coordinates[index < 3 ? index : index - 3];
 
-				yaml.set("Finish line", String.join(",", finishLine));
+				String result = StringJoin.join(finishLine, ",");
+
+				yaml.set("Finish line", result);
 
 				yaml.save();
-				return;
+
+				sender.info(StringTemplate.format(": Success > [$0]のフィニッシュラインを[$1]に設定しました。", parkourName, result));
 			}default:
-				sender.warn(StringTemplate.format(": Syntax error > /parkour $0 editfile (world|pos1|pos2|startline|finishline) [...values]", parkourName));
+				sender.warn(StringTemplate.format(": Syntax error > /parkour $0 editfile (world|pos1|pos2|startline|finishline)", parkourName));
 				return;
 			}
 		}case "register":{
@@ -224,7 +261,7 @@ public class ParkourCommand implements Command {
 
 			//アスレの設定ファイルが存在しなければエラーとする
 			if(!file.exists()){
-				sender.warn(": Value error > [parkour_name] is invalid");
+				sender.warn(StringTemplate.format(": Value error > $0.ymlが存在しません。", parkourName));
 				return;
 			}
 
@@ -233,19 +270,33 @@ public class ParkourCommand implements Command {
 			Parkour parkour = new Parkour(yaml);
 
 			//アスレを登録する
-			parkourSet.registerParkour(parkour);
+			Main.getParkourSet().registerParkour(parkour);
+
+			//このアスレのステージに追加する
+			for(Stage stage : stages.values()){
+				if(!stage.parkourNames.contains(parkourName))
+					continue;
+
+				stage.parkourList.add(parkour);
+				break;
+			}
 
 			sender.info(StringTemplate.format("[$0]を登録しました。", parkourName));
 			return;
 		}case "unregister":{
 			//アスレが登録されていなければエラーとする
-			if(!parkourSet.isParkourRegistered(parkourName)){
-				sender.warn(": Value error > [parkour_name] has not been registered");
+			if(!parkourMap.containsKey(parkourName)){
+				sender.warn(StringTemplate.format(": Value error > [$0]は登録されていません。", parkourName));
 				return;
 			}
 
 			//指定されたアスレの登録を解除する
-			parkourSet.parkourMap.remove(parkourName);
+			Parkour parkour = parkourMap.remove(parkourName);
+
+			//このアスレのステージから削除する
+			for(Stage stage : stages.values())
+				if(stage.parkourList.remove(parkour))
+					break;
 
 			sender.info(StringTemplate.format("[$0]の登録を解除しました。", parkourName));
 			return;

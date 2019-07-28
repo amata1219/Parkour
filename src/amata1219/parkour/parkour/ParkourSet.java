@@ -51,14 +51,6 @@ public class ParkourSet {
 			registerChunksToRegionsMap(checkArea, chunksToCheckAreasMap);
 	}
 
-	public boolean isParkourRegistered(String parkourName){
-		return parkourMap.containsKey(parkourName);
-	}
-
-	public Parkour getParkour(String parkourName){
-		return parkourMap.get(parkourName);
-	}
-
 	private void registerChunksToRegionsMap(GraphicalRegion graphicalRegion, ChunksToObjectsMap<GraphicalRegion> chunksToRegionsMap){
 		//領域を取得する
 		Region region = graphicalRegion.region;
