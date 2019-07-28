@@ -8,6 +8,7 @@ import org.bukkit.World;
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
+import amata1219.amalib.text.StringJoin;
 import amata1219.amalib.text.StringSplit;
 import amata1219.amalib.text.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
@@ -57,15 +58,6 @@ public class ParkourCommand implements Command {
 				return;
 			}
 
-			/*
-			 * 'World': "world"
-			'Region': "0,0,0,0,0,0"
-			'Color': "0,0,0"
-			'Start line': "0,0,0,0,0,0"
-			'Finish line': "0,0,0,0,0,0"
-			'Check areas': []
-			 */
-
 			Yaml yaml = new Yaml(plugin, file);
 
 			//第3引数で分岐する
@@ -84,9 +76,11 @@ public class ParkourCommand implements Command {
 				yaml.set("World", worldName);
 
 				yaml.save();
+
+				sender.info(StringTemplate.format(": Success > [$0]のWorldを[$1]に設定しました。", parkourName, worldName));
 				return;
 			}case "pos1":{
-				String[] xyz = new String[3];
+				int[] xyz = new int[3];
 				for(int index = 0; index < 3; index++){
 					//引数が存在しない又は整数型で表現出来なければエラーとする
 					if(!args.hasNextInt()){
@@ -94,31 +88,39 @@ public class ParkourCommand implements Command {
 						return;
 					}
 
-					//各引数を取得する
-					String coordinate = args.next();
-
 					//対応したインデックスに値を代入する
-					xyz[index] = coordinate;
+					xyz[index] = args.nextInt();
 				}
 
-				//x1,y1,z1,x2,y2,z2の形の文字列を取得する
-				String text = yaml.getString("Region");
+				//領域を表現する座標を各値に分割する
+				int[] coordinates = StringSplit.splitToIntArguments(yaml.getString("Region"));
 
-				//各値に分割する
-				String[] coordinates = text.split(",");
+				for(int index = 0; index < 3; index++){
+					//pos2の値を絶対座標化する
+					int coordinate2 = coordinates[index + 3] += coordinates[index];
 
-				//各値を書き換える
-				coordinates[0] = xyz[0];
-				coordinates[1] = xyz[1];
-				coordinates[2] = xyz[2];
+					//pos1の値を書き換える
+					int coordinate1 = coordinates[index] = xyz[index];
+
+					//pos1の値がpos2の値より大きければ交換する
+					if(coordinate1 > coordinate2){
+						coordinates[index] = coordinate2;
+						coordinates[index + 3] = coordinate1;
+					}
+
+					//pos2の値を相対座標化する
+					coordinates[index + 3] -= coordinates[index];
+				}
 
 				//領域を書き換える
-				yaml.set("Region", String.join(",", coordinates));
+				yaml.set("Region", StringJoin.join(coordinates, ","));
 
 				yaml.save();
+
+				sender.info(StringTemplate.format(": Success > [$0]のpos1。", parkourName));
 				return;
 			}case "pos2":{
-				String[] xyz = new String[3];
+				int[] xyz = new int[3];
 				for(int index = 0; index < 3; index++){
 					//引数が存在しない又は整数型で表現出来なければエラーとする
 					if(!args.hasNextInt()){
@@ -126,22 +128,30 @@ public class ParkourCommand implements Command {
 						return;
 					}
 
-					//各引数を取得する
-					String coordinate = args.next();
-
 					//対応したインデックスに値を代入する
-					xyz[index] = coordinate;
+					xyz[index] = args.nextInt();
 				}
 
 				//領域を表現する座標を各値に分割する
-				String[] coordinates = yaml.getString("Region").split(",");
+				int[] coordinates = StringSplit.splitToIntArguments(yaml.getString("Region"));
 
 				//各値を相対座標化して書き換える
-				for(int index = 0; index < 3; index++)
-					coordinates[index + 3] = String.valueOf(Integer.parseInt(xyz[index]) - Integer.parseInt(coordinates[index]));
+				for(int index = 0; index < 3; index++){
+					int coordinate1 = coordinates[index];
+					int coordinate2 = xyz[index];
+
+					//pos1の値がpos2の値より大きければ交換する
+					if(coordinate1 > coordinate2){
+						coordinates[index] = coordinate2;
+						coordinates[index + 3] = coordinate1;
+					}
+
+					//pos2の値を相対座標化して書き換える
+					coordinates[index + 3] -= coordinates[index];
+				}
 
 				//領域を書き換える
-				yaml.set("Region", String.join(",", coordinates));
+				yaml.set("Region", StringJoin.join(coordinates, ","));
 
 				yaml.save();
 				return;
@@ -240,7 +250,7 @@ public class ParkourCommand implements Command {
 			sender.info(StringTemplate.format("[$0]の登録を解除しました。", parkourName));
 			return;
 		}default:
-			sender.warn(": Syntax error > /parkour [name] (create|edit)");
+			sender.warn(": Syntax error > /parkour [name] (create|editfile|register|unregister)");
 			return;
 		}
 	}
