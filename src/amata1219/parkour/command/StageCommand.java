@@ -103,6 +103,7 @@ public class StageCommand implements Command {
 				return;
 			}
 
+			parkourNamesToStagesMap.put(parkourName, stage);
 			parkourList.add(parkour);
 
 			sender.info(StringTemplate.format(": Success > [$0]に[$1]を追加しました。", stageName, parkourName));
@@ -138,6 +139,7 @@ public class StageCommand implements Command {
 				return;
 			}
 
+			parkourNamesToStagesMap.remove(parkourName);
 			parkourList.remove(parkour);
 
 			sender.info(StringTemplate.format(": Success > [$0]から[$1]を削除しました。", stageName, parkourName));

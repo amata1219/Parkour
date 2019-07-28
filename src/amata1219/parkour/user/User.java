@@ -26,7 +26,7 @@ public class User {
 	public int rank;
 
 	//コイン
-	public int coin;
+	private int coins;
 
 	//現在プレイ中のステージ
 	public Parkour currentlyPlayingParkour;
@@ -43,7 +43,7 @@ public class User {
 
 		rank = yaml.getInt("Rank");
 
-		coin = yaml.getInt("Coin");
+		coins = yaml.getInt("Coins");
 
 		Map<String, Parkour> parkourMap = Main.getParkourSet().parkourMap;
 
@@ -94,9 +94,21 @@ public class User {
 			points.set(number, location);
 	}
 
+	public int getCoins(){
+		return coins;
+	}
+
+	public void depositCoins(int coins){
+		this.coins += coins;
+	}
+
+	public void withdrawCoins(int coins){
+		this.coins = Math.max(this.coins - coins, 0);
+	}
+
 	public void save(Yaml yaml){
 		yaml.set("Rank", rank);
-		yaml.set("Coin", coin);
+		yaml.set("Coins", coins);
 
 		//現在プレイ中のアスレを最後に遊んだアスレとして記録する
 		yaml.set("Last played parkour name", currentlyPlayingParkour != null ? currentlyPlayingParkour.name : null);
