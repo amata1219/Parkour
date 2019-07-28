@@ -19,9 +19,22 @@ public class CoinCommand implements Command {
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {
-		//coin [name] see/add,deposit/remove,withdraw [coins]
-
+		//第1引数をプレイヤー名として取得する
 		String playerName = args.next();
+
+		//プレイヤー名とは関係無い機能の処理をする
+		switch(playerName){
+		case "help":
+		case "commands":
+		case "usage":
+		case "howtouse":
+			sender.warn(": Not implemented error > 実装されていません。");
+			return;
+		case "list":
+				return;
+		default:
+			break;
+		}
 
 		@SuppressWarnings("deprecation")
 		OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);

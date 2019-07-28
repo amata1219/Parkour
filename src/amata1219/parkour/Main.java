@@ -1,9 +1,12 @@
 package amata1219.parkour;
 
 import amata1219.amalib.Plugin;
+import amata1219.parkour.command.CoinCommand;
 import amata1219.parkour.command.ParkourCommand;
 import amata1219.parkour.command.SetDirectionCommand;
+import amata1219.parkour.command.StageCommand;
 import amata1219.parkour.listener.CreateUserInstanceListener;
+import amata1219.parkour.listener.DisablePlayerCollisionsListener;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.stage.StageSet;
 import amata1219.parkour.user.UserSet;
@@ -28,11 +31,14 @@ public class Main extends Plugin {
 
 		registerCommands(
 			new ParkourCommand(),
+			new StageCommand(),
+			new CoinCommand(),
 			new SetDirectionCommand()
 		);
 
 		registerListeners(
-			new CreateUserInstanceListener()
+			new CreateUserInstanceListener(),
+			new DisablePlayerCollisionsListener()
 		);
 
 	}

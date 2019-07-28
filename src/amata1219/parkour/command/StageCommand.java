@@ -25,20 +25,7 @@ public class StageCommand implements Command {
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {
-		/*
-		 * stage [name]
-		 *
-		 * create
-		 * addparkour [parkour]
-		 * removeparkour [parkour]
-		 * listparkour
-		 *
-		 * add
-		 * remove
-		 * list
-		 *
-		 */
-		//第1引数を取得する
+		//第1引数をステージ名として取得する
 		String stageName = args.next();
 
 		//ステージ名とは関係無い機能の処理をする
