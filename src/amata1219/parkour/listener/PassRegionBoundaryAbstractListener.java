@@ -12,11 +12,11 @@ import amata1219.parkour.parkour.GraphicalRegion;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.User;
 
-public abstract class EnterRegionAbstractListener implements Listener {
+public abstract class PassRegionBoundaryAbstractListener implements Listener {
 
 	private final ChunksToObjectsMap<GraphicalRegion> chunksToRegionsMap;
 
-	protected EnterRegionAbstractListener(ChunksToObjectsMap<GraphicalRegion> chunksToRegionsMap){
+	protected PassRegionBoundaryAbstractListener(ChunksToObjectsMap<GraphicalRegion> chunksToRegionsMap){
 		this.chunksToRegionsMap = chunksToRegionsMap;
 	}
 

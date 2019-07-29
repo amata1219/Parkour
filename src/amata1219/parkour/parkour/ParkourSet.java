@@ -18,7 +18,7 @@ public class ParkourSet {
 	public final Map<String, Parkour> parkourMap = new HashMap<>();
 
 	public final ChunksToObjectsMap<GraphicalRegion> chunksToStartLinesMap = new ChunksToObjectsMap<>();
-	public final ChunksToObjectsMap<GraphicalRegion> chunksToGoalLinesMap = new ChunksToObjectsMap<>();
+	public final ChunksToObjectsMap<GraphicalRegion> chunksToFinishLinesMap = new ChunksToObjectsMap<>();
 	public final ChunksToObjectsMap<GraphicalRegion> chunksToCheckAreasMap = new ChunksToObjectsMap<>();
 
 	public ParkourSet(){
@@ -45,7 +45,7 @@ public class ParkourSet {
 		registerChunksToRegionsMap(parkour.startLine, chunksToStartLinesMap);
 
 		//ゴールラインを登録する
-		registerChunksToRegionsMap(parkour.finishLine, chunksToGoalLinesMap);
+		registerChunksToRegionsMap(parkour.finishLine, chunksToFinishLinesMap);
 
 		//チェックエリアを登録する
 		for(GraphicalRegion checkArea : parkour.checkAreas)

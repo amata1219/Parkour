@@ -7,6 +7,9 @@ import amata1219.parkour.command.SetDirectionCommand;
 import amata1219.parkour.command.StageCommand;
 import amata1219.parkour.listener.CreateUserInstanceListener;
 import amata1219.parkour.listener.DisablePlayerCollisionsListener;
+import amata1219.parkour.listener.EnterFinishLineListener;
+import amata1219.parkour.listener.EnterStartLineListener;
+import amata1219.parkour.listener.SetCheckpointListener;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.stage.StageSet;
 import amata1219.parkour.user.UserSet;
@@ -38,7 +41,10 @@ public class Main extends Plugin {
 
 		registerListeners(
 			new CreateUserInstanceListener(),
-			new DisablePlayerCollisionsListener()
+			new DisablePlayerCollisionsListener(),
+			new SetCheckpointListener(),
+			new EnterStartLineListener(),
+			new EnterFinishLineListener()
 		);
 
 	}

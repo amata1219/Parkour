@@ -9,13 +9,17 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import amata1219.amalib.text.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class User {
 
@@ -30,6 +34,9 @@ public class User {
 
 	//現在プレイ中のステージ
 	public Parkour currentlyPlayingParkour;
+
+	//プレイし始めた時間(ミリ秒)
+	public long timeToStartPlaying;
 
 	//各アスレのチェックポイント
 	public final Map<String, List<Location>> checkPoints = new HashMap<>();
@@ -104,6 +111,12 @@ public class User {
 
 	public void withdrawCoins(int coins){
 		this.coins = Math.max(this.coins - coins, 0);
+	}
+
+	public void sendMessageToDisappearAutomatically(String message){
+		Player player = Bukkit.getPlayer(uuid);
+		if(player != null)
+			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
 	}
 
 	public void save(Yaml yaml){
