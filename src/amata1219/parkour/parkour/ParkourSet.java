@@ -16,6 +16,7 @@ public class ParkourSet {
 	private final File folder = new File(plugin.getDataFolder() + File.separator + "ParkourList");
 
 	public final Map<String, Parkour> parkourMap = new HashMap<>();
+
 	public final ChunksToObjectsMap<GraphicalRegion> chunksToStartLinesMap = new ChunksToObjectsMap<>();
 	public final ChunksToObjectsMap<GraphicalRegion> chunksToGoalLinesMap = new ChunksToObjectsMap<>();
 	public final ChunksToObjectsMap<GraphicalRegion> chunksToCheckAreasMap = new ChunksToObjectsMap<>();
