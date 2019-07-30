@@ -8,15 +8,15 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.parkour.Main;
-import amata1219.parkour.parkour.GraphicalRegion;
+import amata1219.parkour.parkour.RegionBorder;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.User;
 
 public abstract class PassRegionBoundaryAbstractListener implements Listener {
 
-	private final ChunksToObjectsMap<GraphicalRegion> chunksToRegionsMap;
+	private final ChunksToObjectsMap<RegionBorder> chunksToRegionsMap;
 
-	protected PassRegionBoundaryAbstractListener(ChunksToObjectsMap<GraphicalRegion> chunksToRegionsMap){
+	protected PassRegionBoundaryAbstractListener(ChunksToObjectsMap<RegionBorder> chunksToRegionsMap){
 		this.chunksToRegionsMap = chunksToRegionsMap;
 	}
 
@@ -25,9 +25,9 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 		Location from = event.getFrom();
 
 		//元々いた地点に存在していた領域
-		GraphicalRegion fromRegion = null;
+		RegionBorder fromRegion = null;
 
-		for(GraphicalRegion region : chunksToRegionsMap.get(from)){
+		for(RegionBorder region : chunksToRegionsMap.get(from)){
 			if(!region.region.isIn(from))
 				continue;
 
@@ -37,9 +37,9 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 
 		Location to = event.getTo();
 
-		GraphicalRegion toRegion = null;
+		RegionBorder toRegion = null;
 
-		for(GraphicalRegion region : chunksToRegionsMap.get(to)){
+		for(RegionBorder region : chunksToRegionsMap.get(to)){
 			if(!region.region.isIn(to))
 				continue;
 
@@ -56,6 +56,6 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 		onMove(player, user, parkour, fromRegion, toRegion);
 	}
 
-	public abstract void onMove(Player player, User user, Parkour parkour, GraphicalRegion from, GraphicalRegion to);
+	public abstract void onMove(Player player, User user, Parkour parkour, RegionBorder from, RegionBorder to);
 
 }

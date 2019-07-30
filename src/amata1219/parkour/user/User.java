@@ -3,23 +3,20 @@ package amata1219.parkour.user;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
-
 import amata1219.amalib.text.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 
 public class User {
 
@@ -44,6 +41,8 @@ public class User {
 	//個人設定
 	public final UserSetting setting;
 
+	public final Set<String> clearedParkourNames;
+
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
 		this.uuid = UUID.fromString(yaml.name);
@@ -59,6 +58,8 @@ public class User {
 
 		//個人設定はYamlに基づき生成する
 		setting = new UserSetting(yaml);
+
+		clearedParkourNames = new HashSet<>(yaml.getStringList("Cleared parkur names"));
 
 		//セクションが存在しなければ戻る
 		if(!yaml.isConfigurationSection("Check points"))
@@ -113,12 +114,6 @@ public class User {
 		this.coins = Math.max(this.coins - coins, 0);
 	}
 
-	public void sendMessageToDisappearAutomatically(String message){
-		Player player = Bukkit.getPlayer(uuid);
-		if(player != null)
-			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
-	}
-
 	public void save(Yaml yaml){
 		yaml.set("Rank", rank);
 		yaml.set("Coins", coins);
@@ -127,6 +122,8 @@ public class User {
 		yaml.set("Last played parkour name", currentlyPlayingParkour != null ? currentlyPlayingParkour.name : null);
 
 		yaml.set("Hide users", setting.hideUsers);
+
+		yaml.set("Cleared parkour names", clearedParkourNames);
 
 		for(Entry<String, List<Location>> entry : checkPoints.entrySet()){
 			//座標を文字列に変換しリスト化する

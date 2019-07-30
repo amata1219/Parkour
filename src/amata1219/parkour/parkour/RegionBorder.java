@@ -1,13 +1,10 @@
 package amata1219.parkour.parkour;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Color;
 import org.bukkit.craftbukkit.v1_13_R2.CraftParticle;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.google.common.collect.ImmutableList;
@@ -15,36 +12,45 @@ import com.google.common.collect.ImmutableList;
 import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.schedule.Async;
-import net.minecraft.server.v1_13_R2.EntityPlayer;
 import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_13_R2.ParticleParam;
 import net.minecraft.server.v1_13_R2.PlayerConnection;
 
-public class GraphicalRegion {
+public class RegionBorder {
 
+	//領域があるアスレ
 	public final Parkour parkour;
+
+	//領域
 	public final Region region;
+
+	//各地点のパーティクルのリスト
 	private final List<PacketPlayOutWorldParticles> particles;
-	private final List<PlayerConnection> connections = new ArrayList<>();
+
+	//パーティクルの表示位置
 	private int index1, index2;
+
+	//パーティクルパケットを送信する非同期のループタスク
 	private BukkitTask task;
 
-	public static GraphicalRegion fromString(Parkour parkour, Color color, String text){
+	public static RegionBorder fromString(Parkour parkour, Color color, String text){
 		Region space = Region.fromString(parkour.world, text);
-		return new GraphicalRegion(parkour, space, color);
+		return new RegionBorder(parkour, space, color);
 	}
 
-	public GraphicalRegion(Parkour parkour, Region space, Color color){
+	public RegionBorder(Parkour parkour, Region space, Color color){
 		this.parkour = parkour;
 		this.region = space;
 
 		ImmutableLocation lesser = space.lesserBoundaryCorner;
 		ImmutableLocation greater = space.greaterBoundaryCorner;
 
+		//パーティクルパケットのビルダーを作成する
 		ParticlePacketListBuilder builder = new ParticlePacketListBuilder(color, (float) lesser.getEntityY() + 1);
 
 		float unit = 1f / 3f;
 
+		//発生座標だけを変えたパーティクルパケットを作成する
 		for(float x = (float) lesser.getEntityX(); x <= greater.getEntityX() + 1; x += unit)
 			builder.make(x, (float) lesser.getEntityZ());
 
@@ -62,31 +68,13 @@ public class GraphicalRegion {
 		index2 = particles.size() / 2;
 	}
 
-	public void addPlayer(Player player){
-		PlayerConnection connection = asEntityPlayer(player).playerConnection;
-		if(connections.contains(connection))
-			return;
-
-		connections.add(connection);
-		if(connections.size() == 1)
-			display();
-	}
-
-	public void removePlayer(Player player){
-		connections.remove(asEntityPlayer(player).playerConnection);
-		if(connections.size() == 1)
-			cancel();
-	}
-
-	private EntityPlayer asEntityPlayer(Player player){
-		return ((CraftPlayer) player).getHandle();
-	}
-
-	private void display(){
+	//境界線を表示する
+	public void display(){
 		cancel();
 
 		final int size = particles.size();
 
+		//非同期で実行する
 		task = Async.define(() -> {
 			if(size >= index1)
 				index1 = 0;
@@ -96,14 +84,15 @@ public class GraphicalRegion {
 			PacketPlayOutWorldParticles packet1 = particles.get(index1++);
 			PacketPlayOutWorldParticles packet2 = particles.get(index2++);
 
-			for(PlayerConnection connection : connections){
+			for(PlayerConnection connection : parkour.connections){
 				connection.sendPacket(packet1);
 				connection.sendPacket(packet2);
 			}
 		}).executeTimer(0, 6);
 	}
 
-	private void cancel(){
+	//境界線を非表示にする
+	public void cancel(){
 		if(task != null)
 			task.cancel();
 	}

@@ -1,20 +1,21 @@
 package amata1219.parkour.listener;
 
-import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
+import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.parkour.Main;
-import amata1219.parkour.parkour.GraphicalRegion;
-import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.user.User;
+import amata1219.parkour.parkour.RegionBorder;
 
-public class SetCheckpointListener extends PassRegionBoundaryAbstractListener {
+public class SetCheckpointListener implements Listener {
 
-	public SetCheckpointListener() {
-		super(Main.getParkourSet().chunksToCheckAreasMap);
-	}
+	public final ChunksToObjectsMap<RegionBorder> chunksToCheckAreasMap = Main.getParkourSet().chunksToCheckAreasMap;
 
-	@Override
-	public void onMove(Player player, User user, Parkour parkour, GraphicalRegion from, GraphicalRegion to) {
+	@EventHandler
+	public void onSwap(PlayerSwapHandItemsEvent event){
+
+
 	}
 
 }
