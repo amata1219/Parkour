@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 import amata1219.amalib.chunk.ChunksToObjectsMap;
+import amata1219.amalib.text.StringTemplate;
 import amata1219.parkour.Main;
 import amata1219.parkour.message.Messenger;
 import amata1219.parkour.parkour.Parkour;
@@ -54,11 +55,12 @@ public class SetCheckpointListener implements Listener {
 		if(!user.currentlyPlayingParkour.equals(parkour))
 			return;
 
+		int areaNumber = parkour.getCheckAreaNumber(area);
+
 		//チェックポイントとして設定する
-		user.setCheckPoint(parkour, parkour.getNumber(area), location);
+		user.setCheckPoint(parkour, areaNumber, location);
 
-		Messenger.sendActionBarMessage(player, ChatColor.BLUE + "後から記述");
-
+		Messenger.sendActionBarMessage(player, StringTemplate.format("$0Set Checkpoint @ $1", ChatColor.AQUA, areaNumber));
 	}
 
 }

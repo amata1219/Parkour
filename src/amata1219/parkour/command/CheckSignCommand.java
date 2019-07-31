@@ -17,11 +17,11 @@ public class CheckSignCommand implements Command {
 		switch(args.next()){
 		case "sign":
 			inventory.addItem(CheckSign.AT_SIGN);
-			sender.info(": Given > CP@SIGN看板を付与しました。");
+			sender.info(": Success > CP @ SIGN 看板を付与しました。");
 			return;
 		case "player":
 			inventory.addItem(CheckSign.AT_PLAYER);
-			sender.info(": Given > CP@PLAYER看板を付与しました。");
+			sender.info(": Success > CP @ PLAYER 看板を付与しました。");
 			return;
 		default:
 			return;

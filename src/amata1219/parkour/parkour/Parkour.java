@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
@@ -26,6 +27,9 @@ public class Parkour {
 
 	//アスレ名
 	public final String name;
+
+	//装飾コードを削除したアスレ名
+	public final String colorlessName;
 
 	//ワールド
 	public final World world;
@@ -53,6 +57,8 @@ public class Parkour {
 
 	public Parkour(Yaml yaml){
 		name = yaml.name;
+
+		colorlessName = ChatColor.stripColor(name);
 
 		world = Bukkit.getWorld(yaml.getString("World"));
 
@@ -132,7 +138,7 @@ public class Parkour {
 		return Main.getStageSet().parkourNamesToStagesMap.get(name);
 	}
 
-	public int getNumber(RegionBorderDisplayer checkArea){
+	public int getCheckAreaNumber(RegionBorderDisplayer checkArea){
 		return checkAreas.indexOf(checkArea) + 1;
 	}
 

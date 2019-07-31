@@ -56,7 +56,7 @@ public class RegionSelectorCommand implements Command {
 		//セレクターを追加する
 		inventory.addItem(item);
 
-		sender.info(": Given > 範囲選択ツールを付与しました。");
+		sender.info(": Success > 範囲選択ツールを付与しました。");
 	}
 
 }
