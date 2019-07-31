@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+
+import amata1219.amalib.selection.RegionSelection;
 import amata1219.amalib.text.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
@@ -41,7 +43,11 @@ public class User {
 	//個人設定
 	public final UserSetting setting;
 
+	//クリア済みのアスレの名前リスト
 	public final Set<String> clearedParkourNames;
+
+	//アスレ製作者用の指定範囲を表現するオブジェクト
+	public RegionSelection selection;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する

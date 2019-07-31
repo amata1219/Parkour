@@ -18,11 +18,11 @@ import net.minecraft.server.v1_13_R2.PlayerConnection;
 
 public class RegionBorderDisplayer {
 
-	private final static Random RANDOM = new Random();
-	private final static float EXTRA = 1;
-	private final static int COUNT = 0;
-	private final static boolean FLAG = true;
-	private final static ParticleParam PARTICLE_DATA = CraftParticle.toNMS(org.bukkit.Particle.REDSTONE, null);
+	private static final ParticleParam PARTICLE_DATA = CraftParticle.toNMS(org.bukkit.Particle.REDSTONE, null);
+	private static final boolean FLAG = true;
+	private static final Random RANDOM = new Random();
+	private static final float EXTRA = 1;
+	private static final int COUNT = 0;
 
 	//領域があるアスレ
 	public final Parkour parkour;
