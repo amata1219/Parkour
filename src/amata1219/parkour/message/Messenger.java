@@ -4,8 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
+import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class Messenger {
@@ -21,6 +23,13 @@ public class Messenger {
 	public static void sendLinkedMessage(Player player, String text, String url){
 		TextComponent component = new TextComponent(text);
 		component.setClickEvent(new ClickEvent(Action.OPEN_URL, url));
+		player.spigot().sendMessage(ChatMessageType.CHAT, component);
+	}
+
+	public static void sendEmbeddedCommandMessage(Player player, String text, String command){
+		TextComponent component = new TextComponent(text);
+		component.setClickEvent(new ClickEvent(net.md_5.bungee.api.chat.ClickEvent.Action.RUN_COMMAND, command));
+		component.setHoverEvent(new HoverEvent(net.md_5.bungee.api.chat.HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent("§7" + command)}));
 		player.spigot().sendMessage(ChatMessageType.CHAT, component);
 	}
 

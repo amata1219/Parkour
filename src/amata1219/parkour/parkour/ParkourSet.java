@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.bukkit.ChatColor;
+
 import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.yaml.Yaml;
@@ -50,6 +52,14 @@ public class ParkourSet {
 		//チェックエリアを登録する
 		for(RegionBorderDisplayer checkArea : parkour.checkAreas)
 			registerChunksToRegionsMap(checkArea, chunksToCheckAreasMap);
+	}
+
+	public boolean isParkourExists(String parkourName){
+		return getParkour(parkourName) != null;
+	}
+
+	public Parkour getParkour(String parkourName){
+		return parkourMap.get(ChatColor.stripColor(parkourName));
 	}
 
 	private void registerChunksToRegionsMap(RegionBorderDisplayer graphicalRegion, ChunksToObjectsMap<RegionBorderDisplayer> chunksToRegionsMap){

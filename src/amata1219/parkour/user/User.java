@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
-import amata1219.amalib.selection.RegionSelection;
 import amata1219.amalib.text.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
+import amata1219.parkour.parkour.ParkourSet;
 
 public class User {
 
@@ -31,7 +31,10 @@ public class User {
 	//コイン
 	private int coins;
 
-	//現在プレイ中のステージ
+	//現在いるアスレ
+	public Parkour currentParkour;
+
+	//現在プレイ中のアスレ
 	public Parkour currentlyPlayingParkour;
 
 	//プレイし始めた時間(ミリ秒)
@@ -47,7 +50,10 @@ public class User {
 	public final Set<String> clearedParkourNames;
 
 	//アスレ製作者用の指定範囲を表現するオブジェクト
-	public RegionSelection selection;
+	public ParkourRegionSelector selector;
+
+	//クリエイティブワールドでのチェックポイント
+	public Location checkpoint;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
@@ -56,6 +62,12 @@ public class User {
 		rank = yaml.getInt("Rank");
 
 		coins = yaml.getInt("Coins");
+
+		ParkourSet parkourSet = Main.getParkourSet();
+
+		currentParkour = parkourSet.getParkour("Current parkour");
+
+		currentlyPlayingParkour = parkourSet.getParkour("Currently playing parkour");
 
 		Map<String, Parkour> parkourMap = Main.getParkourSet().parkourMap;
 
@@ -123,9 +135,8 @@ public class User {
 	public void save(Yaml yaml){
 		yaml.set("Rank", rank);
 		yaml.set("Coins", coins);
-
-		//現在プレイ中のアスレを最後に遊んだアスレとして記録する
-		yaml.set("Last played parkour name", currentlyPlayingParkour != null ? currentlyPlayingParkour.name : null);
+		yaml.set("Current parkour", currentParkour != null ? currentParkour.name : null);
+		yaml.set("Currently playing parkour", currentlyPlayingParkour != null ? currentlyPlayingParkour.name : null);
 
 		yaml.set("Hide users", setting.hideUsers);
 
