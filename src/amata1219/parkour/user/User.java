@@ -132,6 +132,10 @@ public class User {
 		this.coins = Math.max(this.coins - coins, 0);
 	}
 
+	public boolean isPlayingParkour(){
+		return currentlyPlayingParkour != null;
+	}
+
 	public void save(Yaml yaml){
 		yaml.set("Rank", rank);
 		yaml.set("Coins", coins);

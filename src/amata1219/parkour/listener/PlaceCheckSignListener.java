@@ -9,6 +9,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
 import amata1219.parkour.Main;
+import amata1219.parkour.item.CheckSign;
 
 public class PlaceCheckSignListener implements Listener {
 
@@ -28,10 +29,10 @@ public class PlaceCheckSignListener implements Listener {
 		Sign state = (Sign) block.getState();
 		ItemStack item = event.getItemInHand();
 
-		if(Main.AT_SIGN.equals(item))
-			state.setLine(1, Main.CP_AT_SIGN);
-		else if(Main.AT_PLAYER.equals(item))
-			state.setLine(1, Main.CP_AT_PLAYER);
+		if(CheckSign.AT_SIGN.equals(item))
+			state.setLine(1, CheckSign.CP_AT_SIGN);
+		else if(CheckSign.AT_PLAYER.equals(item))
+			state.setLine(1, CheckSign.CP_AT_PLAYER);
 		else
 			return;
 

@@ -11,6 +11,7 @@ import amata1219.amalib.command.Sender;
 import amata1219.amalib.inventory.ui.dsl.component.Icon;
 import amata1219.amalib.text.StringTemplate;
 import amata1219.parkour.Main;
+import amata1219.parkour.item.RegionSelector;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.user.ParkourRegionSelector;
@@ -48,7 +49,7 @@ public class RegionSelectorCommand implements Command {
 		ParkourRegionSelector selector = Main.getUserSet().users.get(player.getUniqueId()).selector = new ParkourRegionSelector(parkour);
 
 		//範囲選択ツールを複製する
-		ItemStack item = Main.SELECTOR.clone();
+		ItemStack item = RegionSelector.SELECTOR.clone();
 
 		selector.updateDisplayName(item);
 

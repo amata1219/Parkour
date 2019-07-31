@@ -40,11 +40,11 @@ public class RegionBorderDisplayer {
 	private BukkitTask task;
 
 	public static RegionBorderDisplayer fromString(Parkour parkour, Color color, String text){
-		Region space = Region.fromString(parkour.world, text);
-		return new RegionBorderDisplayer(parkour, space, color);
+		Region region = Region.fromString(parkour.world, text);
+		return new RegionBorderDisplayer(parkour, region, color);
 	}
 
-	public RegionBorderDisplayer(Parkour parkour, Region region, Color color){
+	public RegionBorderDisplayer(Parkour parkour,  Region region, Color color){
 		this.parkour = parkour;
 		this.region = region;
 

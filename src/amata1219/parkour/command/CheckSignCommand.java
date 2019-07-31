@@ -4,7 +4,7 @@ import org.bukkit.inventory.Inventory;
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
-import amata1219.parkour.Main;
+import amata1219.parkour.item.CheckSign;
 
 public class CheckSignCommand implements Command {
 
@@ -16,11 +16,11 @@ public class CheckSignCommand implements Command {
 		Inventory inventory = sender.asPlayerCommandSender().getInventory();
 		switch(args.next()){
 		case "sign":
-			inventory.addItem(Main.AT_SIGN);
+			inventory.addItem(CheckSign.AT_SIGN);
 			sender.info(": Given > CP@SIGN看板を付与しました。");
 			return;
 		case "player":
-			inventory.addItem(Main.AT_PLAYER);
+			inventory.addItem(CheckSign.AT_PLAYER);
 			sender.info(": Given > CP@PLAYER看板を付与しました。");
 			return;
 		default:

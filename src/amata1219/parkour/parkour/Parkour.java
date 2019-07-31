@@ -132,6 +132,10 @@ public class Parkour {
 		return Main.getStageSet().parkourNamesToStagesMap.get(name);
 	}
 
+	public int getNumber(RegionBorderDisplayer checkArea){
+		return checkAreas.indexOf(checkArea) + 1;
+	}
+
 	public void tryToRecordTime(UUID uuid, float time){
 		if(selfRecords.getOrDefault(uuid, Float.MAX_VALUE) > time)
 			selfRecords.put(uuid, time);
