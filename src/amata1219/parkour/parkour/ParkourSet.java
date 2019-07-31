@@ -17,9 +17,9 @@ public class ParkourSet {
 
 	public final Map<String, Parkour> parkourMap = new HashMap<>();
 
-	public final ChunksToObjectsMap<RegionBorder> chunksToStartLinesMap = new ChunksToObjectsMap<>();
-	public final ChunksToObjectsMap<RegionBorder> chunksToFinishLinesMap = new ChunksToObjectsMap<>();
-	public final ChunksToObjectsMap<RegionBorder> chunksToCheckAreasMap = new ChunksToObjectsMap<>();
+	public final ChunksToObjectsMap<RegionBorderDisplayer> chunksToStartLinesMap = new ChunksToObjectsMap<>();
+	public final ChunksToObjectsMap<RegionBorderDisplayer> chunksToFinishLinesMap = new ChunksToObjectsMap<>();
+	public final ChunksToObjectsMap<RegionBorderDisplayer> chunksToCheckAreasMap = new ChunksToObjectsMap<>();
 
 	public ParkourSet(){
 		if(!folder.exists())
@@ -48,11 +48,11 @@ public class ParkourSet {
 		registerChunksToRegionsMap(parkour.finishLine, chunksToFinishLinesMap);
 
 		//チェックエリアを登録する
-		for(RegionBorder checkArea : parkour.checkAreas)
+		for(RegionBorderDisplayer checkArea : parkour.checkAreas)
 			registerChunksToRegionsMap(checkArea, chunksToCheckAreasMap);
 	}
 
-	private void registerChunksToRegionsMap(RegionBorder graphicalRegion, ChunksToObjectsMap<RegionBorder> chunksToRegionsMap){
+	private void registerChunksToRegionsMap(RegionBorderDisplayer graphicalRegion, ChunksToObjectsMap<RegionBorderDisplayer> chunksToRegionsMap){
 		//領域を取得する
 		Region region = graphicalRegion.region;
 

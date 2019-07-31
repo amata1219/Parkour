@@ -6,11 +6,11 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.parkour.Main;
-import amata1219.parkour.parkour.RegionBorder;
+import amata1219.parkour.parkour.RegionBorderDisplayer;
 
 public class SetCheckpointListener implements Listener {
 
-	public final ChunksToObjectsMap<RegionBorder> chunksToCheckAreasMap = Main.getParkourSet().chunksToCheckAreasMap;
+	public final ChunksToObjectsMap<RegionBorderDisplayer> chunksToCheckAreasMap = Main.getParkourSet().chunksToCheckAreasMap;
 
 	@EventHandler
 	public void onSwap(PlayerSwapHandItemsEvent event){

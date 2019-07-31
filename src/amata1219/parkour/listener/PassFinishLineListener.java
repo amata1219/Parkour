@@ -6,7 +6,7 @@ import amata1219.amalib.text.StringTemplate;
 import amata1219.parkour.Main;
 import amata1219.parkour.message.Messenger;
 import amata1219.parkour.message.TimeFormat;
-import amata1219.parkour.parkour.RegionBorder;
+import amata1219.parkour.parkour.RegionBorderDisplayer;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.User;
 
@@ -17,7 +17,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 	}
 
 	@Override
-	public void onMove(Player player, User user, Parkour parkour, RegionBorder from, RegionBorder to) {
+	public void onMove(Player player, User user, Parkour parkour, RegionBorderDisplayer from, RegionBorderDisplayer to) {
 		if(from == null && to != null){
 			//初めてフィニッシュラインに踏み込んだ時
 
