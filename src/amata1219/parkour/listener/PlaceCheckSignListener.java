@@ -13,7 +13,7 @@ import amata1219.parkour.item.CheckSign;
 
 public class PlaceCheckSignListener implements Listener {
 
-	@EventHandler(ignoreCancelled = true)
+	@EventHandler
 	public void onPlace(BlockPlaceEvent event){
 		Block block = event.getBlock();
 		Material blockType = block.getType();

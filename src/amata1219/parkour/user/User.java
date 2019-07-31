@@ -25,7 +25,7 @@ public class User {
 	//UUID
 	public final UUID uuid;
 
-	//ランク
+	//ランク(表示例: amata1219 @ 12)
 	public int rank;
 
 	//コイン
@@ -66,8 +66,8 @@ public class User {
 		ParkourSet parkourSet = Main.getParkourSet();
 
 		currentParkour = parkourSet.getParkour("Current parkour");
-
 		currentlyPlayingParkour = parkourSet.getParkour("Currently playing parkour");
+		timeToStartPlaying = yaml.getLong("Time to start playing");
 
 		Map<String, Parkour> parkourMap = Main.getParkourSet().parkourMap;
 
@@ -141,6 +141,7 @@ public class User {
 		yaml.set("Coins", coins);
 		yaml.set("Current parkour", currentParkour != null ? currentParkour.name : null);
 		yaml.set("Currently playing parkour", currentlyPlayingParkour != null ? currentlyPlayingParkour.name : null);
+		yaml.set("Time to start playing", timeToStartPlaying);
 
 		yaml.set("Hide users", setting.hideUsers);
 

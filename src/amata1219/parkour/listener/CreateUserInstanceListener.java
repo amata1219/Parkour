@@ -3,6 +3,7 @@ package amata1219.parkour.listener;
 import java.util.UUID;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -13,7 +14,7 @@ public class CreateUserInstanceListener implements Listener {
 
 	private final UserSet userSet = Main.getUserSet();
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onJoin(PlayerJoinEvent event){
 		UUID uuid = event.getPlayer().getUniqueId();
 

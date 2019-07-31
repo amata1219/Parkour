@@ -17,7 +17,7 @@ import amata1219.parkour.user.User;
 
 public class InteractCheckSignListener implements Listener {
 
-	@EventHandler(ignoreCancelled = true)
+	@EventHandler
 	public void onInteract(PlayerInteractEvent event){
 		//ブロックを右クリックしていなければ戻る
 		if(event.getAction() != Action.RIGHT_CLICK_BLOCK)
