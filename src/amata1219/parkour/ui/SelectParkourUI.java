@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 
-public class ParkourListUI implements InventoryUI {
+public class SelectParkourUI implements InventoryUI {
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {

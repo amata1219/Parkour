@@ -17,11 +17,11 @@ import amata1219.parkour.user.User;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class LastCheckPointsUI implements InventoryUI {
+public class SelectLastCheckPointUI implements InventoryUI {
 
 	private final User user;
 
-	public LastCheckPointsUI(User user){
+	public SelectLastCheckPointUI(User user){
 		this.user = user;
 	}
 
