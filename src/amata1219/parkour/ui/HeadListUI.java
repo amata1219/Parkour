@@ -1,7 +1,6 @@
 package amata1219.parkour.ui;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -24,15 +23,16 @@ import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.inventory.ui.option.InventoryLine;
 import amata1219.amalib.item.skull.SkullMaker;
 import amata1219.amalib.text.StringTemplate;
-import amata1219.amalib.tuple.Tuple;
+import amata1219.amalib.tuplet.Triple;
+import amata1219.amalib.tuplet.Tuple;
 import amata1219.parkour.user.User;
 
 public class HeadListUI implements InventoryUI {
 
-	private static final Map<UUID, Tuple<ItemStack, Integer>> HEADS;
+	private static final Map<UUID, Triple<ItemStack, String, Integer>> HEADS;
 
 	static{
-		Builder<UUID, Tuple<ItemStack, Integer>> mapBuilder = ImmutableMap.builder();
+		Builder<UUID, Triple<ItemStack, String, Integer>> mapBuilder = ImmutableMap.builder();
 
 		initializeWithPlayerHeads(mapBuilder,
 			//ledlaggazi
@@ -59,6 +59,7 @@ public class HeadListUI implements InventoryUI {
 
 			UUID uuid = UUID.fromString(data[0]);
 			OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+			String playerName = player.getName();
 			int coins = Integer.parseInt(data[1]);
 
 			//プレイヤーに基づきヘッドを作成する
@@ -66,7 +67,8 @@ public class HeadListUI implements InventoryUI {
 			ItemMeta meta = skull.getItemMeta();
 
 			//表示例: ledlaggazi > Coins @ 10000
-			meta.setDisplayName(StringTemplate.format("$0 > Coins @ $1", player.getName(), coins));
+			meta.setDisplayName(StringTemplate.format("$0 > Coins @ $1", playerName, coins));
+			meta.setLore(Arrays.asList(StringTemplate.format("$0: Click > Buy $1 Head!", ChatColor.GRAY, playerName)));
 			skull.setItemMeta(meta);
 
 			mapBuilder.put(uuid, new Tuple<>(skull, coins));
@@ -104,6 +106,37 @@ public class HeadListUI implements InventoryUI {
 				ItemStack skullItem = head.first;
 
 				l.put((s) -> {
+					//購入したヘッドの場合
+					if(user.purchasedHeads.contains(entry.getKey())){
+						s.icon((i) -> {
+							i.basedItemStack = skullItem;
+
+							ItemMeta meta = skullItem.getItemMeta();
+
+							//表示名を名前と価格に分割する
+							String[] parts = meta.getDisplayName().split(" > ");
+
+							String playerName = parts[0];
+
+							//価格を消して購入済みと表示する
+							i.displayName = StringTemplate.format("$0 > 購入済み", playerName);
+
+							i.lore(StringTemplate.format("$0: Click > Wear $1 Head!", ChatColor.GRAY, playerName));
+						});
+
+						s.onClick((event) -> {
+
+						});
+					//未購入のヘッドの場合
+					}else{
+						s.icon((i) -> {
+							i.basedItemStack = skullItem;
+						});
+
+						s.onClick((event) -> {
+
+						});
+					}
 					s.icon((i) -> {
 						i.basedItemStack = skullItem;
 
@@ -120,6 +153,11 @@ public class HeadListUI implements InventoryUI {
 							i.displayName = StringTemplate.format("$0 > 購入済み", playerName);
 
 							i.lore(StringTemplate.format("$0: Click > Wear $1 Head!", ChatColor.GRAY, playerName));
+
+
+						//未購入のヘッドの場合
+						}else{
+
 						}
 					});
 				}, slotIndex.getAndIncrement());

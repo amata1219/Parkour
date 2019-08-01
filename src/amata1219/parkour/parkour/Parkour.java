@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 
 import amata1219.amalib.region.Region;
 import amata1219.amalib.text.StringSplit;
-import amata1219.amalib.tuple.Tuple;
+import amata1219.amalib.tuplet.Tuple;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.stage.Stage;
