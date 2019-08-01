@@ -53,7 +53,10 @@ public class User {
 	public ParkourRegionSelector selector;
 
 	//クリエイティブワールドでのチェックポイント
-	public Location checkpoint;
+	public Location checkpointInCreativeWorld;
+
+	//購入したヘッドのセット
+	public final Set<UUID> purchasedHeads;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
@@ -78,6 +81,16 @@ public class User {
 		setting = new UserSetting(yaml);
 
 		clearedParkourNames = new HashSet<>(yaml.getStringList("Cleared parkur names"));
+
+		String[] components = yaml.getString("Checkpoint in creative world").split(",");
+		checkpointInCreativeWorld = new Location(Main.getCreativeWorld(), Double.parseDouble(components[0]),
+				Double.parseDouble(components[1]), Double.parseDouble(components[2]),
+				Float.parseFloat(components[3]), Float.parseFloat(components[4]));
+
+		purchasedHeads = yaml.getStringList("Purchased heads")
+								.stream()
+								.map(UUID::fromString)
+								.collect(Collectors.toSet());
 
 		//セクションが存在しなければ戻る
 		if(!yaml.isConfigurationSection("Check points"))
@@ -146,6 +159,14 @@ public class User {
 		yaml.set("Hide users", setting.hideUsers);
 
 		yaml.set("Cleared parkour names", clearedParkourNames);
+
+		yaml.set("Purchased heads", purchasedHeads.stream()
+													.map(UUID::toString)
+													.collect(Collectors.toList()));
+
+		yaml.set("Checkpoint in creative world", StringTemplate.format("$0,$1,$2,$3,$4",
+				checkpointInCreativeWorld.getX(), checkpointInCreativeWorld.getY(), checkpointInCreativeWorld.getZ(),
+				checkpointInCreativeWorld.getYaw(), checkpointInCreativeWorld.getPitch()));
 
 		for(Entry<String, List<Location>> entry : checkPoints.entrySet()){
 			//座標を文字列に変換しリスト化する

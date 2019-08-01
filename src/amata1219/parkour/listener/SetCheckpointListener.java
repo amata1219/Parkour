@@ -23,6 +23,8 @@ public class SetCheckpointListener implements Listener {
 
 	@EventHandler
 	public void onSwap(PlayerSwapHandItemsEvent event){
+		event.setCancelled(true);
+
 		Player player = event.getPlayer();
 		User user = Main.getUserSet().users.get(player.getUniqueId());
 

@@ -83,8 +83,8 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		//報酬のコインを与える
 		user.depositCoins(rewardCoins);
 
-		//表示例: Gave amata1219 1000 coins Reward!
-		Messenger.sendMessage(player, StringTemplate.format("Gave $0 $1 coins Reward!", playerName, rewardCoins));
+		//表示例: Gave amata1219 Coins @ 1000 Reward!
+		Messenger.sendMessage(player, StringTemplate.format("Gave $0 Coins @ $1 Reward!", playerName, rewardCoins));
 	}
 
 }

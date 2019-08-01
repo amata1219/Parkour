@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,6 +13,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import amata1219.parkour.Main;
+import amata1219.parkour.message.Messenger;
 import amata1219.parkour.user.UserSetting;
 
 public class ToggleShowPlayersListener implements Listener {
@@ -33,13 +35,18 @@ public class ToggleShowPlayersListener implements Listener {
 		setting.hideUsers = !setting.hideUsers;
 
 		//プレイヤーを非表示にする場合
-		if(setting.hideUsers)
+		if(setting.hideUsers){
 			for(Player target : Bukkit.getOnlinePlayers())
 				player.hidePlayer(plugin, target);
+
+			Messenger.sendActionBarMessage(player, ChatColor.GRAY + "Hide Players");
 		//プレイヤーを表示する場合
-		else
+		}else{
 			for(Player target : Bukkit.getOnlinePlayers())
 				player.showPlayer(plugin, target);
+
+			Messenger.sendActionBarMessage(player, ChatColor.AQUA + "Show Players");
+		}
 
 		//クールダウンさせる
 		duringCooldownPlayers.add(uuid);

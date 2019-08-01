@@ -17,8 +17,10 @@ import amata1219.parkour.listener.PassStartLineListener;
 import amata1219.parkour.listener.PlaceCheckSignListener;
 import amata1219.parkour.listener.SelectRegionListener;
 import amata1219.parkour.listener.SetCheckpointListener;
+import amata1219.parkour.listener.ToggleShowPlayersListener;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.stage.StageSet;
+import amata1219.parkour.user.SaveUserDataTask;
 import amata1219.parkour.user.UserSet;
 
 public class Main extends Plugin {
@@ -56,14 +58,18 @@ public class Main extends Plugin {
 			new SelectRegionListener(),
 			new DisplayRegionBorderListener(),
 			new PlaceCheckSignListener(),
-			new InteractCheckSignListener()
+			new InteractCheckSignListener(),
+			new ToggleShowPlayersListener()
 		);
 
+		SaveUserDataTask.run();
 	}
 
 	@Override
 	public void onDisable(){
 		super.onDisable();
+
+		SaveUserDataTask.cancel();
 	}
 
 	public static Main getPlugin(){

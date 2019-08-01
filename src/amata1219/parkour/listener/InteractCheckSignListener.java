@@ -38,10 +38,10 @@ public class InteractCheckSignListener implements Listener {
 		//タイプが一致しているかつ着地していたらチェックポイントを決める
 		if(CheckSign.CP_AT_SIGN.equals(line))
 			if(blockFlowingPlayer(player))
-				user.checkpoint = block.getLocation();
+				user.checkpointInCreativeWorld = block.getLocation();
 		else if(CheckSign.CP_AT_PLAYER.endsWith(line))
 			if(blockFlowingPlayer(player))
-				user.checkpoint = player.getLocation();
+				user.checkpointInCreativeWorld = player.getLocation();
 	}
 
 	private boolean blockFlowingPlayer(Player player){
