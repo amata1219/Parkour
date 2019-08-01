@@ -1,6 +1,6 @@
 name: Parkour
 main: amata1219.parkour.Main
-depend: [Amalib]
+depend: [Amalib, BetterNick]
 api-version: 1.13
 version: 1.0.0
 author: amata1219(Twitter@amata1219)

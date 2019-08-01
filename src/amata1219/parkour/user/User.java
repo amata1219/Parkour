@@ -12,8 +12,6 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-import javax.xml.soap.Text;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -181,12 +179,6 @@ public class User {
 
 		//テキストと値を@区切りで連結して返す
 		BiFunction<String, Object, String> combine = (text, value) -> StringTemplate.format("$0$2 $1@ $0$3", ChatColor.AQUA, ChatColor.GRAY, text, value.toString());
-
-		board = new Scoreboard(player, StringTemplate.format("$0$1A$2zisaba $1N$2etwork", ChatColor.BOLD, ChatColor.BLUE, ChatColor.AQUA),
-					combine.apply("Update rank", updateRank),
-					combine.apply("Extend rank", extendRank),
-					combine.apply("Jumps", player.getStatistic(Statistic.JUMP))
-				);
 	}
 
 	public void save(Yaml yaml){

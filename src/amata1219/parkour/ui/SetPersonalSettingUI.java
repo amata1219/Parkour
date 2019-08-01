@@ -8,7 +8,7 @@ import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.inventory.ui.option.InventoryLine;
 
-public class PersonalSettingUI implements InventoryUI {
+public class SetPersonalSettingUI implements InventoryUI {
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {

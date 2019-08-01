@@ -22,6 +22,8 @@ import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.stage.StageSet;
 import amata1219.parkour.user.SaveUserDataTask;
 import amata1219.parkour.user.UserSet;
+import de.domedd.betternick.BetterNick;
+import de.domedd.betternick.api.betternickapi.BetterNickAPI;
 
 public class Main extends Plugin {
 
@@ -29,6 +31,8 @@ public class Main extends Plugin {
 	//アスレTP時にチャットに送信
 
 	private static Main plugin;
+	private static BetterNickAPI nickAPI;
+
 	private static StageSet stageSet;
 	private static ParkourSet parkourSet;
 	private static UserSet userSet;
@@ -36,6 +40,7 @@ public class Main extends Plugin {
 	@Override
 	public void onEnable(){
 		plugin = this;
+		nickAPI = BetterNick.getApi();
 
 		parkourSet = new ParkourSet();
 		stageSet = new StageSet();
@@ -74,6 +79,10 @@ public class Main extends Plugin {
 
 	public static Main getPlugin(){
 		return plugin;
+	}
+
+	public static BetterNickAPI getNickAPI(){
+		return nickAPI;
 	}
 
 	public static StageSet getStageSet(){
