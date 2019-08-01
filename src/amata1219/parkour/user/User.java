@@ -9,11 +9,19 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
+import javax.xml.soap.Text;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Statistic;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+
+import amata1219.amalib.scoreboard.Scoreboard;
 import amata1219.amalib.text.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
@@ -25,8 +33,11 @@ public class User {
 	//UUID
 	public final UUID uuid;
 
-	//ランク(表示例: amata1219 @ 12)
-	public int rank;
+	//Updateのランク
+	public int updateRank;
+
+	//Extendのランク
+	public int extendRank;
 
 	//コイン
 	private int coins;
@@ -58,35 +69,47 @@ public class User {
 	//購入したヘッドのセット
 	public final Set<UUID> purchasedHeads;
 
+	public Scoreboard board;
+
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
 		this.uuid = UUID.fromString(yaml.name);
 
-		rank = yaml.getInt("Rank");
+		//Updateランクを取得する
+		updateRank = yaml.getInt("Update rank");
 
+		//Extendランクを取得する
+		extendRank = yaml.getInt("Extend rank");
+
+		//コイン数を取得する
 		coins = yaml.getInt("Coins");
 
 		ParkourSet parkourSet = Main.getParkourSet();
 
+		//最後にいたアスレを取得する
 		currentParkour = parkourSet.getParkour("Current parkour");
+
+		//最後に遊んでいたアスレを取得する
 		currentlyPlayingParkour = parkourSet.getParkour("Currently playing parkour");
+
+		//最後にアスレをプレイし始めた時間を取得する
 		timeToStartPlaying = yaml.getLong("Time to start playing");
-
-		Map<String, Parkour> parkourMap = Main.getParkourSet().parkourMap;
-
-		//最終ログアウト時にプレイしていたアスレを現在プレイ中のステージとする
-		currentlyPlayingParkour = parkourMap.get(yaml.getString("Last played parkour name"));
 
 		//個人設定はYamlに基づき生成する
 		setting = new UserSetting(yaml);
 
+		//クリア済みのアスレ名リストを取得してセットでラップする
 		clearedParkourNames = new HashSet<>(yaml.getStringList("Cleared parkur names"));
 
+		//クリエイティブワールドのチェックポイントデータを取得して分割する
 		String[] components = yaml.getString("Checkpoint in creative world").split(",");
+
+		//データを基に座標を作成する
 		checkpointInCreativeWorld = new Location(Main.getCreativeWorld(), Double.parseDouble(components[0]),
 				Double.parseDouble(components[1]), Double.parseDouble(components[2]),
 				Float.parseFloat(components[3]), Float.parseFloat(components[4]));
 
+		//購入済みのスカルのIDをUUIDに変換したリストを作成する
 		purchasedHeads = yaml.getStringList("Purchased heads")
 								.stream()
 								.map(UUID::fromString)
@@ -102,7 +125,7 @@ public class User {
 		//各アスレ名毎に処理する
 		for(String parkourName : section.getKeys(false)){
 			//アスレ名と対応したアスレを取得する
-			Parkour parkour = parkourMap.get(parkourName);
+			Parkour parkour = parkourSet.getParkour(parkourName);
 
 			//チェックポイントを文字列から座標に変換してリスト化する
 			List<Location> points = section.getStringList(parkourName)
@@ -133,6 +156,10 @@ public class User {
 			points.set(number, location);
 	}
 
+	public Player asPlayer(){
+		return Bukkit.getPlayer(uuid);
+	}
+
 	public int getCoins(){
 		return coins;
 	}
@@ -149,25 +176,55 @@ public class User {
 		return currentlyPlayingParkour != null;
 	}
 
+	public void createScoreboard(){
+		Player player = asPlayer();
+
+		//テキストと値を@区切りで連結して返す
+		BiFunction<String, Object, String> combine = (text, value) -> StringTemplate.format("$0$2 $1@ $0$3", ChatColor.AQUA, ChatColor.GRAY, text, value.toString());
+
+		board = new Scoreboard(player, StringTemplate.format("$0$1A$2zisaba $1N$2etwork", ChatColor.BOLD, ChatColor.BLUE, ChatColor.AQUA),
+					combine.apply("Update rank", updateRank),
+					combine.apply("Extend rank", extendRank),
+					combine.apply("Jumps", player.getStatistic(Statistic.JUMP))
+				);
+	}
+
 	public void save(Yaml yaml){
-		yaml.set("Rank", rank);
+		//Updateランクを記録する
+		yaml.set("Update rank", updateRank);
+
+		//Extendランクを取得する
+		yaml.set("Extend rank", extendRank);
+
+		//コイン数を記録する
 		yaml.set("Coins", coins);
+
+		//最後にいたアスレの名前を記録する
 		yaml.set("Current parkour", currentParkour != null ? currentParkour.name : null);
+
+		//最後にプレイしていたアスレの名前を記録する
 		yaml.set("Currently playing parkour", currentlyPlayingParkour != null ? currentlyPlayingParkour.name : null);
+
+		//最後にアスレをプレイし始めた時間を記録する
 		yaml.set("Time to start playing", timeToStartPlaying);
 
+		//他プレイヤーを表示するかどうかを記録する
 		yaml.set("Hide users", setting.hideUsers);
 
+		//クリア済みのアスレの名前リストを記録する
 		yaml.set("Cleared parkour names", clearedParkourNames);
 
-		yaml.set("Purchased heads", purchasedHeads.stream()
+		//購入済みのスカルのIDを文字列に変換したリストを記録する
+		yaml.set("Purchased skulls", purchasedHeads.stream()
 													.map(UUID::toString)
 													.collect(Collectors.toList()));
 
+		//クリエイティブワールドのチェックポイントを記録する
 		yaml.set("Checkpoint in creative world", StringTemplate.format("$0,$1,$2,$3,$4",
 				checkpointInCreativeWorld.getX(), checkpointInCreativeWorld.getY(), checkpointInCreativeWorld.getZ(),
 				checkpointInCreativeWorld.getYaw(), checkpointInCreativeWorld.getPitch()));
 
+		//各チェックポイントを記録する
 		for(Entry<String, List<Location>> entry : checkPoints.entrySet()){
 			//座標を文字列に変換しリスト化する
 			List<String> points = entry.getValue()
@@ -175,11 +232,12 @@ public class User {
 					.map(location -> StringTemplate.format("$0,$1,$2,$3,$4", location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()))
 					.collect(Collectors.toList());
 
-			//対応したアスレ名の階層にチェックポイントリストをセットする
+			//対応したアスレ名の階層にチェックポイントリストを記録する
 			yaml.set(StringTemplate.format("Check points.$0", entry.getKey()), points);
 		}
 
-		yaml.update();
+		//ファイルをセーブする
+		yaml.save();
 	}
 
 }

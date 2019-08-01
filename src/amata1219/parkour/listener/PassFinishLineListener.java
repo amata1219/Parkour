@@ -57,8 +57,8 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			int rank = Integer.parseInt(colorlessParkourName.substring(6, colorlessParkourName.length()));
 
 			//プレイヤーのランクがこれより低い場合
-			if(user.rank < rank){
-				user.rank = rank;
+			if(user.updateRank < rank){
+				user.updateRank = rank;
 
 				//表示例: amata1219 > Rank Up to 1!
 				Messenger.broadcastMessage(StringTemplate.format("$0 > Rank up to $1", playerName, rank));
