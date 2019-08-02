@@ -1,4 +1,4 @@
-package amata1219.parkour.command;
+package amata1219.parkour.command.parkour;
 
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
@@ -9,7 +9,7 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.ParkourRegionSelector;
 import amata1219.parkour.user.User;
 
-public interface ParkourRegionCommand extends Command {
+public interface AbstractParkourCommand extends Command {
 
 	@Override
 	default void onCommand(Sender sender, Arguments args) {

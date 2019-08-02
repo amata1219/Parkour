@@ -39,6 +39,12 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		//ゴールタイムを秒単位で出す
 		float time = (System.currentTimeMillis() - user.timeToStartPlaying) / 1000F;
 
+		//ゴールタイムが自己最高であれば記録する
+		parkour.tryToRecordTime(user.uuid, time);
+
+		//上位10件の記録を更新する
+		parkour.updateTop10Records();
+
 		//遊んでいるアスレを削除する
 		user.currentlyPlayingParkour = null;
 

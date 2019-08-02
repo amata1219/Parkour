@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -14,6 +15,7 @@ import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.text.StringSplit;
 import amata1219.amalib.tuplet.Tuple;
@@ -34,14 +36,17 @@ public class Parkour {
 	//ワールド
 	public World world;
 
+	//各領域の境界線を表示するパーティクルの色
+	public final Color particleColor;
+
 	//アスレの領域
-	public Region region;
+	private Region region;
 
 	//スタートライン
-	public RegionBorderDisplayer startLine;
+	private RegionBorderDisplayer startLine;
 
 	//フィニッシュライン
-	public RegionBorderDisplayer finishLine;
+	private RegionBorderDisplayer finishLine;
 
 	//チェックエリアのリスト
 	public final List<RegionBorderDisplayer> checkAreas = new ArrayList<>();
@@ -66,20 +71,20 @@ public class Parkour {
 		region = Region.fromString(world, yaml.getString("Region"));
 
 		//テキストをカンマ毎に分割しそれぞれを数値に変換する
-		int[] colors = StringSplit.splitToIntArguments(yaml.getString("Color"));
+		int[] colors = StringSplit.splitToIntArguments(yaml.getString("Particle color"));
 
 		//カラーを作成する
-		Color color = Color.fromRGB(colors[0], colors[1], colors[2]);
+		particleColor = Color.fromRGB(colors[0], colors[1], colors[2]);
 
 		//スタートラインを作成する
-		startLine = RegionBorderDisplayer.fromString(this, color, yaml.getString("Start line"));
+		startLine = RegionBorderDisplayer.fromString(this, yaml.getString("Start line"));
 
 		//フィニッシュラインを作成する
-		finishLine = RegionBorderDisplayer.fromString(this, color, yaml.getString("Finish line"));
+		finishLine = RegionBorderDisplayer.fromString(this, yaml.getString("Finish line"));
 
 		//各チェックエリアを作成してリストに詰め込む
 		for(String text : yaml.getStringList("Check areas"))
-			checkAreas.add(RegionBorderDisplayer.fromString(this, color, text));
+			checkAreas.add(RegionBorderDisplayer.fromString(this, text));
 	}
 
 	//このアスレに参加する
@@ -138,8 +143,59 @@ public class Parkour {
 		return Main.getStageSet().parkourNamesToStagesMap.get(name);
 	}
 
+	public Region getRegion(){
+		return region;
+	}
+
+	public void setRegion(Region region){
+		Validate.notNull(region, "Region can not be null");
+	}
+
+	public RegionBorderDisplayer getStartLine(){
+		return startLine;
+	}
+
+	public void setStartLine(RegionBorderDisplayer newStartLine){
+		Validate.notNull(newStartLine, "Start line can not be null");
+		setRegion(Main.getParkourSet().chunksToStartLinesMap, startLine, newStartLine);
+	}
+
+	public RegionBorderDisplayer getFinishLine(){
+		return finishLine;
+	}
+
+	public void setFinishLine(RegionBorderDisplayer newFinishLine){
+		Validate.notNull(newFinishLine, "Finish line can not be null");
+		setRegion(Main.getParkourSet().chunksToFinishLinesMap, finishLine, newFinishLine);
+	}
+
+	private void setRegion(ChunksToObjectsMap<RegionBorderDisplayer> chunksToRegionsMap, RegionBorderDisplayer oldDisplayer, RegionBorderDisplayer newDisplayer){
+		if(oldDisplayer != null){
+			oldDisplayer.cancel();
+			Region oldRegion = oldDisplayer.region;
+			chunksToRegionsMap.removeAll(oldRegion.lesserBoundaryCorner, oldRegion.greaterBoundaryCorner, oldDisplayer);
+		}
+
+		Region newRegion = newDisplayer.region;
+		chunksToRegionsMap.putAll(newRegion.lesserBoundaryCorner, newRegion.greaterBoundaryCorner, newDisplayer);
+		newDisplayer.display();
+	}
+
 	public int getCheckAreaNumber(RegionBorderDisplayer checkArea){
-		return checkAreas.indexOf(checkArea) + 1;
+		return checkAreas.contains(checkArea) ? checkAreas.indexOf(checkArea): -1;
+	}
+
+	public void setCheckArea(int number, RegionBorderDisplayer checkArea){
+		ChunksToObjectsMap<RegionBorderDisplayer> chunksToRegionsMap = Main.getParkourSet().chunksToCheckAreasMap;
+		if(number < checkAreas.size()){
+			RegionBorderDisplayer oldCheckArea = checkAreas.get(number);
+			setRegion(chunksToRegionsMap, oldCheckArea, checkArea);
+		}else{
+			checkAreas.add(checkArea);
+			Region region = checkArea.region;
+			chunksToRegionsMap.putAll(region.lesserBoundaryCorner, region.greaterBoundaryCorner, checkArea);
+			checkArea.display();
+		}
 	}
 
 	public void tryToRecordTime(UUID uuid, float time){
@@ -147,7 +203,7 @@ public class Parkour {
 			selfRecords.put(uuid, time);
 	}
 
-	public void updateHighRecords(){
+	public void updateTop10Records(){
 		List<Entry<UUID, Float>> records = new ArrayList<>(selfRecords.entrySet());
 		records.sort(Entry.comparingByValue());
 

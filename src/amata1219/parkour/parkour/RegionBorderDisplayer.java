@@ -39,12 +39,12 @@ public class RegionBorderDisplayer {
 	//パーティクルパケットを送信する非同期のループタスク
 	private BukkitTask task;
 
-	public static RegionBorderDisplayer fromString(Parkour parkour, Color color, String text){
+	public static RegionBorderDisplayer fromString(Parkour parkour, String text){
 		Region region = Region.fromString(parkour.world, text);
-		return new RegionBorderDisplayer(parkour, region, color);
+		return new RegionBorderDisplayer(parkour, region);
 	}
 
-	public RegionBorderDisplayer(Parkour parkour,  Region region, Color color){
+	public RegionBorderDisplayer(Parkour parkour,  Region region){
 		this.parkour = parkour;
 		this.region = region;
 
@@ -57,6 +57,8 @@ public class RegionBorderDisplayer {
 		position2 = size / 2;
 
 		packets = new ArrayList<>(size);
+
+		Color color = parkour.particleColor;
 
 		for(ImmutableEntityLocation location : locationsOnBorderLines){
 			//パケットを作成する

@@ -4,10 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import amata1219.amalib.Plugin;
 import amata1219.parkour.command.CoinCommand;
-import amata1219.parkour.command.OldParkourCommand;
 import amata1219.parkour.command.RegionSelectorCommand;
 import amata1219.parkour.command.SetDirectionCommand;
 import amata1219.parkour.command.StageCommand;
+import amata1219.parkour.command.parkour.FinishLineCommand;
+import amata1219.parkour.command.parkour.StartLineCommand;
 import amata1219.parkour.listener.CreateUserInstanceListener;
 import amata1219.parkour.listener.DisablePlayerCollisionsListener;
 import amata1219.parkour.listener.DisplayRegionBorderListener;
@@ -48,8 +49,9 @@ public class Main extends Plugin {
 		userSet = new UserSet();
 
 		registerCommands(
-			new OldParkourCommand(),
 			new StageCommand(),
+			new StartLineCommand(),
+			new FinishLineCommand(),
 			new CoinCommand(),
 			new SetDirectionCommand(),
 			new RegionSelectorCommand()

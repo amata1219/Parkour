@@ -42,10 +42,10 @@ public class ParkourSet {
 		parkourMap.put(parkour.name, parkour);
 
 		//スタートラインを登録する
-		registerChunksToRegionsMap(parkour.startLine, chunksToStartLinesMap);
+		registerChunksToRegionsMap(parkour.getStartLine(), chunksToStartLinesMap);
 
 		//ゴールラインを登録する
-		registerChunksToRegionsMap(parkour.finishLine, chunksToFinishLinesMap);
+		registerChunksToRegionsMap(parkour.getFinishLine(), chunksToFinishLinesMap);
 
 		//チェックエリアを登録する
 		for(RegionBorderDisplayer checkArea : parkour.checkAreas)
