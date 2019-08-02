@@ -4,7 +4,7 @@ import java.util.Set;
 
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.text.StringTemplate;
+import amata1219.amalib.text.TextTemplate;
 import amata1219.parkour.Main;
 import amata1219.parkour.message.Messenger;
 import amata1219.parkour.message.TimeFormat;
@@ -54,7 +54,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		String playerName = player.getName();
 
 		//表示例: amata1219 > Cleared in 00:01:23.231 @ Update11！
-		Messenger.broadcastMessage(StringTemplate.format("$0 > Cleared in $1 @ $2!", playerName, TimeFormat.format(time), parkourName));
+		Messenger.broadcastMessage(TextTemplate.apply("$0 > Cleared in $1 @ $2!", playerName, TimeFormat.format(time), parkourName));
 
 
 		//Update系アスレの場合
@@ -67,7 +67,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 				user.updateRank = rank;
 
 				//表示例: amata1219 > Rank Up to 1!
-				Messenger.broadcastMessage(StringTemplate.format("$0 > Rank up to $1", playerName, rank));
+				Messenger.broadcastMessage(TextTemplate.apply("$0 > Rank up to $1", playerName, rank));
 
 				//こういう所で音も出すべき SoundPlayer
 			}
@@ -90,7 +90,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		user.depositCoins(rewardCoins);
 
 		//表示例: Gave amata1219 Coins @ 1000 Reward!
-		Messenger.sendMessage(player, StringTemplate.format("Gave $0 Coins @ $1 Reward!", playerName, rewardCoins));
+		Messenger.sendMessage(player, TextTemplate.apply("Gave $0 Coins @ $1 Reward!", playerName, rewardCoins));
 	}
 
 }

@@ -19,7 +19,7 @@ import amata1219.parkour.listener.PassStartLineListener;
 import amata1219.parkour.listener.PlaceCheckSignListener;
 import amata1219.parkour.listener.SelectRegionListener;
 import amata1219.parkour.listener.SetCheckpointListener;
-import amata1219.parkour.listener.ToggleShowPlayersListener;
+import amata1219.parkour.listener.ToggleHideModeChangeListener;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.stage.StageSet;
 import amata1219.parkour.user.SaveUserDataTask;
@@ -67,7 +67,7 @@ public class Main extends Plugin {
 			new DisplayRegionBorderListener(),
 			new PlaceCheckSignListener(),
 			new InteractCheckSignListener(),
-			new ToggleShowPlayersListener(),
+			new ToggleHideModeChangeListener(),
 			new DisplayScoreboardOnJoinListener()
 		);
 

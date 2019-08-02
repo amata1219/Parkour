@@ -2,7 +2,7 @@ package amata1219.parkour.listener;
 
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.text.StringTemplate;
+import amata1219.amalib.text.TextTemplate;
 import amata1219.parkour.Main;
 import amata1219.parkour.message.Messenger;
 import amata1219.parkour.parkour.RegionBorderDisplayer;
@@ -27,7 +27,7 @@ public class PassStartLineListener extends PassRegionBoundaryAbstractListener {
 			user.timeToStartPlaying = System.currentTimeMillis();
 
 			//表示例: Challenge Started @ Update10
-			Messenger.sendActionBarMessage(player, StringTemplate.format("Challenge Started @ $0!", parkour.name));
+			Messenger.sendActionBarMessage(player, TextTemplate.apply("Challenge Started @ $0!", parkour.name));
 
 		//スタートラインからスポーン地点側に踏み込んだ時
 		}else if(from != null && to == null){
@@ -38,7 +38,7 @@ public class PassStartLineListener extends PassRegionBoundaryAbstractListener {
 			//タイムを削除する
 			user.timeToStartPlaying = 0L;
 
-			Messenger.sendActionBarMessage(player, StringTemplate.format("Reset Your Timer!", parkour.name));
+			Messenger.sendActionBarMessage(player, TextTemplate.apply("Reset Your Timer!", parkour.name));
 		}
 	}
 

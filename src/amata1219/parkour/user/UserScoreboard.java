@@ -12,7 +12,7 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import amata1219.amalib.scoreboard.Scoreboard;
-import amata1219.amalib.text.StringTemplate;
+import amata1219.amalib.text.TextTemplate;
 import amata1219.amalib.tuplet.Quadruple;
 
 public class UserScoreboard {
@@ -59,7 +59,7 @@ public class UserScoreboard {
 		}
 
 		//スコアボードを新しく作成する
-		Scoreboard board = new Scoreboard(player, StringTemplate.format("$0$1A$2zisaba $1N$2etwork", ChatColor.BOLD, ChatColor.BLUE, ChatColor.AQUA));
+		Scoreboard board = new Scoreboard(player, TextTemplate.apply("$0$1A$2zisaba $1N$2etwork", ChatColor.BOLD, ChatColor.BLUE, ChatColor.AQUA));
 
 		for(Quadruple<Supplier<Boolean>, Integer, String, Supplier<Object>> component : components){
 			Supplier<Boolean> display = component.first;
@@ -72,7 +72,7 @@ public class UserScoreboard {
 				continue;
 
 			//情報名と値を@で連結したテキスト(表示例: Jumps @ 100)
-			String text = StringTemplate.format("$0$2 $1@ $0$3", ChatColor.AQUA, ChatColor.GRAY, valueName, value.get());
+			String text = TextTemplate.apply("$0$2 $1@ $0$3", ChatColor.AQUA, ChatColor.GRAY, valueName, value.get());
 
 			//指定されたスコアにテキストをセットする
 			board.setScore(score, text);

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.text.StringTemplate;
+import amata1219.amalib.text.TextTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 
@@ -31,7 +31,7 @@ public class UserSet {
 	}
 
 	public void registerNewUser(UUID uuid){
-		Yaml yaml = new Yaml(plugin, new File(folder, StringTemplate.format("$0.yml", uuid)));
+		Yaml yaml = new Yaml(plugin, new File(folder, TextTemplate.apply("$0.yml", uuid)));
 		User user = new User(yaml);
 		users.put(uuid, user);
 	}

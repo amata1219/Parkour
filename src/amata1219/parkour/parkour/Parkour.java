@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
 
 import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.amalib.region.Region;
-import amata1219.amalib.text.StringSplit;
+import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.tuplet.Tuple;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;

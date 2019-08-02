@@ -16,7 +16,7 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.text.StringTemplate;
+import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
@@ -193,7 +193,7 @@ public class User {
 		yaml.set("Time to start playing", timeToStartPlaying);
 
 		//他プレイヤーを表示するかどうかを記録する
-		yaml.set("Hide users", setting.hideUsers);
+		yaml.set("Hide traceurs", setting.hideTraceurs);
 
 		//クリア済みのアスレの名前リストを記録する
 		yaml.set("Cleared parkour names", clearedParkourNames);
@@ -204,7 +204,7 @@ public class User {
 													.collect(Collectors.toList()));
 
 		//クリエイティブワールドのチェックポイントを記録する
-		yaml.set("Creative world checkpoint", StringTemplate.format("$0,$1,$2,$3,$4",
+		yaml.set("Creative world checkpoint", StringTemplate.apply("$0,$1,$2,$3,$4",
 				creativeWorldCheckpoint.getX(), creativeWorldCheckpoint.getY(), creativeWorldCheckpoint.getZ(),
 				creativeWorldCheckpoint.getYaw(), creativeWorldCheckpoint.getPitch()));
 
@@ -213,11 +213,11 @@ public class User {
 			//座標を文字列に変換しリスト化する
 			List<String> points = entry.getValue()
 					.stream()
-					.map(location -> StringTemplate.format("$0,$1,$2,$3,$4", location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()))
+					.map(location -> StringTemplate.apply("$0,$1,$2,$3,$4", location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()))
 					.collect(Collectors.toList());
 
 			//対応したアスレ名の階層にチェックポイントリストを記録する
-			yaml.set(StringTemplate.format("Check points.$0", entry.getKey()), points);
+			yaml.set(StringTemplate.apply("Check points.$0", entry.getKey()), points);
 		}
 
 		//ファイルをセーブする

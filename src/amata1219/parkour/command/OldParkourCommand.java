@@ -6,9 +6,9 @@ import java.util.Map;
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
-import amata1219.amalib.text.StringJoin;
-import amata1219.amalib.text.StringSplit;
-import amata1219.amalib.text.StringTemplate;
+import amata1219.amalib.string.StringJoin;
+import amata1219.amalib.string.StringSplit;
+import amata1219.amalib.text.TextTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
@@ -41,43 +41,43 @@ public class OldParkourCommand implements Command {
 		//第2引数で分岐する
 		switch(args.next()){
 		case "create":{
-			File file = new File(folder, StringTemplate.format("$0.yml", parkourName));
+			File file = new File(folder, TextTemplate.apply("$0.yml", parkourName));
 
 			//アスレの設定ファイルが存在していればエラーとする
 			if(file.exists()){
-				sender.warn(StringTemplate.format(": Value error > [$0].ymlは既に存在しています。", parkourName));
+				sender.warn(TextTemplate.apply(": Value error > [$0].ymlは既に存在しています。", parkourName));
 				return;
 			}
 
 			//アスレ名.ymlを生成する
 			new Yaml(plugin, file);
 
-			sender.info(StringTemplate.format(": Success > $0.ymlを作成しました。", parkourName));
-			sender.info(StringTemplate.format(": Next > [$0]の設定を編集し登録して下さい。", parkourName));
+			sender.info(TextTemplate.apply(": Success > $0.ymlを作成しました。", parkourName));
+			sender.info(TextTemplate.apply(": Next > [$0]の設定を編集し登録して下さい。", parkourName));
 			return;
 		}case "delete":{
 			//アスレが登録されていればエラーとする
 			if(!parkourMap.containsKey(parkourName)){
-				sender.warn(StringTemplate.format(": Value error > [$0]の登録を解除して下さい。", parkourName));
+				sender.warn(TextTemplate.apply(": Value error > [$0]の登録を解除して下さい。", parkourName));
 				return;
 			}
 
-			new File(folder, StringTemplate.format("$0.yml", parkourName)).delete();
+			new File(folder, TextTemplate.apply("$0.yml", parkourName)).delete();
 
-			sender.info(StringTemplate.format(": Success > $0.ymlを削除しました。", parkourName));
+			sender.info(TextTemplate.apply(": Success > $0.ymlを削除しました。", parkourName));
 			return;
 		}case "editfile":{
 			//アスレが登録されていればエラーとする
 			if(parkourMap.containsKey(parkourName)){
-				sender.warn(StringTemplate.format(": Value error > [$0]の登録を解除して下さい(/parkour $0 unregister)。", parkourName));
+				sender.warn(TextTemplate.apply(": Value error > [$0]の登録を解除して下さい(/parkour $0 unregister)。", parkourName));
 				return;
 			}
 
-			File file = new File(folder, StringTemplate.format("$0.yml", parkourName));
+			File file = new File(folder, TextTemplate.apply("$0.yml", parkourName));
 
 			//アスレの設定ファイルが存在しなければエラーとする
 			if(!file.exists()){
-				sender.warn(StringTemplate.format(": Value error > [$0].ymlが存在しません。", parkourName));
+				sender.warn(TextTemplate.apply(": Value error > [$0].ymlが存在しません。", parkourName));
 				return;
 			}
 
@@ -219,7 +219,7 @@ public class OldParkourCommand implements Command {
 
 				yaml.save();
 
-				sender.info(StringTemplate.format(": Success > [$0]のスタートラインを[$1]に設定しました。", parkourName, result));
+				sender.info(TextTemplate.apply(": Success > [$0]のスタートラインを[$1]に設定しました。", parkourName, result));
 				return;
 			}case "finishline":{
 				int[] xyzxyz = new int[6];
@@ -250,17 +250,17 @@ public class OldParkourCommand implements Command {
 
 				yaml.save();
 
-				sender.info(StringTemplate.format(": Success > [$0]のフィニッシュラインを[$1]に設定しました。", parkourName, result));
+				sender.info(TextTemplate.apply(": Success > [$0]のフィニッシュラインを[$1]に設定しました。", parkourName, result));
 			}default:
-				sender.warn(StringTemplate.format(": Syntax error > /parkour $0 editfile (region|startline|finishline)", parkourName));
+				sender.warn(TextTemplate.apply(": Syntax error > /parkour $0 editfile (region|startline|finishline)", parkourName));
 				return;
 			}
 		}case "register":{
-			File file = new File(folder, StringTemplate.format("$0.yml", parkourName));
+			File file = new File(folder, TextTemplate.apply("$0.yml", parkourName));
 
 			//アスレの設定ファイルが存在しなければエラーとする
 			if(!file.exists()){
-				sender.warn(StringTemplate.format(": Value error > $0.ymlが存在しません。", parkourName));
+				sender.warn(TextTemplate.apply(": Value error > $0.ymlが存在しません。", parkourName));
 				return;
 			}
 
@@ -280,12 +280,12 @@ public class OldParkourCommand implements Command {
 				break;
 			}
 
-			sender.info(StringTemplate.format("[$0]を登録しました。", parkourName));
+			sender.info(TextTemplate.apply("[$0]を登録しました。", parkourName));
 			return;
 		}case "unregister":{
 			//アスレが登録されていなければエラーとする
 			if(!parkourMap.containsKey(parkourName)){
-				sender.warn(StringTemplate.format(": Value error > [$0]は登録されていません。", parkourName));
+				sender.warn(TextTemplate.apply(": Value error > [$0]は登録されていません。", parkourName));
 				return;
 			}
 
@@ -297,7 +297,7 @@ public class OldParkourCommand implements Command {
 				if(stage.parkourList.remove(parkour))
 					break;
 
-			sender.info(StringTemplate.format("[$0]の登録を解除しました。", parkourName));
+			sender.info(TextTemplate.apply("[$0]の登録を解除しました。", parkourName));
 			return;
 		}default:
 			sender.warn(": Syntax error > /parkour [name] (create|editfile|register|unregister)");

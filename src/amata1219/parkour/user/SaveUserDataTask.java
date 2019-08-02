@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import amata1219.amalib.schedule.Async;
-import amata1219.amalib.text.StringTemplate;
+import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 
@@ -19,14 +19,13 @@ public class SaveUserDataTask {
 
 	public static void run(){
 		plugin = Main.getPlugin();
-		folder = new File(plugin.getDataFolder() + File.separator + "Users");
+		folder = Main.getUserSet().folder;
 
 		//ログインしているプレイヤーのデータを10分毎にセーブする
 		task = Async.define(() -> {
 			for(Player player : Bukkit.getOnlinePlayers()){
-				Yaml yaml = new Yaml(plugin, folder, StringTemplate.format("$0.yml", player.getUniqueId()));
-				User user = Main.getUserSet().getUser(player);
-				user.save(yaml);
+				Yaml yaml = new Yaml(plugin, folder, StringTemplate.apply("$0.yml", player.getUniqueId()));
+				Main.getUserSet().getUser(player).save(yaml);
 			}
 		}).executeTimer(12000, 12000);
 	}

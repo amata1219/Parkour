@@ -1,9 +1,10 @@
 'Rank': 0
 'Coins': 0
-'Hide users': false
 'Cleared parkour names': []
 'Purchased heads': []
 'Creative world checkpoint': "0,0,0,0,0"
+
+'Hide traceurs': false
 
 'Values displayed on scoreboard':
   'Scoreboard': true
