@@ -15,7 +15,7 @@ import amata1219.parkour.Main;
 public class UserSet {
 
 	private final Main plugin = Main.getPlugin();
-	private final File folder = new File(plugin.getDataFolder() + File.separator + "Users");
+	public final File folder = new File(plugin.getDataFolder() + File.separator + "Users");
 
 	public final Map<UUID, User> users = new HashMap<>();
 

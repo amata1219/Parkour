@@ -46,7 +46,7 @@ public class RegionSelectorCommand implements Command {
 				player.getInventory().remove(item);
 		}
 
-		ParkourRegionSelector selector = Main.getUserSet().users.get(player.getUniqueId()).selector = new ParkourRegionSelector(parkour);
+		ParkourRegionSelector selector = Main.getUserSet().users.get(player.getUniqueId()).parkourRegionSelector = new ParkourRegionSelector(parkour);
 
 		//範囲選択ツールを複製する
 		ItemStack item = RegionSelector.SELECTOR.clone();

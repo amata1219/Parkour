@@ -22,7 +22,7 @@ public class UserSetting {
 	public UserSetting(Yaml yaml){
 		hideUsers = yaml.getBoolean("Hide users");
 
-		ConfigurationSection section = yaml.getConfigurationSection("Information displayed on scoreboard");
+		ConfigurationSection section = yaml.getConfigurationSection("Values displayed on scoreboard");
 
 		displayScoreboard = section.getBoolean("Scoreboard");
 		displayTraceur = section.getBoolean("Traceur");

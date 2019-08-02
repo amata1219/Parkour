@@ -3,9 +3,6 @@ package amata1219.parkour.command;
 import java.io.File;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
@@ -17,7 +14,7 @@ import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.stage.Stage;
 
-public class ParkourCommand implements Command {
+public class OldParkourCommand implements Command {
 
 	private final Main plugin = Main.getPlugin();
 	private final File folder = new File(plugin.getDataFolder() + File.separator + "ParkourList");
@@ -88,7 +85,7 @@ public class ParkourCommand implements Command {
 
 			//第3引数で分岐する
 			switch(args.next()){
-			case "world":{
+			/*case "world":{
 				//第4引数をワールド名として取得する
 				String worldName = args.next();
 
@@ -191,6 +188,8 @@ public class ParkourCommand implements Command {
 
 				sender.info(StringTemplate.format(": Success > [$0]の領域を[$1]に設定しました。", parkourName, result));
 				return;
+			}*/case "region":{
+
 			}case "startline":{
 				int[] xyzxyz = new int[6];
 				for(int index = 0; index < 6; index++){
@@ -253,7 +252,7 @@ public class ParkourCommand implements Command {
 
 				sender.info(StringTemplate.format(": Success > [$0]のフィニッシュラインを[$1]に設定しました。", parkourName, result));
 			}default:
-				sender.warn(StringTemplate.format(": Syntax error > /parkour $0 editfile (world|pos1|pos2|startline|finishline)", parkourName));
+				sender.warn(StringTemplate.format(": Syntax error > /parkour $0 editfile (region|startline|finishline)", parkourName));
 				return;
 			}
 		}case "register":{

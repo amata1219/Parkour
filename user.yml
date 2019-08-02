@@ -3,3 +3,16 @@
 'Hide users': false
 'Cleared parkour names': []
 'Purchased heads': []
+'Creative world checkpoint': "0,0,0,0,0"
+
+'Values displayed on scoreboard':
+  'Scoreboard': true
+  'Traceur': false
+  'Update rank': true
+  'Extend rank': true
+  'Jumps': true
+  'Coins': false
+  'Time played': false
+  'Online players': false
+  'Ping': false
+  'Server address': true

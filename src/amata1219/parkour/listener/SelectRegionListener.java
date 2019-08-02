@@ -39,7 +39,7 @@ public class SelectRegionListener implements Listener {
 			return;
 
 		Player player = event.getPlayer();
-		ParkourRegionSelector selector = Main.getUserSet().users.get(player.getUniqueId()).selector;
+		ParkourRegionSelector selector = Main.getUserSet().users.get(player.getUniqueId()).parkourRegionSelector;
 		if(selector == null){
 			Messenger.sendEmbeddedCommandMessage(player, "§c: Invalid Action error > 範囲選択が無効化されています。このテキストをクリックして有効化して下さい。", StringTemplate.format("/regionselector $0", ChatColor.stripColor(item.getItemMeta().getDisplayName()).split(" > ")[0]));
 			return;

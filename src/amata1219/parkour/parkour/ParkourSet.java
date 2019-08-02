@@ -13,7 +13,7 @@ import amata1219.parkour.Main;
 public class ParkourSet {
 
 	private final Main plugin = Main.getPlugin();
-	private final File folder = new File(plugin.getDataFolder() + File.separator + "ParkourList");
+	public final File folder = new File(plugin.getDataFolder() + File.separator + "ParkourList");
 
 	public final Map<String, Parkour> parkourMap = new HashMap<>();
 

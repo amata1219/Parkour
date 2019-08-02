@@ -54,17 +54,17 @@ public class User {
 	//クリア済みのアスレの名前リスト
 	public final Set<String> clearedParkourNames;
 
-	//アスレ製作者用の指定範囲を表現するオブジェクト
-	public ParkourRegionSelector selector;
-
 	//クリエイティブワールドでのチェックポイント
-	public Location checkpointInCreativeWorld;
+	public Location creativeWorldCheckpoint;
 
 	//購入したヘッドのセット
 	public final Set<UUID> purchasedHeads;
 
-	//スコアボード
+	//スコアボードの管理インスタンス
 	public final UserScoreboard scoreboard;
+
+	//アスレ製作者用の指定範囲を表現するオブジェクト
+	public ParkourRegionSelector parkourRegionSelector;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
@@ -97,19 +97,20 @@ public class User {
 		clearedParkourNames = new HashSet<>(yaml.getStringList("Cleared parkur names"));
 
 		//クリエイティブワールドのチェックポイントデータを取得して分割する
-		String[] checkpointCoordinates = yaml.getString("Checkpoint in creative world").split(",");
+		String[] checkpointCoordinates = yaml.getString("Creative world checkpoint").split(",");
 
 		//データを基に座標を作成する
-		checkpointInCreativeWorld = new Location(Main.getCreativeWorld(), Double.parseDouble(checkpointCoordinates[0]),
+		creativeWorldCheckpoint = new Location(Main.getCreativeWorld(), Double.parseDouble(checkpointCoordinates[0]),
 				Double.parseDouble(checkpointCoordinates[1]), Double.parseDouble(checkpointCoordinates[2]),
 				Float.parseFloat(checkpointCoordinates[3]), Float.parseFloat(checkpointCoordinates[4]));
 
 		//購入済みのスカルのIDをUUIDに変換したリストを作成する
-		purchasedHeads = yaml.getStringList("Purchased heads")
+		purchasedHeads = yaml.getStringList("Purchased skulls")
 								.stream()
 								.map(UUID::fromString)
 								.collect(Collectors.toSet());
 
+		//スコアボードの管理インスタンスを作成する
 		scoreboard = new UserScoreboard(this);
 
 		//セクションが存在しなければ戻る
@@ -203,9 +204,9 @@ public class User {
 													.collect(Collectors.toList()));
 
 		//クリエイティブワールドのチェックポイントを記録する
-		yaml.set("Checkpoint in creative world", StringTemplate.format("$0,$1,$2,$3,$4",
-				checkpointInCreativeWorld.getX(), checkpointInCreativeWorld.getY(), checkpointInCreativeWorld.getZ(),
-				checkpointInCreativeWorld.getYaw(), checkpointInCreativeWorld.getPitch()));
+		yaml.set("Creative world checkpoint", StringTemplate.format("$0,$1,$2,$3,$4",
+				creativeWorldCheckpoint.getX(), creativeWorldCheckpoint.getY(), creativeWorldCheckpoint.getZ(),
+				creativeWorldCheckpoint.getYaw(), creativeWorldCheckpoint.getPitch()));
 
 		//各チェックポイントを記録する
 		for(Entry<String, List<Location>> entry : checkPoints.entrySet()){

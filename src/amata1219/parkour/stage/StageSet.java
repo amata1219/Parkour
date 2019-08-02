@@ -12,7 +12,7 @@ import amata1219.parkour.parkour.Parkour;
 public class StageSet {
 
 	private final Main plugin = Main.getPlugin();
-	private final File folder = new File(plugin.getDataFolder() + File.separator + "Stages");
+	public final File folder = new File(plugin.getDataFolder() + File.separator + "Stages");
 
 	public final Map<String, Stage> stages = new HashMap<>();
 

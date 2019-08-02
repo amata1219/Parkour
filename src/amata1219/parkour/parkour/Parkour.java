@@ -32,16 +32,16 @@ public class Parkour {
 	public final String colorlessName;
 
 	//ワールド
-	public final World world;
+	public World world;
 
 	//アスレの領域
-	public final Region region;
+	public Region region;
 
 	//スタートライン
-	public final RegionBorderDisplayer startLine;
+	public RegionBorderDisplayer startLine;
 
 	//フィニッシュライン
-	public final RegionBorderDisplayer finishLine;
+	public RegionBorderDisplayer finishLine;
 
 	//チェックエリアのリスト
 	public final List<RegionBorderDisplayer> checkAreas = new ArrayList<>();
