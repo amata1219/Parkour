@@ -9,17 +9,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Statistic;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.scoreboard.Scoreboard;
 import amata1219.amalib.text.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
@@ -67,7 +63,8 @@ public class User {
 	//購入したヘッドのセット
 	public final Set<UUID> purchasedHeads;
 
-	public Scoreboard board;
+	//スコアボード
+	public final UserScoreboard scoreboard;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
@@ -100,12 +97,12 @@ public class User {
 		clearedParkourNames = new HashSet<>(yaml.getStringList("Cleared parkur names"));
 
 		//クリエイティブワールドのチェックポイントデータを取得して分割する
-		String[] components = yaml.getString("Checkpoint in creative world").split(",");
+		String[] checkpointCoordinates = yaml.getString("Checkpoint in creative world").split(",");
 
 		//データを基に座標を作成する
-		checkpointInCreativeWorld = new Location(Main.getCreativeWorld(), Double.parseDouble(components[0]),
-				Double.parseDouble(components[1]), Double.parseDouble(components[2]),
-				Float.parseFloat(components[3]), Float.parseFloat(components[4]));
+		checkpointInCreativeWorld = new Location(Main.getCreativeWorld(), Double.parseDouble(checkpointCoordinates[0]),
+				Double.parseDouble(checkpointCoordinates[1]), Double.parseDouble(checkpointCoordinates[2]),
+				Float.parseFloat(checkpointCoordinates[3]), Float.parseFloat(checkpointCoordinates[4]));
 
 		//購入済みのスカルのIDをUUIDに変換したリストを作成する
 		purchasedHeads = yaml.getStringList("Purchased heads")
@@ -113,29 +110,30 @@ public class User {
 								.map(UUID::fromString)
 								.collect(Collectors.toSet());
 
+		scoreboard = new UserScoreboard(this);
+
 		//セクションが存在しなければ戻る
-		if(!yaml.isConfigurationSection("Check points"))
-			return;
+		if(yaml.isConfigurationSection("Check points")){
+			//セクションを取得する
+			ConfigurationSection section = yaml.getConfigurationSection("Check points");
 
-		//セクションを取得する
-		ConfigurationSection section = yaml.getConfigurationSection("Check points");
+			//各アスレ名毎に処理する
+			for(String parkourName : section.getKeys(false)){
+				//アスレ名と対応したアスレを取得する
+				Parkour parkour = parkourSet.getParkour(parkourName);
 
-		//各アスレ名毎に処理する
-		for(String parkourName : section.getKeys(false)){
-			//アスレ名と対応したアスレを取得する
-			Parkour parkour = parkourSet.getParkour(parkourName);
+				//チェックポイントを文字列から座標に変換してリスト化する
+				List<Location> points = section.getStringList(parkourName)
+												.stream()
+												.map(point -> point.split(","))
+												.map(coordinates -> Arrays.stream(coordinates).mapToDouble(Double::parseDouble).toArray())
+												.map(coordinates -> new Location(parkour.world, coordinates[0], coordinates[1], coordinates[2], (float) coordinates[3], (float) coordinates[4]))
+												.collect(Collectors.toList());
 
-			//チェックポイントを文字列から座標に変換してリスト化する
-			List<Location> points = section.getStringList(parkourName)
-											.stream()
-											.map(point -> point.split(","))
-											.map(coordinates -> Arrays.stream(coordinates).mapToDouble(Double::parseDouble).toArray())
-											.map(coordinates -> new Location(parkour.world, coordinates[0], coordinates[1], coordinates[2], (float) coordinates[3], (float) coordinates[4]))
-											.collect(Collectors.toList());
-
-			//エリア番号と結び付けてチェックポイントをセットする
-			for(int number = 0; number < points.size(); number++)
-				setCheckPoint(parkour, number, points.get(number));
+				//エリア番号と結び付けてチェックポイントをセットする
+				for(int number = 0; number < points.size(); number++)
+					setCheckPoint(parkour, number, points.get(number));
+			}
 		}
 	}
 
@@ -154,7 +152,7 @@ public class User {
 			points.set(number, location);
 	}
 
-	public Player asPlayer(){
+	public Player asBukkitPlayer(){
 		return Bukkit.getPlayer(uuid);
 	}
 
@@ -172,13 +170,6 @@ public class User {
 
 	public boolean isPlayingParkour(){
 		return currentlyPlayingParkour != null;
-	}
-
-	public void createScoreboard(){
-		Player player = asPlayer();
-
-		//テキストと値を@区切りで連結して返す
-		BiFunction<String, Object, String> combine = (text, value) -> StringTemplate.format("$0$2 $1@ $0$3", ChatColor.AQUA, ChatColor.GRAY, text, value.toString());
 	}
 
 	public void save(Yaml yaml){

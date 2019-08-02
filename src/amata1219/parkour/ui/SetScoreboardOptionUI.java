@@ -34,33 +34,22 @@ public class SetScoreboardOptionUI implements InventoryUI {
 		UserSetting setting = user.setting;
 
 		components.addAll(Arrays.asList(
-			component(0, Material.SIGN, "Scoreboard", () -> setting.displayScoreboard = !setting.displayScoreboard),
-			component(2, Material.GOLDEN_BOOTS, "Update Rank", () -> setting.displayUpdateRank = !setting.displayUpdateRank),
-			component(4, Material.IRON_BOOTS, "Extend Rank", () -> setting.displayExtendRank = !setting.displayExtendRank),
-			component(6, Material.RABBIT_FOOT, "Jumps", () -> setting.displayJumps = !setting.displayJumps),
-			component(8, Material.GOLD_INGOT, "Coins", () -> setting.displayCoins = !setting.displayCoins),
-			component(18, Material.NAME_TAG, "My Name", () -> setting.displayPlayerName = !setting.displayPlayerName),
-			component(20, Material.CHAINMAIL_HELMET, "Online Players", () -> setting.displayOnlinePlayers = !setting.displayOnlinePlayers),
-			component(22, Material.CLOCK, "Time Played", () -> setting.displayTimePlayed = !setting.displayTimePlayed),
-			component(24, Material.COMPASS, "Ping", () -> setting.displayPing= !setting.displayPing)
+			makeComponent(0, Material.SIGN, "Scoreboard", () -> setting.displayScoreboard = !setting.displayScoreboard),
+			makeComponent(18, Material.NAME_TAG, "Traceur", () -> setting.displayTraceur = !setting.displayTraceur),
+			makeComponent(2, Material.GOLDEN_BOOTS, "Update Rank", () -> setting.displayUpdateRank = !setting.displayUpdateRank),
+			makeComponent(4, Material.IRON_BOOTS, "Extend Rank", () -> setting.displayExtendRank = !setting.displayExtendRank),
+			makeComponent(6, Material.RABBIT_FOOT, "Jumps", () -> setting.displayJumps = !setting.displayJumps),
+			makeComponent(8, Material.GOLD_INGOT, "Coins", () -> setting.displayCoins = !setting.displayCoins),
+			makeComponent(22, Material.CLOCK, "Time Played", () -> setting.displayTimePlayed = !setting.displayTimePlayed),
+			makeComponent(20, Material.CHAINMAIL_HELMET, "Online Players", () -> setting.displayOnlinePlayers = !setting.displayOnlinePlayers),
+			makeComponent(24, Material.COMPASS, "Ping", () -> setting.displayPing = !setting.displayPing),
+			makeComponent(26, Material.STRUCTURE_BLOCK, "Server Address", () -> setting.displayServerAddress = !setting.displayServerAddress)
 		));
 	}
 
-	private Quadruple<Integer, Material, String, Supplier<Boolean>> component(int slotIndex, Material material, String displayName, Supplier<Boolean> state){
+	private Quadruple<Integer, Material, String, Supplier<Boolean>> makeComponent(int slotIndex, Material material, String displayName, Supplier<Boolean> state){
 		return new Quadruple<>(slotIndex, material, displayName, state);
 	}
-
-	/*
-	 * public boolean displayScoreboard; = sign
-	public boolean displayUpdateRank; = golden boots
-	public boolean displayExtendRank; = iron boots
-	public boolean displayJumps; = rabbit leg
-	public boolean displayCoins; = gold
-	public boolean displayPlayerName; = name tag
-	public boolean displayOnlinePlayers; = chain helmet
-	public boolean displayTimePlayed; = clock
-	public boolean displayPing; = compass
-	 */
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
@@ -68,7 +57,8 @@ public class SetScoreboardOptionUI implements InventoryUI {
 			l.asynchronouslyRunActionOnClose = true;
 
 			l.onClose((event) -> {
-				//update scoreboard
+				user.scoreboard.loadScoreboard();
+				//音を再生する
 			});
 
 			for(Quadruple<Integer, Material, String, Supplier<Boolean>> component : components){
@@ -92,26 +82,18 @@ public class SetScoreboardOptionUI implements InventoryUI {
 					});
 
 					s.onClick((event) -> {
-						gleam(event.currentIcon, state.get());
+						Icon icon = event.currentIcon;
+
+						//有効であれば発光させる
+						if(state.get())
+							icon.gleam();
+						else
+							icon.tarnish();
 					});
+
 				}, slotIndex);
 			}
-
-			//最後の奇数スロットが空いているので初期化ボタンを作る
 		});
 	}
-
-	private void gleam(Icon icon, boolean gleam){
-		if(gleam)
-			icon.gleam();
-		else
-			icon.tarnish();
-	}
-
-	/*
-	 * o x o x o x o x o
-	 * x x x x x x x x x
-	 * o x o x o x o x o
-	 */
 
 }
