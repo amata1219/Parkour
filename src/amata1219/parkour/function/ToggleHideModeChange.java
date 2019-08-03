@@ -10,9 +10,18 @@ import amata1219.amalib.message.MessageColor;
 import amata1219.amalib.schedule.Sync;
 import amata1219.parkour.Main;
 import amata1219.parkour.user.User;
+import amata1219.parkour.user.UserSet;
 import amata1219.parkour.user.UserSetting;
 
 public class ToggleHideModeChange {
+
+	private static ToggleHideModeChange instance;
+
+	public static ToggleHideModeChange getInstance(){
+		return instance != null ? instance : (instance = new ToggleHideModeChange());
+	}
+
+	private final UserSet userSet = UserSet.getInstnace();
 
 	//非表示モードの使用者
 	private final HashSet<User> hideModeUsers = new HashSet<>();
@@ -20,13 +29,17 @@ public class ToggleHideModeChange {
 	//クールダウン中のユーザー
 	private final HashSet<User> cooldownUsers = new HashSet<>();
 
+	private ToggleHideModeChange(){
+
+	}
+
 	//プレイヤーがログインした時
 	public void onPlayerJoin(Player player){
 		//ログインしたプレイヤーを全非表示モードの使用者から非表示にする
 		forEachHideModeUser((user) -> hide(user, player));
 
 		//ユーザーを取得する
-		User user = Main.getUserSet().getUser(player);
+		User user = userSet.getUser(player);
 
 		//ユーザー設定を取得する
 		UserSetting setting = user.setting;
@@ -43,15 +56,15 @@ public class ToggleHideModeChange {
 		//forEachHideModeUser((user) -> show(user, player));
 
 		//ユーザーを取得する
-		User user = Main.getUserSet().getUser(player);
+		User user = userSet.getUser(player);
 
 		//非表示モードの使用者リストから削除する
 		hideModeUsers.remove(user);
 	}
 
-	public void change(Player player){
-		//ユーザーを取得する
-		User user = Main.getUserSet().getUser(player);
+	public void change(User user){
+		//プレイヤーを取得する
+		Player player = user.asBukkitPlayer();
 
 		//クールダウン中なら戻る
 		if(cooldownUsers.contains(user)){

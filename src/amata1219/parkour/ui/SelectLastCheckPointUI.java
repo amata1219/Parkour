@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
-import amata1219.amalib.message.MessageTemplate;
+import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.User;
 import net.md_5.bungee.api.ChatMessageType;
@@ -56,12 +56,12 @@ public class SelectLastCheckPointUI implements InventoryUI {
 						event.player.teleport(locations.get(size - 1));
 
 						//表示例: TP to 1 @ Update1!
-						event.player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(MessageTemplate.apply("$0TP to $1 @ $2!", ChatColor.GRAY, size, parkourName)));
+						event.player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(StringTemplate.applyWithColor("&7-TP to $0 @ $1!", size, parkourName)));
 					});
 
 					s.icon(Material.GRASS_BLOCK, (i) -> {
 						//表示例: 1 @ Update1
-						i.displayName = MessageTemplate.apply("$0$1 @ $2", ChatColor.AQUA, size, parkourName);
+						i.displayName = StringTemplate.applyWithColor("&7-$0 @ $1", size, parkourName);
 
 						i.lore(
 							ChatColor.GRAY + ": Left Click > TP to Last CP!",

@@ -4,20 +4,22 @@ import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
 import amata1219.amalib.selection.RegionSelection;
-import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.ParkourRegionSelection;
 import amata1219.parkour.user.User;
+import amata1219.parkour.user.UserSet;
 
-public interface AbstractParkourCommand extends Command {
+public abstract class AbstractParkourCommand implements Command {
+
+	protected final UserSet userSet = UserSet.getInstnace();
 
 	@Override
-	default void onCommand(Sender sender, Arguments args) {
-		if(blockNonPlayer(sender))
-			return;
+	public void onCommand(Sender sender, Arguments args) {
+		//送信者がプレイヤーでなければ戻る
+		if(blockNonPlayer(sender)) return;
 
 		//ユーザーを取得する
-		User user = Main.getUserSet().getUser(sender.asPlayerCommandSender());
+		User user = userSet.getUser(sender.asPlayerCommandSender());
 
 		//アスレ用の範囲選択オブジェクトを取得する
 		ParkourRegionSelection selector = user.parkourRegionSelector;
@@ -40,6 +42,6 @@ public interface AbstractParkourCommand extends Command {
 		onCommand(sender, args, selector.parkour, selection);
 	}
 
-	void onCommand(Sender sender, Arguments args, Parkour parkour, RegionSelection selection);
+	abstract void onCommand(Sender sender, Arguments args, Parkour parkour, RegionSelection selection);
 
 }

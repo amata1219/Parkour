@@ -14,31 +14,57 @@ import amata1219.parkour.Main;
 
 public class UserSet {
 
+	private static UserSet instance;
+
+	public static UserSet getInstnace(){
+		return instance != null ? instance : (instance = new UserSet());
+	}
+
 	private final Main plugin = Main.getPlugin();
+
+	//ユーザーデータを保存するフォルダー
 	public final File folder = new File(plugin.getDataFolder() + File.separator + "Users");
 
-	public final Map<UUID, User> users = new HashMap<>();
+	private final Map<UUID, User> users = new HashMap<>();
 
-	public UserSet(){
-		if(!folder.exists())
-			folder.mkdir();
+	private UserSet(){
+		//フォルダーが存在しなければ作成する
+		if(!folder.exists()) folder.mkdir();
 
-		for(File file : Optional.ofNullable(folder.listFiles()).orElse(new File[]{})){
+		for(File file : Optional.ofNullable(folder.listFiles()).orElse(new File[0])){
+			//ファイルをコンフィグとして読み込む
 			Yaml yaml = new Yaml(plugin, file);
+
+			//コンフィグを基にユーザーを生成する
 			User user = new User(yaml);
+
+			//登録する
 			users.put(user.uuid, user);
 		}
 	}
 
-	public void registerNewUser(Player player){
-		UUID uuid = player.getUniqueId();
-		Yaml yaml = new Yaml(plugin, new File(folder, StringTemplate.apply("$0.yml", uuid)));
-		User user = new User(yaml);
-		users.put(uuid, user);
-	}
-
 	public User getUser(Player player){
 		return users.get(player.getUniqueId());
+	}
+
+	public User getUser(UUID uuid){
+		return users.get(uuid);
+	}
+
+	public void onPlayerFirstJoin(Player player){
+		UUID uuid = player.getUniqueId();
+
+		//既にユーザーデータが存在するのであれば戻る
+		if(users.containsKey(uuid)) return;
+
+		//ユーザーデータコンフィグ作成する
+		Yaml yaml = new Yaml(plugin, new File(folder, StringTemplate.apply("$0.yml", uuid)));
+
+		//コンフィグを基にユーザーを生成する
+		User user = new User(yaml);
+
+		//登録する
+		users.put(uuid, user);
 	}
 
 }
