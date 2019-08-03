@@ -133,20 +133,17 @@ public class Parkour {
 			checkArea.cancel();
 	}
 
-	//BukkitプレイヤーをNMSプレイヤーに変換する
-	private EntityPlayer asEntityPlayer(Player player){
-		return ((CraftPlayer) player).getHandle();
-	}
-
 	//このマップがあるステージを返す
 	public Stage getStage(){
 		return Main.getStageSet().parkourNamesToStagesMap.get(name);
 	}
 
+	//アスレの領域を返す
 	public Region getRegion(){
 		return region;
 	}
 
+	//アスレの領域をセットする
 	public void setRegion(Region region){
 		Validate.notNull(region, "Region can not be null");
 	}
@@ -181,6 +178,10 @@ public class Parkour {
 		newDisplayer.display();
 	}
 
+	public RegionBorderDisplayer getCheckArea(int number){
+		return number < checkAreas.size() ? checkAreas.get(number) : null;
+	}
+
 	public int getCheckAreaNumber(RegionBorderDisplayer checkArea){
 		return checkAreas.contains(checkArea) ? checkAreas.indexOf(checkArea): -1;
 	}
@@ -212,6 +213,11 @@ public class Parkour {
 			Entry<UUID, Float> record = records.get(index);
 			top10Records.put(index, new Tuple<>(record.getKey(), record.getValue()));
 		}
+	}
+
+	//BukkitプレイヤーをNMSプレイヤーに変換する
+	private EntityPlayer asEntityPlayer(Player player){
+		return ((CraftPlayer) player).getHandle();
 	}
 
 }

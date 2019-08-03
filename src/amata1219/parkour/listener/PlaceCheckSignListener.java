@@ -31,8 +31,8 @@ public class PlaceCheckSignListener implements Listener {
 
 		if(CheckSign.AT_SIGN.equals(item))
 			state.setLine(1, CheckSign.CP_AT_SIGN);
-		else if(CheckSign.AT_PLAYER.equals(item))
-			state.setLine(1, CheckSign.CP_AT_PLAYER);
+		else if(CheckSign.AT_TRACEUR.equals(item))
+			state.setLine(1, CheckSign.CP_AT_TRACEUR);
 		else
 			return;
 

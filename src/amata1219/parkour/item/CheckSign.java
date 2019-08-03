@@ -9,10 +9,10 @@ import amata1219.amalib.inventory.ui.dsl.component.Icon;
 public class CheckSign {
 
 	public static final ItemStack AT_SIGN;
-	public static final ItemStack AT_PLAYER;
+	public static final ItemStack AT_TRACEUR;
 
 	public static final String CP_AT_SIGN = "§b§lCP @ SIGN";
-	public static final String CP_AT_PLAYER = "§b§lCP @ PLAYER";
+	public static final String CP_AT_TRACEUR = "§b§lCP @ TRACEUR";
 
 	static{
 		AT_SIGN = new ItemStack(Material.SIGN);
@@ -25,13 +25,13 @@ public class CheckSign {
 	}
 
 	static{
-		AT_PLAYER = new ItemStack(Material.SIGN);
+		AT_TRACEUR = new ItemStack(Material.SIGN);
 
-		ItemMeta meta = AT_PLAYER.getItemMeta();
-		meta.setDisplayName(CP_AT_PLAYER);
+		ItemMeta meta = AT_TRACEUR.getItemMeta();
+		meta.setDisplayName(CP_AT_TRACEUR);
 		meta.addEnchant(Icon.GLEAM_ENCHANTMENT, 1, true);
 
-		AT_PLAYER.setItemMeta(meta);
+		AT_TRACEUR.setItemMeta(meta);
 	}
 
 }

@@ -1,6 +1,5 @@
 package amata1219.parkour.listener;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -10,9 +9,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import amata1219.amalib.message.MessageColor;
 import amata1219.parkour.Main;
 import amata1219.parkour.item.CheckSign;
-import amata1219.parkour.message.Messenger;
 import amata1219.parkour.user.User;
 
 public class InteractCheckSignListener implements Listener {
@@ -39,7 +38,7 @@ public class InteractCheckSignListener implements Listener {
 		if(CheckSign.CP_AT_SIGN.equals(line))
 			if(blockFlowingPlayer(player))
 				user.creativeWorldCheckpoint = block.getLocation();
-		else if(CheckSign.CP_AT_PLAYER.endsWith(line))
+		else if(CheckSign.CP_AT_TRACEUR.endsWith(line))
 			if(blockFlowingPlayer(player))
 				user.creativeWorldCheckpoint = player.getLocation();
 	}
@@ -48,7 +47,7 @@ public class InteractCheckSignListener implements Listener {
 		if(player.isOnGround())
 			return false;
 
-		Messenger.sendActionBarMessage(player, ChatColor.RED + "Must Be on The Ground!");
+		MessageColor.color("&7-Operation blocked-&c @ &7-Must be on the ground").display(player);
 		return true;
 	}
 

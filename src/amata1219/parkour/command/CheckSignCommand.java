@@ -20,7 +20,7 @@ public class CheckSignCommand implements Command {
 			sender.info(": Success > CP @ SIGN 看板を付与しました。");
 			return;
 		case "player":
-			inventory.addItem(CheckSign.AT_PLAYER);
+			inventory.addItem(CheckSign.AT_TRACEUR);
 			sender.info(": Success > CP @ PLAYER 看板を付与しました。");
 			return;
 		default:

@@ -2,7 +2,6 @@ package amata1219.parkour.listener;
 
 import java.util.List;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +11,6 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.amalib.message.MessageTemplate;
 import amata1219.parkour.Main;
-import amata1219.parkour.message.Messenger;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.RegionBorderDisplayer;
 import amata1219.parkour.user.User;
@@ -62,7 +60,7 @@ public class SetCheckpointListener implements Listener {
 		//チェックポイントとして設定する
 		user.setCheckPoint(parkour, areaNumber, location);
 
-		Messenger.sendActionBarMessage(player, MessageTemplate.apply("$0Set Checkpoint @ $1", ChatColor.AQUA, areaNumber));
+		MessageTemplate.applyWithColor("&b-Set checkpoint @ $0", areaNumber).displayOnActionBar(player);
 	}
 
 }

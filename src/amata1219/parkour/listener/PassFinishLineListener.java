@@ -6,11 +6,10 @@ import org.bukkit.entity.Player;
 
 import amata1219.amalib.message.MessageTemplate;
 import amata1219.parkour.Main;
-import amata1219.parkour.message.Messenger;
 import amata1219.parkour.message.TimeFormat;
 import amata1219.parkour.parkour.RegionBorderDisplayer;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.parkour.RankUpParkour;
+import amata1219.parkour.parkour.Rank;
 import amata1219.parkour.user.User;
 
 public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
@@ -53,9 +52,8 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 
 		String playerName = player.getName();
 
-		//表示例: amata1219 > Cleared in 00:01:23.231 @ Update11！
-		Messenger.broadcastMessage(MessageTemplate.apply("$0 > Cleared in $1 @ $2!", playerName, TimeFormat.format(time), parkourName));
-
+		//表示例: amata1219 cleared in 00:01:23.231 @ Update11！
+		MessageTemplate.applyWithColor("$0 cleared in $1 @ $2!", playerName, TimeFormat.format(time), parkourName).broadcast();
 
 		//Update系アスレの場合
 		if(colorlessParkourName.startsWith("Update")){
@@ -66,18 +64,18 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			if(user.updateRank < rank){
 				user.updateRank = rank;
 
-				//表示例: amata1219 > Rank Up to 1!
-				Messenger.broadcastMessage(MessageTemplate.apply("$0 > Rank up to $1", playerName, rank));
+				//表示例: amata1219 ranked up to 7!
+				MessageTemplate.applyWithColor("$0 ranked up to $1!", playerName, rank).broadcast();
 
 				//こういう所で音も出すべき SoundPlayer
 			}
 		}
 
 		//報酬付きアスレの種類
-		RankUpParkour type = null;
+		Rank type = null;
 
 		try{
-			type = RankUpParkour.valueOf(colorlessParkourName);
+			type = Rank.valueOf(colorlessParkourName);
 		}catch(Exception e){
 			//報酬付きアスレでなければ戻る
 			return;
@@ -89,8 +87,8 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		//報酬のコインを与える
 		user.depositCoins(rewardCoins);
 
-		//表示例: Gave amata1219 Coins @ 1000 Reward!
-		Messenger.sendMessage(player, MessageTemplate.apply("Gave $0 Coins @ $1 Reward!", playerName, rewardCoins));
+		//表示例: Gave 1000 coins to amata1219 as a reward!
+		MessageTemplate.applyWithColor("&b-Gave $0 coins to $1 as a reard!", rewardCoins, playerName).display(player);
 	}
 
 }

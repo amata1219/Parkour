@@ -9,12 +9,12 @@ import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
 import amata1219.amalib.inventory.ui.dsl.component.Icon;
-import amata1219.amalib.message.MessageTemplate;
+import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.Main;
 import amata1219.parkour.item.RegionSelector;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.user.ParkourRegionSelector;
+import amata1219.parkour.user.ParkourRegionSelection;
 
 public class RegionSelectorCommand implements Command {
 
@@ -30,7 +30,7 @@ public class RegionSelectorCommand implements Command {
 
 		//アスレが存在しなければエラーとする
 		if(!parkourSet.isParkourExists(parkourName)){
-			sender.warn(MessageTemplate.apply(": Value error > [$0]は存在しません。", parkourName));
+			sender.warn(StringTemplate.apply(": Value error > [$0]は存在しません。", parkourName));
 			return;
 		}
 
@@ -46,7 +46,7 @@ public class RegionSelectorCommand implements Command {
 				player.getInventory().remove(item);
 		}
 
-		ParkourRegionSelector selector = Main.getUserSet().users.get(player.getUniqueId()).parkourRegionSelector = new ParkourRegionSelector(parkour);
+		ParkourRegionSelection selector = Main.getUserSet().users.get(player.getUniqueId()).parkourRegionSelector = new ParkourRegionSelection(parkour);
 
 		//範囲選択ツールを複製する
 		ItemStack item = RegionSelector.SELECTOR.clone();

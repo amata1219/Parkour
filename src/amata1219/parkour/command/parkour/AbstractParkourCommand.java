@@ -6,7 +6,7 @@ import amata1219.amalib.command.Sender;
 import amata1219.amalib.selection.RegionSelection;
 import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.user.ParkourRegionSelector;
+import amata1219.parkour.user.ParkourRegionSelection;
 import amata1219.parkour.user.User;
 
 public interface AbstractParkourCommand extends Command {
@@ -20,7 +20,7 @@ public interface AbstractParkourCommand extends Command {
 		User user = Main.getUserSet().getUser(sender.asPlayerCommandSender());
 
 		//アスレ用の範囲選択オブジェクトを取得する
-		ParkourRegionSelector selector = user.parkourRegionSelector;
+		ParkourRegionSelection selector = user.parkourRegionSelector;
 
 		//範囲選択されていない場合
 		if(selector == null){

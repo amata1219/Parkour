@@ -12,11 +12,12 @@ import org.bukkit.inventory.ItemStack;
 
 import amata1219.amalib.inventory.ui.dsl.component.Icon;
 import amata1219.amalib.location.ImmutableBlockLocation;
-import amata1219.amalib.message.MessageTemplate;
+import amata1219.amalib.message.Message.ClickAction;
+import amata1219.amalib.message.MessageColor;
 import amata1219.amalib.selection.RegionSelection;
+import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.Main;
-import amata1219.parkour.message.Messenger;
-import amata1219.parkour.user.ParkourRegionSelector;
+import amata1219.parkour.user.ParkourRegionSelection;
 
 public class SelectRegionListener implements Listener {
 
@@ -39,9 +40,11 @@ public class SelectRegionListener implements Listener {
 			return;
 
 		Player player = event.getPlayer();
-		ParkourRegionSelector selector = Main.getUserSet().users.get(player.getUniqueId()).parkourRegionSelector;
+		ParkourRegionSelection selector = Main.getUserSet().users.get(player.getUniqueId()).parkourRegionSelector;
+
 		if(selector == null){
-			Messenger.sendEmbeddedCommandMessage(player, "§c: Invalid Action error > 範囲選択が無効化されています。このテキストをクリックして有効化して下さい。", MessageTemplate.apply("/regionselector $0", ChatColor.stripColor(item.getItemMeta().getDisplayName()).split(" > ")[0]));
+			String parkourName = ChatColor.stripColor(item.getItemMeta().getDisplayName()).split(" > ")[0];
+			MessageColor.color("&c-:Invalid action error > 範囲選択が無効です。このテキストをクリックして有効化して下さい。").sendAsClickable(player, ClickAction.RUN_COMMAND, StringTemplate.apply("/regionselector $0", parkourName));
 			return;
 		}
 

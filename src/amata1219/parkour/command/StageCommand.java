@@ -9,7 +9,7 @@ import org.bukkit.ChatColor;
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
-import amata1219.amalib.message.MessageTemplate;
+import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
@@ -46,23 +46,23 @@ public class StageCommand implements Command {
 		//第2引数で分岐する
 		switch(args.next()){
 		case "create":{
-			File file = new File(folder, MessageTemplate.apply("$0.yml", stageName));
+			File file = new File(folder, StringTemplate.apply("$0.yml", stageName));
 
 			//既にファイルが存在していればエラーとする
 			if(file.exists()){
-				sender.warn(MessageTemplate.apply(": Value error > [$0].ymlは既に存在しています。", stageName));
+				sender.warn(StringTemplate.apply(": Value error > [$0].ymlは既に存在しています。", stageName));
 				return;
 			}
 
 			//ステージ名.ymlを作成する
 			new Yaml(plugin, file);
 
-			sender.info(MessageTemplate.apply(": Success > $0.ymlを作成しました。", stageName));
+			sender.info(StringTemplate.apply(": Success > $0.ymlを作成しました。", stageName));
 			return;
 		}case "addparkour":{
 			//ステージが存在しなければエラーとする
 			if(!stages.containsKey(stageName)){
-				sender.warn(MessageTemplate.apply(": Value error > [$0]は存在しません。", stageName));
+				sender.warn(StringTemplate.apply(": Value error > [$0]は存在しません。", stageName));
 				return;
 			}
 
@@ -71,7 +71,7 @@ public class StageCommand implements Command {
 
 			//アスレが存在しなければエラーとする
 			if(!parkourMap.containsKey(parkourName)){
-				sender.warn(MessageTemplate.apply(": Value error > [$0]は存在しません。", parkourName));
+				sender.warn(StringTemplate.apply(": Value error > [$0]は存在しません。", parkourName));
 				return;
 			}
 
@@ -86,19 +86,19 @@ public class StageCommand implements Command {
 
 			//既にアスレが追加されていたらエラーとする
 			if(parkourList.contains(parkour)){
-				sender.warn(MessageTemplate.apply(": Value error > [$0]に[$1]は既に追加されています。", stageName, parkourName));
+				sender.warn(StringTemplate.apply(": Value error > [$0]に[$1]は既に追加されています。", stageName, parkourName));
 				return;
 			}
 
 			parkourNamesToStagesMap.put(parkourName, stage);
 			parkourList.add(parkour);
 
-			sender.info(MessageTemplate.apply(": Success > [$0]に[$1]を追加しました。", stageName, parkourName));
+			sender.info(StringTemplate.apply(": Success > [$0]に[$1]を追加しました。", stageName, parkourName));
 			return;
 		}case "removeparkour":{
 			//ステージが存在しなければエラーとする
 			if(!stages.containsKey(stageName)){
-				sender.warn(MessageTemplate.apply(": Value error > [$0]は存在しません。", stageName));
+				sender.warn(StringTemplate.apply(": Value error > [$0]は存在しません。", stageName));
 				return;
 			}
 
@@ -107,7 +107,7 @@ public class StageCommand implements Command {
 
 			//アスレが存在しなければエラーとする
 			if(!parkourMap.containsKey(parkourName)){
-				sender.warn(MessageTemplate.apply(": Value error > [$0]は存在しません。", parkourName));
+				sender.warn(StringTemplate.apply(": Value error > [$0]は存在しません。", parkourName));
 				return;
 			}
 
@@ -122,19 +122,19 @@ public class StageCommand implements Command {
 
 			//アスレが追加されていなければエラーとする
 			if(!parkourList.contains(parkour)){
-				sender.warn(MessageTemplate.apply(": Value error > [$0]に[$1]は追加されていません。", stageName, parkourName));
+				sender.warn(StringTemplate.apply(": Value error > [$0]に[$1]は追加されていません。", stageName, parkourName));
 				return;
 			}
 
 			parkourNamesToStagesMap.remove(parkourName);
 			parkourList.remove(parkour);
 
-			sender.info(MessageTemplate.apply(": Success > [$0]から[$1]を削除しました。", stageName, parkourName));
+			sender.info(StringTemplate.apply(": Success > [$0]から[$1]を削除しました。", stageName, parkourName));
 			return;
 		}case "parkourlist":{
 			//ステージが存在しなければエラーとする
 			if(!stages.containsKey(stageName)){
-				sender.warn(MessageTemplate.apply(": Value error > [$0]は存在しません。", stageName));
+				sender.warn(StringTemplate.apply(": Value error > [$0]は存在しません。", stageName));
 				return;
 			}
 
@@ -145,14 +145,14 @@ public class StageCommand implements Command {
 			List<Parkour> parkourList = stage.parkourList;
 
 			if(parkourList.isEmpty()){
-				sender.warn(MessageTemplate.apply(": Not exists error > [$0]にアスレは追加されていません。", stageName));
+				sender.warn(StringTemplate.apply(": Not exists error > [$0]にアスレは追加されていません。", stageName));
 				return;
 			}
 
-			sender.info(MessageTemplate.apply(": Information > [$0]に追加されているアスレの一覧です。", stageName));
+			sender.info(StringTemplate.apply(": Information > [$0]に追加されているアスレの一覧です。", stageName));
 
 			//各アスレ名を表示する
-			stage.parkourList.forEach(parkour -> sender.message(MessageTemplate.apply("$0: $1", ChatColor.GRAY, parkour.name)));
+			stage.parkourList.forEach(parkour -> sender.message(StringTemplate.apply("$0: $1", ChatColor.GRAY, parkour.name)));
 			return;
 		}default:
 			sender.warn(": Syntax error > /stage [name] (create|addparkour|removeparkour|parkourlist)");

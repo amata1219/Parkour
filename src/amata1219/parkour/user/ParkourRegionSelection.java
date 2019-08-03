@@ -10,12 +10,12 @@ import amata1219.amalib.selection.RegionSelection;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.parkour.Parkour;
 
-public class ParkourRegionSelector {
+public class ParkourRegionSelection {
 
 	public final Parkour parkour;
 	public final RegionSelection selection = new RegionSelection();
 
-	public ParkourRegionSelector(Parkour parkour){
+	public ParkourRegionSelection(Parkour parkour){
 		this.parkour = parkour;
 	}
 

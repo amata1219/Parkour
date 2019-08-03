@@ -21,6 +21,8 @@ import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
+import amata1219.parkour.parkour.Rank;
+import de.domedd.betternick.api.betternickapi.BetterNickAPI;
 
 public class User {
 
@@ -64,7 +66,7 @@ public class User {
 	public final UserScoreboard scoreboard;
 
 	//アスレ製作者用の指定範囲を表現するオブジェクト
-	public ParkourRegionSelector parkourRegionSelector;
+	public ParkourRegionSelection parkourRegionSelector;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
@@ -155,6 +157,16 @@ public class User {
 
 	public Player asBukkitPlayer(){
 		return Bukkit.getPlayer(uuid);
+	}
+
+	public void applyRankToPlayerName(){
+		BetterNickAPI api = Main.getNickAPI();
+		Player player = asBukkitPlayer();
+		String name = StringTemplate.apply("$0$1@$2", Rank.values()[updateRank].color, player.getName(), updateRank);
+
+		api.setPlayerDisplayName(player, name, "", "");
+		api.setPlayerChatName(player, name, "", "");
+		api.setPlayerTablistName(player, name, "", "");
 	}
 
 	public int getCoins(){
