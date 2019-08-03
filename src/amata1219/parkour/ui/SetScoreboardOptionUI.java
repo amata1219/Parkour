@@ -13,7 +13,7 @@ import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.Icon;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.inventory.ui.option.InventoryLine;
-import amata1219.amalib.text.TextTemplate;
+import amata1219.amalib.message.MessageTemplate;
 import amata1219.amalib.tuplet.Quadruple;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSetting;
@@ -71,7 +71,7 @@ public class SetScoreboardOptionUI implements InventoryUI {
 					s.async = true;
 
 					s.icon(material, (i) -> {
-						i.displayName = TextTemplate.apply("$0$1$2", ChatColor.AQUA, ChatColor.BOLD, displayName);
+						i.displayName = MessageTemplate.apply("$0$1$2", ChatColor.AQUA, ChatColor.BOLD, displayName);
 
 						//値が変更されない様に先に反転させておく
 						state.get();

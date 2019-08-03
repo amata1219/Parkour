@@ -12,8 +12,8 @@ import org.bukkit.inventory.ItemStack;
 
 import amata1219.amalib.inventory.ui.dsl.component.Icon;
 import amata1219.amalib.location.ImmutableBlockLocation;
+import amata1219.amalib.message.MessageTemplate;
 import amata1219.amalib.selection.RegionSelection;
-import amata1219.amalib.text.TextTemplate;
 import amata1219.parkour.Main;
 import amata1219.parkour.message.Messenger;
 import amata1219.parkour.user.ParkourRegionSelector;
@@ -41,7 +41,7 @@ public class SelectRegionListener implements Listener {
 		Player player = event.getPlayer();
 		ParkourRegionSelector selector = Main.getUserSet().users.get(player.getUniqueId()).parkourRegionSelector;
 		if(selector == null){
-			Messenger.sendEmbeddedCommandMessage(player, "§c: Invalid Action error > 範囲選択が無効化されています。このテキストをクリックして有効化して下さい。", TextTemplate.apply("/regionselector $0", ChatColor.stripColor(item.getItemMeta().getDisplayName()).split(" > ")[0]));
+			Messenger.sendEmbeddedCommandMessage(player, "§c: Invalid Action error > 範囲選択が無効化されています。このテキストをクリックして有効化して下さい。", MessageTemplate.apply("/regionselector $0", ChatColor.stripColor(item.getItemMeta().getDisplayName()).split(" > ")[0]));
 			return;
 		}
 

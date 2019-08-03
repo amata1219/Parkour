@@ -10,8 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import amata1219.amalib.message.MessageColor;
 import amata1219.amalib.schedule.Sync;
-import amata1219.amalib.text.TextColor;
 import amata1219.parkour.Main;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
@@ -52,7 +52,7 @@ public class ToggleHideModeChangeListener implements Listener {
 
 		//クールダウン中であれば警告をして戻る
 		if(cooldownPlayers.contains(user)){
-			TextColor.color("&7-Operation blocked-&c @ &7-Input is too fast").display(player);
+			MessageColor.color("&7-Operation blocked-&c @ &7-Input is too fast").display(player);
 			return;
 		}
 
@@ -65,7 +65,7 @@ public class ToggleHideModeChangeListener implements Listener {
 		//適用する
 		apply(player);
 
-		TextColor.color((setting.hideTraceurs ? "&7-Hide" : "&b-Unhide") + " other traceurs").display(player);
+		MessageColor.color((setting.hideTraceurs ? "&7-Hide" : "&b-Unhide") + " other traceurs").display(player);
 
 		//クールダウンさせる
 		cooldownPlayers.add(user);

@@ -22,7 +22,7 @@ import amata1219.amalib.inventory.ui.dsl.component.Icon;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.inventory.ui.option.InventoryLine;
 import amata1219.amalib.item.skull.SkullMaker;
-import amata1219.amalib.text.TextTemplate;
+import amata1219.amalib.message.MessageTemplate;
 import amata1219.amalib.tuplet.Triple;
 import amata1219.parkour.message.SoundPlayer;
 import amata1219.parkour.user.User;
@@ -136,10 +136,10 @@ public class BuyAndPutOnSkullUI implements InventoryUI {
 							i.basedItemStack = skull;
 
 							//表示例: amata1219 > Coins@500000
-							i.displayName = TextTemplate.apply("$0 > $1Coins@$2!", skullName, ChatColor.STRIKETHROUGH, value);
+							i.displayName = MessageTemplate.apply("$0 > $1Coins@$2!", skullName, ChatColor.STRIKETHROUGH, value);
 
 							//説明文を設定する
-							i.lore(TextTemplate.apply("$0: Click > Put on $1's Skull!", ChatColor.GRAY, skullName));
+							i.lore(MessageTemplate.apply("$0: Click > Put on $1's Skull!", ChatColor.GRAY, skullName));
 						});
 
 						s.onClick((event) -> {
@@ -152,10 +152,10 @@ public class BuyAndPutOnSkullUI implements InventoryUI {
 							i.basedItemStack = skull;
 
 							//表示例: amata1219 > Coins@500000
-							i.displayName = TextTemplate.apply("$0 > Coins@$1", skullName, value);
+							i.displayName = MessageTemplate.apply("$0 > Coins@$1", skullName, value);
 
 							//説明文を設定する
-							i.lore(TextTemplate.apply("$0: Click > Buy $1's Skull!", ChatColor.GRAY, skullName));
+							i.lore(MessageTemplate.apply("$0: Click > Buy $1's Skull!", ChatColor.GRAY, skullName));
 						});
 
 						s.onClick((event) -> {
@@ -174,10 +174,10 @@ public class BuyAndPutOnSkullUI implements InventoryUI {
 							Icon clickedIcon = event.currentIcon;
 
 							//表示例: amata1219 > Coins@500000
-							clickedIcon.displayName = TextTemplate.apply("$0 > $1Coins@$2!", skullName, ChatColor.STRIKETHROUGH, value);
+							clickedIcon.displayName = MessageTemplate.apply("$0 > $1Coins@$2!", skullName, ChatColor.STRIKETHROUGH, value);
 
 							//説明文を変更する
-							clickedIcon.lore(TextTemplate.apply("$0: Click > Put on $1's Skull!", ChatColor.GRAY, skullName));
+							clickedIcon.lore(MessageTemplate.apply("$0: Click > Put on $1's Skull!", ChatColor.GRAY, skullName));
 
 							//クリック時の処理を変更する
 							s.onClick((ev) -> {

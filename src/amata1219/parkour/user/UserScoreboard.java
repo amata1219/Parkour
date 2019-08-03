@@ -12,12 +12,13 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import amata1219.amalib.scoreboard.Scoreboard;
-import amata1219.amalib.text.TextTemplate;
+import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.tuplet.Quadruple;
 
 public class UserScoreboard {
 
 	private final User user;
+	private Scoreboard board;
 
 	//スコアボード用の情報群
 	private final List<Quadruple<Supplier<Boolean>, Integer, String, Supplier<Object>>> components = new ArrayList<>(9);
@@ -59,12 +60,19 @@ public class UserScoreboard {
 		}
 
 		//スコアボードを新しく作成する
-		Scoreboard board = new Scoreboard(player, TextTemplate.apply("$0$1A$2zisaba $1N$2etwork", ChatColor.BOLD, ChatColor.BLUE, ChatColor.AQUA));
+		board = new Scoreboard(player, StringTemplate.apply("$0$1A$2zisaba $1N$2etwork", ChatColor.BOLD, ChatColor.BLUE, ChatColor.AQUA));
 
 		for(Quadruple<Supplier<Boolean>, Integer, String, Supplier<Object>> component : components){
+			//表示するかどうか
 			Supplier<Boolean> display = component.first;
+
+			//どこに表示するか
 			int score = component.second;
+
+			//表示名
 			String valueName = component.third;
+
+			//表示する値
 			Supplier<Object> value = component.fourth;
 
 			//無効であれば繰り返す
@@ -72,13 +80,67 @@ public class UserScoreboard {
 				continue;
 
 			//情報名と値を@で連結したテキスト(表示例: Jumps @ 100)
-			String text = TextTemplate.apply("$0$2 $1@ $0$3", ChatColor.AQUA, ChatColor.GRAY, valueName, value.get());
+			String text = StringTemplate.apply("$0$2 $1@ $0$3", ChatColor.AQUA, ChatColor.GRAY, valueName, value.get());
 
 			//指定されたスコアにテキストをセットする
 			board.setScore(score, text);
 		}
 
 		board.setDisplay(true);
+	}
+
+	public void updateUpdateRank(){
+		updateValue(7);
+	}
+
+	public void updateExtendRank(){
+		updateValue(6);
+	}
+
+	public void updateJumps(){
+		updateValue(5);
+	}
+
+	public void updateCoins(){
+		updateValue(4);
+	}
+
+	public void updateTimePlayed(){
+		updateValue(3);
+	}
+
+	public void updateOnlinePlayers(){
+		updateValue(2);
+	}
+
+	public void updatePing(){
+		updateValue(1);
+	}
+
+	private void updateValue(int componentIndex){
+		Quadruple<Supplier<Boolean>, Integer, String, Supplier<Object>> component = components.get(componentIndex);
+
+		//表示するかどうか
+		Supplier<Boolean> display = component.first;
+
+		//どこに表示するか
+		int score = component.second;
+
+		//表示名
+		String valueName = component.third;
+
+		//表示する値
+		Supplier<Object> value = component.fourth;
+
+		//無効であれば戻る
+		if(!display.get())
+			return;
+
+		//情報名と値を@で連結したテキスト(表示例: Jumps @ 100)
+		String text = StringTemplate.applyWithColor("&b-$0 &7-@ &b-$1", valueName, value.get());
+
+		//指定されたスコアをアップデートする
+		board.updateScore(score, text);
 	}
 
 }

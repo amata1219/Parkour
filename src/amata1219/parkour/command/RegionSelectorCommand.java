@@ -9,7 +9,7 @@ import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
 import amata1219.amalib.inventory.ui.dsl.component.Icon;
-import amata1219.amalib.text.TextTemplate;
+import amata1219.amalib.message.MessageTemplate;
 import amata1219.parkour.Main;
 import amata1219.parkour.item.RegionSelector;
 import amata1219.parkour.parkour.Parkour;
@@ -30,7 +30,7 @@ public class RegionSelectorCommand implements Command {
 
 		//アスレが存在しなければエラーとする
 		if(!parkourSet.isParkourExists(parkourName)){
-			sender.warn(TextTemplate.apply(": Value error > [$0]は存在しません。", parkourName));
+			sender.warn(MessageTemplate.apply(": Value error > [$0]は存在しません。", parkourName));
 			return;
 		}
 

@@ -9,7 +9,7 @@ import org.bukkit.OfflinePlayer;
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
-import amata1219.amalib.text.TextTemplate;
+import amata1219.amalib.message.MessageTemplate;
 import amata1219.parkour.Main;
 import amata1219.parkour.user.User;
 
@@ -40,14 +40,14 @@ public class CoinCommand implements Command {
 		OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
 
 		if(player == null || !player.hasPlayedBefore()){
-			sender.warn(TextTemplate.apply(": Value error > [$0]はサーバーに参加した事がありません。", playerName));
+			sender.warn(MessageTemplate.apply(": Value error > [$0]はサーバーに参加した事がありません。", playerName));
 			return;
 		}
 
 		UUID uuid = player.getUniqueId();
 
 		if(!users.containsKey(uuid)){
-			sender.warn(TextTemplate.apply(": Value error > [$0]はサーバーに参加した事がありません。", playerName));
+			sender.warn(MessageTemplate.apply(": Value error > [$0]はサーバーに参加した事がありません。", playerName));
 			return;
 		}
 
@@ -57,7 +57,7 @@ public class CoinCommand implements Command {
 		switch(args.next()){
 		case "deposit":{
 			if(!args.hasNextInt()){
-				sender.warn(TextTemplate.apply(": Syntax error > /coin $0 deposit [coins]", playerName));
+				sender.warn(MessageTemplate.apply(": Syntax error > /coin $0 deposit [coins]", playerName));
 				return;
 			}
 
@@ -65,11 +65,11 @@ public class CoinCommand implements Command {
 
 			user.depositCoins(coins);
 
-			sender.info(TextTemplate.apply(": Success > [$0]に[$1]コイン与えました。", playerName, coins));
+			sender.info(MessageTemplate.apply(": Success > [$0]に[$1]コイン与えました。", playerName, coins));
 			return;
 		}case "withdraw":{
 			if(!args.hasNextInt()){
-				sender.warn(TextTemplate.apply(": Syntax error > /coin $0 deposit [coins]", playerName));
+				sender.warn(MessageTemplate.apply(": Syntax error > /coin $0 deposit [coins]", playerName));
 				return;
 			}
 
@@ -77,13 +77,13 @@ public class CoinCommand implements Command {
 
 			user.withdrawCoins(coins);
 
-			sender.info(TextTemplate.apply(": Success > [$0]から[$1]コイン奪いました。", playerName, coins));
+			sender.info(MessageTemplate.apply(": Success > [$0]から[$1]コイン奪いました。", playerName, coins));
 			return;
 		}case "see":{
-			sender.info(TextTemplate.apply(": Information > [$0]は[$1]コイン持っています。", playerName, user.getCoins()));
+			sender.info(MessageTemplate.apply(": Information > [$0]は[$1]コイン持っています。", playerName, user.getCoins()));
 			return;
 		}default:
-			sender.warn(TextTemplate.apply(": Syntax error > /coin $0 (deposit|withdraw) [coins] | /coin $0 see", playerName));
+			sender.warn(MessageTemplate.apply(": Syntax error > /coin $0 (deposit|withdraw) [coins] | /coin $0 see", playerName));
 			return;
 		}
 	}

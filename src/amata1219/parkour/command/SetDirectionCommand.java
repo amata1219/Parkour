@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
-import amata1219.amalib.text.TextTemplate;
+import amata1219.amalib.message.MessageTemplate;
 
 public class SetDirectionCommand implements Command {
 
@@ -69,7 +69,7 @@ public class SetDirectionCommand implements Command {
 		player.teleport(location);
 
 		//表示例: Set your direction @ 75.2 / 45.0
-		sender.info(TextTemplate.apply("Set your direction @ $0 / $1", truncateDecimal(location.getYaw()), truncateDecimal(location.getPitch())));
+		sender.info(MessageTemplate.apply("Set your direction @ $0 / $1", truncateDecimal(location.getYaw()), truncateDecimal(location.getPitch())));
 	}
 
 	private void adjustAndSetYaw(Location location, float yaw){
