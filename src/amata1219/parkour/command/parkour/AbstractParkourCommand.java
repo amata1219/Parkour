@@ -5,7 +5,6 @@ import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
 import amata1219.amalib.selection.RegionSelection;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.user.ParkourRegionSelection;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 

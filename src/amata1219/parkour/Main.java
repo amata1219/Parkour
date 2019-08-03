@@ -3,7 +3,9 @@ package amata1219.parkour;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import amata1219.amalib.Plugin;
+import amata1219.parkour.selection.RegionSelectionSet;
 import amata1219.parkour.user.SaveUserDataTask;
+import amata1219.parkour.user.UserSet;
 import de.domedd.betternick.BetterNick;
 import de.domedd.betternick.api.betternickapi.BetterNickAPI;
 
@@ -24,6 +26,8 @@ public class Main extends Plugin {
 		);
 
 		registerListeners(
+			UserSet.getInstnace(),
+			RegionSelectionSet.getInstance()
 		);
 
 		SaveUserDataTask.run();

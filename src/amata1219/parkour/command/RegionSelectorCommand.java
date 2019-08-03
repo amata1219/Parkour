@@ -14,7 +14,7 @@ import amata1219.parkour.Main;
 import amata1219.parkour.item.RegionSelector;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.user.ParkourRegionSelection;
+import amata1219.parkour.selection.ParkourRegionSelection;
 
 public class RegionSelectorCommand implements Command {
 

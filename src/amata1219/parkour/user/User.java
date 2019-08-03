@@ -65,9 +65,6 @@ public class User {
 	//スコアボードの管理インスタンス
 	public final UserScoreboard scoreboard;
 
-	//アスレ製作者用の指定範囲を表現するオブジェクト
-	public ParkourRegionSelection parkourRegionSelector;
-
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
 		this.uuid = UUID.fromString(yaml.name);
@@ -81,7 +78,7 @@ public class User {
 		//コイン数を取得する
 		coins = yaml.getInt("Coins");
 
-		ParkourSet parkourSet = Main.getParkourSet();
+		ParkourSet parkourSet = ParkourSet.getInstance();
 
 		//最後にいたアスレを取得する
 		currentParkour = parkourSet.getParkour("Current parkour");

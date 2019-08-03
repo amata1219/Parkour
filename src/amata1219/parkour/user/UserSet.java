@@ -7,12 +7,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 
-public class UserSet {
+public class UserSet implements Listener {
 
 	private static UserSet instance;
 
@@ -51,8 +54,9 @@ public class UserSet {
 		return users.get(uuid);
 	}
 
-	public void onPlayerFirstJoin(Player player){
-		UUID uuid = player.getUniqueId();
+	@EventHandler
+	public void onPlayerFirstJoin(PlayerJoinEvent event){
+		UUID uuid = event.getPlayer().getUniqueId();
 
 		//既にユーザーデータが存在するのであれば戻る
 		if(users.containsKey(uuid)) return;

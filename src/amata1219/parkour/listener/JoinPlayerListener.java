@@ -15,14 +15,6 @@ public class JoinPlayerListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onJoin(PlayerJoinEvent event){
-		Player player = event.getPlayer();
-
-		//初参加であればユーザーデータを作成する
-		userSet.onPlayerFirstJoin(player);
-
-		//ユーザーデータを取得する
-		User user = userSet.getUser(player);
-
 		//プレイヤー名にランクを付け加える
 		user.applyRankToPlayerName();
 	}

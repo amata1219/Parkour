@@ -17,7 +17,7 @@ import amata1219.amalib.message.MessageColor;
 import amata1219.amalib.selection.RegionSelection;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.Main;
-import amata1219.parkour.user.ParkourRegionSelection;
+import amata1219.parkour.selection.ParkourRegionSelection;
 
 public class SelectRegionListener implements Listener {
 

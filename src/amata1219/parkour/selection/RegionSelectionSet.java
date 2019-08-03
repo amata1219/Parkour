@@ -1,25 +1,36 @@
-package amata1219.parkour.user;
+package amata1219.parkour.selection;
 
-import org.bukkit.ChatColor;
-import org.bukkit.World;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import java.util.HashMap;
+import java.util.UUID;
 
-import amata1219.amalib.location.ImmutableBlockLocation;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import amata1219.amalib.selection.RegionSelection;
-import amata1219.amalib.string.StringTemplate;
+import amata1219.amalib.tuplet.Tuple;
 import amata1219.parkour.parkour.Parkour;
 
-public class ParkourRegionSelection {
+public class RegionSelectionSet implements Listener {
 
-	public final Parkour parkour;
-	public final RegionSelection selection = new RegionSelection();
+	private static RegionSelectionSet instance;
 
-	public ParkourRegionSelection(Parkour parkour){
-		this.parkour = parkour;
+	public static RegionSelectionSet getInstance(){
+		return instance != null ? instance : (instance = new RegionSelectionSet());
 	}
 
-	public void updateDisplayName(ItemStack item){
+	public final HashMap<UUID, Tuple<Parkour, RegionSelection>> selections = new HashMap<>();
+
+	private RegionSelectionSet(){
+
+	}
+
+	@EventHandler
+	public void onSelectionClear(PlayerQuitEvent event){
+		selections.remove(event.getPlayer());
+	}
+
+	/*
+	 * public void updateDisplayName(ItemStack item){
 		ItemMeta meta = item.getItemMeta();
 
 		ImmutableBlockLocation lesserBoundaryCorner = selection.getLesserBoundaryCorner();
@@ -33,5 +44,6 @@ public class ParkourRegionSelection {
 
 		item.setItemMeta(meta);
 	}
+	 */
 
 }
