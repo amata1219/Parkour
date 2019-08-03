@@ -47,7 +47,7 @@ public class InteractCheckSignListener implements Listener {
 		if(player.isOnGround())
 			return false;
 
-		MessageColor.color("&7-Operation blocked-&c @ &7-Must be on the ground").display(player);
+		MessageColor.color("&c-Operation blocked-&7 @ &c-Must be on the ground").display(player);
 		return true;
 	}
 

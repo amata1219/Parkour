@@ -17,11 +17,15 @@ public class LoadUserListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onJoin(PlayerJoinEvent event){
 		Player player = event.getPlayer();
+
+		//ユーザーデータを取得する
 		User user = userSet.getUser(player);
 
+		//ユーザーデータが存在しなければ新しく作成する
 		if(user == null)
-			userSet.registerNewUser(player.getUniqueId());
+			userSet.registerNewUser(player);
 
+		//プレイヤー名にランクを付け加える
 		user.applyRankToPlayerName();
 	}
 

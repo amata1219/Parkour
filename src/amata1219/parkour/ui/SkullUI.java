@@ -22,12 +22,12 @@ import amata1219.amalib.inventory.ui.dsl.component.Icon;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.inventory.ui.option.InventoryLine;
 import amata1219.amalib.item.skull.SkullMaker;
-import amata1219.amalib.message.MessageTemplate;
+import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.tuplet.Triple;
 import amata1219.parkour.message.SoundPlayer;
 import amata1219.parkour.user.User;
 
-public class BuyAndPutOnSkullUI implements InventoryUI {
+public class SkullUI implements InventoryUI {
 
 	private static final Map<UUID, Triple<ItemStack, String, Integer>> HEADS;
 
@@ -100,7 +100,7 @@ public class BuyAndPutOnSkullUI implements InventoryUI {
 
 	private User user;
 
-	public BuyAndPutOnSkullUI(User user){
+	public SkullUI(User user){
 		this.user = user;
 	}
 
@@ -135,11 +135,11 @@ public class BuyAndPutOnSkullUI implements InventoryUI {
 							//基となるアイテムを設定する
 							i.basedItemStack = skull;
 
-							//表示例: amata1219 > Coins@500000
-							i.displayName = MessageTemplate.apply("$0 > $1Coins@$2!", skullName, ChatColor.STRIKETHROUGH, value);
+							//表示例: amata1219 @ 500000 coins!
+							i.displayName = StringTemplate.applyWithColor("&b-$0 &7-@ &b-&m-$1 coins", skullName, value);
 
-							//説明文を設定する
-							i.lore(MessageTemplate.apply("$0: Click > Put on $1's Skull!", ChatColor.GRAY, skullName));
+							//表示例: Click to put on amata1219's skull!
+							i.lore(StringTemplate.applyWithColor("&7-Click to put on $0's skull!", skullName));
 						});
 
 						s.onClick((event) -> {
@@ -151,11 +151,11 @@ public class BuyAndPutOnSkullUI implements InventoryUI {
 							//基となるアイテムを設定する
 							i.basedItemStack = skull;
 
-							//表示例: amata1219 > Coins@500000
-							i.displayName = MessageTemplate.apply("$0 > Coins@$1", skullName, value);
+							//表示例: amata1219 @ 500000 coins!
+							i.displayName = StringTemplate.applyWithColor("&b-$0 &7-@ &b-&m-$1 coins", skullName, value);
 
-							//説明文を設定する
-							i.lore(MessageTemplate.apply("$0: Click > Buy $1's Skull!", ChatColor.GRAY, skullName));
+							//表示例: Click to buy amata1219's skull!
+							i.lore(StringTemplate.applyWithColor("&7-Click to buy $0's skull!", skullName));
 						});
 
 						s.onClick((event) -> {
@@ -173,11 +173,11 @@ public class BuyAndPutOnSkullUI implements InventoryUI {
 							//クリックしたスカルを取得する
 							Icon clickedIcon = event.currentIcon;
 
-							//表示例: amata1219 > Coins@500000
-							clickedIcon.displayName = MessageTemplate.apply("$0 > $1Coins@$2!", skullName, ChatColor.STRIKETHROUGH, value);
+							//表示例: amata1219 @ 500000 coins!
+							clickedIcon.displayName = StringTemplate.applyWithColor("&b-$0 &7-@ &b-&m-$1 coins", skullName, value);
 
-							//説明文を変更する
-							clickedIcon.lore(MessageTemplate.apply("$0: Click > Put on $1's Skull!", ChatColor.GRAY, skullName));
+							//表示例: Click to put on amata1219's skull!
+							clickedIcon.lore(StringTemplate.applyWithColor("&7-Click to put on $0's skull!", skullName));
 
 							//クリック時の処理を変更する
 							s.onClick((ev) -> {

@@ -52,7 +52,7 @@ public class ToggleHideModeChangeListener implements Listener {
 
 		//クールダウン中であれば警告をして戻る
 		if(cooldownPlayers.contains(user)){
-			MessageColor.color("&7-Operation blocked-&c @ &7-Input is too fast").display(player);
+			MessageColor.color("&c-Operation blocked-&7 @ &c-Input is too fast").display(player);
 			return;
 		}
 
