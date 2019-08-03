@@ -6,7 +6,7 @@ import amata1219.amalib.yaml.Yaml;
 
 public class UserSetting {
 
-	public boolean hideTraceurs;
+	public boolean hideMode;
 
 	public boolean displayScoreboard;
 	public boolean displayTraceur;
@@ -20,7 +20,7 @@ public class UserSetting {
 	public boolean displayServerAddress;
 
 	public UserSetting(Yaml yaml){
-		hideTraceurs = yaml.getBoolean("Hide traceurs");
+		hideMode = yaml.getBoolean("Hide mode");
 
 		ConfigurationSection section = yaml.getConfigurationSection("Values displayed on scoreboard");
 
@@ -34,6 +34,10 @@ public class UserSetting {
 		displayOnlinePlayers = section.getBoolean("Online players");
 		displayPing = section.getBoolean("Ping");
 		displayServerAddress = section.getBoolean("Server address");
+	}
+
+	public void save(Yaml yaml){
+
 	}
 
 }

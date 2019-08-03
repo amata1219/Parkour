@@ -10,16 +10,16 @@ import amata1219.parkour.command.StageCommand;
 import amata1219.parkour.command.parkour.FinishLineCommand;
 import amata1219.parkour.command.parkour.StartLineCommand;
 import amata1219.parkour.listener.LoadUserListener;
-import amata1219.parkour.listener.DisablePlayerCollisionsListener;
+import amata1219.parkour.listener.DisablePlayerCollisionListener;
 import amata1219.parkour.listener.DisplayRegionBorderListener;
 import amata1219.parkour.listener.DisplayScoreboardOnJoinListener;
-import amata1219.parkour.listener.InteractCheckSignListener;
-import amata1219.parkour.listener.PassFinishLineListener;
-import amata1219.parkour.listener.PassStartLineListener;
-import amata1219.parkour.listener.PlaceCheckSignListener;
 import amata1219.parkour.listener.SelectRegionListener;
 import amata1219.parkour.listener.SetCheckpointListener;
 import amata1219.parkour.listener.ToggleHideModeChangeListener;
+import amata1219.parkour.listener.move.PassFinishLineListener;
+import amata1219.parkour.listener.move.PassStartLineListener;
+import amata1219.parkour.listener.sign.InteractCheckSignListener;
+import amata1219.parkour.listener.sign.PlaceCheckSignListener;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.stage.StageSet;
 import amata1219.parkour.user.SaveUserDataTask;
@@ -59,7 +59,7 @@ public class Main extends Plugin {
 
 		registerListeners(
 			new LoadUserListener(),
-			new DisablePlayerCollisionsListener(),
+			new DisablePlayerCollisionListener(),
 			new SetCheckpointListener(),
 			new PassStartLineListener(),
 			new PassFinishLineListener(),

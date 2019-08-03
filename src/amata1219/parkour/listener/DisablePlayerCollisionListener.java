@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class DisablePlayerCollisionsListener implements Listener {
+public class DisablePlayerCollisionListener implements Listener {
 
 	private static final Method getHandle, sendPacket;
 	private static final Field playerConnection, collisionRule, playerNames, teamAction, teamName;
@@ -56,7 +56,7 @@ public class DisablePlayerCollisionsListener implements Listener {
 
 	public void disableCollision(Player player){
 		Object entityPlayer = invokeMethod(getHandle, player);
-		Object playerConnection = getFieldValue(DisablePlayerCollisionsListener.playerConnection, entityPlayer);
+		Object playerConnection = getFieldValue(DisablePlayerCollisionListener.playerConnection, entityPlayer);
 
 		Object packet = newInstance(newPacketPlayOutScoreboardTeam);
 

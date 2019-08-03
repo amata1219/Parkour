@@ -204,9 +204,6 @@ public class User {
 		//最後にアスレをプレイし始めた時間を記録する
 		yaml.set("Time to start playing", timeToStartPlaying);
 
-		//他プレイヤーを表示するかどうかを記録する
-		yaml.set("Hide traceurs", setting.hideTraceurs);
-
 		//クリア済みのアスレの名前リストを記録する
 		yaml.set("Cleared parkour names", clearedParkourNames);
 

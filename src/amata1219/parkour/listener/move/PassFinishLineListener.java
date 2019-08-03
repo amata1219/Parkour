@@ -1,4 +1,4 @@
-package amata1219.parkour.listener;
+package amata1219.parkour.listener.move;
 
 import java.util.Set;
 

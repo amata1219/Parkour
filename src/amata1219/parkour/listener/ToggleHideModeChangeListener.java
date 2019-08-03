@@ -1,93 +1,40 @@
 package amata1219.parkour.listener;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
-import amata1219.amalib.message.MessageColor;
-import amata1219.amalib.schedule.Sync;
-import amata1219.parkour.Main;
-import amata1219.parkour.user.User;
-import amata1219.parkour.user.UserSet;
-import amata1219.parkour.user.UserSetting;
+import amata1219.parkour.function.ToggleHideModeChange;
 
 public class ToggleHideModeChangeListener implements Listener {
 
-	private final Main plugin = Main.getPlugin();
-	private final UserSet userSet = Main.getUserSet();
-
-	//他プレイヤーを非表示にしているプレイヤー
-	private final List<User> hideModePlayers = new ArrayList<>();
-
-	//クールダウン中のプレイヤー
-	private final List<User> cooldownPlayers = new ArrayList<>();
+	private final ToggleHideModeChange function = new ToggleHideModeChange();
 
 	@EventHandler
-	public void loadHideMode(PlayerJoinEvent event){
-		Player player = event.getPlayer();
+	public void onJoin(PlayerJoinEvent event){
+		function.onPlayerJoin(event.getPlayer());
+	}
 
-		//他プレイヤーを非表示にしていなければ戻る
-		if(!userSet.getUser(player).setting.hideTraceurs)
+	@EventHandler
+	public void onQuit(PlayerQuitEvent event){
+		function.onPlayerQuit(event.getPlayer());
+	}
+
+	@EventHandler
+	public void onInteract(PlayerInteractEvent event){
+		if(event.getAction() == Action.PHYSICAL)
 			return;
 
-		apply(player);
-	}
-
-	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent event){
-		for(User user : hideModePlayers)
-			user.asBukkitPlayer().hidePlayer(plugin, event.getPlayer());
-	}
-
-	@EventHandler
-	public void toggleHideModeChange(PlayerDropItemEvent event){
-		Player player = event.getPlayer();
-		User user = userSet.getUser(player);
-
-		//クールダウン中であれば警告をして戻る
-		if(cooldownPlayers.contains(user)){
-			MessageColor.color("&c-Operation blocked-&7 @ &c-Input is too fast").display(player);
+		if(!event.hasItem())
 			return;
-		}
 
-		//ユーザー設定を取得する
-		UserSetting setting = user.setting;
+		ItemStack item = event.getItem();
 
-		//設定を反転させる
-		setting.hideTraceurs = !setting.hideTraceurs;
-
-		//適用する
-		apply(player);
-
-		MessageColor.color((setting.hideTraceurs ? "&7-Hide" : "&b-Unhide") + " other traceurs").display(player);
-
-		//クールダウンさせる
-		cooldownPlayers.add(user);
-
-		//0.5秒後に完了させる
-		Sync.define(() -> cooldownPlayers.remove(user)).executeLater(10);
-	}
-
-	private void apply(Player player){
-		User user = userSet.getUser(player);
-
-		if(user.setting.hideTraceurs){
-			for(Player target : Bukkit.getOnlinePlayers())
-				player.hidePlayer(plugin, target);
-
-			hideModePlayers.add(user);
-		}else{
-			for(Player target : Bukkit.getOnlinePlayers())
-				player.showPlayer(plugin, target);
-
-			hideModePlayers.remove(user);
-		}
+		function.change(event.getPlayer());
 	}
 
 }
