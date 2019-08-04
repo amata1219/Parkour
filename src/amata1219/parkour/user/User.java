@@ -17,11 +17,8 @@ import org.bukkit.entity.Player;
 import amata1219.amalib.location.ImmutableBlockLocation;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
-import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.parkour.RankColor;
-import de.domedd.betternick.api.betternickapi.BetterNickAPI;
 
 public class User {
 
@@ -126,28 +123,24 @@ public class User {
 		}
 	}
 
-	public void setCheckpoint(Parkour parkour, int checkAreaNumber, ImmutableBlockLocation location){
-		String parkourName = parkour.name;
-
-		//パルクールに対応したチェックポイントリストを取得、存在しなければ新規作成する
-		List<ImmutableBlockLocation> points = checkpoints.containsKey(parkourName) ? checkpoints.get(parkourName) : checkpoints.put(parkourName, new ArrayList<>());
-
-		if(points.size() >= checkAreaNumber)
-			//新しいチェックポイントであればそのまま追加
-			points.add(location);
-		else
-			//既に存在しているチェックポイントであれば更新する
-			points.set(checkAreaNumber, location);
+	public Player asBukkitPlayer(){
+		return Bukkit.getPlayer(uuid);
 	}
 
-	public void applyRankToPlayerName(){
-		BetterNickAPI api = Main.getNickAPI();
-		Player player = asBukkitPlayer();
-		String name = StringTemplate.apply("$0$1@$2", RankColor.values()[updateRank].color, player.getName(), updateRank);
+	public int getUpdateRank(){
+		return updateRank;
+	}
 
-		api.setPlayerDisplayName(player, name, "", "");
-		api.setPlayerChatName(player, name, "", "");
-		api.setPlayerTablistName(player, name, "", "");
+	public void incrementUpdateRank(){
+		updateRank++;
+	}
+
+	public int getExtendRank(){
+		return extendRank;
+	}
+
+	public void incrementExtendRank(){
+		extendRank++;
 	}
 
 	public int getCoins(){
@@ -166,8 +159,18 @@ public class User {
 		return parkourPlayingNow != null;
 	}
 
-	public Player asBukkitPlayer(){
-		return Bukkit.getPlayer(uuid);
+	public void setCheckpoint(Parkour parkour, int checkAreaNumber, ImmutableBlockLocation location){
+		String parkourName = parkour.name;
+
+		//パルクールに対応したチェックポイントリストを取得、存在しなければ新規作成する
+		List<ImmutableBlockLocation> points = checkpoints.containsKey(parkourName) ? checkpoints.get(parkourName) : checkpoints.put(parkourName, new ArrayList<>());
+
+		if(points.size() >= checkAreaNumber)
+			//新しいチェックポイントであればそのまま追加
+			points.add(location);
+		else
+			//既に存在しているチェックポイントであれば更新する
+			points.set(checkAreaNumber, location);
 	}
 
 	public void save(){

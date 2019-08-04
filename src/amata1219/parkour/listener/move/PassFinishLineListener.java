@@ -5,6 +5,7 @@ import java.util.Set;
 import org.bukkit.entity.Player;
 
 import amata1219.amalib.message.MessageTemplate;
+import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.message.TimeFormat;
 import amata1219.parkour.parkour.RegionWithBorders;
 import amata1219.parkour.parkour.Reward;
@@ -68,6 +69,8 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			if(user.updateRank < rank){
 				//ランクを更新する
 				user.updateRank = rank;
+
+				ApplyRankToDisplayName.apply(user);
 
 				//表示例: amata1219 to rank up @ Update11!
 				MessageTemplate.applyWithColor("$0 to rank up @ $1-&r-!", playerName, parkourName).broadcast();

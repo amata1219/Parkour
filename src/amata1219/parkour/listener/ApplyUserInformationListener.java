@@ -4,10 +4,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 
-public class ApplyUserSettingsListener implements Listener {
+public class ApplyUserInformationListener implements Listener {
 
 	private final UserSet users = UserSet.getInstnace();
 
@@ -15,7 +16,8 @@ public class ApplyUserSettingsListener implements Listener {
 	public void applyUserSettings(PlayerJoinEvent event){
 		User user = users.getUser(event.getPlayer());
 
-		//
+		//表示名を書き換える
+		ApplyRankToDisplayName.apply(user);
 
 		//スコアボードを表示する
 		user.informationBoard.loadScoreboard();
