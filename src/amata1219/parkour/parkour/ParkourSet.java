@@ -25,8 +25,13 @@ public class ParkourSet {
 
 	private final Map<String, Parkour> parkourMap = new HashMap<>();
 
+	//スタートラインのチャンクマップ
 	public final ChunksToObjectsMap<RegionWithBorders> chunksToStartLinesMap = new ChunksToObjectsMap<>();
+
+	//フィニッシュラインのチャンクマップ
 	public final ChunksToObjectsMap<RegionWithBorders> chunksToFinishLinesMap = new ChunksToObjectsMap<>();
+
+	//チェックエリアのチャンクマップ
 	public final ChunksToObjectsMap<RegionWithBorders> chunksToCheckAreasMap = new ChunksToObjectsMap<>();
 
 	private ParkourSet(){
@@ -50,26 +55,24 @@ public class ParkourSet {
 		parkourMap.put(parkour.name, parkour);
 
 		//スタートラインを登録する
-		registerRegionWithBorders(parkour.getStartLine(), chunksToStartLinesMap);
+		registerStartLine(parkour.getStartLine());
 
-		//ゴールラインを登録する
-		registerRegionWithBorders(parkour.getFinishLine(), chunksToFinishLinesMap);
+		//フィニッシュラインを登録する
+		registerFinishLine(parkour.getFinishLine());
 
-		//チェックエリアを登録する
-		for(RegionWithBorders checkArea : parkour.checkAreas)
-			registerRegionWithBorders(checkArea, chunksToCheckAreasMap);
+		//全チェックエリアを登録する
+		parkour.checkAreas.registerAll();
 	}
 
 	public void unregisterParkour(Parkour parkour){
 		//スタートラインの登録を解除する
-		registerRegionWithBorders(parkour.getStartLine(), chunksToStartLinesMap);
+		unregisterStartLine(parkour.getStartLine());
 
-		//ゴールラインの登録を解除する
-		registerRegionWithBorders(parkour.getFinishLine(), chunksToFinishLinesMap);
+		//フィニッシュラインの登録を解除する
+		unregisterFinishLine(parkour.getFinishLine());
 
-		//チェックエリアの登録を解除する
-		for(RegionWithBorders checkArea : parkour.checkAreas)
-			registerRegionWithBorders(checkArea, chunksToCheckAreasMap);
+		//全チェックエリアの登録を解除する
+		parkour.checkAreas.unregisterAll();
 
 		parkourMap.remove(parkour.name);
 	}
@@ -78,11 +81,39 @@ public class ParkourSet {
 		return parkourMap.get(parkourName);
 	}
 
+	public boolean containsParkour(Parkour parkour){
+		return containsParkour(parkour.name);
+	}
+
 	public boolean containsParkour(String parkourName){
 		return parkourMap.containsKey(parkourName);
 	}
 
-	public void registerRegionWithBorders(RegionWithBorders regionWithBorders, ChunksToObjectsMap<RegionWithBorders> chunksToRegionsMap){
+	public void registerStartLine(RegionWithBorders startLine){
+		registerRegionWithBorders(startLine, chunksToStartLinesMap);
+	}
+
+	public void unregisterStartLine(RegionWithBorders startLine){
+		unregisterRegionWithBorders(startLine, chunksToStartLinesMap);
+	}
+
+	public void registerFinishLine(RegionWithBorders finishLine){
+		registerRegionWithBorders(finishLine, chunksToFinishLinesMap);
+	}
+
+	public void unregisterFinishLine(RegionWithBorders finishLine){
+		unregisterRegionWithBorders(finishLine, chunksToFinishLinesMap);
+	}
+
+	public void registerCheckArea(RegionWithBorders checkArea){
+		registerRegionWithBorders(checkArea, chunksToCheckAreasMap);
+	}
+
+	public void unregisterCheckArea(RegionWithBorders checkArea){
+		unregisterRegionWithBorders(checkArea, chunksToCheckAreasMap);
+	}
+
+	private void registerRegionWithBorders(RegionWithBorders regionWithBorders, ChunksToObjectsMap<RegionWithBorders> chunksToRegionsMap){
 		//領域を取得する
 		Region region = regionWithBorders.region;
 
@@ -90,7 +121,7 @@ public class ParkourSet {
 		chunksToRegionsMap.putAll(region.lesserBoundaryCorner,  region.greaterBoundaryCorner, regionWithBorders);
 	}
 
-	public void unregisterRegionWithBorders(RegionWithBorders regionWithBorders, ChunksToObjectsMap<RegionWithBorders> chunksToRegionsMap){
+	private void unregisterRegionWithBorders(RegionWithBorders regionWithBorders, ChunksToObjectsMap<RegionWithBorders> chunksToRegionsMap){
 		//領域を取得する
 		Region region = regionWithBorders.region;
 

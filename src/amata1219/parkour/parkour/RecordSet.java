@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import amata1219.amalib.string.StringColor;
+import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.tuplet.Tuple;
 import amata1219.amalib.yaml.Yaml;
 
@@ -27,6 +28,8 @@ public class RecordSet {
 
 	//上位10件の記録
 	private final List<Tuple<UUID, Supplier<String>>> topTenRecords = new ArrayList<>(10);
+
+	private final List<UUID> cheaters = new ArrayList<>();
 
 	public RecordSet(Yaml yaml){
 		if(!yaml.isConfigurationSection("Records")){
@@ -57,7 +60,7 @@ public class RecordSet {
 	}
 
 	public void deleteCheaterRecord(UUID uuid){
-		//validate uuid... records.remove(uuid);
+		//validate uuid... records.remove(uuid); cheaters.add(uuid);
 	}
 
 	public void sort(){
@@ -75,6 +78,14 @@ public class RecordSet {
 
 			topTenRecords.add(new Tuple<>(uuid, () -> (records.containsKey(uuid) ? TIME_FORMAT.format(records.get(uuid)) : StringColor.color("&c-Invalid record &7-@ &c-Using cheats"))));
 		}
+	}
+
+	public void save(Yaml yaml){
+		for(Entry<UUID, Float> entry : records.entrySet())
+			yaml.set(StringTemplate.apply("Records.$0", entry.getKey()) , entry.getValue());
+
+		for(UUID cheater : cheaters)
+			yaml.set(StringTemplate.apply("Records.$0", cheater), null);
 	}
 
 }

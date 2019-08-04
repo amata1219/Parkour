@@ -29,12 +29,10 @@ import net.minecraft.server.v1_13_R2.PlayerConnection;
 public class Parkour {
 
 	private final StageSet stages = StageSet.getInstance();
+	private final ParkourSet parkourSet = ParkourSet.getInstance();
 
 	//アスレ名
 	public final String name;
-
-	//装飾コードを削除したアスレ名
-	public final String colorlessName;
 
 	//ワールド
 	public World world;
@@ -45,19 +43,14 @@ public class Parkour {
 	//アスレの領域
 	private Region region;
 
-	//スタートライン
 	private RegionWithBorders startLine;
 
-	//フィニッシュライン
 	private RegionWithBorders finishLine;
 
 	public final CheckAreaSet checkAreas;
 
 	//自己記録
-	public final Map<UUID, Float> selfRecords = new HashMap<>();
-
-	//上位10件の記録
-	public final Map<Integer, Tuple<UUID, Float>> top10Records = new HashMap<>(10);
+	public final RecordSet records;
 
 	//プレイヤーのコネクションリスト
 	final List<PlayerConnection> connections = new ArrayList<>();
@@ -84,8 +77,9 @@ public class Parkour {
 		//フィニッシュラインを作成する
 		finishLine = RegionWithBorders.deserialize(this, yaml.getString("Finish line"));
 
-		//各チェックエリアを作成してリストに詰め込む
 		checkAreas = new CheckAreaSet(yaml, this);
+
+		records = new RecordSet(yaml);
 	}
 
 	//このアスレに参加する
@@ -151,7 +145,12 @@ public class Parkour {
 
 	public void setStartLine(RegionWithBorders newStartLine){
 		Validate.notNull(newStartLine, "Start line can not be null");
-		setRegion(Main.getParkourSet().chunksToStartLinesMap, startLine, newStartLine);
+
+		startLine.undisplay();
+		parkourSet.unregisterRegionWithBorders(startLine, parkourSet.chunksToStartLinesMap);
+
+		parkourSet.registerRegionWithBorders(newStartLine, parkourSet.chunksToStartLinesMap);
+
 	}
 
 	public RegionWithBorders getFinishLine(){
@@ -173,22 +172,6 @@ public class Parkour {
 		Region newRegion = newDisplayer.region;
 		chunksToRegionsMap.putAll(newRegion.lesserBoundaryCorner, newRegion.greaterBoundaryCorner, newDisplayer);
 		newDisplayer.display();
-	}
-
-	public void tryToRecordTime(UUID uuid, float time){
-		if(selfRecords.getOrDefault(uuid, Float.MAX_VALUE) > time)
-			selfRecords.put(uuid, time);
-	}
-
-	public void updateTop10Records(){
-		List<Entry<UUID, Float>> records = new ArrayList<>(selfRecords.entrySet());
-		records.sort(Entry.comparingByValue());
-
-		//上位10件の記録をマップに保存する
-		for(int index = 0; index < 10; index++){
-			Entry<UUID, Float> record = records.get(index);
-			top10Records.put(index, new Tuple<>(record.getKey(), record.getValue()));
-		}
 	}
 
 	//BukkitプレイヤーをNMSプレイヤーに変換する
