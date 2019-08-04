@@ -1,6 +1,5 @@
 package amata1219.parkour.command;
 
-import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -10,12 +9,12 @@ import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
 import amata1219.amalib.string.StringTemplate;
-import amata1219.parkour.Main;
 import amata1219.parkour.user.User;
+import amata1219.parkour.user.UserSet;
 
 public class CoinCommand implements Command {
 
-	private final Map<UUID, User> users = Main.getUserSet().users;
+	private final UserSet users = UserSet.getInstnace();
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {
@@ -44,12 +43,13 @@ public class CoinCommand implements Command {
 
 		UUID uuid = player.getUniqueId();
 
-		if(!users.containsKey(uuid)){
+		if(!users.containsUser(uuid)){
 			sender.warn(StringTemplate.apply(": Value error > [$0]はサーバーに参加した事がありません。", playerName));
 			return;
 		}
 
-		User user = users.get(uuid);
+		//ユーザーを取得する
+		User user = users.getUser(uuid);
 
 		//第2引数で分岐する
 		switch(args.next()){

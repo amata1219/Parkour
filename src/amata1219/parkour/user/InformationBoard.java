@@ -15,7 +15,7 @@ import amata1219.amalib.scoreboard.Scoreboard;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.tuplet.Quadruple;
 
-public class UserScoreboard {
+public class InformationBoard {
 
 	private final User user;
 	private Scoreboard board;
@@ -23,7 +23,7 @@ public class UserScoreboard {
 	//スコアボード用の情報群
 	private final List<Quadruple<Supplier<Boolean>, Integer, String, Supplier<Object>>> components = new ArrayList<>(9);
 
-	public UserScoreboard(User user){
+	public InformationBoard(User user){
 		this.user = user;
 
 		UserSetting setting = user.setting;

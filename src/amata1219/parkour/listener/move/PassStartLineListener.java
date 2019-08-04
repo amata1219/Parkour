@@ -23,7 +23,7 @@ public class PassStartLineListener extends PassRegionBoundaryAbstractListener {
 		if(from == null && to != null){
 
 			//プレイ中のアスレとして設定する
-			user.currentlyPlayingParkour = parkour;
+			user.parkourPlayingNow = parkour;
 
 			//プレイし始めた時間を記録する
 			user.timeToStartPlaying = System.currentTimeMillis();
@@ -35,7 +35,7 @@ public class PassStartLineListener extends PassRegionBoundaryAbstractListener {
 		}else if(from != null && to == null){
 
 			//プレイ中のアスレを削除する
-			user.currentlyPlayingParkour = null;
+			user.parkourPlayingNow = null;
 
 			//タイムを削除する
 			user.timeToStartPlaying = 0L;

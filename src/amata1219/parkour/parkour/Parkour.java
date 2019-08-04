@@ -22,10 +22,13 @@ import amata1219.amalib.tuplet.Tuple;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.stage.Stage;
+import amata1219.parkour.stage.StageSet;
 import net.minecraft.server.v1_13_R2.EntityPlayer;
 import net.minecraft.server.v1_13_R2.PlayerConnection;
 
 public class Parkour {
+
+	private final StageSet stages = StageSet.getInstance();
 
 	//アスレ名
 	public final String name;
@@ -135,7 +138,7 @@ public class Parkour {
 
 	//このマップがあるステージを返す
 	public Stage getStage(){
-		return Main.getStageSet().parkourNamesToStagesMap.get(name);
+		return stages.parkourNamesToStagesMap.get(name);
 	}
 
 	//アスレの領域を返す

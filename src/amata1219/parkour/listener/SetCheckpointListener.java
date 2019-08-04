@@ -31,7 +31,7 @@ public class SetCheckpointListener implements Listener {
 			return;
 
 		//現在アスレをプレイ中でなければ戻る
-		if(!user.isPlayingParkour())
+		if(!user.isPlayignWithParkour())
 			return;
 
 		Location location = player.getLocation();
@@ -52,13 +52,13 @@ public class SetCheckpointListener implements Listener {
 
 		Parkour parkour = area.parkour;
 
-		if(!user.currentlyPlayingParkour.equals(parkour))
+		if(!user.parkourPlayingNow.equals(parkour))
 			return;
 
 		int areaNumber = parkour.getCheckAreaNumber(area);
 
 		//チェックポイントとして設定する
-		user.setCheckPoint(parkour, areaNumber, location);
+		user.setCheckpoint(parkour, areaNumber, location);
 
 		MessageTemplate.applyWithColor("&b-Set checkpoint @ $0", areaNumber).displayOnActionBar(player);
 	}

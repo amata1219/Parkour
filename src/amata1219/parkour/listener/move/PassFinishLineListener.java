@@ -21,7 +21,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 	@Override
 	public void onMove(Player player, User user, Parkour parkour, RegionBorderDisplayer from, RegionBorderDisplayer to) {
 		//フィニッシュラインに初めて踏み込んだのでなければ戻る
-		if(user.currentlyPlayingParkour == null || from != null || to == null)
+		if(user.parkourPlayingNow == null || from != null || to == null)
 			return;
 
 		String parkourName = parkour.name;
@@ -45,7 +45,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		parkour.updateTop10Records();
 
 		//遊んでいるアスレを削除する
-		user.currentlyPlayingParkour = null;
+		user.parkourPlayingNow = null;
 
 		//タイムを削除する
 		user.timeToStartPlaying = 0L;

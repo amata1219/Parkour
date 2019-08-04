@@ -54,6 +54,18 @@ public class UserSet implements Listener {
 		return users.get(uuid);
 	}
 
+	public boolean containsUser(Player player){
+		return containsUser(player.getUniqueId());
+	}
+
+	public boolean containsUser(UUID uuid){
+		return users.containsKey(uuid);
+	}
+
+	public Yaml getYaml(UUID uuid){
+		return new Yaml(plugin, new File(folder, StringTemplate.apply("$0.yml", uuid)));
+	}
+
 	@EventHandler
 	public void onPlayerFirstJoin(PlayerJoinEvent event){
 		UUID uuid = event.getPlayer().getUniqueId();
@@ -62,7 +74,7 @@ public class UserSet implements Listener {
 		if(users.containsKey(uuid)) return;
 
 		//ユーザーデータコンフィグ作成する
-		Yaml yaml = new Yaml(plugin, new File(folder, StringTemplate.apply("$0.yml", uuid)));
+		Yaml yaml = getYaml(uuid);
 
 		//コンフィグを基にユーザーを生成する
 		User user = new User(yaml);

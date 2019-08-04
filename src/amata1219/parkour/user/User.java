@@ -1,7 +1,6 @@
 package amata1219.parkour.user;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,10 +11,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import amata1219.amalib.location.ImmutableBlockLocation;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
@@ -42,13 +41,13 @@ public class User {
 	public Parkour currentParkour;
 
 	//現在プレイ中のアスレ
-	public Parkour currentlyPlayingParkour;
+	public Parkour parkourPlayingNow;
 
 	//プレイし始めた時間(ミリ秒)
 	public long timeToStartPlaying;
 
 	//各アスレのチェックポイント
-	public final Map<String, List<Location>> checkPoints = new HashMap<>();
+	public final Map<String, List<ImmutableBlockLocation>> checkpoints = new HashMap<>();
 
 	//個人設定
 	public final UserSetting setting;
@@ -57,13 +56,13 @@ public class User {
 	public final Set<String> clearedParkourNames;
 
 	//クリエイティブワールドでのチェックポイント
-	public Location creativeWorldCheckpoint;
+	public ImmutableBlockLocation creativeWorldCheckpoint;
 
 	//購入したヘッドのセット
 	public final Set<UUID> purchasedHeads;
 
 	//スコアボードの管理インスタンス
-	public final UserScoreboard scoreboard;
+	public final InformationBoard scoreboard;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
@@ -84,7 +83,7 @@ public class User {
 		currentParkour = parkourSet.getParkour("Current parkour");
 
 		//最後に遊んでいたアスレを取得する
-		currentlyPlayingParkour = parkourSet.getParkour("Currently playing parkour");
+		parkourPlayingNow = parkourSet.getParkour("Currently playing parkour");
 
 		//最後にアスレをプレイし始めた時間を取得する
 		timeToStartPlaying = yaml.getLong("Time to start playing");
@@ -95,13 +94,8 @@ public class User {
 		//クリア済みのアスレ名リストを取得してセットでラップする
 		clearedParkourNames = new HashSet<>(yaml.getStringList("Cleared parkur names"));
 
-		//クリエイティブワールドのチェックポイントデータを取得して分割する
-		String[] checkpointCoordinates = yaml.getString("Creative world checkpoint").split(",");
-
 		//データを基に座標を作成する
-		creativeWorldCheckpoint = new Location(Main.getCreativeWorld(), Double.parseDouble(checkpointCoordinates[0]),
-				Double.parseDouble(checkpointCoordinates[1]), Double.parseDouble(checkpointCoordinates[2]),
-				Float.parseFloat(checkpointCoordinates[3]), Float.parseFloat(checkpointCoordinates[4]));
+		creativeWorldCheckpoint = ImmutableBlockLocation.deserialize( yaml.getString("Creative world checkpoint"));
 
 		//購入済みのスカルのIDをUUIDに変換したリストを作成する
 		purchasedHeads = yaml.getStringList("Purchased skulls")
@@ -110,7 +104,7 @@ public class User {
 								.collect(Collectors.toSet());
 
 		//スコアボードの管理インスタンスを作成する
-		scoreboard = new UserScoreboard(this);
+		scoreboard = new InformationBoard(this);
 
 		//セクションが存在しなければ戻る
 		if(yaml.isConfigurationSection("Check points")){
@@ -122,38 +116,28 @@ public class User {
 				//アスレ名と対応したアスレを取得する
 				Parkour parkour = parkourSet.getParkour(parkourName);
 
-				//チェックポイントを文字列から座標に変換してリスト化する
-				List<Location> points = section.getStringList(parkourName)
-												.stream()
-												.map(point -> point.split(","))
-												.map(coordinates -> Arrays.stream(coordinates).mapToDouble(Double::parseDouble).toArray())
-												.map(coordinates -> new Location(parkour.world, coordinates[0], coordinates[1], coordinates[2], (float) coordinates[3], (float) coordinates[4]))
-												.collect(Collectors.toList());
+				//チェックポイントを取得する
+				List<ImmutableBlockLocation> points = section.getStringList(parkourName).stream().map(ImmutableBlockLocation::deserialize).collect(Collectors.toList());
 
 				//エリア番号と結び付けてチェックポイントをセットする
-				for(int number = 0; number < points.size(); number++)
-					setCheckPoint(parkour, number, points.get(number));
+				for(int checkAreaNumber = 0; checkAreaNumber < points.size(); checkAreaNumber++)
+					setCheckpoint(parkour, checkAreaNumber, points.get(checkAreaNumber));
 			}
 		}
 	}
 
-	//numberは0から始まる
-	public void setCheckPoint(Parkour parkour, int number, Location location){
+	public void setCheckpoint(Parkour parkour, int checkAreaNumber, ImmutableBlockLocation location){
 		String parkourName = parkour.name;
 
 		//パルクールに対応したチェックポイントリストを取得、存在しなければ新規作成する
-		List<Location> points = checkPoints.containsKey(parkourName) ? checkPoints.get(parkourName) : checkPoints.put(parkourName, new ArrayList<>());
+		List<ImmutableBlockLocation> points = checkpoints.containsKey(parkourName) ? checkpoints.get(parkourName) : checkpoints.put(parkourName, new ArrayList<>());
 
-		if(points.size() >= number)
+		if(points.size() >= checkAreaNumber)
 			//新しいチェックポイントであればそのまま追加
 			points.add(location);
 		else
 			//既に存在しているチェックポイントであれば更新する
-			points.set(number, location);
-	}
-
-	public Player asBukkitPlayer(){
-		return Bukkit.getPlayer(uuid);
+			points.set(checkAreaNumber, location);
 	}
 
 	public void applyRankToPlayerName(){
@@ -178,11 +162,17 @@ public class User {
 		this.coins = Math.max(this.coins - coins, 0);
 	}
 
-	public boolean isPlayingParkour(){
-		return currentlyPlayingParkour != null;
+	public boolean isPlayignWithParkour(){
+		return parkourPlayingNow != null;
 	}
 
-	public void save(Yaml yaml){
+	public Player asBukkitPlayer(){
+		return Bukkit.getPlayer(uuid);
+	}
+
+	public void save(){
+		Yaml yaml = UserSet.getInstnace().getYaml(uuid);
+
 		//Updateランクを記録する
 		yaml.set("Update rank", updateRank);
 
@@ -196,7 +186,7 @@ public class User {
 		yaml.set("Current parkour", currentParkour != null ? currentParkour.name : null);
 
 		//最後にプレイしていたアスレの名前を記録する
-		yaml.set("Currently playing parkour", currentlyPlayingParkour != null ? currentlyPlayingParkour.name : null);
+		yaml.set("Currently playing parkour", parkourPlayingNow != null ? parkourPlayingNow.name : null);
 
 		//最後にアスレをプレイし始めた時間を記録する
 		yaml.set("Time to start playing", timeToStartPlaying);
@@ -205,25 +195,21 @@ public class User {
 		yaml.set("Cleared parkour names", clearedParkourNames);
 
 		//購入済みのスカルのIDを文字列に変換したリストを記録する
-		yaml.set("Purchased skulls", purchasedHeads.stream()
-													.map(UUID::toString)
-													.collect(Collectors.toList()));
+		yaml.set("Purchased skulls", purchasedHeads.stream().map(UUID::toString).collect(Collectors.toList()));
 
 		//クリエイティブワールドのチェックポイントを記録する
-		yaml.set("Creative world checkpoint", StringTemplate.apply("$0,$1,$2,$3,$4",
-				creativeWorldCheckpoint.getX(), creativeWorldCheckpoint.getY(), creativeWorldCheckpoint.getZ(),
-				creativeWorldCheckpoint.getYaw(), creativeWorldCheckpoint.getPitch()));
+		yaml.set("Creative world checkpoint", creativeWorldCheckpoint.serialize());
 
 		//各チェックポイントを記録する
-		for(Entry<String, List<Location>> entry : checkPoints.entrySet()){
+		for(Entry<String, List<ImmutableBlockLocation>> entry : checkpoints.entrySet()){
+			//アスレ名を取得する
+			String parkourName = entry.getKey();
+
 			//座標を文字列に変換しリスト化する
-			List<String> points = entry.getValue()
-					.stream()
-					.map(location -> StringTemplate.apply("$0,$1,$2,$3,$4", location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch()))
-					.collect(Collectors.toList());
+			List<String> points = entry.getValue().stream().map(ImmutableBlockLocation::serialize).collect(Collectors.toList());
 
 			//対応したアスレ名の階層にチェックポイントリストを記録する
-			yaml.set(StringTemplate.apply("Check points.$0", entry.getKey()), points);
+			yaml.set(StringTemplate.apply("Check points.$0", parkourName), points);
 		}
 
 		//ファイルをセーブする

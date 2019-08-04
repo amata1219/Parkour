@@ -27,12 +27,12 @@ public class SelectLastCheckPointUI implements InventoryUI {
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
-		return build(user.currentlyPlayingParkour.getStage().parkourList.size(), (l) -> {
+		return build(user.parkourPlayingNow.getStage().parkourList.size(), (l) -> {
 			//今いるステージのパルクールリストを取得する
-			List<Parkour> parkourList = user.currentlyPlayingParkour.getStage().parkourList;
+			List<Parkour> parkourList = user.parkourPlayingNow.getStage().parkourList;
 
 			//ユーザーのチェックポイントマップを取得する
-			Map<String, List<Location>> points = user.checkPoints;
+			Map<String, List<Location>> points = user.checkpoints;
 
 			//各アスレ毎に処理をする
 			for(int slotIndex = 0; slotIndex < parkourList.size(); slotIndex++){
@@ -69,7 +69,7 @@ public class SelectLastCheckPointUI implements InventoryUI {
 						);
 
 						//現在プレイ中のアスレであれば発光させる
-						if(parkour.equals(user.currentlyPlayingParkour))
+						if(parkour.equals(user.parkourPlayingNow))
 							i.gleam();
 					});
 				}, slotIndex);
