@@ -1,6 +1,6 @@
 'World': "world"
 'Region': "0,0,0,0,0,0"
-'Color': "0,0,0"
+'Particle color': "0,0,0"
 'Start line': "0,0,0,0,0,0"
 'Finish line': "0,0,0,0,0,0"
 'Check areas': []

@@ -2,7 +2,9 @@ package amata1219.parkour.parkour;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import amata1219.amalib.region.Region;
 import amata1219.amalib.yaml.Yaml;
 
 public class CheckAreaSet {
@@ -12,7 +14,7 @@ public class CheckAreaSet {
 
 	public CheckAreaSet(Yaml yaml, Parkour parkour){
 		for(String text : yaml.getStringList("Check areas"))
-			checkAreas.add(RegionWithBorders.deserialize(parkour, text));
+			checkAreas.add(new RegionWithBorders(parkour, Region.deserialize(parkour.world, text)));
 	}
 
 	public int getCheckAreaNumber(RegionWithBorders checkArea){
@@ -65,6 +67,11 @@ public class CheckAreaSet {
 
 	public void unregisterAll(){
 		checkAreas.forEach(parkourSet::unregisterCheckArea);
+	}
+
+	public void save(Yaml yaml){
+		List<String> data = checkAreas.stream().map(checkArea -> checkArea.region.serialize()).collect(Collectors.toList());
+		yaml.set("Check areas", data);
 	}
 
 }

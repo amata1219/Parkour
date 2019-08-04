@@ -119,9 +119,15 @@ public class ParkourSet {
 
 		//領域を登録する
 		chunksToRegionsMap.putAll(region.lesserBoundaryCorner,  region.greaterBoundaryCorner, regionWithBorders);
+
+		//境界線の描画を始める
+		regionWithBorders.display();
 	}
 
 	private void unregisterRegionWithBorders(RegionWithBorders regionWithBorders, ChunksToObjectsMap<RegionWithBorders> chunksToRegionsMap){
+		//境界線の描画を止める
+		regionWithBorders.undisplay();
+
 		//領域を取得する
 		Region region = regionWithBorders.region;
 

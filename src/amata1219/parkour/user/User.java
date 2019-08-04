@@ -186,7 +186,7 @@ public class User {
 		yaml.set("Current parkour", currentParkour != null ? currentParkour.name : null);
 
 		//最後にプレイしていたアスレの名前を記録する
-		yaml.set("Currently playing parkour", parkourPlayingNow != null ? parkourPlayingNow.name : null);
+		yaml.set("Last played parkour", parkourPlayingNow != null ? parkourPlayingNow.name : null);
 
 		//最後にアスレをプレイし始めた時間を記録する
 		yaml.set("Time to start playing", timeToStartPlaying);
@@ -212,7 +212,7 @@ public class User {
 			yaml.set(StringTemplate.apply("Check points.$0", parkourName), points);
 		}
 
-		//ファイルをセーブする
+		//セーブする
 		yaml.save();
 	}
 

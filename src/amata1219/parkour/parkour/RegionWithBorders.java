@@ -39,11 +39,6 @@ public class RegionWithBorders {
 	//パーティクルパケットを送信する非同期のループタスク
 	private BukkitTask task;
 
-	public static RegionWithBorders deserialize(Parkour parkour, String text){
-		Region region = Region.deserialize(parkour.world, text);
-		return new RegionWithBorders(parkour, region);
-	}
-
 	public RegionWithBorders(Parkour parkour,  Region region){
 		this.parkour = parkour;
 		this.region = region;
@@ -74,6 +69,10 @@ public class RegionWithBorders {
 	public void display(){
 		//既に実行されているタスクがあればそれをキャンセルする
 		undisplay();
+
+		//コネクションリストが空であれば戻る
+		if(parkour.connections.isEmpty())
+			return;
 
 		final int size = packets.size();
 

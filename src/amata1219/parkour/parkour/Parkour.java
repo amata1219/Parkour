@@ -1,5 +1,6 @@
 package amata1219.parkour.parkour;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player;
 import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.string.StringSplit;
+import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.tuplet.Tuple;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
@@ -56,9 +58,8 @@ public class Parkour {
 	final List<PlayerConnection> connections = new ArrayList<>();
 
 	public Parkour(Yaml yaml){
+		//コンフィグのファイル名をアスレ名として扱う
 		name = yaml.name;
-
-		colorlessName = ChatColor.stripColor(name);
 
 		world = Bukkit.getWorld(yaml.getString("World"));
 
@@ -146,11 +147,10 @@ public class Parkour {
 	public void setStartLine(RegionWithBorders newStartLine){
 		Validate.notNull(newStartLine, "Start line can not be null");
 
-		startLine.undisplay();
-		parkourSet.unregisterRegionWithBorders(startLine, parkourSet.chunksToStartLinesMap);
+		if(startLine != null)
+			parkourSet.unregisterStartLine(startLine);
 
-		parkourSet.registerRegionWithBorders(newStartLine, parkourSet.chunksToStartLinesMap);
-
+		parkourSet.registerStartLine(startLine);
 	}
 
 	public RegionWithBorders getFinishLine(){
@@ -159,24 +159,44 @@ public class Parkour {
 
 	public void setFinishLine(RegionWithBorders newFinishLine){
 		Validate.notNull(newFinishLine, "Finish line can not be null");
-		setRegion(Main.getParkourSet().chunksToFinishLinesMap, finishLine, newFinishLine);
-	}
 
-	private void setRegion(ChunksToObjectsMap<RegionWithBorders> chunksToRegionsMap, RegionWithBorders oldDisplayer, RegionWithBorders newDisplayer){
-		if(oldDisplayer != null){
-			oldDisplayer.undisplay();
-			Region oldRegion = oldDisplayer.region;
-			chunksToRegionsMap.removeAll(oldRegion.lesserBoundaryCorner, oldRegion.greaterBoundaryCorner, oldDisplayer);
-		}
+		if(finishLine != null)
+			parkourSet.unregisterStartLine(finishLine);
 
-		Region newRegion = newDisplayer.region;
-		chunksToRegionsMap.putAll(newRegion.lesserBoundaryCorner, newRegion.greaterBoundaryCorner, newDisplayer);
-		newDisplayer.display();
+		parkourSet.registerStartLine(finishLine);
 	}
 
 	//BukkitプレイヤーをNMSプレイヤーに変換する
 	private EntityPlayer asEntityPlayer(Player player){
 		return ((CraftPlayer) player).getHandle();
+	}
+
+	public void save(){
+		Yaml yaml = new Yaml(Main.getPlugin(), new File(parkourSet.folder, StringTemplate.apply("$0.yml", name)));
+
+		//ワールド名を記録する
+		yaml.set("World", world.getName());
+
+		//領域情報を記録する
+		yaml.set("Region", region.serialize());
+
+		//パーティクルの色をRGBの形式で記録する
+		yaml.set("Particle color", StringTemplate.apply("$0,$1,$2", particleColor.getRed(), particleColor.getGreen(), particleColor.getBlue()));
+
+		//スタートラインの領域情報を記録する
+		yaml.set("Start line", startLine.region.serialize());
+
+		//フィニッシュラインの領域情報を記録する
+		yaml.set("Finish line", finishLine.region.serialize());
+
+		//全チェックエリアの領域情報を記録する
+		checkAreas.save(yaml);
+
+		//全レコードを記録する
+		records.save(yaml);
+
+		//セーブする
+		yaml.save();
 	}
 
 }
