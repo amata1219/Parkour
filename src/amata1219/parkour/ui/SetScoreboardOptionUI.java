@@ -56,7 +56,7 @@ public class SetScoreboardOptionUI implements InventoryUI {
 			l.asynchronouslyRunActionOnClose = true;
 
 			l.onClose((event) -> {
-				user.scoreboard.loadScoreboard();
+				user.informationBoard.loadScoreboard();
 				//音を再生する
 			});
 

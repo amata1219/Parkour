@@ -20,7 +20,7 @@ import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.parkour.Rank;
+import amata1219.parkour.parkour.RankColor;
 import de.domedd.betternick.api.betternickapi.BetterNickAPI;
 
 public class User {
@@ -62,7 +62,7 @@ public class User {
 	public final Set<UUID> purchasedHeads;
 
 	//スコアボードの管理インスタンス
-	public final InformationBoard scoreboard;
+	public final InformationBoard informationBoard;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
@@ -104,7 +104,7 @@ public class User {
 								.collect(Collectors.toSet());
 
 		//スコアボードの管理インスタンスを作成する
-		scoreboard = new InformationBoard(this);
+		informationBoard = new InformationBoard(this);
 
 		//セクションが存在しなければ戻る
 		if(yaml.isConfigurationSection("Check points")){
@@ -143,7 +143,7 @@ public class User {
 	public void applyRankToPlayerName(){
 		BetterNickAPI api = Main.getNickAPI();
 		Player player = asBukkitPlayer();
-		String name = StringTemplate.apply("$0$1@$2", Rank.values()[updateRank].color, player.getName(), updateRank);
+		String name = StringTemplate.apply("$0$1@$2", RankColor.values()[updateRank].color, player.getName(), updateRank);
 
 		api.setPlayerDisplayName(player, name, "", "");
 		api.setPlayerChatName(player, name, "", "");

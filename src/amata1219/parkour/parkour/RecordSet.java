@@ -13,6 +13,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import amata1219.amalib.schedule.Async;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.tuplet.Tuple;
@@ -64,20 +65,23 @@ public class RecordSet {
 	}
 
 	public void sort(){
-		List<Entry<UUID, Float>> list = new ArrayList<>(records.entrySet());
+		//非同期で実行する
+		Async.define(() -> {
+			List<Entry<UUID, Float>> list = new ArrayList<>(records.entrySet());
 
-		//記録を昇順ソートする
-		list.sort(Entry.comparingByValue());
+			//記録を昇順ソートする
+			list.sort(Entry.comparingByValue());
 
-		//上位10件の記録をリストに追加する
-		for(int index = 0; index < 10; index++){
-			//ソート済みリストから記録を取得する
-			Entry<UUID, Float> record = list.get(index);
+			//上位10件の記録をリストに追加する
+			for(int index = 0; index < 10; index++){
+				//ソート済みリストから記録を取得する
+				Entry<UUID, Float> record = list.get(index);
 
-			UUID uuid = record.getKey();
+				UUID uuid = record.getKey();
 
-			topTenRecords.add(new Tuple<>(uuid, () -> (records.containsKey(uuid) ? TIME_FORMAT.format(records.get(uuid)) : StringColor.color("&c-Invalid record &7-@ &c-Using cheats"))));
-		}
+				topTenRecords.add(new Tuple<>(uuid, () -> (records.containsKey(uuid) ? TIME_FORMAT.format(records.get(uuid)) : StringColor.color("&c-Invalid record &7-@ &c-Using cheats"))));
+			}
+		}).execute();
 	}
 
 	public void save(Yaml yaml){

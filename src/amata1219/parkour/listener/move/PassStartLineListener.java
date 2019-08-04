@@ -4,15 +4,15 @@ import org.bukkit.entity.Player;
 
 import amata1219.amalib.message.MessageColor;
 import amata1219.amalib.message.MessageTemplate;
-import amata1219.parkour.Main;
 import amata1219.parkour.parkour.RegionWithBorders;
 import amata1219.parkour.parkour.Parkour;
+import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.user.User;
 
 public class PassStartLineListener extends PassRegionBoundaryAbstractListener {
 
 	public PassStartLineListener() {
-		super(Main.getParkourSet().chunksToStartLinesMap);
+		super(ParkourSet.getInstance().chunksToStartLinesMap);
 	}
 
 	@Override

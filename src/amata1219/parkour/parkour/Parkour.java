@@ -2,12 +2,7 @@ package amata1219.parkour.parkour;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.UUID;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,11 +11,9 @@ import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.tuplet.Tuple;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.stage.Stage;
@@ -73,14 +66,39 @@ public class Parkour {
 		particleColor = Color.fromRGB(colors[0], colors[1], colors[2]);
 
 		//スタートラインを作成する
-		startLine = RegionWithBorders.deserialize(this, yaml.getString("Start line"));
+		startLine = new RegionWithBorders(this, Region.deserialize(world, yaml.getString("Start line")));
 
 		//フィニッシュラインを作成する
-		finishLine = RegionWithBorders.deserialize(this, yaml.getString("Finish line"));
+		finishLine = new RegionWithBorders(this, Region.deserialize(world, yaml.getString("Finish line")));
 
 		checkAreas = new CheckAreaSet(yaml, this);
 
 		records = new RecordSet(yaml);
+	}
+
+	public String getColorlessName(){
+		return ChatColor.stripColor(name);
+	}
+
+	public boolean isUpdate(){
+		return getColorlessName().startsWith("Update");
+	}
+
+	public boolean isExtend(){
+		return getColorlessName().startsWith("Extend");
+	}
+
+	public boolean isDoombless(){
+		return getColorlessName().equals("Doobless");
+	}
+
+	public boolean hasReward(){
+		try{
+			Reward.valueOf(getColorlessName());
+		}catch(Exception e){
+			return false;
+		}
+		return true;
 	}
 
 	//このアスレに参加する

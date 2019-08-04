@@ -18,7 +18,7 @@ public class ApplyUserSettingsListener implements Listener {
 		//
 
 		//スコアボードを表示する
-		user.scoreboard.loadScoreboard();
+		user.informationBoard.loadScoreboard();
 
 		//
 	}
