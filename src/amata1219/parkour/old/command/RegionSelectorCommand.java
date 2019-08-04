@@ -1,4 +1,4 @@
-package amata1219.parkour.command;
+package amata1219.parkour.old.command;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

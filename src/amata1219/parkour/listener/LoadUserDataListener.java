@@ -8,12 +8,12 @@ import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 
-public class ApplyUserInformationListener implements Listener {
+public class LoadUserDataListener implements Listener {
 
 	private final UserSet users = UserSet.getInstnace();
 
 	@EventHandler
-	public void applyUserSettings(PlayerJoinEvent event){
+	public void applyUserInformation(PlayerJoinEvent event){
 		User user = users.getUser(event.getPlayer());
 
 		//表示名を書き換える
@@ -23,6 +23,11 @@ public class ApplyUserInformationListener implements Listener {
 		user.informationBoard.loadScoreboard();
 
 		//
+	}
+
+	@EventHandler
+	public void a(){
+
 	}
 
 }

@@ -1,4 +1,4 @@
-package amata1219.parkour.command;
+package amata1219.parkour.old.command;
 
 import java.io.File;
 import java.util.Map;
@@ -276,7 +276,7 @@ public class OldParkourCommand implements Command {
 				if(!stage.parkourNames.contains(parkourName))
 					continue;
 
-				stage.parkourList.add(parkour);
+				stage.parkourNames.add(parkour);
 				break;
 			}
 
@@ -294,7 +294,7 @@ public class OldParkourCommand implements Command {
 
 			//このアスレのステージから削除する
 			for(Stage stage : stages.values())
-				if(stage.parkourList.remove(parkour))
+				if(stage.parkourNames.remove(parkour))
 					break;
 
 			sender.info(MessageTemplate.apply("[$0]の登録を解除しました。", parkourName));

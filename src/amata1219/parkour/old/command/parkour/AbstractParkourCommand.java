@@ -1,4 +1,4 @@
-package amata1219.parkour.command.parkour;
+package amata1219.parkour.old.command.parkour;
 
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;

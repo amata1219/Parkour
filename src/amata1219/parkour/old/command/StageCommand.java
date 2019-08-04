@@ -1,4 +1,4 @@
-package amata1219.parkour.command;
+package amata1219.parkour.old.command;
 
 import java.io.File;
 import java.util.List;
@@ -79,7 +79,7 @@ public class StageCommand implements Command {
 			Stage stage = stages.get(stageName);
 
 			//ステージ内のアスレのリストを取得する
-			List<Parkour> parkourList = stage.parkourList;
+			List<Parkour> parkourList = stage.parkourNames;
 
 			//アスレを取得する
 			Parkour parkour = parkourMap.get(parkourName);
@@ -115,7 +115,7 @@ public class StageCommand implements Command {
 			Stage stage = stages.get(stageName);
 
 			//ステージ内のアスレのリストを取得する
-			List<Parkour> parkourList = stage.parkourList;
+			List<Parkour> parkourList = stage.parkourNames;
 
 			//アスレを取得する
 			Parkour parkour = parkourMap.get(parkourName);
@@ -142,7 +142,7 @@ public class StageCommand implements Command {
 			Stage stage = stages.get(stageName);
 
 			//ステージ内のアスレのリストを取得する
-			List<Parkour> parkourList = stage.parkourList;
+			List<Parkour> parkourList = stage.parkourNames;
 
 			if(parkourList.isEmpty()){
 				sender.warn(StringTemplate.apply(": Not exists error > [$0]にアスレは追加されていません。", stageName));
@@ -152,7 +152,7 @@ public class StageCommand implements Command {
 			sender.info(StringTemplate.apply(": Information > [$0]に追加されているアスレの一覧です。", stageName));
 
 			//各アスレ名を表示する
-			stage.parkourList.forEach(parkour -> sender.message(StringTemplate.apply("$0: $1", ChatColor.GRAY, parkour.name)));
+			stage.parkourNames.forEach(parkour -> sender.message(StringTemplate.apply("$0: $1", ChatColor.GRAY, parkour.name)));
 			return;
 		}default:
 			sender.warn(": Syntax error > /stage [name] (create|addparkour|removeparkour|parkourlist)");

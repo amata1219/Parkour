@@ -33,13 +33,13 @@ public class CheckAreaSet {
 		//既存のチェックエリアの新しいそれに書き換える
 		if(checkAreaNumber < checkAreas.size()){
 			//既存のチェックエリアを取得する
-			RegionWithBorders old = checkAreas.set(checkAreaNumber, checkArea);
+			RegionWithBorders old = checkAreas.get(checkAreaNumber);
 
 			//登録を解除する
 			parkourSet.unregisterCheckArea(old);
 
-			//境界線の表示を止める
-			old.undisplay();
+			//チェックエリアを書き換える
+			checkAreas.set(checkAreaNumber, checkArea);
 
 		//新しいチェックエリアを追加する
 		}else{
@@ -48,16 +48,13 @@ public class CheckAreaSet {
 
 		//新しいチェックエリアを登録する
 		parkourSet.registerCheckArea(checkArea);
-
-		//新しいチェックエリアの境界線の描画を開始する
-		checkArea.display();
 	}
 
-	public void display(){
+	public void displayAll(){
 		checkAreas.forEach(RegionWithBorders::display);
 	}
 
-	public void undisplay(){
+	public void undisplayAll(){
 		checkAreas.forEach(RegionWithBorders::undisplay);
 	}
 

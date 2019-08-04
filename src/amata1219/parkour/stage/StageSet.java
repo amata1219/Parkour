@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
-import amata1219.parkour.parkour.Parkour;
 
 public class StageSet {
 
@@ -38,10 +37,8 @@ public class StageSet {
 			//ファイルを基にステージを作成する
 			Stage stage = new Stage(yaml);
 
-			//パルクールとステージを結び付けて保持する
-			for(Parkour parkour : stage.parkourList) parkourNamesToStagesMap.put(parkour.name, stage);
-
 			stages.put(yaml.name, stage);
 		}
 	}
+
 }

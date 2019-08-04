@@ -17,7 +17,7 @@ import amata1219.amalib.tuplet.Quadruple;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSetting;
 
-public class SetScoreboardOptionUI implements InventoryUI {
+public class InformationBoardOptionsUI implements InventoryUI {
 
 	/*
 	 * 各操作にサウンドを付ける
@@ -27,7 +27,7 @@ public class SetScoreboardOptionUI implements InventoryUI {
 
 	private final ArrayList<Quadruple<Integer, Material, String, Supplier<Boolean>>> components = new ArrayList<>();
 
-	public SetScoreboardOptionUI(User user){
+	public InformationBoardOptionsUI(User user){
 		this.user = user;
 
 		UserSetting setting = user.setting;

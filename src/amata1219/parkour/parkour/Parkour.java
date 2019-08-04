@@ -121,7 +121,7 @@ public class Parkour {
 
 		startLine.display();
 		finishLine.display();
-		checkAreas.display();
+		checkAreas.displayAll();
 	}
 
 	//このアスレから退出する
@@ -140,7 +140,7 @@ public class Parkour {
 
 		startLine.undisplay();
 		finishLine.undisplay();
-		checkAreas.undisplay();
+		checkAreas.undisplayAll();
 	}
 
 	//このマップがあるステージを返す

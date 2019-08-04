@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import amata1219.amalib.Plugin;
 import amata1219.parkour.selection.RegionSelectionSet;
-import amata1219.parkour.user.SaveUserDataTask;
 import amata1219.parkour.user.UserSet;
 import de.domedd.betternick.BetterNick;
 import de.domedd.betternick.api.betternickapi.BetterNickAPI;
@@ -29,15 +28,11 @@ public class Main extends Plugin {
 			UserSet.getInstnace(),
 			RegionSelectionSet.getInstance()
 		);
-
-		SaveUserDataTask.run();
 	}
 
 	@Override
 	public void onDisable(){
 		super.onDisable();
-
-		SaveUserDataTask.undisplay();
 	}
 
 	public static Main getPlugin(){
