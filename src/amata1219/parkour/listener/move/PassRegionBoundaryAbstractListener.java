@@ -8,15 +8,15 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.parkour.Main;
-import amata1219.parkour.parkour.RegionBorderDisplayer;
+import amata1219.parkour.parkour.RegionWithBorders;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.User;
 
 public abstract class PassRegionBoundaryAbstractListener implements Listener {
 
-	private final ChunksToObjectsMap<RegionBorderDisplayer> chunksToRegionsMap;
+	private final ChunksToObjectsMap<RegionWithBorders> chunksToRegionsMap;
 
-	protected PassRegionBoundaryAbstractListener(ChunksToObjectsMap<RegionBorderDisplayer> chunksToRegionsMap){
+	protected PassRegionBoundaryAbstractListener(ChunksToObjectsMap<RegionWithBorders> chunksToRegionsMap){
 		this.chunksToRegionsMap = chunksToRegionsMap;
 	}
 
@@ -25,9 +25,9 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 		Location from = event.getFrom();
 
 		//元々いた地点に存在していた領域
-		RegionBorderDisplayer fromRegion = null;
+		RegionWithBorders fromRegion = null;
 
-		for(RegionBorderDisplayer region : chunksToRegionsMap.get(from)){
+		for(RegionWithBorders region : chunksToRegionsMap.get(from)){
 			if(!region.region.isIn(from))
 				continue;
 
@@ -37,9 +37,9 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 
 		Location to = event.getTo();
 
-		RegionBorderDisplayer toRegion = null;
+		RegionWithBorders toRegion = null;
 
-		for(RegionBorderDisplayer region : chunksToRegionsMap.get(to)){
+		for(RegionWithBorders region : chunksToRegionsMap.get(to)){
 			if(!region.region.isIn(to))
 				continue;
 
@@ -56,6 +56,6 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 		onMove(player, user, parkour, fromRegion, toRegion);
 	}
 
-	public abstract void onMove(Player player, User user, Parkour parkour, RegionBorderDisplayer from, RegionBorderDisplayer to);
+	public abstract void onMove(Player player, User user, Parkour parkour, RegionWithBorders from, RegionWithBorders to);
 
 }

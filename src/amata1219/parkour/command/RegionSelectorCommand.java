@@ -29,7 +29,7 @@ public class RegionSelectorCommand implements Command {
 		String parkourName = args.next();
 
 		//アスレが存在しなければエラーとする
-		if(!parkourSet.isParkourExists(parkourName)){
+		if(!parkourSet.containsParkour(parkourName)){
 			sender.warn(StringTemplate.apply(": Value error > [$0]は存在しません。", parkourName));
 			return;
 		}

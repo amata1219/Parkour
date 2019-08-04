@@ -16,7 +16,7 @@ import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_13_R2.ParticleParam;
 import net.minecraft.server.v1_13_R2.PlayerConnection;
 
-public class RegionBorderDisplayer {
+public class RegionWithBorders {
 
 	private static final ParticleParam PARTICLE_DATA = CraftParticle.toNMS(org.bukkit.Particle.REDSTONE, null);
 	private static final boolean FLAG = true;
@@ -39,12 +39,12 @@ public class RegionBorderDisplayer {
 	//パーティクルパケットを送信する非同期のループタスク
 	private BukkitTask task;
 
-	public static RegionBorderDisplayer fromString(Parkour parkour, String text){
-		Region region = Region.fromString(parkour.world, text);
-		return new RegionBorderDisplayer(parkour, region);
+	public static RegionWithBorders deserialize(Parkour parkour, String text){
+		Region region = Region.deserialize(parkour.world, text);
+		return new RegionWithBorders(parkour, region);
 	}
 
-	public RegionBorderDisplayer(Parkour parkour,  Region region){
+	public RegionWithBorders(Parkour parkour,  Region region){
 		this.parkour = parkour;
 		this.region = region;
 
@@ -73,7 +73,7 @@ public class RegionBorderDisplayer {
 	//境界線を表示する
 	public void display(){
 		//既に実行されているタスクがあればそれをキャンセルする
-		cancel();
+		undisplay();
 
 		final int size = packets.size();
 
@@ -98,7 +98,7 @@ public class RegionBorderDisplayer {
 	}
 
 	//境界線を非表示にする
-	public void cancel(){
+	public void undisplay(){
 		if(task != null)
 			task.cancel();
 	}

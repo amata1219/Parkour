@@ -37,7 +37,7 @@ public class Main extends Plugin {
 	public void onDisable(){
 		super.onDisable();
 
-		SaveUserDataTask.cancel();
+		SaveUserDataTask.undisplay();
 	}
 
 	public static Main getPlugin(){

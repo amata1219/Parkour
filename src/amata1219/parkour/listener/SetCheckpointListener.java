@@ -12,12 +12,12 @@ import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.amalib.message.MessageTemplate;
 import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.parkour.RegionBorderDisplayer;
+import amata1219.parkour.parkour.RegionWithBorders;
 import amata1219.parkour.user.User;
 
 public class SetCheckpointListener implements Listener {
 
-	public final ChunksToObjectsMap<RegionBorderDisplayer> chunksToCheckAreasMap = Main.getParkourSet().chunksToCheckAreasMap;
+	public final ChunksToObjectsMap<RegionWithBorders> chunksToCheckAreasMap = Main.getParkourSet().chunksToCheckAreasMap;
 
 	@EventHandler
 	public void onSwap(PlayerSwapHandItemsEvent event){
@@ -37,14 +37,14 @@ public class SetCheckpointListener implements Listener {
 		Location location = player.getLocation();
 
 		//プレイヤーの現在地に存在するチェックエリアのリストを取得する
-		List<RegionBorderDisplayer> areas = chunksToCheckAreasMap.get(location);
+		List<RegionWithBorders> areas = chunksToCheckAreasMap.get(location);
 
 		//チェックエリアが存在しなければ戻る
 		if(areas.isEmpty())
 			return;
 
 		//リストの最初の要素をチェックエリアとして取得する
-		RegionBorderDisplayer area = areas.get(0);
+		RegionWithBorders area = areas.get(0);
 
 		//領域内にいなければ戻る
 		if(!area.region.isIn(location))

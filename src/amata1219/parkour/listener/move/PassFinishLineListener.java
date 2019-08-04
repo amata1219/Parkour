@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import amata1219.amalib.message.MessageTemplate;
 import amata1219.parkour.Main;
 import amata1219.parkour.message.TimeFormat;
-import amata1219.parkour.parkour.RegionBorderDisplayer;
+import amata1219.parkour.parkour.RegionWithBorders;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.Rank;
 import amata1219.parkour.user.User;
@@ -19,7 +19,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 	}
 
 	@Override
-	public void onMove(Player player, User user, Parkour parkour, RegionBorderDisplayer from, RegionBorderDisplayer to) {
+	public void onMove(Player player, User user, Parkour parkour, RegionWithBorders from, RegionWithBorders to) {
 		//フィニッシュラインに初めて踏み込んだのでなければ戻る
 		if(user.parkourPlayingNow == null || from != null || to == null)
 			return;
