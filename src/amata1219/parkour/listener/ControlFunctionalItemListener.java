@@ -2,21 +2,29 @@ package amata1219.parkour.listener;
 
 import java.util.function.Consumer;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import amata1219.parkour.function.ToggleHideMode;
 import amata1219.parkour.parkour.Parkour;
+import amata1219.parkour.stage.Stage;
+import amata1219.parkour.stage.StageCategory;
+import amata1219.parkour.ui.stage.StagesUISet;
 import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
+import amata1219.parkour.user.UserSet;
 
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.amalib.inventory.ui.dsl.component.Icon;
@@ -100,6 +108,14 @@ public class ControlFunctionalItemListener {
 
 		//ステージ一覧を開くアイテムの機能内容を定義する
 		stageSelector = new Tuple<>(itemOfStageSelector, user -> {
+			//プレイヤーが今いるステージを取得する
+			Stage stage = user.getCurrentStage();
+
+			//ステージのカテゴリーを取得する
+			StageCategory category = stage != null ? stage.category : StageCategory.NORMAL;
+
+			//カテゴリーに対応したステージリストを開かせる
+			StagesUISet.getInstance().getStagesUI(category).openInventory(user.asBukkitPlayer());
 
 		});
 
@@ -133,6 +149,8 @@ public class ControlFunctionalItemListener {
 		item.setItemMeta(meta);
 	}
 
+	private final UserSet users = UserSet.getInstnace();
+
 	@EventHandler
 	public void initializeSlots(PlayerJoinEvent event){
 		initializeSlots(event.getPlayer());
@@ -140,17 +158,59 @@ public class ControlFunctionalItemListener {
 
 	@EventHandler
 	public void clickSlot(PlayerInteractEvent event){
+		//クリック以外の動作であれば戻る
+		if(event.getAction() == Action.PHYSICAL) return;
 
+		//メインハンドのクリックでなければ戻る
+		if(event.getHand() != EquipmentSlot.HAND) return;
+
+		//アイテムをクリックしていなければ戻る
+		if(!event.hasItem()) return;
+
+		//クリックしたプレイヤーを取得する
+		Player player = event.getPlayer();
+
+		//ユーザーを取得する
+		User user = users.getUser(player);
+
+		//スロットに対応した処理をする
+		switch(player.getInventory().getHeldItemSlot()){
+		case 0:
+			teleporterToLastCheckpoint.second.accept(user);
+			break;
+		case 2:
+			checkpointSelector.second.accept(user);
+			break;
+		case 4:
+			stageSelector.second.accept(user);
+			break;
+		case 6:
+			hideModeToggler.second.accept(user);
+			break;
+		case 8:
+			menuOpener.second.accept(user);
+			break;
+		default:
+			return;
+		}
 	}
 
 	@EventHandler
 	public void controlSlot(InventoryClickEvent event){
-		//スロットのアイテムを消せない様に、オフハンドにアイテムを入れられない様に、頭からアイテム取れない様に
-	}
+		HumanEntity human = event.getWhoClicked();
 
-	@EventHandler
-	public void changeSlots(PlayerGameModeChangeEvent event){
+		//クリックしたのがプレイヤーでなければ戻る
+		if(!(human instanceof Player)) return;
 
+		Player player = (Player) human;
+
+		Inventory inventory = event.getClickedInventory();
+
+		//クリックされたのがプレイヤーのインベントリでなければ戻る
+		if(!(inventory instanceof PlayerInventory)) return;
+
+		//クリエイティブモードでなければ全ての操作をキャンセルする
+		if(player.getGameMode() != GameMode.CREATIVE) event.setCancelled(true);
 	}
 
 	@EventHandler
@@ -161,11 +221,11 @@ public class ControlFunctionalItemListener {
 	public void initializeSlots(Player player){
 		Inventory inventory = player.getInventory();
 
-		inventory.setItem(0, teleporterToLastCheckpoint);
-		inventory.setItem(2, checkpointSelector);
-		inventory.setItem(4, stageSelector);
-		inventory.setItem(6, hideModeToggler);
-		inventory.setItem(8, menuOpener);
+		inventory.setItem(0, teleporterToLastCheckpoint.first);
+		inventory.setItem(2, checkpointSelector.first);
+		inventory.setItem(4, stageSelector.first);
+		inventory.setItem(6, hideModeToggler.first);
+		inventory.setItem(8, menuOpener.first);
 	}
 
 	public void clearSlots(Player player){

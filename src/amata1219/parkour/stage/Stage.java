@@ -20,7 +20,7 @@ public class Stage {
 	public final StageCategory category;
 
 	//スポーン地点
-	public ImmutableEntityLocation spawnLocation;
+	private ImmutableEntityLocation spawnLocation;
 
 	//ステージ内のアスレの名前リスト
 	public final List<String> parkourNames;
@@ -30,9 +30,19 @@ public class Stage {
 
 		category = StageCategory.valueOf(yaml.getString("Category"));
 
-		spawnLocation = ImmutableEntityLocation.deserialize(yaml.getString("Spawn location"));
+		setSpawnLocation(ImmutableEntityLocation.deserialize(yaml.getString("Spawn location")));
 
 		parkourNames = yaml.getStringList("Parkour list");
+	}
+
+	public ImmutableEntityLocation getSpawnLocation(){
+		return spawnLocation;
+	}
+
+	//スポーン地点を設定する
+	public void setSpawnLocation(ImmutableEntityLocation spawnLocation){
+		//ブロック中央に座標を修正する
+		this.spawnLocation = spawnLocation.middle();
 	}
 
 	//このステージ内のアスレを取得する

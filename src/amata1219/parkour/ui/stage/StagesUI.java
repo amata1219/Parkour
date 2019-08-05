@@ -2,13 +2,14 @@ package amata1219.parkour.ui.stage;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
-import amata1219.amalib.inventory.ui.option.InventoryLine;
+import amata1219.amalib.message.MessageTemplate;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.stage.Stage;
 import amata1219.parkour.stage.StageCategory;
@@ -38,13 +39,9 @@ public class StagesUI implements InventoryUI {
 	 */
 
 	private final StageCategory category;
-	private final String categoryName;
 
 	public StagesUI(StageCategory category){
 		this.category = category;
-
-		String name = category.toString();
-		categoryName = name.charAt(0) + name.substring(1).toLowerCase();
 	}
 
 	@Override
@@ -52,11 +49,9 @@ public class StagesUI implements InventoryUI {
 		//カテゴリ内のステージリストを取得する
 		List<Stage> stages = StageSet.getInstance().getStages(category);
 
-		InventoryLine line = InventoryLine.necessaryInventoryLine(stages.size() + 9);
-
-		return build(line, (l) -> {
+		return build(stages.size() + 9, (l) -> {
 			//表示例: Extend
-			l.title = StringTemplate.applyWithColor("&b-$0", categoryName);
+			l.title = StringTemplate.applyWithColor("&b-$0", category.getName());
 
 			//デフォルトスロットを設定する
 			l.defaultSlot((s) -> {
@@ -68,8 +63,65 @@ public class StagesUI implements InventoryUI {
 			});
 
 			//各ステージ毎に処理をする
-			for(Stage stage : stages){
+			for(int slotIndex = 0; slotIndex < stages.size(); slotIndex++){
+				//対応したステージを取得する
+				Stage stage = stages.get(slotIndex);
 
+				String stageName = stage.name;
+
+				l.put((s) -> {
+
+					s.onClick((event) -> {
+						Player player = event.player;
+
+						//ステージのスポーン地点にテレポートさせる
+						player.teleport(stage.getSpawnLocation().asBukkitLocation());
+
+						//表示例: Teleported to The Earth of Marmalade!
+						MessageTemplate.applyWithColor("&b-Teleported to $0-&r-&b-!", stageName).displayOnActionBar(player);
+					});
+
+					s.icon(Material.GRASS_BLOCK, (i) -> {
+						//表示名: The Earth of Marmalade
+						i.displayName = StringTemplate.applyWithColor("&b-$0", stageName);
+
+						//ステージ内のアスレの名前を説明文にセットする
+						i.lore = stage.parkourNames.stream().map(parkourName -> StringTemplate.applyWithColor("&7-: &b-$0", parkourName)).collect(Collectors.toList());
+					});
+
+				}, slotIndex);
+
+			}
+
+			//ステージのカテゴリ一覧
+			StageCategory[] categories = StageCategory.values();
+
+			//このインベントリの最後のスロットのインデックス
+			int lastSlotIndex = l.option.size - 1;
+
+			for(int count = 0; count < 5; count++){
+				StageCategory slotCategory = categories[count];
+
+				//スロットのインデックス
+				int slotIndex = lastSlotIndex - count * 2;
+
+				l.put((s) -> {
+
+					s.onClick((event) -> {
+						//カテゴリに対応したステージリストを開かせる
+						StagesUISet.getInstance().getStagesUI(slotCategory).openInventory(event.player);
+					});
+
+					s.icon(Material.DIRT, (i) -> {
+						//表示例: Update
+						i.displayName = StringTemplate.applyWithColor("&b-$0", slotCategory.getName());
+
+						//今開いているステージリストのカテゴリと同じであれば発光させる
+						if(slotCategory == category) i.gleam();
+
+					});
+
+				}, slotIndex);
 			}
 
 		});

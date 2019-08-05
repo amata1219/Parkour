@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.string.StringTemplate;
@@ -31,19 +32,25 @@ public class Parkour {
 	//ワールド
 	public World world;
 
+	//スポーン地点
+	private ImmutableEntityLocation spawnLocation;
+
 	//各領域の境界線を表示するパーティクルの色
 	public final Color particleColor;
 
 	//アスレの領域
 	private Region region;
 
+	//スタートラインの領域
 	private RegionWithBorders startLine;
 
+	//フィニッシュラインの領域
 	private RegionWithBorders finishLine;
 
+	//チェックエリアの管理インスタンス
 	public final CheckAreaSet checkAreas;
 
-	//自己記録
+	//ゴールタイムの管理インスタンス
 	public final RecordSet records;
 
 	//プレイヤーのコネクションリスト
@@ -54,6 +61,8 @@ public class Parkour {
 		name = yaml.name;
 
 		world = Bukkit.getWorld(yaml.getString("World"));
+
+		setSpawnLocation(ImmutableEntityLocation.deserialize(yaml.getString("Spawn location")));
 
 		//領域を作成する
 		region = Region.deserialize(world, yaml.getString("Region"));
@@ -159,7 +168,17 @@ public class Parkour {
 
 	//このマップがあるステージを返す
 	public Stage getStage(){
-		return stages.parkourNamesToStagesMap.get(name);
+		return stages.getStage(name);
+	}
+
+	public ImmutableEntityLocation getSpawnLocation(){
+		return spawnLocation;
+	}
+
+	//スポーン地点を設定する
+	public void setSpawnLocation(ImmutableEntityLocation spawnLocation){
+		//ブロック中央に座標を修正する
+		this.spawnLocation = spawnLocation.middle();
 	}
 
 	//アスレの領域を返す
@@ -210,6 +229,9 @@ public class Parkour {
 
 		//ワールド名を記録する
 		yaml.set("World", world.getName());
+
+		//スポーン地点を記録する
+		yaml.set("Spawn location", spawnLocation.serialize());
 
 		//領域情報を記録する
 		yaml.set("Region", region.serialize());

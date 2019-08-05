@@ -12,6 +12,7 @@ import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
+import amata1219.parkour.stage.Stage;
 
 public class User {
 
@@ -131,6 +132,10 @@ public class User {
 
 	public void withdrawCoins(int coins){
 		this.coins = Math.max(this.coins - coins, 0);
+	}
+
+	public Stage getCurrentStage(){
+		return currentParkour != null ? currentParkour.getStage() : null;
 	}
 
 	public boolean isPlayingWithParkour(){

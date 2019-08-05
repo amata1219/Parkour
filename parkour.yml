@@ -1,7 +1,8 @@
 'World': "world"
-'Region': "0,0,0,0,0,0"
+'Spawn location': "world,0,0,0,0,0"
+'Region': "world,0,0,0,0,0,0"
 'Particle color': "0,0,0"
-'Start line': "0,0,0,0,0,0"
-'Finish line': "0,0,0,0,0,0"
+'Start line': "world,0,0,0,0,0,0"
+'Finish line': "world,0,0,0,0,0,0"
 'Check areas': []
 'Highets records': []
