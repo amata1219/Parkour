@@ -46,7 +46,7 @@ public abstract class AbstractSetParkourRegionCommand implements Command {
 		RegionSelection selection = selections.getSelection(uuid);
 
 		//選択中のアスレを取得する
-		Parkour parkour = selections.getSelectedParkour(uuid);
+		Parkour parkour = selections.getSelectedParkourName(uuid);
 
 		String parkourName = parkour.name;
 

@@ -14,12 +14,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import amata1219.amalib.inventory.ui.dsl.component.Icon;
+import amata1219.amalib.enchantment.GleamEnchantment;
 import amata1219.amalib.selection.RegionSelection;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.tuplet.Tuple;
-import amata1219.parkour.parkour.Parkour;
 
 public class RegionSelectionSet implements Listener {
 
@@ -32,32 +31,29 @@ public class RegionSelectionSet implements Listener {
 		selectionTool = new ItemStack(Material.STONE_AXE);
 
 		//発光用エンチャントを付与する
-		selectionTool.addEnchantment(Icon.GLEAM_ENCHANTMENT, 0);
+		GleamEnchantment.gleam(selectionTool);
 	}
 
 	public static RegionSelectionSet getInstance(){
 		return instance != null ? instance : (instance = new RegionSelectionSet());
 	}
 
-	private final HashMap<UUID, Tuple<Parkour, RegionSelection>> selections = new HashMap<>();
+	private final HashMap<UUID, Tuple<String, RegionSelection>> selections = new HashMap<>();
 
 	private RegionSelectionSet(){
 
 	}
 
 	//新しいセレクションを作成する
-	public void setNewSelection(UUID uuid, Parkour parkour){
+	public void setNewSelection(UUID uuid, String parkourName){
 		RegionSelection selection = new RegionSelection();
 
-		//アスレのあるワールドをセットする
-		selection.setWorld(parkour.world);
-
 		//アスレとセレクションを結び付けてセットする
-		selections.put(uuid, new Tuple<>(parkour, selection));
+		selections.put(uuid, new Tuple<>(parkourName, selection));
 	}
 
-	//選択中のアスレを取得する
-	public Parkour getSelectedParkour(UUID uuid){
+	//選択中のアスレの名前を取得する
+	public String getSelectedParkourName(UUID uuid){
 		return selections.containsKey(uuid) ? selections.get(uuid).first : null;
 	}
 
@@ -80,8 +76,8 @@ public class RegionSelectionSet implements Listener {
 		if(!selections.containsKey(uuid))
 			return tool;
 
-		//選択中のアスレを取得する
-		Parkour parkour = getSelectedParkour(uuid);
+		//選択中のアスレの名前を取得する
+		String parkourName = getSelectedParkourName(uuid);
 
 		//セレクションを取得する
 		RegionSelection selection = getSelection(uuid);
@@ -90,7 +86,7 @@ public class RegionSelectionSet implements Listener {
 		String selectionInformation = selection.toString().replace(",", StringColor.color("&7-,-&b"));
 
 		//表示名を作成する
-		String displayName = StringTemplate.applyWithColor("&b-$0 &7-@ &b", parkour.name, selectionInformation);
+		String displayName = StringTemplate.applyWithColor("&b-$0 &7-@ &b", parkourName, selectionInformation);
 
 		ItemMeta meta = tool.getItemMeta();
 
@@ -109,24 +105,19 @@ public class RegionSelectionSet implements Listener {
 		UUID uuid = player.getUniqueId();
 
 		//範囲選択中のプレイヤーでなければ戻る
-		if(!selections.containsKey(uuid))
-			return;
+		if(!selections.containsKey(uuid)) return;
 
 		Action action = event.getAction();
 
 		//ブロックをクリックしていなければ戻る
-		if(action == Action.RIGHT_CLICK_AIR || action == Action.LEFT_CLICK_AIR || action == Action.PHYSICAL)
-			return;
+		if(action == Action.RIGHT_CLICK_AIR || action == Action.LEFT_CLICK_AIR || action == Action.PHYSICAL) return;
 
 		//ブロックやアイテムをクリックしていなければ戻る
-		if(!event.hasBlock() || !event.hasItem())
-			return;
-
+		if(!event.hasBlock() || !event.hasItem()) return;
 		ItemStack clickedItem = event.getItem();
 
 		//範囲選択ツールでなければ戻る
-		if(clickedItem.getType() != Material.STONE_AXE || clickedItem.containsEnchantment(Icon.GLEAM_ENCHANTMENT))
-			return;
+		if(clickedItem.getType() != Material.STONE_AXE || !GleamEnchantment.isGleaming(clickedItem)) return;
 
 		//セレクションを取得する
 		RegionSelection selection = getSelection(uuid);

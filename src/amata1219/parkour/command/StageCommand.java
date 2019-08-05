@@ -6,6 +6,7 @@ import amata1219.amalib.command.Sender;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.stage.Stage;
 import amata1219.parkour.stage.StageSet;
+import net.md_5.bungee.api.ChatColor;
 
 public class StageCommand implements Command {
 
@@ -13,41 +14,31 @@ public class StageCommand implements Command {
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {
-
-		String arg0 = args.next();
-
-		if(arg0.equals("list")){
-			sender.warn("not implemented.");
-			return;
-		}
-
+		//第1引数で分岐する
 		switch(args.next()){
-		case "create":{
-			Yaml yaml = stages.makeYaml(arg0);
+		case "create":
+			//第2引数をステージ名として取得する
+			String stageName = color(args.next());
+
+			//コンフィグを作成する
+			Yaml yaml = stages.makeYaml(stageName);
 
 			Stage stage = new Stage(yaml);
-
-			stages.registerStage(stage);
-
-			sender.info("ステージを作成しました");
 			return;
-		}case "delete":
-			sender.warn("not implemented.");
-			break;
-		case "addparkour":{
-			Stage stage = stages.getStage(arg0);
-			stage.parkourNames.add(arg0);
-			sender.info("アスレを追加しました。");
-			break;
-		}case "removeparkour":
-			sender.warn("not implemented.");
-			break;
-		case "parkourlist":
-			sender.warn("not implemented.");
-			break;
+		case "delete":
+
+			return;
+		case "list":
+
+			return;
 		default:
+			sender.warn("/stage [create/delete] [stage_name] | /stage list | /stage [addp/removep] [parkour_name]");
 			return;
 		}
+	}
+
+	private String color(String text){
+		return ChatColor.translateAlternateColorCodes('&', text);
 	}
 
 }

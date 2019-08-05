@@ -18,6 +18,10 @@ public class CheckAreaCommand implements Command {
 	private final ParkourSet parkourSet = ParkourSet.getInstance();
 	private final RegionSelectionSet selections = RegionSelectionSet.getInstance();
 
+	/*
+	 * checkarea [add/list], checkarea [set/remove] [number], checkarea color [RGB(000,000,000)]
+	 */
+
 	@Override
 	public void onCommand(Sender sender, Arguments args) {
 		//プレイヤーでなければ戻る
