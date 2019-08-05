@@ -89,6 +89,12 @@ public class InformationBoard {
 		board.setDisplay(true);
 	}
 
+	public void clearScoreboard(){
+		board.setDisplay(false);
+
+		board = null;
+	}
+
 	public void updateUpdateRank(){
 		updateValue(7);
 	}

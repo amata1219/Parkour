@@ -36,7 +36,7 @@ public class UserSet implements Listener {
 
 		for(File file : Optional.ofNullable(folder.listFiles()).orElse(new File[0])){
 			//ファイルをコンフィグとして読み込む
-			Yaml yaml = new Yaml(plugin, file);
+			Yaml yaml = new Yaml(plugin, file, "user.yml");
 
 			//コンフィグを基にユーザーを生成する
 			User user = new User(yaml);

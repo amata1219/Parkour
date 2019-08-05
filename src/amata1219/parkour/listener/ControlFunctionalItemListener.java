@@ -145,7 +145,7 @@ public class ControlFunctionalItemListener implements Listener {
 		meta.setDisplayName(displayName);
 
 		//発光させる
-		meta.addEnchant(Icon.GLEAM_ENCHANTMENT, 1, true);
+		meta.addEnchant(Icon.GLEAM_ENCHANTMENT, 0, true);
 
 		item.setItemMeta(meta);
 	}

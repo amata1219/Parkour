@@ -3,6 +3,7 @@ package amata1219.parkour.listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.user.User;
@@ -26,8 +27,10 @@ public class LoadUserDataListener implements Listener {
 	}
 
 	@EventHandler
-	public void a(){
+	public void onQuit(PlayerQuitEvent event){
+		User user = users.getUser(event.getPlayer());
 
+		user.informationBoard.clearScoreboard();
 	}
 
 }

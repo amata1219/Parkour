@@ -32,7 +32,7 @@ public class RegionSelectionSet implements Listener {
 		selectionTool = new ItemStack(Material.STONE_AXE);
 
 		//発光用エンチャントを付与する
-		selectionTool.addEnchantment(Icon.GLEAM_ENCHANTMENT, 1);
+		selectionTool.addEnchantment(Icon.GLEAM_ENCHANTMENT, 0);
 	}
 
 	public static RegionSelectionSet getInstance(){
