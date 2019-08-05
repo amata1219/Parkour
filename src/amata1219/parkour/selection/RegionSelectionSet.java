@@ -142,6 +142,8 @@ public class RegionSelectionSet implements Listener {
 			return;
 		}
 
+		event.setCancelled(true);
+
 		//範囲選択ツールの表示名を更新する
 		applySelectionInformationToDisplayName(uuid, clickedItem);
 	}

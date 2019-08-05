@@ -4,11 +4,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import amata1219.parkour.function.ToggleHideModeChange;
+import amata1219.parkour.function.ToggleHideMode;
 
 public class HideNewPlayerListener implements Listener {
 
-	private final ToggleHideModeChange function = ToggleHideModeChange.getInstance();
+	private final ToggleHideMode function = ToggleHideMode.getInstance();
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event){

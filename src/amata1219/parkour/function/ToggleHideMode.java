@@ -13,12 +13,12 @@ import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 import amata1219.parkour.user.UserSetting;
 
-public class ToggleHideModeChange {
+public class ToggleHideMode {
 
-	private static ToggleHideModeChange instance;
+	private static ToggleHideMode instance;
 
-	public static ToggleHideModeChange getInstance(){
-		return instance != null ? instance : (instance = new ToggleHideModeChange());
+	public static ToggleHideMode getInstance(){
+		return instance != null ? instance : (instance = new ToggleHideMode());
 	}
 
 	private final UserSet userSet = UserSet.getInstnace();
@@ -29,7 +29,7 @@ public class ToggleHideModeChange {
 	//クールダウン中のユーザー
 	private final HashSet<User> cooldownUsers = new HashSet<>();
 
-	private ToggleHideModeChange(){
+	private ToggleHideMode(){
 
 	}
 
@@ -89,6 +89,10 @@ public class ToggleHideModeChange {
 
 		//0.5秒後にクールダウンを完了させる
 		Sync.define(() -> cooldownUsers.remove(user)).executeLater(10);
+	}
+
+	public boolean isHideMode(User user){
+		return hideModeUsers.contains(user);
 	}
 
 	//targetをplayerから非表示にする
