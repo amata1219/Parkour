@@ -56,6 +56,15 @@ public class InformationBoardOptionsUI implements InventoryUI {
 			//非同期で処理をする
 			l.asynchronouslyRunActionOnClose = true;
 
+			//デフォルトスロットを設定する
+			l.defaultSlot((s) -> {
+
+				s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, (i) -> {
+					i.displayName = " ";
+				});
+
+			});
+
 			l.onClose((event) -> {
 				user.informationBoard.loadScoreboard();
 			});

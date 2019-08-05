@@ -11,6 +11,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import amata1219.parkour.function.ToggleHideMode;
+import amata1219.parkour.parkour.Parkour;
+import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 
 import org.bukkit.inventory.Inventory;
@@ -18,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.amalib.inventory.ui.dsl.component.Icon;
+import amata1219.amalib.message.MessageColor;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.tuplet.Tuple;
 
@@ -45,12 +48,23 @@ public class ControlFunctionalItemListener {
 		ItemStack itemOfTeleporterToLastCheckpoint = new ItemStack(Material.FEATHER);
 		applyMetaToItem(itemOfTeleporterToLastCheckpoint, StringColor.color("&b-Teleporter to last checkpoint"));
 
+		//最終チェックポイントへのテレポーターの機能内容を定義する
 		teleporterToLastCheckpoint = new Tuple<>(itemOfTeleporterToLastCheckpoint, user -> {
 			//アスレをプレイ中でなければ戻る
 			if(!user.isPlayingWithParkour())
 				return;
-			
-			
+
+			//プレイ中のアスレを取得する
+			Parkour parkourPlayingNow = user.parkourPlayingNow;
+
+			CheckpointSet checkpoints = user.checkpoints;
+
+			//チェックポイントが1つも無ければ戻る
+			if(!checkpoints.containsParkour(parkourPlayingNow)){
+				//表示例: Operation blocked @ Missing last checkpoint
+				MessageColor.color("&c-Operation blocked &7-@ &c-Missing last checkpoint").displayOnActionBar(user.asBukkitPlayer());
+				return;
+			}
 		});
 
 		ItemStack itemOfCheckpointSelector = new ItemStack(Material.FEATHER);
