@@ -1,4 +1,4 @@
-package amata1219.parkour.listener.move;
+package amata1219.parkour.listener;
 
 import org.bukkit.entity.Player;
 

@@ -1,7 +1,9 @@
 package amata1219.parkour.parkour;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,7 +26,7 @@ public class ParkourSet {
 	//アスレデータを保存するフォルダー
 	public final File folder = new File(plugin.getDataFolder() + File.separator + "ParkourList");
 
-	private final Map<String, Parkour> parkourMap = new HashMap<>();
+	public final Map<String, Parkour> parkourMap = new HashMap<>();
 
 	//スタートラインのチャンクマップ
 	public final ChunksToObjectsMap<RegionWithBorders> chunksToStartLinesMap = new ChunksToObjectsMap<>();
@@ -34,6 +36,9 @@ public class ParkourSet {
 
 	//チェックエリアのチャンクマップ
 	public final ChunksToObjectsMap<RegionWithBorders> chunksToCheckAreasMap = new ChunksToObjectsMap<>();
+
+	//製作途中のアスレリスト
+	public final List<String> unfinishedParkourNames = new ArrayList<>();
 
 	private ParkourSet(){
 		//フォルダーが存在しなければ作成する
@@ -76,6 +81,10 @@ public class ParkourSet {
 		parkour.checkAreas.unregisterAll();
 
 		parkourMap.remove(parkour.name);
+	}
+
+	public void unregisterParkour(String parkourName){
+		unregisterParkour(parkourMap.get(parkourName));
 	}
 
 	public Parkour getParkour(String parkourName){

@@ -66,6 +66,10 @@ public class RegionSelectionSet implements Listener {
 		return selections.containsKey(uuid) ? selections.get(uuid).second : null;
 	}
 
+	public boolean hasSelection(UUID uuid){
+		return selections.containsKey(uuid);
+	}
+
 	//新しい範囲選択ツールを作成する
 	public ItemStack makeNewSelectionTool(UUID uuid){
 		return applySelectionInformationToDisplayName(uuid, selectionTool.clone());

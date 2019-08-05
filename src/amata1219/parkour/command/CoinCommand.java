@@ -1,4 +1,4 @@
-package amata1219.parkour.old.command;
+package amata1219.parkour.command;
 
 import java.util.UUID;
 

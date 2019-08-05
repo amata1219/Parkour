@@ -5,3 +5,12 @@ api-version: 1.13
 version: 1.0.0
 author: amata1219(Twitter@amata1219)
 commands:
+  checkarea:
+  coin:
+  finishline:
+  giveselectiontool:
+  parkour:
+  parkourregion:
+  setdirection:
+  stage:
+  startline:

@@ -24,7 +24,7 @@ import amata1219.amalib.item.skull.SkullMaker;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.tuplet.Triple;
-import amata1219.parkour.message.SoundPlayer;
+import amata1219.parkour.sound.SoundPlayer;
 import amata1219.parkour.user.User;
 
 public class SkullsUI implements InventoryUI {

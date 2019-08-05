@@ -1,12 +1,12 @@
-package amata1219.parkour.listener.move;
+package amata1219.parkour.listener;
 
 import java.util.Set;
 
 import org.bukkit.entity.Player;
 
 import amata1219.amalib.message.MessageTemplate;
+import amata1219.parkour.format.TimeFormat;
 import amata1219.parkour.function.ApplyRankToDisplayName;
-import amata1219.parkour.message.TimeFormat;
 import amata1219.parkour.parkour.RegionWithBorders;
 import amata1219.parkour.parkour.Reward;
 import amata1219.parkour.parkour.Parkour;
