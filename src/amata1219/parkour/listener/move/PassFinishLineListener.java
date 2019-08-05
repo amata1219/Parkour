@@ -38,27 +38,35 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		//クリア済みのアスレとして記録する(コレクションにはSetを用いているため要素の重複は起こらない)
 		user.clearedParkourNames.add(parkourName);
 
-		//ゴールタイムを秒単位で出す
-		float time = (System.currentTimeMillis() - user.timeToStartPlaying) / 1000F;
+		//アスレをプレイし始めた時間を取得する
+		long timeToStartPlaying = user.timeToStartPlaying;
 
-		RecordSet records = parkour.records;
+		String playerName = player.getName();
 
-		//ゴールタイムを記録する
-		records.record(user.uuid, time);
+		if(timeToStartPlaying > 0){
+			//ゴールタイムを秒単位で出す
+			float time = (System.currentTimeMillis() - user.timeToStartPlaying) / 1000F;
 
-		//記録をソートする
-		records.sort();
+			RecordSet records = parkour.records;
 
-		//遊んでいるアスレを削除する
-		user.parkourPlayingNow = null;
+			//ゴールタイムを記録する
+			records.record(user.uuid, time);
+
+			//記録をソートする
+			records.sort();
+
+			//表示例: amata1219 has cleared Update11 @ 00:01:23.231!
+			MessageTemplate.applyWithColor("$0 has cleared $1 @ $2!", playerName, parkourName, TimeFormat.format(time)).broadcast();
+		}else{
+			//表示例: amata1219 has cleared Update6!
+			MessageTemplate.applyWithColor("$0 cleared in $1!", playerName, parkourName).broadcast();
+		}
 
 		//タイムを削除する
 		user.timeToStartPlaying = 0;
 
-		String playerName = player.getName();
-
-		//表示例: amata1219 cleared in 00:01:23.231 @ Update11！
-		MessageTemplate.applyWithColor("$0 cleared in $1 @ $2!", playerName, TimeFormat.format(time), parkourName).broadcast();
+		//遊んでいるアスレを削除する
+		user.parkourPlayingNow = null;
 
 		//Updateの場合
 		if(parkour.isUpdate()){

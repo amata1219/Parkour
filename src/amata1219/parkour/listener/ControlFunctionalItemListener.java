@@ -45,37 +45,33 @@ public class ControlFunctionalItemListener {
 		ItemStack itemOfTeleporterToLastCheckpoint = new ItemStack(Material.FEATHER);
 		applyMetaToItem(itemOfTeleporterToLastCheckpoint, StringColor.color("&b-Teleporter to last checkpoint"));
 
-		teleporterToLastCheckpoint = new Tuple<>(itemOfTeleporterToLastCheckpoint, (user) -> {
+		teleporterToLastCheckpoint = new Tuple<>(itemOfTeleporterToLastCheckpoint, user -> {
 
 		});
 
 		ItemStack itemOfCheckpointSelector = new ItemStack(Material.FEATHER);
 		applyMetaToItem(itemOfCheckpointSelector, StringColor.color("&b-Checkpoint selector"));
 
-		checkpointSelector = new Tuple<>(itemOfCheckpointSelector, (user) -> {
+		checkpointSelector = new Tuple<>(itemOfCheckpointSelector, user -> {
 
 		});
 
 		ItemStack itemOfStageSelector = new ItemStack(Material.FEATHER);
 		applyMetaToItem(itemOfStageSelector, StringColor.color("&b-Stage selector"));
 
-		stageSelector = new Tuple<>(itemOfStageSelector, (user) -> {
+		stageSelector = new Tuple<>(itemOfStageSelector, user -> {
 
 		});
 
 		ItemStack itemOfHideModeToggler = new ItemStack(Material.FEATHER);
 		applyMetaToItem(itemOfHideModeToggler, StringColor.color("&b-Hide mode toggler"));
 
-		hideModeToggler = new Tuple<>(itemOfHideModeToggler, (user) -> {
-			ToggleHideMode.getInstance().change(user);
-		});
+		hideModeToggler = new Tuple<>(itemOfHideModeToggler, user -> ToggleHideMode.getInstance().change(user));
 
 		ItemStack itemOfMenuOpener = new ItemStack(Material.FEATHER);
 		applyMetaToItem(itemOfMenuOpener, StringColor.color("&b-Menu opener"));
 
-		menuOpener = new Tuple<>(itemOfMenuOpener, (user) -> {
-
-		});
+		menuOpener = new Tuple<>(itemOfMenuOpener, user -> user.inventoryUIs.menuUI.openInventory(user.asBukkitPlayer()));
 	}
 
 	private static void applyMetaToItem(ItemStack item, String displayName){

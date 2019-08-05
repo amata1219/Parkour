@@ -54,6 +54,9 @@ public class User {
 	//スコアボードの管理インスタンス
 	public final InformationBoard informationBoard;
 
+	//InventoryUIの管理インスタンス
+	public final InventoryUISet inventoryUIs;
+
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
 		this.uuid = UUID.fromString(yaml.name);
@@ -94,6 +97,8 @@ public class User {
 
 		//スコアボードの管理インスタンスを作成する
 		informationBoard = new InformationBoard(this);
+
+		inventoryUIs = new InventoryUISet(this);
 	}
 
 	public Player asBukkitPlayer(){
