@@ -18,6 +18,7 @@ import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.stage.Stage;
 import amata1219.parkour.stage.StageSet;
+import amata1219.parkour.user.User;
 import net.minecraft.server.v1_13_R2.EntityPlayer;
 import net.minecraft.server.v1_13_R2.PlayerConnection;
 
@@ -102,13 +103,23 @@ public class Parkour {
 	}
 
 	//このアスレに参加する
-	public void join(Player player){
+	public void entry(User user){
+		Player player = user.asBukkitPlayer();
+
 		//プレイヤーのコネクションを取得する
 		PlayerConnection connection = asEntityPlayer(player).playerConnection;
 
 		//既にコネクションリストに含まれていたら戻る
 		if(connections.contains(connection))
 			return;
+
+		Parkour currentParkour = user.currentParkour;
+
+		//今遊んでいるアスレがあればそこから退出する
+		if(currentParkour != null) currentParkour.exit(user);
+
+		//今いるアスレをこのアスレに書き換える
+		user.currentParkour = this;
 
 		//コネクションリストにプレイヤーのコネクションを追加する
 		connections.add(connection);
@@ -125,9 +136,14 @@ public class Parkour {
 	}
 
 	//このアスレから退出する
-	public void quit(Player player){
+	public void exit(User user){
+		Player player = user.asBukkitPlayer();
+
 		//プレイヤーのコネクションを取得する
 		PlayerConnection connection = asEntityPlayer(player).playerConnection;
+
+		//今いるアスレと今遊んでいるアスレを削除する
+		user.currentParkour = user.parkourPlayingNow = null;
 
 		//コネクションリストからプレイヤーのコネクションを削除する
 		connections.remove(connection);
@@ -154,8 +170,10 @@ public class Parkour {
 	}
 
 	//アスレの領域をセットする
-	public void setRegion(Region region){
-		Validate.notNull(region, "Region can not be null");
+	public void setRegion(Region newRegion){
+		Validate.notNull(newRegion, "Region can not be null");
+
+		region = newRegion;
 	}
 
 	public RegionWithBorders getStartLine(){

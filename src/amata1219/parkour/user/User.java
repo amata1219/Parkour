@@ -128,7 +128,7 @@ public class User {
 		this.coins = Math.max(this.coins - coins, 0);
 	}
 
-	public boolean isPlayignWithParkour(){
+	public boolean isPlayingWithParkour(){
 		return parkourPlayingNow != null;
 	}
 

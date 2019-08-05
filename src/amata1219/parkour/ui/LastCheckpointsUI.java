@@ -75,6 +75,9 @@ public class LastCheckpointsUI implements InventoryUI {
 						Player player = event.player;
 
 						if(event.isRightClick()){
+							//別のアスレに移動するのであれば参加処理をする
+							if(parkour != user.currentParkour) parkour.entry(user);
+
 							//最終チェックポイントを取得する
 							ImmutableEntityLocation lastCheckpoint = locations.get(displayCheckAreaNumber - 1);
 

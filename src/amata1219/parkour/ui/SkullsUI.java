@@ -7,7 +7,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
@@ -190,6 +189,7 @@ public class SkullsUI implements InventoryUI {
 			}
 
 			l.put((s) -> {
+
 				s.icon((i) -> {
 					i.material = Material.BARRIER;
 
@@ -200,6 +200,7 @@ public class SkullsUI implements InventoryUI {
 				s.onClick((event) -> {
 					event.player.getInventory().setHelmet(new ItemStack(Material.AIR));
 				});
+
 			}, 53);
 		});
 	}

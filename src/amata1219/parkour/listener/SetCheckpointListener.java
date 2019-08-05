@@ -24,6 +24,7 @@ public class SetCheckpointListener implements Listener {
 
 	@EventHandler
 	public void onSwap(PlayerSwapHandItemsEvent event){
+		//固定キャンセル
 		event.setCancelled(true);
 
 		Player player = event.getPlayer();
@@ -35,7 +36,7 @@ public class SetCheckpointListener implements Listener {
 		if(!player.isOnGround()) return;
 
 		//現在アスレをプレイ中でなければ戻る
-		if(!user.isPlayignWithParkour()) return;
+		if(!user.isPlayingWithParkour()) return;
 
 		Location location = player.getLocation();
 
@@ -58,15 +59,15 @@ public class SetCheckpointListener implements Listener {
 		if(!user.parkourPlayingNow.equals(parkour)) return;
 
 		//チェックエリアの番号を取得する
-		int areaNumber = parkour.checkAreas.getCheckAreaNumber(checkArea);
+		int checkAreaNumber = parkour.checkAreas.getCheckAreaNumber(checkArea);
 
 		//不正な番号であれば戻る
-		if(areaNumber <= -1) return;
+		if(checkAreaNumber <= -1) return;
 
 		//チェックポイントとして設定する
-		user.setCheckpoint(parkour, areaNumber, new ImmutableEntityLocation(location));
+		user.checkpoints.setCheckpoint(parkour, checkAreaNumber, new ImmutableEntityLocation(location));
 
-		MessageTemplate.applyWithColor("&b-Set checkpoint @ $0", areaNumber).displayOnActionBar(player);
+		MessageTemplate.applyWithColor("&b-Set checkpoint @ $0", checkAreaNumber).displayOnActionBar(player);
 	}
 
 }

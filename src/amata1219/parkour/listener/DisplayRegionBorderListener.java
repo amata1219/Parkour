@@ -25,7 +25,7 @@ public class DisplayRegionBorderListener implements Listener {
 		Parkour lastParkour = user.currentParkour;
 
 		//あれば参加させる
-		if(lastParkour != null) lastParkour.join(player);
+		if(lastParkour != null) lastParkour.entry(user);
 	}
 
 	@EventHandler
@@ -39,7 +39,7 @@ public class DisplayRegionBorderListener implements Listener {
 		Parkour currentParkour = user.currentParkour;
 
 		//あれば退出させる
-		if(currentParkour != null) currentParkour.quit(player);
+		if(currentParkour != null) currentParkour.exit(user);
 	}
 
 }

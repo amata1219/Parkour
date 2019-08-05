@@ -63,6 +63,9 @@ public class AllCheckpointsUI implements InventoryUI {
 						//クリックしたプレイヤーを取得する
 						Player player = event.player;
 
+						//別のアスレに移動するのであれば参加処理をする
+						if(parkour != user.currentParkour) parkour.entry(user);
+
 						//プレイヤーを最終チェックポイントにテレポートさせる
 						player.teleport(location.asBukkitLocation());
 
