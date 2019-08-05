@@ -2,10 +2,13 @@ package amata1219.parkour.user;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -44,6 +47,10 @@ public class UserSet implements Listener {
 			//登録する
 			users.put(user.uuid, user);
 		}
+	}
+
+	public List<User> getOnlineUsers(){
+		return Bukkit.getOnlinePlayers().stream().map(this::getUser).collect(Collectors.toList());
 	}
 
 	public User getUser(Player player){
