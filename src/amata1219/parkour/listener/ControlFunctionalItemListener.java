@@ -20,7 +20,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.amalib.inventory.ui.dsl.component.Icon;
+import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.message.MessageColor;
+import amata1219.amalib.message.MessageTemplate;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.tuplet.Tuple;
 
@@ -46,50 +48,78 @@ public class ControlFunctionalItemListener {
 
 	static{
 		ItemStack itemOfTeleporterToLastCheckpoint = new ItemStack(Material.FEATHER);
+
 		applyMetaToItem(itemOfTeleporterToLastCheckpoint, StringColor.color("&b-Teleporter to last checkpoint"));
 
-		//最終チェックポイントへのテレポーターの機能内容を定義する
+		//最終チェックポイントにテレポートさせるアイテムの機能内容を定義する
 		teleporterToLastCheckpoint = new Tuple<>(itemOfTeleporterToLastCheckpoint, user -> {
 			//アスレをプレイ中でなければ戻る
-			if(!user.isPlayingWithParkour())
-				return;
+			if(!user.isPlayingWithParkour()) return;
 
 			//プレイ中のアスレを取得する
 			Parkour parkourPlayingNow = user.parkourPlayingNow;
 
 			CheckpointSet checkpoints = user.checkpoints;
 
-			//チェックポイントが1つも無ければ戻る
-			if(!checkpoints.containsParkour(parkourPlayingNow)){
+			//最終チェックポイントを取得する
+			ImmutableEntityLocation lastCheckpoint = checkpoints.getLastCheckpoint(parkourPlayingNow);
+
+			//無ければ戻る
+			if(lastCheckpoint == null){
 				//表示例: Operation blocked @ Missing last checkpoint
 				MessageColor.color("&c-Operation blocked &7-@ &c-Missing last checkpoint").displayOnActionBar(user.asBukkitPlayer());
 				return;
 			}
+
+			Player player = user.asBukkitPlayer();
+
+			//最終チェックポイントにテレポートさせる
+			player.teleport(lastCheckpoint.asBukkitLocation());
+
+			int displayCheckAreaNumber = checkpoints.getCheckpointSize(parkourPlayingNow);
+
+			//アスレ名を取得する
+			String parkourName = parkourPlayingNow.name;
+
+			//表示例: Teleported to checkpoint 1 @ Update1!
+			MessageTemplate.applyWithColor("&b-Teleported to a checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkourName).displayOnActionBar(player);
 		});
 
 		ItemStack itemOfCheckpointSelector = new ItemStack(Material.FEATHER);
+
 		applyMetaToItem(itemOfCheckpointSelector, StringColor.color("&b-Checkpoint selector"));
 
+		//ステージ内の最終チェックポイント一覧を開くアイテムの機能内容を定義する
 		checkpointSelector = new Tuple<>(itemOfCheckpointSelector, user -> {
 
 		});
 
 		ItemStack itemOfStageSelector = new ItemStack(Material.FEATHER);
+
 		applyMetaToItem(itemOfStageSelector, StringColor.color("&b-Stage selector"));
 
+		//ステージ一覧を開くアイテムの機能内容を定義する
 		stageSelector = new Tuple<>(itemOfStageSelector, user -> {
 
 		});
 
 		ItemStack itemOfHideModeToggler = new ItemStack(Material.FEATHER);
+
 		applyMetaToItem(itemOfHideModeToggler, StringColor.color("&b-Hide mode toggler"));
 
-		hideModeToggler = new Tuple<>(itemOfHideModeToggler, user -> ToggleHideMode.getInstance().change(user));
+		//非表示モードを切り替えるアイテムの機能内容を定義する
+		hideModeToggler = new Tuple<>(itemOfHideModeToggler, user -> {
+			ToggleHideMode.getInstance().change(user);
+		});
 
 		ItemStack itemOfMenuOpener = new ItemStack(Material.FEATHER);
+
 		applyMetaToItem(itemOfMenuOpener, StringColor.color("&b-Menu opener"));
 
-		menuOpener = new Tuple<>(itemOfMenuOpener, user -> user.inventoryUIs.menuUI.openInventory(user.asBukkitPlayer()));
+		//メニューを開くアイテムの機能内容を定義する
+		menuOpener = new Tuple<>(itemOfMenuOpener, user -> {
+			user.inventoryUIs.menuUI.openInventory(user.asBukkitPlayer());
+		});
 	}
 
 	private static void applyMetaToItem(ItemStack item, String displayName){

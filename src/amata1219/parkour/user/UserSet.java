@@ -63,7 +63,7 @@ public class UserSet implements Listener {
 	}
 
 	public Yaml getYaml(UUID uuid){
-		return new Yaml(plugin, new File(folder, StringTemplate.apply("$0.yml", uuid)));
+		return new Yaml(plugin, new File(folder, StringTemplate.apply("$0.yml", uuid)), "user.yml");
 	}
 
 	@EventHandler

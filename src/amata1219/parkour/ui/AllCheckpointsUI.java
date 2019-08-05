@@ -25,7 +25,7 @@ public class AllCheckpointsUI implements InventoryUI {
 	public AllCheckpointsUI(User user, Parkour parkour){
 		this.user = user;
 		this.parkour = parkour;
-	}//	StringColor.color("&7-: &b-Right click &7-@ &b-Open list of checkpoints you have passed through in this parkour")
+	}
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
@@ -39,7 +39,7 @@ public class AllCheckpointsUI implements InventoryUI {
 
 		return build(locations.size(), (l) -> {
 			//タイトルを設定する
-			l.title = StringTemplate.applyWithColor("&b-$0 checkpoints that you've passed");
+			l.title = StringTemplate.applyWithColor("&b-$0 &r-checkpoints", parkourName);
 
 			//デフォルトスロットを設定する
 			l.defaultSlot((s) -> {

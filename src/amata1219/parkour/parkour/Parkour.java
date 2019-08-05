@@ -1,6 +1,5 @@
 package amata1219.parkour.parkour;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang.Validate;
@@ -15,7 +14,6 @@ import amata1219.amalib.region.Region;
 import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
-import amata1219.parkour.Main;
 import amata1219.parkour.stage.Stage;
 import amata1219.parkour.stage.StageSet;
 import amata1219.parkour.user.User;
@@ -208,7 +206,7 @@ public class Parkour {
 	}
 
 	public void save(){
-		Yaml yaml = new Yaml(Main.getPlugin(), new File(parkourSet.folder, StringTemplate.apply("$0.yml", name)));
+		Yaml yaml = parkourSet.getYaml(name);
 
 		//ワールド名を記録する
 		yaml.set("World", world.getName());

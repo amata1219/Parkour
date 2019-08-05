@@ -70,6 +70,18 @@ public class CheckpointSet {
 		return getCheckpoints(parkourName).size();
 	}
 
+	public ImmutableEntityLocation getLastCheckpoint(Parkour parkour){
+		return getLastCheckpoint(parkour);
+	}
+
+	public ImmutableEntityLocation getLastCheckpoint(String parkourName){
+		//チェックポイントのリストを取得する
+		List<ImmutableEntityLocation> locations = getCheckpoints(parkourName);
+
+		//空であればnull、そうでなければ最後のチェックポイントを返す
+		return locations.isEmpty() ? null : locations.get(locations.size() - 1);
+	}
+
 	public void setCheckpoint(Parkour parkour, int checkAreaNumber, ImmutableEntityLocation location){
 		String parkourName = parkour.name;
 

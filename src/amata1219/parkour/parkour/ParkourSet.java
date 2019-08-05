@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.amalib.region.Region;
+import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 
@@ -111,6 +112,10 @@ public class ParkourSet {
 
 	public void unregisterCheckArea(RegionWithBorders checkArea){
 		unregisterRegionWithBorders(checkArea, chunksToCheckAreasMap);
+	}
+
+	public Yaml getYaml(String parkourName){
+		return new Yaml(plugin, new File(folder, StringTemplate.apply("$0.yml", parkourName)), "parkour.yml");
 	}
 
 	private void registerRegionWithBorders(RegionWithBorders regionWithBorders, ChunksToObjectsMap<RegionWithBorders> chunksToRegionsMap){
