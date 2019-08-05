@@ -17,6 +17,8 @@ import amata1219.parkour.parkour.ParkourSet;
 
 public class CheckpointSet {
 
+	private final ParkourSet parkourSet = ParkourSet.getInstance();
+
 	private final Map<String, List<ImmutableEntityLocation>> checkpoints = new HashMap<>();
 
 	public CheckpointSet(Yaml yaml){
@@ -25,8 +27,6 @@ public class CheckpointSet {
 
 		//セクションを取得する
 		ConfigurationSection section = yaml.getConfigurationSection("Check points");
-
-		ParkourSet parkourSet = ParkourSet.getInstance();
 
 		//各アスレ名毎に処理する
 		for(String parkourName : section.getKeys(false)){
@@ -40,6 +40,10 @@ public class CheckpointSet {
 			for(int checkAreaNumber = 0; checkAreaNumber < points.size(); checkAreaNumber++)
 				setCheckpoint(parkour, checkAreaNumber, points.get(checkAreaNumber));
 		}
+	}
+
+	public List<Parkour> getParkourList(){
+		return checkpoints.keySet().stream().filter(parkourSet::containsParkour).map(parkourSet::getParkour).collect(Collectors.toList());
 	}
 
 	public boolean containsParkour(Parkour parkour){

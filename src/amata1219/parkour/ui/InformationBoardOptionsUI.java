@@ -53,11 +53,11 @@ public class InformationBoardOptionsUI implements InventoryUI {
 	@Override
 	public Function<Player, InventoryLayout> layout() {
 		return build(InventoryLine.x3, (l) -> {
+			//非同期で処理をする
 			l.asynchronouslyRunActionOnClose = true;
 
 			l.onClose((event) -> {
 				user.informationBoard.loadScoreboard();
-				//音を再生する
 			});
 
 			for(Quadruple<Integer, Material, String, Supplier<Boolean>> component : components){
@@ -67,10 +67,11 @@ public class InformationBoardOptionsUI implements InventoryUI {
 				Supplier<Boolean> state = component.fourth;
 
 				l.put((s) -> {
+					//非同期で処理をする
 					s.async = true;
 
 					s.icon(material, (i) -> {
-						i.displayName = StringTemplate.applyWithColor("&b-&l-$0", displayName);
+						i.displayName = StringTemplate.applyWithColor("&b-$0", displayName);
 
 						//値が変更されない様に先に反転させておく
 						state.get();
@@ -84,10 +85,10 @@ public class InformationBoardOptionsUI implements InventoryUI {
 						Icon icon = event.currentIcon;
 
 						//有効であれば発光させる
-						if(state.get())
-							icon.gleam();
-						else
-							icon.tarnish();
+						if(state.get()) icon.gleam();
+
+						//無効であれば発光を削除する
+						else icon.tarnish();
 					});
 
 				}, slotIndex);

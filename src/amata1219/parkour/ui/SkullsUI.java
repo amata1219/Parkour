@@ -22,6 +22,7 @@ import amata1219.amalib.inventory.ui.dsl.component.Icon;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.inventory.ui.option.InventoryLine;
 import amata1219.amalib.item.skull.SkullMaker;
+import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.tuplet.Triple;
 import amata1219.parkour.message.SoundPlayer;
@@ -191,7 +192,9 @@ public class SkullsUI implements InventoryUI {
 			l.put((s) -> {
 				s.icon((i) -> {
 					i.material = Material.BARRIER;
-					i.displayName = ChatColor.RED + "Click > Take Off Skull!";
+
+					//表示名を設定する
+					i.displayName = StringColor.color("&7-: &c-Click &7-@ &c-Take off the skull");
 				});
 
 				s.onClick((event) -> {

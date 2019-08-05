@@ -14,6 +14,7 @@ public class InventoryUISet {
 
 	public InventoryUISet(User user){
 		lastCheckpointsUI = new LastCheckpointsUI(user);
+		skullsUI = new SkullsUI(user);
 	}
 
 }

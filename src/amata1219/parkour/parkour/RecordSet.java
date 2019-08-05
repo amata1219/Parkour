@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -14,7 +13,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import amata1219.amalib.schedule.Async;
-import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.tuplet.Tuple;
 import amata1219.amalib.yaml.Yaml;
@@ -28,7 +26,7 @@ public class RecordSet {
 	private final Map<UUID, Float> records;
 
 	//上位10件の記録
-	private final List<Tuple<UUID, Supplier<String>>> topTenRecords = new ArrayList<>(10);
+	private final List<Tuple<UUID, String>> topTenRecords = new ArrayList<>(10);
 
 	private final List<UUID> cheaters = new ArrayList<>();
 
@@ -61,7 +59,7 @@ public class RecordSet {
 	}
 
 	public void deleteCheaterRecord(UUID uuid){
-		//validate uuid... records.remove(uuid); cheaters.add(uuid);
+		//validate uuid... records.remove(uuid); cheaters.add(uuid); sort();
 	}
 
 	public void sort(){
@@ -79,7 +77,8 @@ public class RecordSet {
 
 				UUID uuid = record.getKey();
 
-				topTenRecords.add(new Tuple<>(uuid, () -> (records.containsKey(uuid) ? TIME_FORMAT.format(records.get(uuid)) : StringColor.color("&c-Invalid record &7-@ &c-Using cheats"))));
+				//記録をフォーマットして追加する
+				topTenRecords.add(new Tuple<>(uuid, TIME_FORMAT.format(records.get(uuid))));
 			}
 		}).execute();
 	}
