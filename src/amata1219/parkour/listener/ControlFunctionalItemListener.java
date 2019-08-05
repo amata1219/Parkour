@@ -46,7 +46,11 @@ public class ControlFunctionalItemListener {
 		applyMetaToItem(itemOfTeleporterToLastCheckpoint, StringColor.color("&b-Teleporter to last checkpoint"));
 
 		teleporterToLastCheckpoint = new Tuple<>(itemOfTeleporterToLastCheckpoint, user -> {
-
+			//アスレをプレイ中でなければ戻る
+			if(!user.isPlayingWithParkour())
+				return;
+			
+			
 		});
 
 		ItemStack itemOfCheckpointSelector = new ItemStack(Material.FEATHER);
