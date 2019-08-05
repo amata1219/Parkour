@@ -51,7 +51,7 @@ public class Stage {
 	}
 
 	public void save(){
-		Yaml yaml = stages.getYaml(name);
+		Yaml yaml = stages.makeYaml(name);
 
 		//カテゴリーを記録する
 		yaml.set("Category", category.toString());

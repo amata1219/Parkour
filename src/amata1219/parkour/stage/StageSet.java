@@ -90,7 +90,7 @@ public class StageSet {
 		return parkourNamesToStagesMap.get(parkourName);
 	}
 
-	public Yaml getYaml(String stageName){
+	public Yaml makeYaml(String stageName){
 		return new Yaml(plugin, new File(folder, StringTemplate.apply("$0.yml", stageName)), "stage.yml");
 	}
 

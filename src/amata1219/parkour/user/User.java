@@ -143,7 +143,7 @@ public class User {
 	}
 
 	public void save(){
-		Yaml yaml = UserSet.getInstnace().getYaml(uuid);
+		Yaml yaml = UserSet.getInstnace().makeYaml(uuid);
 
 		//Updateランクを記録する
 		yaml.set("Update rank", updateRank);

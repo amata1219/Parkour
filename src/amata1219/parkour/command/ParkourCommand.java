@@ -1,16 +1,14 @@
 package amata1219.parkour.command;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
+import java.io.File;
+import java.util.Optional;
 
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
-import amata1219.amalib.message.MessageTemplate;
 import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.yaml.Yaml;
-import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
+import net.md_5.bungee.api.ChatColor;
 
 public class ParkourCommand implements Command {
 
@@ -21,88 +19,89 @@ public class ParkourCommand implements Command {
 		//送信者がプレイヤーでなければ戻る
 		if(blockNonPlayer(sender)) return;
 
-		Player player = sender.asPlayerCommandSender();
-
-		//第1引数をアスレ名として取得する
-		String parkourName = ChatColor.translateAlternateColorCodes('&', args.next());
-
-		//リストという名前であればアスレリストを表示する
-		if(parkourName.equals("list")){
-			for(Parkour parkour : parkourSet.parkourMap.values()) MessageTemplate.apply("&7-: &b-$0", parkour.name).display(player);
-
-			return;
-		}
-
+		//第1引数で分岐する
 		switch(args.next()){
 		case "create":{
-			if(parkourSet.containsParkour(parkourName) || parkourSet.unfinishedParkourNames.contains(parkourName)){
-				sender.warn("指定されたアスレは既に存在しています。");
+			//第2引数をアスレ名として取得する
+			String parkourName = color(args.next());
+
+			//対応したファイルが存在していれば戻る
+			if(parkourSet.existsFile(parkourName)){
+				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は既に存在しています。", parkourName));
 				return;
 			}
 
 			//ファイルを作成する
-			parkourSet.getYaml(parkourName);
+			parkourSet.makeYaml(parkourName);
 
-			//製作途中のアスレマップに追加する
-			parkourSet.unfinishedParkourNames.add(parkourName);
-
-			sender.info(StringTemplate.apply("指定された名前でアスレを作成しました。各情報を設定次第、/parkour register $0 を実行して登録して下さい。", parkourName));
+			sender.info(StringTemplate.applyWithColor("$0-&r-&b-を作成しました。", parkourName));
 			return;
 		}case "delete":{
-			if(parkourSet.containsParkour(parkourName)){
-				//アスレの登録を解除する
-				parkourSet.unregisterParkour(parkourName);
+			//第2引数をアスレ名として取得する
+			String parkourName = color(args.next());
 
-				//ファイルを削除する
-				parkourSet.getYaml(parkourName).file.delete();
-
-				sender.info("指定されたアスレを削除しました。");
-				return;
-			}else if(parkourSet.unfinishedParkourNames.contains(parkourName)){
-				//製作途中のアスレマップから削除する
-				parkourSet.unfinishedParkourNames.remove(parkourName);
-
-				//ファイルを削除する
-				parkourSet.getYaml(parkourName).file.delete();
-
-				sender.info("指定されたアスレを削除しました。");
-				return;
-			}else{
-				sender.warn("指定されたアスレは存在しません。");
+			//対応したファイルが存在していれば戻る
+			if(!parkourSet.existsFile(parkourName)){
+				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は既に存在しています。", parkourName));
 				return;
 			}
+
+			//アスレが登録されていれば登録を解除する
+			parkourSet.unregisterParkour(parkourName);
+
+			//ファイルを削除する
+			parkourSet.makeYaml(parkourName).file.delete();
+
+			sender.info(StringTemplate.applyWithColor("$0-&r-&b-を削除しました。", parkourName));
+			return;
 		}case "register":{
+			//第2引数をアスレ名として取得する
+			String parkourName = color(args.next());
+
+			//既に登録されていれば戻る
 			if(parkourSet.containsParkour(parkourName)){
-				sender.warn("指定されたアスレは既に登録されています。");
+				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は既に登録されています。", parkourName));
 				return;
 			}
 
-			Yaml yaml = parkourSet.getYaml(parkourName);
+			//アスレを登録する
+			parkourSet.registerParkour(parkourName);
 
-			Parkour parkour = new Parkour(yaml);
-
-			parkourSet.registerParkour(parkour);
-
-			sender.info("指定されたアスレを登録しました。");
+			sender.info(StringTemplate.applyWithColor("$0-&r-&b-を登録しました。", parkourName));
 			return;
 		}case "unregister":{
+			//第2引数をアスレ名として取得する
+			String parkourName = color(args.next());
+
+			//登録されていなければ戻る
 			if(!parkourSet.containsParkour(parkourName)){
-				sender.warn("指定されたアスレは登録されていません。");
+				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は登録されていません。", parkourName));
 				return;
 			}
 
 			//アスレの登録を解除する
 			parkourSet.unregisterParkour(parkourName);
 
-			sender.info("指定されたアスレの登録を解除しました。");
+			sender.info(StringTemplate.applyWithColor("$0-&r-&b-の登録を解除しました。", parkourName));
 			return;
-		}case "unfinished":{
-			for(String unfinishedParkourName : parkourSet.unfinishedParkourNames)
-				sender.info(": " + unfinishedParkourName);
+		}case "list":{
+			//登録されている全アスレ名を表示する
+			for(File file : Optional.ofNullable(parkourSet.folder.listFiles()).orElse(new File[0])){
+				//拡張子を除いたファイル名をアスレ名として取得する
+				String parkourName = file.getName().replace(".yml", "");
+
+				sender.info(StringTemplate.apply("&7-: &b-$0", parkourName));
+			}
 			return;
 		}default:
+			sender.warn("/parkour [create/delete/register/unregister] [parkour_name] | /parkour list");
 			return;
 		}
+
+	}
+
+	private String color(String text){
+		return ChatColor.translateAlternateColorCodes('&', text);
 	}
 
 }

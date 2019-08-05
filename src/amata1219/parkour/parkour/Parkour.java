@@ -225,7 +225,7 @@ public class Parkour {
 	}
 
 	public void save(){
-		Yaml yaml = parkourSet.getYaml(name);
+		Yaml yaml = parkourSet.makeYaml(name);
 
 		//ワールド名を記録する
 		yaml.set("World", world.getName());

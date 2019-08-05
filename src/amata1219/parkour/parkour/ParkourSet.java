@@ -1,9 +1,7 @@
 package amata1219.parkour.parkour;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,7 +24,8 @@ public class ParkourSet {
 	//アスレデータを保存するフォルダー
 	public final File folder = new File(plugin.getDataFolder() + File.separator + "ParkourList");
 
-	public final Map<String, Parkour> parkourMap = new HashMap<>();
+	//アスレのマップ
+	private final Map<String, Parkour> parkourMap = new HashMap<>();
 
 	//スタートラインのチャンクマップ
 	public final ChunksToObjectsMap<RegionWithBorders> chunksToStartLinesMap = new ChunksToObjectsMap<>();
@@ -36,9 +35,6 @@ public class ParkourSet {
 
 	//チェックエリアのチャンクマップ
 	public final ChunksToObjectsMap<RegionWithBorders> chunksToCheckAreasMap = new ChunksToObjectsMap<>();
-
-	//製作途中のアスレリスト
-	public final List<String> unfinishedParkourNames = new ArrayList<>();
 
 	private ParkourSet(){
 		//フォルダーが存在しなければ作成する
@@ -57,6 +53,10 @@ public class ParkourSet {
 		}
 	}
 
+	public boolean existsFile(String parkourName){
+		return new File(folder, StringTemplate.apply("$0.yml", parkourName)).exists();
+	}
+
 	public void registerParkour(Parkour parkour){
 		parkourMap.put(parkour.name, parkour);
 
@@ -68,6 +68,18 @@ public class ParkourSet {
 
 		//全チェックエリアを登録する
 		parkour.checkAreas.registerAll();
+	}
+
+	public void registerParkour(String parkourName){
+		if(!existsFile(parkourName)) return;
+
+		//コンフィグを取得する
+		Yaml yaml = makeYaml(parkourName);
+
+		//コンフィグに基づきアスレを生成する
+		Parkour parkour = new Parkour(yaml);
+
+		registerParkour(parkour);
 	}
 
 	public void unregisterParkour(Parkour parkour){
@@ -84,7 +96,7 @@ public class ParkourSet {
 	}
 
 	public void unregisterParkour(String parkourName){
-		unregisterParkour(parkourMap.get(parkourName));
+		if(containsParkour(parkourName)) unregisterParkour(getParkour(parkourName));
 	}
 
 	public Parkour getParkour(String parkourName){
@@ -123,7 +135,7 @@ public class ParkourSet {
 		unregisterRegionWithBorders(checkArea, chunksToCheckAreasMap);
 	}
 
-	public Yaml getYaml(String parkourName){
+	public Yaml makeYaml(String parkourName){
 		return new Yaml(plugin, new File(folder, StringTemplate.apply("$0.yml", parkourName)), "parkour.yml");
 	}
 

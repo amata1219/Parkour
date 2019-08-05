@@ -35,7 +35,7 @@ public class CheckAreaCommand implements Command {
 		String parkourName = args.next();
 
 		//ファイルを取得する
-		Yaml yaml = parkourSet.getYaml(parkourName);
+		Yaml yaml = parkourSet.makeYaml(parkourName);
 
 		RegionSelection selection = selections.getSelection(uuid);
 

@@ -23,7 +23,7 @@ public class StageCommand implements Command {
 
 		switch(args.next()){
 		case "create":{
-			Yaml yaml = stages.getYaml(arg0);
+			Yaml yaml = stages.makeYaml(arg0);
 
 			Stage stage = new Stage(yaml);
 

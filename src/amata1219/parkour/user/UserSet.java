@@ -62,7 +62,7 @@ public class UserSet implements Listener {
 		return users.containsKey(uuid);
 	}
 
-	public Yaml getYaml(UUID uuid){
+	public Yaml makeYaml(UUID uuid){
 		return new Yaml(plugin, new File(folder, StringTemplate.apply("$0.yml", uuid)), "user.yml");
 	}
 
@@ -74,7 +74,7 @@ public class UserSet implements Listener {
 		if(users.containsKey(uuid)) return;
 
 		//ユーザーデータコンフィグ作成する
-		Yaml yaml = getYaml(uuid);
+		Yaml yaml = makeYaml(uuid);
 
 		//コンフィグを基にユーザーを生成する
 		User user = new User(yaml);
