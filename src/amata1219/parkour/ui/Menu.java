@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Function;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
@@ -13,22 +14,23 @@ import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.inventory.ui.option.InventoryLine;
 import amata1219.amalib.item.skull.SkullMaker;
+import amata1219.amalib.message.MessageColor;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.tuplet.Quadruple;
 import amata1219.parkour.user.User;
 
-public class MenuUI implements InventoryUI {
+public class Menu implements InventoryUI {
 
 	private final User user;
 	private final ArrayList<Quadruple<Integer, Material, String, InventoryUI>> components = new ArrayList<>(3);
 
-	public MenuUI(User user){
+	public Menu(User user){
 		this.user = user;
 
 		components.addAll(Arrays.asList(
-			component(5, Material.FEATHER, StringColor.color("&b-Scoreboard options"), new InformationBoardOptionsUI(user)),
-			component(6, Material.FEATHER, StringColor.color("&b-Skulls"), new SkullsUI(user))
+			component(5, Material.FEATHER, StringColor.color("&b-Open scoreboard options"), new InformationBoardOptionUI(user)),
+			component(6, Material.FEATHER, StringColor.color("&b-Open skull menu"), new SkullMenu(user))
 		));
 	}
 
@@ -80,10 +82,33 @@ public class MenuUI implements InventoryUI {
 				l.put((s) -> {
 
 					s.onClick(event -> component.fourth.openInventory(event.player));
-					s.icon(component.second, i -> System.out.println(i.displayName = component.third));
+
+					s.icon(component.second, i -> {
+						i.displayName = component.third;
+						i.gleam();
+					});
 
 				}, component.first);
 			}
+
+			l.put((s) -> {
+
+				s.onClick((event) -> {
+					Player clicker = event.player;
+
+					//本番環境では変える
+					clicker.teleport(Bukkit.getWorld("world").getSpawnLocation());
+
+					//表示例: Teleported to lobby!
+					MessageColor.color("&b-Teleported to lobby!").displayOnActionBar(player);
+				});
+
+				s.icon(Material.FEATHER, i -> {
+					i.displayName = StringColor.color("&b-Teleport to lobby");
+					i.gleam();
+				});
+
+			}, 7);
 
 		});
 	}

@@ -17,12 +17,12 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 
-public class AllCheckpointsUI implements InventoryUI {
+public class AllCheckpointSelectionUI implements InventoryUI {
 
 	private final User user;
 	private final Parkour parkour;
 
-	public AllCheckpointsUI(User user, Parkour parkour){
+	public AllCheckpointSelectionUI(User user, Parkour parkour){
 		this.user = user;
 		this.parkour = parkour;
 	}
@@ -70,7 +70,7 @@ public class AllCheckpointsUI implements InventoryUI {
 						player.teleport(location.asBukkitLocation());
 
 						//表示例: Teleported to checkpoint 1 @ Update1!
-						MessageTemplate.capply("&b-Teleported to a checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkourName).displayOnActionBar(player);
+						MessageTemplate.capply("&b-Teleported to checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkourName).displayOnActionBar(player);
 					});
 
 					s.icon(Material.GRASS_BLOCK,(i) -> {

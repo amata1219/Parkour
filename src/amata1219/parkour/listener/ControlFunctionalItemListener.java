@@ -17,7 +17,7 @@ import amata1219.parkour.function.ToggleHideMode;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.stage.Stage;
 import amata1219.parkour.stage.StageCategory;
-import amata1219.parkour.ui.stage.StagesUISet;
+import amata1219.parkour.ui.stage.StageSelectionUISet;
 import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
@@ -99,7 +99,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			Player player = user.asBukkitPlayer();
 
 			//どこかのステージにいれば最終チェックポイント一覧を開く
-			if(user.currentStage != null) user.inventoryUIs.lastCheckpointsUI.openInventory(player);
+			if(user.currentStage != null) user.inventoryUISet.lastCheckpointUI.openInventory(player);
 
 			//無ければ警告する
 			else MessageColor.color("&c-Operation blocked &7-@ &c-You are not on any stage").displayOnActionBar(player);
@@ -118,7 +118,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			StageCategory category = stage != null ? stage.category : StageCategory.NORMAL;
 
 			//カテゴリーに対応したステージリストを開かせる
-			StagesUISet.getInstance().getStagesUI(category).openInventory(user.asBukkitPlayer());
+			StageSelectionUISet.getInstance().getStagesUI(category).openInventory(user.asBukkitPlayer());
 
 		});
 
@@ -136,7 +136,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		applyMetaToItem(itemOfMenuOpener, StringColor.color("&b-Menu opener"));
 
 		//メニューを開くアイテムの機能内容を定義する
-		menuOpener = new Tuple<>(itemOfMenuOpener, user -> user.inventoryUIs.menuUI.openInventory(user.asBukkitPlayer()));
+		menuOpener = new Tuple<>(itemOfMenuOpener, user -> user.inventoryUISet.menu.openInventory(user.asBukkitPlayer()));
 	}
 
 	private void applyMetaToItem(ItemStack item, String displayName){

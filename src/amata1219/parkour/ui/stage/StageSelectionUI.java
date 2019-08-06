@@ -16,7 +16,7 @@ import amata1219.parkour.stage.StageCategory;
 import amata1219.parkour.stage.StageSet;
 import amata1219.parkour.user.UserSet;
 
-public class StagesUI implements InventoryUI {
+public class StageSelectionUI implements InventoryUI {
 
 	/*
 	 *
@@ -42,7 +42,7 @@ public class StagesUI implements InventoryUI {
 	private final UserSet users = UserSet.getInstnace();
 	private final StageCategory category;
 
-	public StagesUI(StageCategory category){
+	public StageSelectionUI(StageCategory category){
 		this.category = category;
 	}
 
@@ -113,7 +113,7 @@ public class StagesUI implements InventoryUI {
 
 					s.onClick((event) -> {
 						//カテゴリに対応したステージリストを開かせる
-						StagesUISet.getInstance().getStagesUI(slotCategory).openInventory(event.player);
+						StageSelectionUISet.getInstance().getStagesUI(slotCategory).openInventory(event.player);
 					});
 
 					s.icon(Material.FEATHER, (i) -> {

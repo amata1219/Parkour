@@ -17,11 +17,11 @@ import amata1219.parkour.stage.Stage;
 import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 
-public class LastCheckpointsUI implements InventoryUI {
+public class LastCheckpointSelectionUI implements InventoryUI {
 
 	private final User user;
 
-	public LastCheckpointsUI(User user){
+	public LastCheckpointSelectionUI(User user){
 		this.user = user;
 	}
 
@@ -89,7 +89,7 @@ public class LastCheckpointsUI implements InventoryUI {
 
 						}else if(event.isLeftClick()){
 							//チェックポイントリストを開かせる
-							new AllCheckpointsUI(user, parkour).openInventory(player);
+							new AllCheckpointSelectionUI(user, parkour).openInventory(player);
 						}
 
 					});

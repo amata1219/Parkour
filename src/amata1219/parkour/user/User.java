@@ -56,10 +56,10 @@ public class User {
 	public final Set<UUID> purchasedHeads;
 
 	//スコアボードの管理インスタンス
-	public final InformationBoard informationBoard;
+	public final InformationBoard board;
 
 	//InventoryUIの管理インスタンス
-	public final InventoryUISet inventoryUIs;
+	public final InventoryUISet inventoryUISet;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
@@ -100,9 +100,9 @@ public class User {
 		purchasedHeads = yaml.getStringList("Purchased skulls").stream().map(UUID::fromString).collect(Collectors.toSet());
 
 		//スコアボードの管理インスタンスを作成する
-		informationBoard = new InformationBoard(this);
+		board = new InformationBoard(this);
 
-		inventoryUIs = new InventoryUISet(this);
+		inventoryUISet = new InventoryUISet(this);
 	}
 
 	public Player asBukkitPlayer(){

@@ -12,7 +12,7 @@ public class IncrementJumpsListener implements Listener {
 
 	@EventHandler
 	public void incrementJumps(PlayerJumpEvent event){
-		users.getUser(event.getPlayer()).informationBoard.updateJumps();
+		users.getUser(event.getPlayer()).board.updateJumps();
 	}
 
 }

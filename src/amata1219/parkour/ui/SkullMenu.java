@@ -27,7 +27,7 @@ import amata1219.amalib.tuplet.Triple;
 import amata1219.parkour.sound.SoundPlayer;
 import amata1219.parkour.user.User;
 
-public class SkullsUI implements InventoryUI {
+public class SkullMenu implements InventoryUI {
 
 	private static final Map<UUID, Triple<ItemStack, String, Integer>> HEADS;
 
@@ -100,7 +100,7 @@ public class SkullsUI implements InventoryUI {
 
 	private User user;
 
-	public SkullsUI(User user){
+	public SkullMenu(User user){
 		this.user = user;
 	}
 

@@ -10,7 +10,7 @@ import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 
-public class LoadUserDataListener implements PlayerJoinListener, PlayerQuitListener {
+public class ApplyUserStateListener implements PlayerJoinListener, PlayerQuitListener {
 
 	private final UserSet users = UserSet.getInstnace();
 
@@ -22,14 +22,14 @@ public class LoadUserDataListener implements PlayerJoinListener, PlayerQuitListe
 		ApplyRankToDisplayName.apply(user);
 
 		//スコアボードを表示する
-		user.informationBoard.loadScoreboard();
+		user.board.loadScoreboard();
 	}
 
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event){
 		User user = users.getUser(event.getPlayer());
 
-		user.informationBoard.clearScoreboard();
+		user.board.clearScoreboard();
 	}
 
 }
