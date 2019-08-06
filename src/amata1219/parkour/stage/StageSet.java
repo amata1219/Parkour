@@ -39,7 +39,7 @@ public class StageSet {
 
 	private StageSet(){
 		//フォルダーが存在しなければ作成する
-		if(!folder.exists()) folder.mkdir();
+		if(!folder.exists()) folder.mkdirs();
 
 		//各カテゴリ用にリストを用意する
 		for(StageCategory category : StageCategory.values()) categoriesToStagesMap.put(category, new ArrayList<>());

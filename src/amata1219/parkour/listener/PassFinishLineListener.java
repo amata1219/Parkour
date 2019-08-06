@@ -55,10 +55,10 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			records.sort();
 
 			//表示例: amata1219 cleared Update11 @ 00:01:23.231!
-			MessageTemplate.applyWithColor("$0 cleared $1 @ $2!", playerName, parkourName, TimeFormat.format(time)).broadcast();
+			MessageTemplate.capply("$0 cleared $1 @ $2!", playerName, parkourName, TimeFormat.format(time)).broadcast();
 		}else{
 			//表示例: amata1219 cleared Update6!
-			MessageTemplate.applyWithColor("$0 cleared $1!", playerName, parkourName).broadcast();
+			MessageTemplate.capply("$0 cleared $1!", playerName, parkourName).broadcast();
 		}
 
 		//タイムを削除する
@@ -80,7 +80,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 				ApplyRankToDisplayName.apply(user);
 
 				//表示例: Rank up @ amata1219's update rank is 8!
-				MessageTemplate.applyWithColor("&b-Rank up &7-@ &b-$0's update rank is $1-&r-&b-!", playerName, rank).broadcast();
+				MessageTemplate.capply("&b-Rank up &7-@ &b-$0's update rank is $1-&r-&b-!", playerName, rank).broadcast();
 			}
 
 		//Extendの場合
@@ -94,7 +94,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 				user.extendRank = rank;
 
 				//表示例: Rank up @ amata1219's extend rank is 7!
-				MessageTemplate.applyWithColor("&b-Rank up &7-@ &b-$0's extend rank is $1-&r-&b-!", playerName, rank).broadcast();
+				MessageTemplate.capply("&b-Rank up &7-@ &b-$0's extend rank is $1-&r-&b-!", playerName, rank).broadcast();
 			}
 		}
 
@@ -104,7 +104,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		user.depositCoins(coins);
 
 		//表示例: Gave amata1219 1000 coins as a reward!
-		MessageTemplate.applyWithColor("&b-Gave $0 $1 coins as a reard!", playerName, coins).display(player);
+		MessageTemplate.capply("&b-Gave $0 $1 coins as a reard!", playerName, coins).display(player);
 	}
 
 }

@@ -24,16 +24,6 @@ public class RegionSelectionSet implements Listener {
 
 	private static RegionSelectionSet instance;
 
-	//範囲選択用のツール
-	private static final ItemStack selectionTool;
-
-	static{
-		selectionTool = new ItemStack(Material.STONE_AXE);
-
-		//発光用エンチャントを付与する
-		GleamEnchantment.gleam(selectionTool);
-	}
-
 	public static void load(){
 		instance = new RegionSelectionSet();
 	}
@@ -41,11 +31,16 @@ public class RegionSelectionSet implements Listener {
 	public static RegionSelectionSet getInstance(){
 		return instance;
 	}
+	//範囲選択用のツール
+	private final ItemStack selectionTool;
 
 	private final HashMap<UUID, Tuple<String, RegionSelection>> selections = new HashMap<>();
 
 	private RegionSelectionSet(){
+		selectionTool = new ItemStack(Material.STONE_AXE);
 
+		//発光用エンチャントを付与する
+		GleamEnchantment.gleam(selectionTool);
 	}
 
 	//新しいセレクションを作成する

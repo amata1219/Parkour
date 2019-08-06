@@ -29,7 +29,7 @@ public class PassStartLineListener extends PassRegionBoundaryAbstractListener {
 			user.timeToStartPlaying = System.currentTimeMillis();
 
 			//表示例: Challenge started @ Update10
-			MessageTemplate.applyWithColor("&b-Challenge started @ $0-&r-&b-!", parkourName).displayOnActionBar(player);
+			MessageTemplate.capply("&b-Challenge started @ $0-&r-&b-!", parkourName).displayOnActionBar(player);
 
 		//スタートラインからスポーン地点側に踏み込んだ時
 		}else if(from != null && to == null){

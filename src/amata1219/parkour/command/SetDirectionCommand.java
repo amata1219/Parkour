@@ -71,7 +71,7 @@ public class SetDirectionCommand implements Command {
 		player.teleport(location);
 
 		//表示例: Set your direction @ 75.2 / 45.0
-		MessageTemplate.applyWithColor("&b-Set your direction &7-@ &b-$0 &7-/ &b-$1", truncateDecimal(location.getYaw()), truncateDecimal(location.getPitch()));
+		MessageTemplate.capply("&b-Set your direction &7-@ &b-$0 &7-/ &b-$1", truncateDecimal(location.getYaw()), truncateDecimal(location.getPitch()));
 	}
 
 	private void adjustAndSetYaw(Location location, float yaw){

@@ -28,6 +28,9 @@ public class User {
 	//コイン
 	private int coins;
 
+	//今いるステージ
+	public Stage currentStage;
+
 	//現在いるアスレ
 	public Parkour currentParkour;
 
@@ -91,7 +94,7 @@ public class User {
 		clearedParkourNames = new HashSet<>(yaml.getStringList("Cleared parkur names"));
 
 		//データを基に座標を作成する
-		creativeWorldCheckpoint = ImmutableEntityLocation.deserialize( yaml.getString("Creative world checkpoint"));
+		creativeWorldCheckpoint = ImmutableEntityLocation.deserialize(yaml.getString("Creative world checkpoint"));
 
 		//購入済みのスカルのIDをUUIDに変換したリストを作成する
 		purchasedHeads = yaml.getStringList("Purchased skulls").stream().map(UUID::fromString).collect(Collectors.toSet());
@@ -135,7 +138,7 @@ public class User {
 	}
 
 	public Stage getCurrentStage(){
-		return currentParkour != null ? currentParkour.getStage() : null;
+		return currentStage;
 	}
 
 	public boolean isPlayingWithParkour(){

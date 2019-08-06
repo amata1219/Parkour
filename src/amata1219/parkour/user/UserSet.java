@@ -39,7 +39,7 @@ public class UserSet implements PlayerJoinListener {
 
 	private UserSet(){
 		//フォルダーが存在しなければ作成する
-		if(!folder.exists()) folder.mkdir();
+		if(!folder.exists()) folder.mkdirs();
 
 		for(File file : Optional.ofNullable(folder.listFiles()).orElse(new File[0])){
 			//ファイルをコンフィグとして読み込む

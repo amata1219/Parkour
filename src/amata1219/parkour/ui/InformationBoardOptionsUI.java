@@ -53,9 +53,6 @@ public class InformationBoardOptionsUI implements InventoryUI {
 	@Override
 	public Function<Player, InventoryLayout> layout() {
 		return build(InventoryLine.x3, (l) -> {
-			//非同期で処理をする
-			l.asynchronouslyRunActionOnClose = true;
-
 			//デフォルトスロットを設定する
 			l.defaultSlot((s) -> {
 
@@ -73,9 +70,6 @@ public class InformationBoardOptionsUI implements InventoryUI {
 				Supplier<Boolean> state = component.fourth;
 
 				l.put((s) -> {
-					//非同期で処理をする
-					s.async = true;
-
 					s.icon(component.second, (i) -> {
 						i.displayName = StringTemplate.capply("&b-$0", component.third);
 

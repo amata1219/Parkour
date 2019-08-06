@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -38,22 +39,29 @@ import amata1219.amalib.tuplet.Tuple;
 
 public class ControlFunctionalItemListener implements PlayerJoinListener, PlayerQuitListener {
 
-	private static final Tuple<ItemStack, Consumer<User>> teleporterToLastCheckpoint;
-	private static final Tuple<ItemStack, Consumer<User>> checkpointSelector;
-	private static final Tuple<ItemStack, Consumer<User>> stageSelector;
-	private static final Tuple<ItemStack, Consumer<User>> hideModeToggler;
-	private static final Tuple<ItemStack, Consumer<User>> menuOpener;
-	private static final ItemStack empty = new ItemStack(Material.AIR);
+	private final Tuple<ItemStack, Consumer<User>> teleporterToLastCheckpoint;
+	private final Tuple<ItemStack, Consumer<User>> checkpointSelector;
+	private final Tuple<ItemStack, Consumer<User>> stageSelector;
+	private final Tuple<ItemStack, Consumer<User>> hideModeToggler;
+	private final Tuple<ItemStack, Consumer<User>> menuOpener;
+	private final ItemStack empty = new ItemStack(Material.AIR);
 
-	static{
+	private final UserSet users = UserSet.getInstnace();
+
+	public ControlFunctionalItemListener(){
 		ItemStack itemOfTeleporterToLastCheckpoint = new ItemStack(Material.FEATHER);
 
 		applyMetaToItem(itemOfTeleporterToLastCheckpoint, StringColor.color("&b-Teleporter to last checkpoint"));
 
 		//最終チェックポイントにテレポートさせるアイテムの機能内容を定義する
 		teleporterToLastCheckpoint = new Tuple<>(itemOfTeleporterToLastCheckpoint, user -> {
+			Player player = user.asBukkitPlayer();
+
 			//アスレをプレイ中でなければ戻る
-			if(!user.isPlayingWithParkour()) return;
+			if(!user.isPlayingWithParkour()){
+				MessageColor.color("&c-Operation blocked &7-@ &c-You are not playing with parkour").displayOnActionBar(player);
+				return;
+			}
 
 			//プレイ中のアスレを取得する
 			Parkour parkourPlayingNow = user.parkourPlayingNow;
@@ -66,11 +74,9 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			//無ければ戻る
 			if(lastCheckpoint == null){
 				//表示例: Operation blocked @ Missing last checkpoint
-				MessageColor.color("&c-Operation blocked &7-@ &c-Missing last checkpoint").displayOnActionBar(user.asBukkitPlayer());
+				MessageColor.color("&c-Operation blocked &7-@ &c-Missing last checkpoint").displayOnActionBar(player);
 				return;
 			}
-
-			Player player = user.asBukkitPlayer();
 
 			//最終チェックポイントにテレポートさせる
 			player.teleport(lastCheckpoint.asBukkitLocation());
@@ -81,7 +87,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			String parkourName = parkourPlayingNow.name;
 
 			//表示例: Teleported to checkpoint 1 @ Update1!
-			MessageTemplate.applyWithColor("&b-Teleported to a checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkourName).displayOnActionBar(player);
+			MessageTemplate.capply("&b-Teleported to a checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkourName).displayOnActionBar(player);
 		});
 
 		ItemStack itemOfCheckpointSelector = new ItemStack(Material.FEATHER);
@@ -90,7 +96,13 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 
 		//ステージ内の最終チェックポイント一覧を開くアイテムの機能内容を定義する
 		checkpointSelector = new Tuple<>(itemOfCheckpointSelector, user -> {
+			Player player = user.asBukkitPlayer();
 
+			//どこかのステージにいれば最終チェックポイント一覧を開く
+			if(user.currentStage != null) user.inventoryUIs.lastCheckpointsUI.openInventory(player);
+
+			//無ければ警告する
+			else MessageColor.color("&c-Operation blocked &7-@ &c-You are not on any stage").displayOnActionBar(player);
 		});
 
 		ItemStack itemOfStageSelector = new ItemStack(Material.FEATHER);
@@ -124,19 +136,15 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		applyMetaToItem(itemOfMenuOpener, StringColor.color("&b-Menu opener"));
 
 		//メニューを開くアイテムの機能内容を定義する
-		menuOpener = new Tuple<>(itemOfMenuOpener, user -> {
-			user.inventoryUIs.menuUI.openInventory(user.asBukkitPlayer());
-		});
+		menuOpener = new Tuple<>(itemOfMenuOpener, user -> user.inventoryUIs.menuUI.openInventory(user.asBukkitPlayer()));
 	}
 
-	private static void applyMetaToItem(ItemStack item, String displayName){
+	private void applyMetaToItem(ItemStack item, String displayName){
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(displayName);
-		GleamEnchantment.gleam(item);
 		item.setItemMeta(meta);
+		GleamEnchantment.gleam(item);
 	}
-
-	private final UserSet users = UserSet.getInstnace();
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event){
@@ -198,6 +206,11 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 
 		//クリエイティブモードでなければ全ての操作をキャンセルする
 		if(player.getGameMode() != GameMode.CREATIVE) event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onDrop(PlayerDropItemEvent event){
+		if(event.getPlayer().getGameMode() != GameMode.CREATIVE) event.setCancelled(true);
 	}
 
 	@EventHandler

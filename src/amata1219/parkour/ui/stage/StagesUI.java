@@ -14,6 +14,7 @@ import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.stage.Stage;
 import amata1219.parkour.stage.StageCategory;
 import amata1219.parkour.stage.StageSet;
+import amata1219.parkour.user.UserSet;
 
 public class StagesUI implements InventoryUI {
 
@@ -38,6 +39,7 @@ public class StagesUI implements InventoryUI {
 	 *
 	 */
 
+	private final UserSet users = UserSet.getInstnace();
 	private final StageCategory category;
 
 	public StagesUI(StageCategory category){
@@ -77,8 +79,10 @@ public class StagesUI implements InventoryUI {
 						//ステージのスポーン地点にテレポートさせる
 						player.teleport(stage.getSpawnLocation().asBukkitLocation());
 
+						users.getUser(player).currentStage = stage;
+
 						//表示例: Teleported to The Earth of Marmalade!
-						MessageTemplate.applyWithColor("&b-Teleported to $0-&r-&b-!", stageName).displayOnActionBar(player);
+						MessageTemplate.capply("&b-Teleported to $0-&r-&b-!", stageName).displayOnActionBar(player);
 					});
 
 					s.icon(Material.GRASS_BLOCK, (i) -> {
@@ -112,7 +116,7 @@ public class StagesUI implements InventoryUI {
 						StagesUISet.getInstance().getStagesUI(slotCategory).openInventory(event.player);
 					});
 
-					s.icon(Material.DIRT, (i) -> {
+					s.icon(Material.FEATHER, (i) -> {
 						//表示例: Update
 						i.displayName = StringTemplate.capply("&b-$0", slotCategory.getName());
 

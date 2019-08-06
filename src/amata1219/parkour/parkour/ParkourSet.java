@@ -42,7 +42,7 @@ public class ParkourSet {
 
 	private ParkourSet(){
 		//フォルダーが存在しなければ作成する
-		if(!folder.exists()) folder.mkdir();
+		if(!folder.exists()) folder.mkdirs();
 
 		//各アスレコンフィグ毎に処理をする
 		for(File file : Optional.ofNullable(folder.listFiles()).orElse(new File[0])){

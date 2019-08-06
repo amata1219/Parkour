@@ -64,12 +64,12 @@ public class MenuUI implements InventoryUI {
 					i.displayName = StringTemplate.capply("&b-$0's state", playerName);
 
 					i.lore(
-						StringTemplate.capply("&7-: &b-Update rank &7-@ &b-$1", user.getUpdateRank()),
-						StringTemplate.capply("&7-: &b-Extend rank &7-@ &b-$1", user.getExtendRank()),
+						StringTemplate.capply("&7-: &b-Update rank &7-@ &b-$0", user.getUpdateRank()),
+						StringTemplate.capply("&7-: &b-Extend rank &7-@ &b-$0", user.getExtendRank()),
 						"",
-						StringTemplate.capply("&7-: &b-Jmps &7-@ &b-$1", player.getStatistic(Statistic.JUMP)),
-						StringTemplate.capply("&7-: &b-Coins &7-@ &b-$1", user.getCoins()),
-						StringTemplate.capply("&7-: &b-Time played &7-@ &b-$1", player.getStatistic(Statistic.PLAY_ONE_MINUTE))
+						StringTemplate.capply("&7-: &b-Jmps &7-@ &b-$0", player.getStatistic(Statistic.JUMP)),
+						StringTemplate.capply("&7-: &b-Coins &7-@ &b-$0", user.getCoins()),
+						StringTemplate.capply("&7-: &b-Time played &7-@ &b-$0h", player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000)
 					);
 
 				});
@@ -80,8 +80,7 @@ public class MenuUI implements InventoryUI {
 				l.put((s) -> {
 
 					s.onClick(event -> component.fourth.openInventory(event.player));
-
-					s.icon(component.second, i -> i.displayName = component.third);
+					s.icon(component.second, i -> System.out.println(i.displayName = component.third));
 
 				}, component.first);
 			}

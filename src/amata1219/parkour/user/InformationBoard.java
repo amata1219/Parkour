@@ -35,7 +35,7 @@ public class InformationBoard {
 			makeComponent(() -> setting.displayExtendRank, 6, "Extend Rank", () -> user.extendRank),
 			makeComponent(() -> setting.displayJumps, 5, "Jumps", () -> user.asBukkitPlayer().getStatistic(Statistic.JUMP)),
 			makeComponent(() -> setting.displayCoins, 4, "Coins", () -> user.getCoins()),
-			makeComponent(() -> setting.displayTimePlayed, 3, "Time Played", () -> user.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE)),
+			makeComponent(() -> setting.displayTimePlayed, 3, "Time Played", () -> user.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
 			makeComponent(() -> setting.displayOnlinePlayers, 2, "Online Players", () -> Bukkit.getOnlinePlayers().size()),
 			makeComponent(() -> setting.displayPing, 1, "Ping", () -> ((CraftPlayer) user.asBukkitPlayer()).getHandle().ping),
 			makeComponent(() -> setting.displayServerAddress, 0, "Server Address", () -> Bukkit.getIp())
@@ -90,6 +90,8 @@ public class InformationBoard {
 	}
 
 	public void clearScoreboard(){
+		if(board == null) return;
+
 		board.setDisplay(false);
 
 		board = null;
@@ -124,6 +126,8 @@ public class InformationBoard {
 	}
 
 	private void updateValue(int componentIndex){
+		if(board == null) return;
+
 		Quadruple<Supplier<Boolean>, Integer, String, Supplier<Object>> component = components.get(componentIndex);
 
 		//表示するかどうか

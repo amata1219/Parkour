@@ -31,7 +31,7 @@ public class LastCheckpointsUI implements InventoryUI {
 		Parkour parkourPlayingNow = user.parkourPlayingNow;
 
 		//今いるステージを取得する
-		Stage stage = parkourPlayingNow.getStage();
+		Stage stage = user.currentStage;
 
 		//ステージ内にあるアスレを取得する
 		List<Parkour> parkourListInStage = stage.getParkourList();
@@ -85,7 +85,7 @@ public class LastCheckpointsUI implements InventoryUI {
 							player.teleport(lastCheckpoint.asBukkitLocation());
 
 							//表示例: Teleported to checkpoint 1 @ Update1!
-							MessageTemplate.applyWithColor("&b-Teleported to a checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkourName).displayOnActionBar(player);
+							MessageTemplate.capply("&b-Teleported to a checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkourName).displayOnActionBar(player);
 
 						}else if(event.isLeftClick()){
 							//チェックポイントリストを開かせる

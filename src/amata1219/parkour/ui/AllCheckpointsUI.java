@@ -70,7 +70,7 @@ public class AllCheckpointsUI implements InventoryUI {
 						player.teleport(location.asBukkitLocation());
 
 						//表示例: Teleported to checkpoint 1 @ Update1!
-						MessageTemplate.applyWithColor("&b-Teleported to a checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkourName).displayOnActionBar(player);
+						MessageTemplate.capply("&b-Teleported to a checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkourName).displayOnActionBar(player);
 					});
 
 					s.icon(Material.GRASS_BLOCK,(i) -> {

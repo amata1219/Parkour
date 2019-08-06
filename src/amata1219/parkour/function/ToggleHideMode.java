@@ -68,7 +68,7 @@ public class ToggleHideMode {
 
 		//クールダウン中なら戻る
 		if(cooldownUsers.contains(user)){
-			MessageColor.color("&c-Operation blocked-&7 @ &c-Input is too fast").display(player);
+			MessageColor.color("&c-Operation blocked-&7 @ &c-Input is too fast").displayOnActionBar(player);
 			return;
 		}
 

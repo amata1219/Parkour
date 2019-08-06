@@ -67,7 +67,7 @@ public class SetCheckpointListener implements Listener {
 		//チェックポイントとして設定する
 		user.checkpoints.setCheckpoint(parkour, checkAreaNumber, new ImmutableEntityLocation(location));
 
-		MessageTemplate.applyWithColor("&b-Set checkpoint @ $0", checkAreaNumber).displayOnActionBar(player);
+		MessageTemplate.capply("&b-Set checkpoint @ $0", checkAreaNumber).displayOnActionBar(player);
 	}
 
 }
