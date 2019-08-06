@@ -2,15 +2,16 @@ package amata1219.parkour.listener;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import amata1219.amalib.listener.PlayerJoinListener;
+import amata1219.amalib.listener.PlayerQuitListener;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 
-public class DisplayRegionBorderListener implements Listener {
+public class DisplayRegionBorderListener implements PlayerJoinListener, PlayerQuitListener {
 
 	private final UserSet users = UserSet.getInstnace();
 

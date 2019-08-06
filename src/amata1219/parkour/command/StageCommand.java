@@ -26,7 +26,7 @@ public class StageCommand implements Command {
 
 			//既にステージが存在していれば戻る
 			if(stages.containsStage(stageName)){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は既に存在しています。", stageName));
+				sender.warn(StringTemplate.capply("$0-&r-&c-は既に存在しています。", stageName));
 				return;
 			}
 
@@ -47,7 +47,7 @@ public class StageCommand implements Command {
 
 			//コンフィグが存在しなければ戻る
 			if(!stages.existsFile(stageName)){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は存在しません。", stageName));
+				sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", stageName));
 				return;
 			}
 
@@ -67,7 +67,7 @@ public class StageCommand implements Command {
 
 			//コンフィグが存在しなければ戻る
 			if(!stages.existsFile(stageName)){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は存在しません。", stageName));
+				sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", stageName));
 				return;
 			}
 
@@ -75,7 +75,7 @@ public class StageCommand implements Command {
 
 			stage.setSpawnLocation(new ImmutableEntityLocation(sender.asPlayerCommandSender().getLocation()));
 
-			sender.info(StringTemplate.applyWithColor("$0-&r-&b-のスポーン地点を現在地点に書き換えました。", stageName));
+			sender.info(StringTemplate.capply("$0-&r-&b-のスポーン地点を現在地点に書き換えました。", stageName));
 			return;
 		}case "list":{
 			//第2引数をステージ名として取得する
@@ -83,7 +83,7 @@ public class StageCommand implements Command {
 
 			//ステージが存在していなければ戻る
 			if(!stages.containsStage(stageName)){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は存在しません。", stageName));
+				sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", stageName));
 				return;
 			}
 
@@ -91,7 +91,7 @@ public class StageCommand implements Command {
 			Stage stage = stages.getStage(stageName);
 
 			//ステージ内のアスレを全て表示する
-			for(String parkourName : stage.parkourNames) sender.info(StringTemplate.applyWithColor("&7-: &b-$0", parkourName));
+			for(String parkourName : stage.parkourNames) sender.info(StringTemplate.capply("&7-: &b-$0", parkourName));
 			return;
 		}case "addp":
 		 case "addparkour":{
@@ -100,7 +100,7 @@ public class StageCommand implements Command {
 
 			//ステージが存在していなければ戻る
 			if(!stages.containsStage(stageName)){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は存在しません。", stageName));
+				sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", stageName));
 				return;
 			}
 
@@ -109,7 +109,7 @@ public class StageCommand implements Command {
 
 			//アスレが存在しなければ戻る
 			if(!parkourSet.containsParkour(parkourName)){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は存在しません。", parkourName));
+				sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
 				return;
 			}
 
@@ -125,7 +125,7 @@ public class StageCommand implements Command {
 
 			//ステージが存在していなければ戻る
 			if(!stages.containsStage(stageName)){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は存在しません。", stageName));
+				sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", stageName));
 				return;
 			}
 
@@ -134,7 +134,7 @@ public class StageCommand implements Command {
 
 			//アスレが存在しなければ戻る
 			if(!parkourSet.containsParkour(parkourName)){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は存在しません。", parkourName));
+				sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
 				return;
 			}
 

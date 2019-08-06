@@ -33,7 +33,7 @@ public class GiveSelectionToolCommand implements Command {
 
 		//コンフィグが存在しなければ戻る
 		if(!parkourSet.existsFile(parkourName)){
-			sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は存在しません。", parkourName));
+			sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
 			return;
 		}
 
@@ -50,7 +50,7 @@ public class GiveSelectionToolCommand implements Command {
 
 		player.getInventory().addItem(selectionTool);
 
-		sender.info(StringTemplate.applyWithColor("$0-&r-&b-用の範囲選択ツールを与えました。", parkourName));
+		sender.info(StringTemplate.capply("$0-&r-&b-用の範囲選択ツールを与えました。", parkourName));
 		return;
 	}
 

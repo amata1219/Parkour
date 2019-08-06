@@ -15,6 +15,8 @@ import amata1219.parkour.command.SetParkourRegionCommand;
 import amata1219.parkour.command.SetStartLineCommand;
 import amata1219.parkour.command.StageCommand;
 import amata1219.parkour.listener.ControlFunctionalItemListener;
+import amata1219.parkour.listener.DisableDamageListener;
+import amata1219.parkour.listener.DisableFoodLevelChangeListener;
 import amata1219.parkour.listener.DisablePlayerCollisionListener;
 import amata1219.parkour.listener.DisplayRegionBorderListener;
 import amata1219.parkour.listener.GiveVoteRewardCoinsListener;
@@ -24,7 +26,9 @@ import amata1219.parkour.listener.LoadUserDataListener;
 import amata1219.parkour.listener.PassFinishLineListener;
 import amata1219.parkour.listener.PassStartLineListener;
 import amata1219.parkour.listener.SetCheckpointListener;
+import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.selection.RegionSelectionSet;
+import amata1219.parkour.stage.StageSet;
 import amata1219.parkour.task.AsyncTask;
 import amata1219.parkour.task.UpdatePingTask;
 import amata1219.parkour.task.UpdateTimePlayedTask;
@@ -52,6 +56,12 @@ public class Main extends Plugin {
 		plugin = this;
 		nickAPI = BetterNick.getApi();
 
+		//インスタンスを生成する
+		ParkourSet.load();
+		StageSet.load();
+		UserSet.load();
+		RegionSelectionSet.load();
+
 		registerCommands(
 			new StageCommand(),
 			new ParkourCommand(),
@@ -76,13 +86,17 @@ public class Main extends Plugin {
 			new LoadUserDataListener(),
 			new PassFinishLineListener(),
 			new PassStartLineListener(),
-			new SetCheckpointListener()
+			new SetCheckpointListener(),
+			new DisableDamageListener(),
+			new DisableFoodLevelChangeListener()
 		);
 
 		startTasks(
 			new UpdateTimePlayedTask(),
 			new UpdatePingTask()
 		);
+
+		super.onEnable();
 	}
 
 	@Override

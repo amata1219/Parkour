@@ -70,17 +70,14 @@ public class InformationBoardOptionsUI implements InventoryUI {
 			});
 
 			for(Quadruple<Integer, Material, String, Supplier<Boolean>> component : components){
-				int slotIndex = component.first;
-				Material material = component.second;
-				String displayName = component.third;
 				Supplier<Boolean> state = component.fourth;
 
 				l.put((s) -> {
 					//非同期で処理をする
 					s.async = true;
 
-					s.icon(material, (i) -> {
-						i.displayName = StringTemplate.applyWithColor("&b-$0", displayName);
+					s.icon(component.second, (i) -> {
+						i.displayName = StringTemplate.capply("&b-$0", component.third);
 
 						//値が変更されない様に先に反転させておく
 						state.get();
@@ -100,7 +97,7 @@ public class InformationBoardOptionsUI implements InventoryUI {
 						else icon.tarnish();
 					});
 
-				}, slotIndex);
+				}, component.first);
 			}
 
 		});

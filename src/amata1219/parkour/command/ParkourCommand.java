@@ -30,14 +30,14 @@ public class ParkourCommand implements Command {
 
 			//対応したファイルが存在していれば戻る
 			if(parkourSet.existsFile(parkourName)){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は既に存在しています。", parkourName));
+				sender.warn(StringTemplate.capply("$0-&r-&c-は既に存在しています。", parkourName));
 				return;
 			}
 
 			//ファイルを作成する
 			parkourSet.makeYaml(parkourName);
 
-			sender.info(StringTemplate.applyWithColor("$0-&r-&b-を作成しました。", parkourName));
+			sender.info(StringTemplate.capply("$0-&r-&b-を作成しました。", parkourName));
 			return;
 		}case "delete":{
 			//第2引数をアスレ名として取得する
@@ -45,7 +45,7 @@ public class ParkourCommand implements Command {
 
 			//対応したファイルが存在していなければ戻る
 			if(!parkourSet.existsFile(parkourName)){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は存在しません。", parkourName));
+				sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
 				return;
 			}
 
@@ -58,7 +58,7 @@ public class ParkourCommand implements Command {
 			//ファイルを削除する
 			parkourSet.makeYaml(parkourName).file.delete();
 
-			sender.info(StringTemplate.applyWithColor("$0-&r-&b-を削除しました。", parkourName));
+			sender.info(StringTemplate.capply("$0-&r-&b-を削除しました。", parkourName));
 			return;
 		}case "setspawn":{
 			//第2引数をアスレ名として取得する
@@ -66,7 +66,7 @@ public class ParkourCommand implements Command {
 
 			//対応したファイルが存在していなければ戻る
 			if(!parkourSet.existsFile(parkourName)){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は存在しません。", parkourName));
+				sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
 				return;
 			}
 
@@ -74,7 +74,7 @@ public class ParkourCommand implements Command {
 
 			yaml.set("Spawn location", new ImmutableEntityLocation(sender.asPlayerCommandSender().getLocation()).middle().serialize());
 
-			sender.info(StringTemplate.applyWithColor("$0-&r-&b-のスポーン地点を現在地点に書き換えました。", parkourName));
+			sender.info(StringTemplate.capply("$0-&r-&b-のスポーン地点を現在地点に書き換えました。", parkourName));
 			return;
 		}case "register":{
 			//第2引数をアスレ名として取得する
@@ -82,14 +82,14 @@ public class ParkourCommand implements Command {
 
 			//既に登録されていれば戻る
 			if(parkourSet.containsParkour(parkourName)){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は既に登録されています。", parkourName));
+				sender.warn(StringTemplate.capply("$0-&r-&c-は既に登録されています。", parkourName));
 				return;
 			}
 
 			//アスレを登録する
 			parkourSet.registerParkour(parkourName);
 
-			sender.info(StringTemplate.applyWithColor("$0-&r-&b-を登録しました。", parkourName));
+			sender.info(StringTemplate.capply("$0-&r-&b-を登録しました。", parkourName));
 			return;
 		}case "unregister":{
 			//第2引数をアスレ名として取得する
@@ -97,14 +97,14 @@ public class ParkourCommand implements Command {
 
 			//登録されていなければ戻る
 			if(!parkourSet.containsParkour(parkourName)){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は登録されていません。", parkourName));
+				sender.warn(StringTemplate.capply("$0-&r-&c-は登録されていません。", parkourName));
 				return;
 			}
 
 			//アスレの登録を解除する
 			parkourSet.unregisterParkour(parkourName);
 
-			sender.info(StringTemplate.applyWithColor("$0-&r-&b-の登録を解除しました。", parkourName));
+			sender.info(StringTemplate.capply("$0-&r-&b-の登録を解除しました。", parkourName));
 			return;
 		}case "list":{
 			//登録されている全アスレ名を表示する

@@ -39,7 +39,7 @@ public class AllCheckpointsUI implements InventoryUI {
 
 		return build(locations.size(), (l) -> {
 			//タイトルを設定する
-			l.title = StringTemplate.applyWithColor("&b-$0 &r-checkpoints", parkourName);
+			l.title = StringTemplate.capply("&b-$0 &r-checkpoints", parkourName);
 
 			//デフォルトスロットを設定する
 			l.defaultSlot((s) -> {
@@ -75,7 +75,7 @@ public class AllCheckpointsUI implements InventoryUI {
 
 					s.icon(Material.GRASS_BLOCK,(i) -> {
 						//表示例: 1 @ Update1
-						i.displayName = StringTemplate.applyWithColor("&7-$0 @ $1", displayCheckAreaNumber, parkourName);
+						i.displayName = StringTemplate.capply("&7-$0 @ $1", displayCheckAreaNumber, parkourName);
 
 						//説明文を設定する
 						i.lore(

@@ -54,7 +54,7 @@ public abstract class AbstractSetParkourRegionCommand implements Command {
 		yaml.save();
 
 		//表示例: Update1のスタートラインを設定しました(world,0,0,0,20,1,2)。
-		sender.info(StringTemplate.applyWithColor("$0-&r-&b-の$1を設定しました($2)。", parkourName, type.regionName, selection));
+		sender.info(StringTemplate.capply("$0-&r-&b-の$1を設定しました($2)。", parkourName, type.regionName, selection));
 	}
 
 	enum ParkourRegionType {

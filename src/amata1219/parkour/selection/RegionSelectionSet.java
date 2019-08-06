@@ -34,8 +34,12 @@ public class RegionSelectionSet implements Listener {
 		GleamEnchantment.gleam(selectionTool);
 	}
 
+	public static void load(){
+		instance = new RegionSelectionSet();
+	}
+
 	public static RegionSelectionSet getInstance(){
-		return instance != null ? instance : (instance = new RegionSelectionSet());
+		return instance;
 	}
 
 	private final HashMap<UUID, Tuple<String, RegionSelection>> selections = new HashMap<>();
@@ -86,7 +90,7 @@ public class RegionSelectionSet implements Listener {
 		String selectionInformation = selection.toString().replace(",", StringColor.color("&7-,-&b"));
 
 		//表示名を作成する
-		String displayName = StringTemplate.applyWithColor("&b-$0 &7-@ &b", parkourName, selectionInformation);
+		String displayName = StringTemplate.capply("&b-$0 &7-@ &b", parkourName, selectionInformation);
 
 		ItemMeta meta = tool.getItemMeta();
 

@@ -1,8 +1,11 @@
 package amata1219.parkour.ui;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.function.Function;
 
 import org.bukkit.Material;
+import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -12,30 +15,25 @@ import amata1219.amalib.inventory.ui.option.InventoryLine;
 import amata1219.amalib.item.skull.SkullMaker;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
+import amata1219.amalib.tuplet.Quadruple;
 import amata1219.parkour.user.User;
 
 public class MenuUI implements InventoryUI {
 
-	/*
-	 * 自分のアイコン: ステータス1
-	 *
-	 * 情報板コンフィグ6
-	 * ヘッド購入7
-	 *
-	 */
-
-	/*
-	 * xoxxxooox
-	 */
-
 	private final User user;
-	private final InformationBoardOptionsUI informationBoardOptionsUI;
+	private final ArrayList<Quadruple<Integer, Material, String, InventoryUI>> components = new ArrayList<>(3);
 
 	public MenuUI(User user){
 		this.user = user;
 
-		//スコアボードの設定UIを作成する
-		informationBoardOptionsUI = new InformationBoardOptionsUI(user);
+		components.addAll(Arrays.asList(
+			component(5, Material.FEATHER, StringColor.color("&b-Scoreboard options"), new InformationBoardOptionsUI(user)),
+			component(6, Material.FEATHER, StringColor.color("&b-Skulls"), new SkullsUI(user))
+		));
+	}
+
+	private Quadruple<Integer, Material, String, InventoryUI> component(int slotIndex, Material material, String displayName, InventoryUI inventoryUI){
+		return new Quadruple<>(slotIndex, material, displayName, inventoryUI);
 	}
 
 	@Override
@@ -46,7 +44,7 @@ public class MenuUI implements InventoryUI {
 
 		return build(InventoryLine.x1, (l) -> {
 			//表示例: amata1219's menu
-			l.title = StringTemplate.applyWithColor("&b-$0's menu", playerName);
+			l.title = StringTemplate.capply("&b-$0's menu", playerName);
 
 			//デフォルトスロットを設定する
 			l.defaultSlot((s) -> {
@@ -63,28 +61,30 @@ public class MenuUI implements InventoryUI {
 				ItemStack skull = SkullMaker.fromPlayerUniqueId(user.uuid);
 
 				s.icon(skull, (i) -> {
-					i.displayName = StringTemplate.applyWithColor("&b-$0's state", playerName);
+					i.displayName = StringTemplate.capply("&b-$0's state", playerName);
 
-
+					i.lore(
+						StringTemplate.capply("&7-: &b-Update rank &7-@ &b-$1", user.getUpdateRank()),
+						StringTemplate.capply("&7-: &b-Extend rank &7-@ &b-$1", user.getExtendRank()),
+						"",
+						StringTemplate.capply("&7-: &b-Jmps &7-@ &b-$1", player.getStatistic(Statistic.JUMP)),
+						StringTemplate.capply("&7-: &b-Coins &7-@ &b-$1", user.getCoins()),
+						StringTemplate.capply("&7-: &b-Time played &7-@ &b-$1", player.getStatistic(Statistic.PLAY_ONE_MINUTE))
+					);
 
 				});
 
 			}, 1);
 
-			//スコアボードの設定
-			l.put((s) -> {
+			for(Quadruple<Integer, Material, String, InventoryUI> component : components){
+				l.put((s) -> {
 
-				s.onClick((event) -> {
-					//スコアボードの設定UIを開く
-					informationBoardOptionsUI.openInventory(event.player);
-				});
+					s.onClick(event -> component.fourth.openInventory(event.player));
 
-				s.icon(Material.FEATHER, (i) -> {
-					//表示名: Scoreboard options
-					i.displayName = StringColor.color("&b-Scoreboard options");
-				});
+					s.icon(component.second, i -> i.displayName = component.third);
 
-			}, 6);
+				}, component.first);
+			}
 
 		});
 	}

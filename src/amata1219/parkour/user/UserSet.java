@@ -11,19 +11,23 @@ import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import amata1219.amalib.listener.PlayerJoinListener;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 
-public class UserSet implements Listener {
+public class UserSet implements PlayerJoinListener {
 
 	private static UserSet instance;
 
+	public static void load(){
+		instance = new UserSet();
+	}
+
 	public static UserSet getInstnace(){
-		return instance != null ? instance : (instance = new UserSet());
+		return instance;
 	}
 
 	private final Main plugin = Main.getPlugin();
@@ -74,7 +78,7 @@ public class UserSet implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerFirstJoin(PlayerJoinEvent event){
+	public void onJoin(PlayerJoinEvent event){
 		UUID uuid = event.getPlayer().getUniqueId();
 
 		//既にユーザーデータが存在するのであれば戻る

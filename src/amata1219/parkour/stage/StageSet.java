@@ -16,8 +16,12 @@ public class StageSet {
 
 	private static StageSet instance;
 
+	public static void load(){
+		instance = new StageSet();
+	}
+
 	public static StageSet getInstance(){
-		return instance != null ? instance : (instance = new StageSet());
+		return instance;
 	}
 
 	private final Main plugin = Main.getPlugin();

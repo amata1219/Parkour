@@ -143,7 +143,7 @@ public class InformationBoard {
 			return;
 
 		//情報名と値を@で連結したテキスト(表示例: Jumps @ 100)
-		String text = StringTemplate.applyWithColor("&b-$0 &7-@ &b-$1", valueName, value.get());
+		String text = StringTemplate.capply("&b-$0 &7-@ &b-$1", valueName, value.get());
 
 		//指定されたスコアをアップデートする
 		board.updateScore(score, text);

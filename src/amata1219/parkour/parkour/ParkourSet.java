@@ -15,8 +15,12 @@ public class ParkourSet {
 
 	private static ParkourSet instance;
 
+	public static void load(){
+		instance = new ParkourSet();
+	}
+
 	public static ParkourSet getInstance(){
-		return instance != null ? instance : (instance = new ParkourSet());
+		return instance;
 	}
 
 	private final Main plugin = Main.getPlugin();

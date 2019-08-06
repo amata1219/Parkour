@@ -38,7 +38,7 @@ public class LastCheckpointsUI implements InventoryUI {
 
 		return build(parkourListInStage.size(), (l) -> {
 			//表示例: Last checkpoints @ The Earth of Marmalade
-			l.title = StringTemplate.applyWithColor("&b-Last checkpoints &7-@ &b-$0", stage.name);
+			l.title = StringTemplate.capply("&b-Last checkpoints &7-@ &b-$0", stage.name);
 
 			//デフォルトスロットを設定する
 			l.defaultSlot((s) -> {
@@ -96,7 +96,7 @@ public class LastCheckpointsUI implements InventoryUI {
 
 					s.icon(Material.GRASS_BLOCK, (i) -> {
 						//表示例: 1 @ Update1
-						i.displayName = StringTemplate.applyWithColor("&7-$0 @ $1", displayCheckAreaNumber, parkourName);
+						i.displayName = StringTemplate.capply("&7-$0 @ $1", displayCheckAreaNumber, parkourName);
 
 						//説明文を設定する
 						i.lore(

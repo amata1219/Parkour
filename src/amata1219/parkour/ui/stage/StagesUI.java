@@ -51,7 +51,7 @@ public class StagesUI implements InventoryUI {
 
 		return build(stages.size() + 9, (l) -> {
 			//表示例: Extend
-			l.title = StringTemplate.applyWithColor("&b-$0", category.getName());
+			l.title = StringTemplate.capply("&b-$0", category.getName());
 
 			//デフォルトスロットを設定する
 			l.defaultSlot((s) -> {
@@ -83,10 +83,10 @@ public class StagesUI implements InventoryUI {
 
 					s.icon(Material.GRASS_BLOCK, (i) -> {
 						//表示名: The Earth of Marmalade
-						i.displayName = StringTemplate.applyWithColor("&b-$0", stageName);
+						i.displayName = StringTemplate.capply("&b-$0", stageName);
 
 						//ステージ内のアスレの名前を説明文にセットする
-						i.lore = stage.parkourNames.stream().map(parkourName -> StringTemplate.applyWithColor("&7-: &b-$0", parkourName)).collect(Collectors.toList());
+						i.lore = stage.parkourNames.stream().map(parkourName -> StringTemplate.capply("&7-: &b-$0", parkourName)).collect(Collectors.toList());
 					});
 
 				}, slotIndex);
@@ -114,7 +114,7 @@ public class StagesUI implements InventoryUI {
 
 					s.icon(Material.DIRT, (i) -> {
 						//表示例: Update
-						i.displayName = StringTemplate.applyWithColor("&b-$0", slotCategory.getName());
+						i.displayName = StringTemplate.capply("&b-$0", slotCategory.getName());
 
 						//今開いているステージリストのカテゴリと同じであれば発光させる
 						if(slotCategory == category) i.gleam();

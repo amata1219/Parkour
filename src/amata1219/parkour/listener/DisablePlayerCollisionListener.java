@@ -10,11 +10,12 @@ import java.util.UUID;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class DisablePlayerCollisionListener implements Listener {
+import amata1219.amalib.listener.PlayerJoinListener;
+
+public class DisablePlayerCollisionListener implements PlayerJoinListener {
 
 	private static final Method getHandle, sendPacket;
 	private static final Field playerConnection, collisionRule, playerNames, teamAction, teamName;

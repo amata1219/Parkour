@@ -136,10 +136,10 @@ public class SkullsUI implements InventoryUI {
 							i.basedItemStack = skull;
 
 							//表示例: amata1219 @ 500000 coins!
-							i.displayName = StringTemplate.applyWithColor("&b-$0 &7-@ &b-&m-$1 coins", skullName, value);
+							i.displayName = StringTemplate.capply("&b-$0 &7-@ &b-&m-$1 coins", skullName, value);
 
 							//表示例: Click to put on amata1219's skull!
-							i.lore(StringTemplate.applyWithColor("&7-Click to put on $0's skull!", skullName));
+							i.lore(StringTemplate.capply("&7-Click to put on $0's skull!", skullName));
 						});
 
 						s.onClick((event) -> {
@@ -152,10 +152,10 @@ public class SkullsUI implements InventoryUI {
 							i.basedItemStack = skull;
 
 							//表示例: amata1219 @ 500000 coins!
-							i.displayName = StringTemplate.applyWithColor("&b-$0 &7-@ &b-&m-$1 coins", skullName, value);
+							i.displayName = StringTemplate.capply("&b-$0 &7-@ &b-&m-$1 coins", skullName, value);
 
 							//表示例: Click to buy amata1219's skull!
-							i.lore(StringTemplate.applyWithColor("&7-Click to buy $0's skull!", skullName));
+							i.lore(StringTemplate.capply("&7-Click to buy $0's skull!", skullName));
 						});
 
 						s.onClick((event) -> {
@@ -174,10 +174,10 @@ public class SkullsUI implements InventoryUI {
 							Icon clickedIcon = event.currentIcon;
 
 							//表示例: amata1219 @ 500000 coins!
-							clickedIcon.displayName = StringTemplate.applyWithColor("&b-$0 &7-@ &b-&m-$1 coins", skullName, value);
+							clickedIcon.displayName = StringTemplate.capply("&b-$0 &7-@ &b-&m-$1 coins", skullName, value);
 
 							//表示例: Click to put on amata1219's skull!
-							clickedIcon.lore(StringTemplate.applyWithColor("&7-Click to put on $0's skull!", skullName));
+							clickedIcon.lore(StringTemplate.capply("&7-Click to put on $0's skull!", skullName));
 
 							//クリック時の処理を変更する
 							s.onClick((ev) -> {

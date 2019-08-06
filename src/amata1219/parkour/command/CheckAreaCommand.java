@@ -52,14 +52,14 @@ public class CheckAreaCommand implements Command {
 
 			yaml.save();
 
-			sender.info(StringTemplate.applyWithColor("$0-&r-&b-にチェックエリアを追加しました。", parkourName));
+			sender.info(StringTemplate.capply("$0-&r-&b-にチェックエリアを追加しました。", parkourName));
 			return;
 		}case "list":{
 			String parkourName = selections.hasSelection(uuid) ? selections.getSelectedParkourName(uuid) : args.next();
 
 			//アスレが存在しなければ戻る
 			if(!parkourSet.existsFile(parkourName)){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は存在しません。", parkourName));
+				sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
 				return;
 			}
 
@@ -69,12 +69,12 @@ public class CheckAreaCommand implements Command {
 
 			//チェックエリアが無ければ戻る
 			if(checkAreas.isEmpty()){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-のチェックエリアはまだありません。", parkourName));
+				sender.warn(StringTemplate.capply("$0-&r-&c-のチェックエリアはまだありません。", parkourName));
 				return;
 			}
 
 			for(int checkAreaNumber = 0; checkAreaNumber < checkAreas.size(); checkAreaNumber++)
-				sender.info(StringTemplate.applyWithColor("&7-: &b-$0 &7-@ &b-$1", checkAreaNumber, checkAreas.get(checkAreaNumber)));
+				sender.info(StringTemplate.capply("&7-: &b-$0 &7-@ &b-$1", checkAreaNumber, checkAreas.get(checkAreaNumber)));
 			return;
 		}case "set":{
 			if(!args.hasNextInt()){
@@ -112,7 +112,7 @@ public class CheckAreaCommand implements Command {
 
 			yaml.save();
 
-			sender.info(StringTemplate.applyWithColor("$0-&r-&b-のチェックエリア$1を書き換えました。", parkourName, checkAreaNumber));
+			sender.info(StringTemplate.capply("$0-&r-&b-のチェックエリア$1を書き換えました。", parkourName, checkAreaNumber));
 			return;
 		}case "remove":{
 			String parkourName = selections.hasSelection(uuid) ? selections.getSelectedParkourName(uuid) : args.next();
@@ -144,7 +144,7 @@ public class CheckAreaCommand implements Command {
 
 			yaml.save();
 
-			sender.info(StringTemplate.applyWithColor("$0-&r-&b-のチェックエリア$1を削除しました。", parkourName, checkAreaNumber));
+			sender.info(StringTemplate.capply("$0-&r-&b-のチェックエリア$1を削除しました。", parkourName, checkAreaNumber));
 			return;
 		}case "color":{
 			String parkourName = selections.hasSelection(uuid) ? selections.getSelectedParkourName(uuid) : args.next();
@@ -169,7 +169,7 @@ public class CheckAreaCommand implements Command {
 
 			yaml.save();
 
-			sender.info(StringTemplate.applyWithColor("$0-&r-&b-のパーティクルカラーを書き換えました。", parkourName));
+			sender.info(StringTemplate.capply("$0-&r-&b-のパーティクルカラーを書き換えました。", parkourName));
 			return;
 		}default:
 			sender.warn("範囲指定した状態で、/checkarea [add/list] | /checkarea [set/remove] [check_area_number] | /checkarea color [R,G,B]");

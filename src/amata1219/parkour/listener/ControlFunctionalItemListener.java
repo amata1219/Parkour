@@ -7,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -29,13 +28,15 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.amalib.enchantment.GleamEnchantment;
+import amata1219.amalib.listener.PlayerJoinListener;
+import amata1219.amalib.listener.PlayerQuitListener;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.message.MessageColor;
 import amata1219.amalib.message.MessageTemplate;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.tuplet.Tuple;
 
-public class ControlFunctionalItemListener implements Listener {
+public class ControlFunctionalItemListener implements PlayerJoinListener, PlayerQuitListener {
 
 	private static final Tuple<ItemStack, Consumer<User>> teleporterToLastCheckpoint;
 	private static final Tuple<ItemStack, Consumer<User>> checkpointSelector;
@@ -138,7 +139,7 @@ public class ControlFunctionalItemListener implements Listener {
 	private final UserSet users = UserSet.getInstnace();
 
 	@EventHandler
-	public void initializeSlots(PlayerJoinEvent event){
+	public void onJoin(PlayerJoinEvent event){
 		initializeSlots(event.getPlayer());
 	}
 
@@ -200,7 +201,7 @@ public class ControlFunctionalItemListener implements Listener {
 	}
 
 	@EventHandler
-	public void clearSlots(PlayerQuitEvent event){
+	public void onQuit(PlayerQuitEvent event){
 		clearSlots(event.getPlayer());
 	}
 

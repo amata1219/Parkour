@@ -17,7 +17,7 @@ public class SetRewardCommand implements Command {
 		String parkourName = args.next();
 
 		if(!parkourSet.existsFile(parkourName)){
-			sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は存在しません。", parkourName));
+			sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
 			return;
 		}
 
@@ -43,7 +43,7 @@ public class SetRewardCommand implements Command {
 
 		yaml.save();
 
-		sender.info(StringTemplate.applyWithColor("$0-&r-&b-の報酬を書き換えました。", parkourName));
+		sender.info(StringTemplate.capply("$0-&r-&b-の報酬を書き換えました。", parkourName));
 		return;
 	}
 
