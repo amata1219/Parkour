@@ -3,6 +3,7 @@ package amata1219.parkour.command;
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
+import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.parkour.ParkourSet;
@@ -57,6 +58,24 @@ public class StageCommand implements Command {
 			stages.makeYaml(stageName).file.delete();
 
 			sender.info(StringTemplate.apply("$0-&r-&b-を削除しました。", stageName));
+			return;
+		}case "setspawn":{
+			if(blockNonPlayer(sender)) return;
+
+			//第2引数をステージ名として取得する
+			String stageName = color(args.next());
+
+			//コンフィグが存在しなければ戻る
+			if(!stages.existsFile(stageName)){
+				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は存在しません。", stageName));
+				return;
+			}
+
+			Stage stage = stages.getStage(stageName);
+
+			stage.setSpawnLocation(new ImmutableEntityLocation(sender.asPlayerCommandSender().getLocation()));
+
+			sender.info(StringTemplate.applyWithColor("$0-&r-&b-のスポーン地点を現在地点に書き換えました。", stageName));
 			return;
 		}case "list":{
 			//第2引数をステージ名として取得する

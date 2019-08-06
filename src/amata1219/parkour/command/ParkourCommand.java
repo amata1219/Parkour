@@ -6,7 +6,9 @@ import java.util.Optional;
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
+import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.string.StringTemplate;
+import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.stage.StageSet;
 import net.md_5.bungee.api.ChatColor;
@@ -57,6 +59,22 @@ public class ParkourCommand implements Command {
 			parkourSet.makeYaml(parkourName).file.delete();
 
 			sender.info(StringTemplate.applyWithColor("$0-&r-&b-を削除しました。", parkourName));
+			return;
+		}case "setspawn":{
+			//第2引数をアスレ名として取得する
+			String parkourName = color(args.next());
+
+			//対応したファイルが存在していなければ戻る
+			if(!parkourSet.existsFile(parkourName)){
+				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は存在しません。", parkourName));
+				return;
+			}
+
+			Yaml yaml = parkourSet.makeYaml(parkourName);
+
+			yaml.set("Spawn location", new ImmutableEntityLocation(sender.asPlayerCommandSender().getLocation()).middle().serialize());
+
+			sender.info(StringTemplate.applyWithColor("$0-&r-&b-のスポーン地点を現在地点に書き換えました。", parkourName));
 			return;
 		}case "register":{
 			//第2引数をアスレ名として取得する
