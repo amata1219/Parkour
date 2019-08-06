@@ -8,7 +8,6 @@ import amata1219.amalib.message.MessageTemplate;
 import amata1219.parkour.format.TimeFormat;
 import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.parkour.RegionWithBorders;
-import amata1219.parkour.parkour.Reward;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.parkour.RecordSet;
@@ -99,12 +98,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			}
 		}
 
-		//報酬が無いアスレであれば戻る
-		if(!parkour.hasReward()) return;
-
-		Reward reward = Reward.valueOf(parkour.getColorlessName());
-
-		int coins = haveCleared ? reward.afterSecondTime : reward.first;
+		int coins = haveCleared ? parkour.secondAndSubsequentRewardCoins : parkour.firstRewardCoins;
 
 		//報酬のコインを与える
 		user.depositCoins(coins);

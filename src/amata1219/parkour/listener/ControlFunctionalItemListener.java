@@ -28,7 +28,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import amata1219.amalib.inventory.ui.dsl.component.Icon;
+import amata1219.amalib.enchantment.GleamEnchantment;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.message.MessageColor;
 import amata1219.amalib.message.MessageTemplate;
@@ -36,17 +36,6 @@ import amata1219.amalib.string.StringColor;
 import amata1219.amalib.tuplet.Tuple;
 
 public class ControlFunctionalItemListener implements Listener {
-
-	/*
-	 * last cp
-	 *
-	 * stage
-	 *
-	 * toggle hide mode change
-	 *
-	 * menu > setting
-	 *
-	 */
 
 	private static final Tuple<ItemStack, Consumer<User>> teleporterToLastCheckpoint;
 	private static final Tuple<ItemStack, Consumer<User>> checkpointSelector;
@@ -141,12 +130,8 @@ public class ControlFunctionalItemListener implements Listener {
 
 	private static void applyMetaToItem(ItemStack item, String displayName){
 		ItemMeta meta = item.getItemMeta();
-
 		meta.setDisplayName(displayName);
-
-		//発光させる
-		meta.addEnchant(Icon.GLEAM_ENCHANTMENT, 0, true);
-
+		GleamEnchantment.gleam(item);
 		item.setItemMeta(meta);
 	}
 

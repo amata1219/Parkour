@@ -17,6 +17,14 @@ public class CheckAreaSet {
 			checkAreas.add(new RegionWithBorders(parkour, Region.deserialize(parkour.world, text)));
 	}
 
+	public boolean isEmpty(){
+		return checkAreas.isEmpty();
+	}
+
+	public List<RegionWithBorders> getCheckAreas(){
+		return new ArrayList<>(checkAreas);
+	}
+
 	public int getCheckAreaNumber(RegionWithBorders checkArea){
 		return checkAreas.indexOf(checkArea);
 	}
