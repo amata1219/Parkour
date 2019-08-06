@@ -32,6 +32,12 @@ public class Parkour {
 	//ワールド
 	public World world;
 
+	//初回報酬
+	public int firstRewardCoins;
+
+	//2回目以降の報酬
+	public int secondAndSubsequentRewardCoins;
+
 	//スポーン地点
 	private ImmutableEntityLocation spawnLocation;
 
@@ -61,6 +67,11 @@ public class Parkour {
 		name = yaml.name;
 
 		world = Bukkit.getWorld(yaml.getString("World"));
+
+		int[] rewardCoins = StringSplit.splitToIntArguments(yaml.getString("Reward coins"));
+
+		firstRewardCoins = rewardCoins[0];
+		secondAndSubsequentRewardCoins = rewardCoins[1];
 
 		setSpawnLocation(ImmutableEntityLocation.deserialize(yaml.getString("Spawn location")));
 
@@ -94,19 +105,6 @@ public class Parkour {
 
 	public boolean isExtend(){
 		return getColorlessName().startsWith("Extend");
-	}
-
-	public boolean isDoombless(){
-		return getColorlessName().equals("Doobless");
-	}
-
-	public boolean hasReward(){
-		try{
-			Reward.valueOf(getColorlessName());
-		}catch(Exception e){
-			return false;
-		}
-		return true;
 	}
 
 	//このアスレに参加する
@@ -168,7 +166,7 @@ public class Parkour {
 
 	//このマップがあるステージを返す
 	public Stage getStage(){
-		return stages.getStage(name);
+		return stages.getStageByParkourName(name);
 	}
 
 	public ImmutableEntityLocation getSpawnLocation(){

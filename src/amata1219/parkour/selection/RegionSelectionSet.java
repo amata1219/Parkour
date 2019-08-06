@@ -25,7 +25,7 @@ public class RegionSelectionSet implements Listener {
 	private static RegionSelectionSet instance;
 
 	//範囲選択用のツール
-	public static final ItemStack selectionTool;
+	private static final ItemStack selectionTool;
 
 	static{
 		selectionTool = new ItemStack(Material.STONE_AXE);

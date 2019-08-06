@@ -10,7 +10,6 @@ import amata1219.amalib.command.Sender;
 import amata1219.amalib.selection.RegionSelection;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
-import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.selection.RegionSelectionSet;
 
@@ -45,10 +44,7 @@ public abstract class AbstractSetParkourRegionCommand implements Command {
 		//セレクションを取得する
 		RegionSelection selection = selections.getSelection(uuid);
 
-		//選択中のアスレを取得する
-		Parkour parkour = selections.getSelectedParkourName(uuid);
-
-		String parkourName = parkour.name;
+		String parkourName = selections.getSelectedParkourName(uuid);
 
 		//アスレのコンフィグを取得する
 		Yaml yaml = parkourSet.makeYaml(parkourName);

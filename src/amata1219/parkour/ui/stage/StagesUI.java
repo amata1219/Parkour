@@ -47,7 +47,7 @@ public class StagesUI implements InventoryUI {
 	@Override
 	public Function<Player, InventoryLayout> layout() {
 		//カテゴリ内のステージリストを取得する
-		List<Stage> stages = StageSet.getInstance().getStages(category);
+		List<Stage> stages = StageSet.getInstance().getStagesByCategory(category);
 
 		return build(stages.size() + 9, (l) -> {
 			//表示例: Extend

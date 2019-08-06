@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 
 import amata1219.amalib.string.StringTemplate;
@@ -53,6 +52,10 @@ public class StageSet {
 		}
 	}
 
+	public boolean existsFile(String stageName){
+		return new File(folder, stageName).exists();
+	}
+
 	public void registerStage(Stage stage){
 		stages.put(stage.name, stage);
 
@@ -60,13 +63,12 @@ public class StageSet {
 		categoriesToStagesMap.get(stage.category).add(stage);
 
 		//ステージ内のアスレの名前とステージをバインドする
-		for(String parkourName : stage.parkourNames) parkourNamesToStagesMap.put(parkourName, stage);
+		for(String parkourName : stage.parkourNames) addParkour(stage, parkourName);
 	}
 
 	public void unregisterStage(Stage stage){
 		//ステージ内のアスレの名前とステージをアンバインドする
-		for(Entry<String, Stage> entry : parkourNamesToStagesMap.entrySet()) if(stage.equals(entry.getValue()))
-			parkourNamesToStagesMap.remove(entry.getKey());
+		for(String parkourName : stage.parkourNames) removeParkour(parkourName);
 
 		//カテゴリーのステージリストから削除する
 		categoriesToStagesMap.get(stage.category).remove(stage);
@@ -78,16 +80,56 @@ public class StageSet {
 		if(stages.containsKey(stageName)) unregisterStage(stages.get(stageName));
 	}
 
-	public List<Stage> getStages(StageCategory category){
+	public List<Stage> getStages(){
+		List<Stage> stages = new ArrayList<>(this.stages.size());
+
+		//全ステージをリストに追加する
+		this.stages.values().forEach(stages::add);
+
+		return stages;
+	}
+
+	public Stage getStage(String stageName){
+		return stages.get(stageName);
+	}
+
+	public boolean containsStage(Stage stage){
+		return containsStage(stage.name);
+	}
+
+	public boolean containsStage(String stageName){
+		return stages.containsKey(stageName);
+	}
+
+	public List<Stage> getStagesByCategory(StageCategory category){
 		return categoriesToStagesMap.get(category);
 	}
 
-	public Stage getStage(Parkour parkour){
-		return getStage(parkour);
+	public Stage getStageByParkour(Parkour parkour){
+		return getStageByParkour(parkour);
 	}
 
-	public Stage getStage(String parkourName){
+	public Stage getStageByParkourName(String parkourName){
 		return parkourNamesToStagesMap.get(parkourName);
+	}
+
+	public void addParkour(Stage stage, String parkourName){
+		stage.parkourNames.add(parkourName);
+		parkourNamesToStagesMap.put(parkourName, stage);
+	}
+
+	public void addParkour(String stageName, String parkourName){
+		addParkour(getStage(stageName), parkourName);
+	}
+
+	public void removeParkour(String parkourName){
+		//ステージを取得する
+		Stage stage = parkourNamesToStagesMap.get(parkourName);
+
+		//ステージからアスレを削除する
+		removeParkour(parkourName);
+
+		stage.parkourNames.remove(parkourName);
 	}
 
 	public Yaml makeYaml(String stageName){

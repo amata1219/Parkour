@@ -8,6 +8,7 @@ import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.parkour.ParkourSet;
+import amata1219.parkour.stage.StageSet;
 import net.md_5.bungee.api.ChatColor;
 
 public class ParkourCommand implements Command {
@@ -40,14 +41,17 @@ public class ParkourCommand implements Command {
 			//第2引数をアスレ名として取得する
 			String parkourName = color(args.next());
 
-			//対応したファイルが存在していれば戻る
+			//対応したファイルが存在していなければ戻る
 			if(!parkourSet.existsFile(parkourName)){
-				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は既に存在しています。", parkourName));
+				sender.warn(StringTemplate.applyWithColor("$0-&r-&c-は存在しません。", parkourName));
 				return;
 			}
 
 			//アスレが登録されていれば登録を解除する
 			parkourSet.unregisterParkour(parkourName);
+
+			//ステージからアスレを削除する
+			StageSet.getInstance().removeParkour(parkourName);
 
 			//ファイルを削除する
 			parkourSet.makeYaml(parkourName).file.delete();
