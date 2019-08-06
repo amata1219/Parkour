@@ -228,6 +228,8 @@ public class Parkour {
 		//ワールド名を記録する
 		yaml.set("World", world.getName());
 
+		yaml.set("Reward coins", StringTemplate.apply("$0,$1", firstRewardCoins, secondAndSubsequentRewardCoins));
+
 		//スポーン地点を記録する
 		yaml.set("Spawn location", spawnLocation.serialize());
 
