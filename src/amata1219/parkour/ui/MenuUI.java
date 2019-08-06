@@ -19,7 +19,6 @@ public class MenuUI implements InventoryUI {
 	/*
 	 * 自分のアイコン: ステータス1
 	 *
-	 * キーコンフィグ5
 	 * 情報板コンフィグ6
 	 * ヘッド購入7
 	 *
