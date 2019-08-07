@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import amata1219.amalib.chunk.ChunksToObjectsMap;
-import amata1219.amalib.region.Region;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
@@ -26,19 +25,19 @@ public class Parkours {
 	private final Main plugin = Main.getPlugin();
 
 	//アスレデータを保存するフォルダー
-	public final File folder = new File(plugin.getDataFolder() + File.separator + "ParkourList");
+	public final File folder = new File(plugin.getDataFolder() + File.separator + "Parkours");
 
 	//アスレのマップ
 	private final Map<String, Parkour> parkourMap = new HashMap<>();
 
 	//スタートラインのチャンクマップ
-	public final ChunksToObjectsMap<OldParkourRegion> chunksToStartLinesMap = new ChunksToObjectsMap<>();
+	public final ChunksToObjectsMap<ParkourRegion> chunksToStartLinesMap = new ChunksToObjectsMap<>();
 
 	//フィニッシュラインのチャンクマップ
-	public final ChunksToObjectsMap<OldParkourRegion> chunksToFinishLinesMap = new ChunksToObjectsMap<>();
+	public final ChunksToObjectsMap<ParkourRegion> chunksToFinishLinesMap = new ChunksToObjectsMap<>();
 
 	//チェックエリアのチャンクマップ
-	public final ChunksToObjectsMap<OldParkourRegion> chunksToCheckAreasMap = new ChunksToObjectsMap<>();
+	public final ChunksToObjectsMap<ParkourRegion> chunksToCheckAreasMap = new ChunksToObjectsMap<>();
 
 	private Parkours(){
 		//フォルダーが存在しなければ作成する
@@ -65,10 +64,10 @@ public class Parkours {
 		parkourMap.put(parkour.name, parkour);
 
 		//スタートラインを登録する
-		registerStartLine(parkour.getStartLine());
+		registerStartLine(parkour.startLine);
 
 		//フィニッシュラインを登録する
-		registerFinishLine(parkour.getFinishLine());
+		registerFinishLine(parkour.finishLine);
 
 		//全チェックエリアを登録する
 		parkour.checkAreas.registerAll();
@@ -88,10 +87,10 @@ public class Parkours {
 
 	public void unregisterParkour(Parkour parkour){
 		//スタートラインの登録を解除する
-		unregisterStartLine(parkour.getStartLine());
+		unregisterStartLine(parkour.startLine);
 
 		//フィニッシュラインの登録を解除する
-		unregisterFinishLine(parkour.getFinishLine());
+		unregisterFinishLine(parkour.finishLine);
 
 		//全チェックエリアの登録を解除する
 		parkour.checkAreas.unregisterAll();
@@ -115,54 +114,52 @@ public class Parkours {
 		return parkourMap.containsKey(parkourName);
 	}
 
-	public void registerStartLine(OldParkourRegion startLine){
-		registerRegionWithBorders(startLine, chunksToStartLinesMap);
+	public void registerStartLine(ParkourRegion startLine){
+		registerParkourRegion(startLine, chunksToStartLinesMap);
 	}
 
-	public void unregisterStartLine(OldParkourRegion startLine){
-		unregisterRegionWithBorders(startLine, chunksToStartLinesMap);
+	public void unregisterStartLine(ParkourRegion startLine){
+		unregisterParkourRegion(startLine, chunksToStartLinesMap);
 	}
 
-	public void registerFinishLine(OldParkourRegion finishLine){
-		registerRegionWithBorders(finishLine, chunksToFinishLinesMap);
+	public void registerFinishLine(ParkourRegion finishLine){
+		registerParkourRegion(finishLine, chunksToFinishLinesMap);
 	}
 
-	public void unregisterFinishLine(OldParkourRegion finishLine){
-		unregisterRegionWithBorders(finishLine, chunksToFinishLinesMap);
+	public void unregisterFinishLine(ParkourRegion finishLine){
+		unregisterParkourRegion(finishLine, chunksToFinishLinesMap);
 	}
 
-	public void registerCheckArea(OldParkourRegion checkArea){
-		registerRegionWithBorders(checkArea, chunksToCheckAreasMap);
+	public void registerCheckArea(ParkourRegion checkArea){
+		registerParkourRegion(checkArea, chunksToCheckAreasMap);
 	}
 
-	public void unregisterCheckArea(OldParkourRegion checkArea){
-		unregisterRegionWithBorders(checkArea, chunksToCheckAreasMap);
+	public void unregisterCheckArea(ParkourRegion checkArea){
+		unregisterParkourRegion(checkArea, chunksToCheckAreasMap);
 	}
 
 	public Yaml makeYaml(String parkourName){
 		return new Yaml(plugin, new File(folder, StringTemplate.apply("$0.yml", parkourName)), "parkour.yml");
 	}
 
-	private void registerRegionWithBorders(OldParkourRegion regionWithBorders, ChunksToObjectsMap<OldParkourRegion> chunksToRegionsMap){
-		//領域を取得する
-		Region region = regionWithBorders.region;
+	private void registerParkourRegion(ParkourRegion region, ChunksToObjectsMap<ParkourRegion> chunksToRegionsMap){
+		if(region == null) return;
 
 		//領域を登録する
-		chunksToRegionsMap.putAll(region.lesserBoundaryCorner,  region.greaterBoundaryCorner, regionWithBorders);
+		chunksToRegionsMap.putAll(region.lesserBoundaryCorner,  region.greaterBoundaryCorner, region);
 
 		//境界線の描画を始める
-		regionWithBorders.display();
+		region.displayBorders();
 	}
 
-	private void unregisterRegionWithBorders(OldParkourRegion regionWithBorders, ChunksToObjectsMap<OldParkourRegion> chunksToRegionsMap){
-		//境界線の描画を止める
-		regionWithBorders.undisplay();
+	private void unregisterParkourRegion(ParkourRegion region, ChunksToObjectsMap<ParkourRegion> chunksToRegionsMap){
+		if(region == null) return;
 
-		//領域を取得する
-		Region region = regionWithBorders.region;
+		//境界線の描画を止める
+		region.undisplayBorders();
 
 		//領域の登録を解除する
-		chunksToRegionsMap.removeAll(region.lesserBoundaryCorner,  region.greaterBoundaryCorner, regionWithBorders);
+		chunksToRegionsMap.removeAll(region.lesserBoundaryCorner,  region.greaterBoundaryCorner, region);
 	}
 
 }

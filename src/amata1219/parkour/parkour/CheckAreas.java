@@ -1,6 +1,5 @@
 package amata1219.parkour.parkour;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,42 +8,36 @@ import amata1219.amalib.yaml.Yaml;
 
 public class CheckAreas {
 
-	private final Parkours parkourSet = Parkours.getInstance();
-	private final List<OldParkourRegion> checkAreas = new ArrayList<>();
+	private final Parkours parkours = Parkours.getInstance();
 
-	public CheckAreas(Yaml yaml, Parkour parkour){
-		for(String text : yaml.getStringList("Check areas"))
-			checkAreas.add(new OldParkourRegion(parkour, Region.deserialize(parkour.world, text)));
+	public final List<ParkourRegion> checkAreas;
+
+	public CheckAreas(Parkour parkour, Yaml yaml){
+		checkAreas = yaml.getStringList("Check areas").stream()
+							.map(text -> new ParkourRegion(parkour, Region.deserializeToCorners(text)))
+							.collect(Collectors.toList());
 	}
 
-	public boolean isEmpty(){
-		return checkAreas.isEmpty();
-	}
-
-	public List<OldParkourRegion> getCheckAreas(){
-		return new ArrayList<>(checkAreas);
-	}
-
-	public int getCheckAreaNumber(OldParkourRegion checkArea){
+	public int getCheckAreaNumber(ParkourRegion checkArea){
 		return checkAreas.indexOf(checkArea);
 	}
 
-	public OldParkourRegion getCheckArea(int checkAreaNumber){
+	public ParkourRegion getCheckArea(int checkAreaNumber){
 		return checkAreaNumber < checkAreas.size() ? checkAreas.get(checkAreaNumber) : null;
 	}
 
-	public void addCheckArea(OldParkourRegion checkArea){
+	public void addCheckArea(ParkourRegion checkArea){
 		setCheckArea(checkAreas.size(), checkArea);
 	}
 
-	public void setCheckArea(int checkAreaNumber, OldParkourRegion checkArea){
+	public void setCheckArea(int checkAreaNumber, ParkourRegion checkArea){
 		//既存のチェックエリアの新しいそれに書き換える
 		if(checkAreaNumber < checkAreas.size()){
 			//既存のチェックエリアを取得する
-			OldParkourRegion old = checkAreas.get(checkAreaNumber);
+			ParkourRegion old = checkAreas.get(checkAreaNumber);
 
 			//登録を解除する
-			parkourSet.unregisterCheckArea(old);
+			parkours.unregisterCheckArea(old);
 
 			//チェックエリアを書き換える
 			checkAreas.set(checkAreaNumber, checkArea);
@@ -55,28 +48,27 @@ public class CheckAreas {
 		}
 
 		//新しいチェックエリアを登録する
-		parkourSet.registerCheckArea(checkArea);
+		parkours.registerCheckArea(checkArea);
 	}
 
 	public void displayAll(){
-		checkAreas.forEach(OldParkourRegion::display);
+		checkAreas.forEach(ParkourRegion::displayBorders);
 	}
 
 	public void undisplayAll(){
-		checkAreas.forEach(OldParkourRegion::undisplay);
+		checkAreas.forEach(ParkourRegion::undisplayBorders);
 	}
 
 	public void registerAll(){
-		checkAreas.forEach(parkourSet::registerCheckArea);
+		checkAreas.forEach(parkours::registerCheckArea);
 	}
 
 	public void unregisterAll(){
-		checkAreas.forEach(parkourSet::unregisterCheckArea);
+		checkAreas.forEach(parkours::unregisterCheckArea);
 	}
 
 	public void save(Yaml yaml){
-		List<String> data = checkAreas.stream().map(checkArea -> checkArea.region.serialize()).collect(Collectors.toList());
-		yaml.set("Check areas", data);
+		yaml.set("Check areas", checkAreas.stream().map(ParkourRegion::serialize).collect(Collectors.toList()));
 	}
 
 }

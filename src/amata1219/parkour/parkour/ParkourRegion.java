@@ -12,6 +12,7 @@ import amata1219.amalib.location.ImmutableBlockLocation;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.schedule.Async;
+import amata1219.amalib.tuplet.Tuple;
 import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_13_R2.ParticleParam;
 
@@ -31,8 +32,8 @@ public class ParkourRegion extends Region {
 	//パーティクルパケットを送信する非同期のループタスク
 	private BukkitTask task;
 
-	public ParkourRegion(Parkour parkour, ImmutableBlockLocation lesserBoundaryCorner, ImmutableBlockLocation greaterBoundaryCorner){
-		super(lesserBoundaryCorner, greaterBoundaryCorner);
+	public ParkourRegion(Parkour parkour, Tuple<ImmutableBlockLocation, ImmutableBlockLocation> corners){
+		super(corners.first, corners.second);
 
 		this.parkour = parkour;
 
@@ -53,8 +54,8 @@ public class ParkourRegion extends Region {
 
 	//境界線を表示する
 	public void displayBorders(){
-		//既に実行されているタスクがあればそれをキャンセルする
-		undisplayBorders();
+		//既に実行されていれば戻る
+		if(task != null) return;
 
 		//コネクションリストが空であれば戻る
 		if(parkour.connections.isEmpty())
@@ -76,7 +77,7 @@ public class ParkourRegion extends Region {
 				connection.sendPacket(packet1);
 				connection.sendPacket(packet2);
 			});
-		}).executeTimer(0, 6);
+		}).executeTimer(0, 3);
 	}
 
 	//境界線を非表示にする
