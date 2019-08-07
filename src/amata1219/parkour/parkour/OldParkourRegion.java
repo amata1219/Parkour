@@ -16,7 +16,7 @@ import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_13_R2.ParticleParam;
 import net.minecraft.server.v1_13_R2.PlayerConnection;
 
-public class RegionWithBorders {
+public class OldParkourRegion {
 
 	private static final ParticleParam PARTICLE_DATA = CraftParticle.toNMS(org.bukkit.Particle.REDSTONE, null);
 	private static final boolean FLAG = true;
@@ -39,7 +39,7 @@ public class RegionWithBorders {
 	//パーティクルパケットを送信する非同期のループタスク
 	private BukkitTask task;
 
-	public RegionWithBorders(Parkour parkour,  Region region){
+	public OldParkourRegion(Parkour parkour,  Region region){
 		this.parkour = parkour;
 		this.region = region;
 
@@ -53,7 +53,7 @@ public class RegionWithBorders {
 
 		packets = new ArrayList<>(size);
 
-		Color color = parkour.particleColor;
+		Color color = parkour.borderColor;
 
 		for(ImmutableEntityLocation location : locationsOnBorderLines){
 			//パケットを作成する

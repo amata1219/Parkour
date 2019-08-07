@@ -4,19 +4,19 @@ import org.bukkit.entity.Player;
 
 import amata1219.amalib.message.MessageColor;
 import amata1219.amalib.message.MessageTemplate;
-import amata1219.parkour.parkour.RegionWithBorders;
+import amata1219.parkour.parkour.OldParkourRegion;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.parkour.ParkourSet;
+import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.user.User;
 
 public class PassStartLineListener extends PassRegionBoundaryAbstractListener {
 
 	public PassStartLineListener() {
-		super(ParkourSet.getInstance().chunksToStartLinesMap);
+		super(Parkours.getInstance().chunksToStartLinesMap);
 	}
 
 	@Override
-	public void onMove(Player player, User user, Parkour parkour, RegionWithBorders from, RegionWithBorders to) {
+	public void onMove(Player player, User user, Parkour parkour, OldParkourRegion from, OldParkourRegion to) {
 		String parkourName = parkour.name;
 
 		//スタートラインに初めて踏み込んだ時

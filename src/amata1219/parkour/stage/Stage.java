@@ -6,12 +6,12 @@ import java.util.stream.Collectors;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.parkour.ParkourSet;
+import amata1219.parkour.parkour.Parkours;
 
 public class Stage {
 
-	private final StageSet stages = StageSet.getInstance();
-	private final ParkourSet parkourSet = ParkourSet.getInstance();
+	private final Stages stages = Stages.getInstance();
+	private final Parkours parkourSet = Parkours.getInstance();
 
 	//ステージ名
 	public final String name;

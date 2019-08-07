@@ -6,15 +6,15 @@ import amata1219.amalib.command.Sender;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
-import amata1219.parkour.parkour.ParkourSet;
+import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.stage.Stage;
-import amata1219.parkour.stage.StageSet;
+import amata1219.parkour.stage.Stages;
 import net.md_5.bungee.api.ChatColor;
 
 public class StageCommand implements Command {
 
-	private final StageSet stages = StageSet.getInstance();
-	private final ParkourSet parkourSet = ParkourSet.getInstance();
+	private final Stages stages = Stages.getInstance();
+	private final Parkours parkourSet = Parkours.getInstance();
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {

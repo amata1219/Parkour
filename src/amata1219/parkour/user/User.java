@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.parkour.ParkourSet;
+import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.stage.Stage;
 
 public class User {
@@ -74,7 +74,7 @@ public class User {
 		//コイン数を取得する
 		coins = yaml.getInt("Coins");
 
-		ParkourSet parkourSet = ParkourSet.getInstance();
+		Parkours parkourSet = Parkours.getInstance();
 
 		//最後にいたアスレを取得する
 		currentParkour = parkourSet.getParkour("Current parkour");

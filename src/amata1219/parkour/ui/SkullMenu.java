@@ -35,14 +35,9 @@ public class SkullMenu implements InventoryUI {
 		Builder<UUID, Triple<ItemStack, String, Integer>> builder = ImmutableMap.builder();
 
 		initializeWithPlayerHeads(builder,
-			//ledlaggazi
-			"58becc44-c5b7-420f-8800-15ba88820973,1000000",
-
-			//YukiLeafX
-			"82669f11-f1e5-402c-9642-75aff8a47613,500000",
-
-			//siloneco
-			"7daf21e7-b275-43dd-bc0d-4762c73d6199,500000"
+			"58becc44-c5b7-420f-8800-15ba88820973,1000000",//ledlaggazi
+			"82669f11-f1e5-402c-9642-75aff8a47613,500000",//YukiLeafX
+			"7daf21e7-b275-43dd-bc0d-4762c73d6199,500000"//siloneco
 		);
 
 		initializeWithCustomHeads(builder

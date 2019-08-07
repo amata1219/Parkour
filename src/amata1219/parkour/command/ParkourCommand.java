@@ -9,13 +9,13 @@ import amata1219.amalib.command.Sender;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
-import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.stage.StageSet;
+import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.stage.Stages;
 import net.md_5.bungee.api.ChatColor;
 
 public class ParkourCommand implements Command {
 
-	private final ParkourSet parkourSet = ParkourSet.getInstance();
+	private final Parkours parkourSet = Parkours.getInstance();
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {
@@ -53,7 +53,7 @@ public class ParkourCommand implements Command {
 			parkourSet.unregisterParkour(parkourName);
 
 			//ステージからアスレを削除する
-			StageSet.getInstance().removeParkour(parkourName);
+			Stages.getInstance().removeParkour(parkourName);
 
 			//ファイルを削除する
 			parkourSet.makeYaml(parkourName).file.delete();

@@ -6,11 +6,11 @@ import amata1219.amalib.command.Sender;
 import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
-import amata1219.parkour.parkour.ParkourSet;
+import amata1219.parkour.parkour.Parkours;
 
 public class SetRewardCommand implements Command {
 
-	private final ParkourSet parkourSet = ParkourSet.getInstance();
+	private final Parkours parkourSet = Parkours.getInstance();
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {

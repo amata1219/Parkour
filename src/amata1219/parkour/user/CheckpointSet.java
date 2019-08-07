@@ -13,11 +13,11 @@ import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.parkour.ParkourSet;
+import amata1219.parkour.parkour.Parkours;
 
 public class CheckpointSet {
 
-	private final ParkourSet parkourSet = ParkourSet.getInstance();
+	private final Parkours parkourSet = Parkours.getInstance();
 
 	private final Map<String, List<ImmutableEntityLocation>> checkpoints = new HashMap<>();
 

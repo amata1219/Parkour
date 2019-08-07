@@ -1,98 +1,62 @@
 package amata1219.parkour.parkour;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import org.bukkit.entity.Player;
 
+import amata1219.amalib.color.Color;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.stage.Stage;
-import amata1219.parkour.stage.StageSet;
-import amata1219.parkour.user.User;
-import net.minecraft.server.v1_13_R2.EntityPlayer;
-import net.minecraft.server.v1_13_R2.PlayerConnection;
+import amata1219.parkour.stage.Stages;
 
 public class Parkour {
 
-	private final StageSet stages = StageSet.getInstance();
-	private final ParkourSet parkourSet = ParkourSet.getInstance();
+	private final Stages stages = Stages.getInstance();
+	private final Parkours parkours = Parkours.getInstance();
 
-	//アスレ名
 	public final String name;
-
-	//ワールド
+	public boolean enable;
 	public World world;
-
-	//初回報酬
-	public int firstRewardCoins;
-
-	//2回目以降の報酬
-	public int secondAndSubsequentRewardCoins;
-
-	//スポーン地点
-	private ImmutableEntityLocation spawnLocation;
-
-	//各領域の境界線を表示するパーティクルの色
-	public final Color particleColor;
-
-	//アスレの領域
-	private Region region;
-
-	//スタートラインの領域
-	private RegionWithBorders startLine;
-
-	//フィニッシュラインの領域
-	private RegionWithBorders finishLine;
-
-	//チェックエリアの管理インスタンス
-	public final CheckAreaSet checkAreas;
-
-	//ゴールタイムの管理インスタンス
-	public final RecordSet records;
-
-	//プレイヤーのコネクションリスト
-	final List<PlayerConnection> connections = new ArrayList<>();
+	public Reward reward;
+	public ImmutableEntityLocation spawnPoint;
+	public Region region;
+	public OldParkourRegion startLine, finishLine;
+	public Color borderColor;
+	public CheckAreas checkAreas;
+	public Records records;
+	public PlayerConnections connections;
 
 	public Parkour(Yaml yaml){
-		//コンフィグのファイル名をアスレ名として扱う
 		name = yaml.name;
 
 		world = Bukkit.getWorld(yaml.getString("World"));
 
 		int[] rewardCoins = StringSplit.splitToIntArguments(yaml.getString("Reward coins"));
 
-		firstRewardCoins = rewardCoins[0];
-		secondAndSubsequentRewardCoins = rewardCoins[1];
+		//報酬
 
 		setSpawnLocation(ImmutableEntityLocation.deserialize(yaml.getString("Spawn location")));
 
 		//領域を作成する
 		region = Region.deserialize(world, yaml.getString("Region"));
 
-		//テキストをカンマ毎に分割しそれぞれを数値に変換する
-		int[] colors = StringSplit.splitToIntArguments(yaml.getString("Particle color"));
-
 		//カラーを作成する
-		particleColor = Color.fromRGB(colors[0], colors[1], colors[2]);
+		borderColor = Color.deserialize(yaml.getString("Particle color"));
 
 		//スタートラインを作成する
-		startLine = new RegionWithBorders(this, Region.deserialize(world, yaml.getString("Start line")));
+		startLine = new OldParkourRegion(this, Region.deserialize(world, yaml.getString("Start line")));
 
 		//フィニッシュラインを作成する
-		finishLine = new RegionWithBorders(this, Region.deserialize(world, yaml.getString("Finish line")));
+		finishLine = new OldParkourRegion(this, Region.deserialize(world, yaml.getString("Finish line")));
 
-		checkAreas = new CheckAreaSet(yaml, this);
+		checkAreas = new CheckAreas(yaml, this);
 
-		records = new RecordSet(yaml);
+		records = new Records(yaml);
 	}
 
 	public String getColorlessName(){
@@ -108,7 +72,7 @@ public class Parkour {
 	}
 
 	//このアスレに参加する
-	public void entry(User user){
+	/*public void entry(User user){
 		Player player = user.asBukkitPlayer();
 
 		//プレイヤーのコネクションを取得する
@@ -162,7 +126,7 @@ public class Parkour {
 		startLine.undisplay();
 		finishLine.undisplay();
 		checkAreas.undisplayAll();
-	}
+	}*/
 
 	//このマップがあるステージを返す
 	public Stage getStage(){
@@ -170,13 +134,13 @@ public class Parkour {
 	}
 
 	public ImmutableEntityLocation getSpawnLocation(){
-		return spawnLocation;
+		return spawnPoint;
 	}
 
 	//スポーン地点を設定する
 	public void setSpawnLocation(ImmutableEntityLocation spawnLocation){
 		//ブロック中央に座標を修正する
-		this.spawnLocation = spawnLocation.middle();
+		this.spawnPoint = spawnLocation.middle();
 	}
 
 	//アスレの領域を返す
@@ -191,53 +155,52 @@ public class Parkour {
 		region = newRegion;
 	}
 
-	public RegionWithBorders getStartLine(){
+	public OldParkourRegion getStartLine(){
 		return startLine;
 	}
 
-	public void setStartLine(RegionWithBorders newStartLine){
+	public void setStartLine(OldParkourRegion newStartLine){
 		Validate.notNull(newStartLine, "Start line can not be null");
 
 		if(startLine != null)
-			parkourSet.unregisterStartLine(startLine);
+			parkours.unregisterStartLine(startLine);
 
-		parkourSet.registerStartLine(startLine);
+		parkours.registerStartLine(startLine);
 	}
 
-	public RegionWithBorders getFinishLine(){
+	public OldParkourRegion getFinishLine(){
 		return finishLine;
 	}
 
-	public void setFinishLine(RegionWithBorders newFinishLine){
+	public void setFinishLine(OldParkourRegion newFinishLine){
 		Validate.notNull(newFinishLine, "Finish line can not be null");
 
 		if(finishLine != null)
-			parkourSet.unregisterStartLine(finishLine);
+			parkours.unregisterStartLine(finishLine);
 
-		parkourSet.registerStartLine(finishLine);
+		parkours.registerStartLine(finishLine);
 	}
 
-	//BukkitプレイヤーをNMSプレイヤーに変換する
-	private EntityPlayer asEntityPlayer(Player player){
-		return ((CraftPlayer) player).getHandle();
+	public void apply(Parkour parkour){
+
 	}
 
 	public void save(){
-		Yaml yaml = parkourSet.makeYaml(name);
+		Yaml yaml = parkours.makeYaml(name);
 
 		//ワールド名を記録する
 		yaml.set("World", world.getName());
 
-		yaml.set("Reward coins", StringTemplate.apply("$0,$1", firstRewardCoins, secondAndSubsequentRewardCoins));
+		//yaml.set("Reward coins", StringTemplate.apply("$0,$1", firstRewardCoins, secondAndSubsequentRewardCoins));
 
 		//スポーン地点を記録する
-		yaml.set("Spawn location", spawnLocation.serialize());
+		yaml.set("Spawn location", spawnPoint.serialize());
 
 		//領域情報を記録する
 		yaml.set("Region", region.serialize());
 
 		//パーティクルの色をRGBの形式で記録する
-		yaml.set("Particle color", StringTemplate.apply("$0,$1,$2", particleColor.getRed(), particleColor.getGreen(), particleColor.getBlue()));
+		yaml.set("Particle color", StringTemplate.apply("$0,$1,$2", borderColor.getRed(), borderColor.getGreen(), borderColor.getBlue()));
 
 		//スタートラインの領域情報を記録する
 		yaml.set("Start line", startLine.region.serialize());

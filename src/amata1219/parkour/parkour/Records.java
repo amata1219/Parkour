@@ -17,7 +17,7 @@ import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.tuplet.Tuple;
 import amata1219.amalib.yaml.Yaml;
 
-public class RecordSet {
+public class Records {
 
 	//小数点3桁以下を切り捨てた文字列を返す
 	public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss.SSS");
@@ -30,7 +30,7 @@ public class RecordSet {
 
 	private final List<UUID> cheaters = new ArrayList<>();
 
-	public RecordSet(Yaml yaml){
+	public Records(Yaml yaml){
 		if(!yaml.isConfigurationSection("Records")){
 			records = new HashMap<>();
 			return;

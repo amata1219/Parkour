@@ -12,15 +12,15 @@ import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.parkour.Parkour;
 
-public class StageSet {
+public class Stages {
 
-	private static StageSet instance;
+	private static Stages instance;
 
 	public static void load(){
-		instance = new StageSet();
+		instance = new Stages();
 	}
 
-	public static StageSet getInstance(){
+	public static Stages getInstance(){
 		return instance;
 	}
 
@@ -37,7 +37,7 @@ public class StageSet {
 	//アスレ名とステージをバインドするマップ
 	private final Map<String, Stage> parkourNamesToStagesMap = new HashMap<>();
 
-	private StageSet(){
+	private Stages(){
 		//フォルダーが存在しなければ作成する
 		if(!folder.exists()) folder.mkdirs();
 

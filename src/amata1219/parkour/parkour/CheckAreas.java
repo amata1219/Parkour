@@ -7,41 +7,41 @@ import java.util.stream.Collectors;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.yaml.Yaml;
 
-public class CheckAreaSet {
+public class CheckAreas {
 
-	private final ParkourSet parkourSet = ParkourSet.getInstance();
-	private final List<RegionWithBorders> checkAreas = new ArrayList<>();
+	private final Parkours parkourSet = Parkours.getInstance();
+	private final List<OldParkourRegion> checkAreas = new ArrayList<>();
 
-	public CheckAreaSet(Yaml yaml, Parkour parkour){
+	public CheckAreas(Yaml yaml, Parkour parkour){
 		for(String text : yaml.getStringList("Check areas"))
-			checkAreas.add(new RegionWithBorders(parkour, Region.deserialize(parkour.world, text)));
+			checkAreas.add(new OldParkourRegion(parkour, Region.deserialize(parkour.world, text)));
 	}
 
 	public boolean isEmpty(){
 		return checkAreas.isEmpty();
 	}
 
-	public List<RegionWithBorders> getCheckAreas(){
+	public List<OldParkourRegion> getCheckAreas(){
 		return new ArrayList<>(checkAreas);
 	}
 
-	public int getCheckAreaNumber(RegionWithBorders checkArea){
+	public int getCheckAreaNumber(OldParkourRegion checkArea){
 		return checkAreas.indexOf(checkArea);
 	}
 
-	public RegionWithBorders getCheckArea(int checkAreaNumber){
+	public OldParkourRegion getCheckArea(int checkAreaNumber){
 		return checkAreaNumber < checkAreas.size() ? checkAreas.get(checkAreaNumber) : null;
 	}
 
-	public void addCheckArea(RegionWithBorders checkArea){
+	public void addCheckArea(OldParkourRegion checkArea){
 		setCheckArea(checkAreas.size(), checkArea);
 	}
 
-	public void setCheckArea(int checkAreaNumber, RegionWithBorders checkArea){
+	public void setCheckArea(int checkAreaNumber, OldParkourRegion checkArea){
 		//既存のチェックエリアの新しいそれに書き換える
 		if(checkAreaNumber < checkAreas.size()){
 			//既存のチェックエリアを取得する
-			RegionWithBorders old = checkAreas.get(checkAreaNumber);
+			OldParkourRegion old = checkAreas.get(checkAreaNumber);
 
 			//登録を解除する
 			parkourSet.unregisterCheckArea(old);
@@ -59,11 +59,11 @@ public class CheckAreaSet {
 	}
 
 	public void displayAll(){
-		checkAreas.forEach(RegionWithBorders::display);
+		checkAreas.forEach(OldParkourRegion::display);
 	}
 
 	public void undisplayAll(){
-		checkAreas.forEach(RegionWithBorders::undisplay);
+		checkAreas.forEach(OldParkourRegion::undisplay);
 	}
 
 	public void registerAll(){

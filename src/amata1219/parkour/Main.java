@@ -26,9 +26,9 @@ import amata1219.parkour.listener.ApplyUserStateListener;
 import amata1219.parkour.listener.PassFinishLineListener;
 import amata1219.parkour.listener.PassStartLineListener;
 import amata1219.parkour.listener.SetCheckpointListener;
-import amata1219.parkour.parkour.ParkourSet;
+import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelectionSet;
-import amata1219.parkour.stage.StageSet;
+import amata1219.parkour.stage.Stages;
 import amata1219.parkour.task.AsyncTask;
 import amata1219.parkour.task.UpdatePingTask;
 import amata1219.parkour.task.UpdateTimePlayedTask;
@@ -57,8 +57,8 @@ public class Main extends Plugin {
 		nickAPI = BetterNick.getApi();
 
 		//インスタンスを生成する
-		ParkourSet.load();
-		StageSet.load();
+		Parkours.load();
+		Stages.load();
 		UserSet.load();
 		RegionSelectionSet.load();
 

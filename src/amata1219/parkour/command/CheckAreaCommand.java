@@ -12,12 +12,12 @@ import amata1219.amalib.selection.RegionSelection;
 import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
-import amata1219.parkour.parkour.ParkourSet;
+import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelectionSet;
 
 public class CheckAreaCommand implements Command {
 
-	private final ParkourSet parkourSet = ParkourSet.getInstance();
+	private final Parkours parkourSet = Parkours.getInstance();
 	private final RegionSelectionSet selections = RegionSelectionSet.getInstance();
 
 	/*

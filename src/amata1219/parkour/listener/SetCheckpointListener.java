@@ -12,15 +12,15 @@ import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.message.MessageTemplate;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.parkour.RegionWithBorders;
+import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.OldParkourRegion;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 
 public class SetCheckpointListener implements Listener {
 
 	private final UserSet users = UserSet.getInstnace();
-	private final ChunksToObjectsMap<RegionWithBorders> chunksToCheckAreasMap = ParkourSet.getInstance().chunksToCheckAreasMap;
+	private final ChunksToObjectsMap<OldParkourRegion> chunksToCheckAreasMap = Parkours.getInstance().chunksToCheckAreasMap;
 
 	@EventHandler
 	public void onSwap(PlayerSwapHandItemsEvent event){
@@ -41,13 +41,13 @@ public class SetCheckpointListener implements Listener {
 		Location location = player.getLocation();
 
 		//プレイヤーの現在地に存在するチェックエリアのリストを取得する
-		List<RegionWithBorders> checkAreas = chunksToCheckAreasMap.get(location);
+		List<OldParkourRegion> checkAreas = chunksToCheckAreasMap.get(location);
 
 		//チェックエリアが存在しなければ戻る
 		if(checkAreas.isEmpty()) return;
 
 		//リストの最初の要素をチェックエリアとして取得する
-		RegionWithBorders checkArea = checkAreas.get(0);
+		OldParkourRegion checkArea = checkAreas.get(0);
 
 		//領域内にいなければ戻る
 		if(!checkArea.region.isIn(location)) return;

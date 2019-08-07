@@ -13,7 +13,7 @@ import amata1219.amalib.message.MessageTemplate;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.stage.Stage;
 import amata1219.parkour.stage.StageCategory;
-import amata1219.parkour.stage.StageSet;
+import amata1219.parkour.stage.Stages;
 import amata1219.parkour.user.UserSet;
 
 public class StageSelectionUI implements InventoryUI {
@@ -49,7 +49,7 @@ public class StageSelectionUI implements InventoryUI {
 	@Override
 	public Function<Player, InventoryLayout> layout() {
 		//カテゴリ内のステージリストを取得する
-		List<Stage> stages = StageSet.getInstance().getStagesByCategory(category);
+		List<Stage> stages = Stages.getInstance().getStagesByCategory(category);
 
 		return build(stages.size() + 9, (l) -> {
 			//表示例: Extend

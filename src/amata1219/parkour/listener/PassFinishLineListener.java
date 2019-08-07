@@ -7,20 +7,20 @@ import org.bukkit.entity.Player;
 import amata1219.amalib.message.MessageTemplate;
 import amata1219.parkour.format.TimeFormat;
 import amata1219.parkour.function.ApplyRankToDisplayName;
-import amata1219.parkour.parkour.RegionWithBorders;
+import amata1219.parkour.parkour.OldParkourRegion;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.parkour.RecordSet;
+import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.Records;
 import amata1219.parkour.user.User;
 
 public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 
 	public PassFinishLineListener() {
-		super(ParkourSet.getInstance().chunksToFinishLinesMap);
+		super(Parkours.getInstance().chunksToFinishLinesMap);
 	}
 
 	@Override
-	public void onMove(Player player, User user, Parkour parkour, RegionWithBorders from, RegionWithBorders to) {
+	public void onMove(Player player, User user, Parkour parkour, OldParkourRegion from, OldParkourRegion to) {
 		//フィニッシュラインに初めて踏み込んだのでなければ戻る
 		if(user.parkourPlayingNow == null || from != null || to == null)
 			return;
@@ -46,7 +46,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			//ゴールタイムを秒単位で出す
 			float time = (System.currentTimeMillis() - user.timeToStartPlaying) / 1000F;
 
-			RecordSet records = parkour.records;
+			Records records = parkour.records;
 
 			//ゴールタイムを記録する
 			records.record(user.uuid, time);

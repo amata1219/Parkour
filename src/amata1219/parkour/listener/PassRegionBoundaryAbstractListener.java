@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import amata1219.amalib.chunk.ChunksToObjectsMap;
-import amata1219.parkour.parkour.RegionWithBorders;
+import amata1219.parkour.parkour.OldParkourRegion;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
@@ -15,9 +15,9 @@ import amata1219.parkour.user.UserSet;
 public abstract class PassRegionBoundaryAbstractListener implements Listener {
 
 	private final UserSet users = UserSet.getInstnace();
-	private final ChunksToObjectsMap<RegionWithBorders> chunksToRegionsMap;
+	private final ChunksToObjectsMap<OldParkourRegion> chunksToRegionsMap;
 
-	protected PassRegionBoundaryAbstractListener(ChunksToObjectsMap<RegionWithBorders> chunksToRegionsMap){
+	protected PassRegionBoundaryAbstractListener(ChunksToObjectsMap<OldParkourRegion> chunksToRegionsMap){
 		this.chunksToRegionsMap = chunksToRegionsMap;
 	}
 
@@ -26,9 +26,9 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 		Location from = event.getFrom();
 
 		//元々いた地点に存在していた領域
-		RegionWithBorders fromRegion = null;
+		OldParkourRegion fromRegion = null;
 
-		for(RegionWithBorders region : chunksToRegionsMap.get(from)){
+		for(OldParkourRegion region : chunksToRegionsMap.get(from)){
 			if(!region.region.isIn(from))
 				continue;
 
@@ -38,9 +38,9 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 
 		Location to = event.getTo();
 
-		RegionWithBorders toRegion = null;
+		OldParkourRegion toRegion = null;
 
-		for(RegionWithBorders region : chunksToRegionsMap.get(to)){
+		for(OldParkourRegion region : chunksToRegionsMap.get(to)){
 			if(!region.region.isIn(to))
 				continue;
 
@@ -61,6 +61,6 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 		onMove(player, user, parkour, fromRegion, toRegion);
 	}
 
-	public abstract void onMove(Player player, User user, Parkour parkour, RegionWithBorders from, RegionWithBorders to);
+	public abstract void onMove(Player player, User user, Parkour parkour, OldParkourRegion from, OldParkourRegion to);
 
 }
