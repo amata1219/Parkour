@@ -30,7 +30,9 @@ public class InformationBoard {
 
 		//スコアボード用の情報群を詰め込む
 		components.addAll(Arrays.asList(
-			makeComponent(() -> true, 10, "", () -> null),
+			//何故か一番上の行が表示されない問題(死)
+			makeComponent(() -> true, 11, " ", () -> ""),
+			makeComponent(() -> true, 10, " ", () -> ""),
 			makeComponent(() -> setting.displayTraceur, 9, "&b-Traceur &7-@ &b-$0", () -> user.asBukkitPlayer().getName()),
 			makeComponent(() -> setting.displayUpdateRank, 8, "&b-Update Rank &7-@ &b-$0", () -> user.updateRank),
 			makeComponent(() -> setting.displayExtendRank, 7, "&b-Extend Rank &7-@ &b-$0", () -> user.extendRank),
@@ -39,8 +41,8 @@ public class InformationBoard {
 			makeComponent(() -> setting.displayTimePlayed, 4, "&b-Time Played &7-@ &b-$0h", () -> user.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
 			makeComponent(() -> setting.displayOnlinePlayers, 3, "&b-Online Players &7-@ &b-$0", () -> Bukkit.getOnlinePlayers().size()),
 			makeComponent(() -> setting.displayPing, 2, "&b-Ping &7-@ &b-$0ms", () -> ((CraftPlayer) user.asBukkitPlayer()).getHandle().ping),
-			makeComponent(() -> true, 1, "", () -> null),
-			makeComponent(() -> setting.displayServerAddress, 0, "&b-$0", () -> Bukkit.getIp())
+			makeComponent(() -> true, 1, "", () -> ""),
+			makeComponent(() -> setting.displayServerAddress, 0, "&b-$0", () -> "   azisaba.net")
 		));
 	}
 
@@ -56,7 +58,7 @@ public class InformationBoard {
 		if(!user.setting.displayScoreboard) return;
 
 		//スコアボードを新しく作成する
-		board = new Scoreboard(player, StringColor.color("&9-&l-A-&r-&b-zisaba &9-&l-N-&r-&b-zetwork"));
+		board = new Scoreboard(player, StringColor.color("&9-&l-A-&r-&b-zisaba &9-&l-N-&r-&b-etwork"));
 
 		for(Quadruple<Supplier<Boolean>, Integer, String, Supplier<Object>> component : components){
 			//表示しなければ繰り返す
@@ -82,11 +84,11 @@ public class InformationBoard {
 	}
 
 	public void updateUpdateRank(){
-		updateValue(7);
+		updateValue(3);
 	}
 
 	public void updateExtendRank(){
-		updateValue(6);
+		updateValue(4);
 	}
 
 	public void updateJumps(){
@@ -94,19 +96,19 @@ public class InformationBoard {
 	}
 
 	public void updateCoins(){
-		updateValue(4);
+		updateValue(6);
 	}
 
 	public void updateTimePlayed(){
-		updateValue(3);
+		updateValue(7);
 	}
 
 	public void updateOnlinePlayers(){
-		updateValue(2);
+		updateValue(8);
 	}
 
 	public void updatePing(){
-		updateValue(1);
+		updateValue(9);
 	}
 
 	private void updateValue(int componentIndex){
@@ -119,7 +121,7 @@ public class InformationBoard {
 			return;
 
 		//テキストを作成する
-		String text = StringTemplate.capply(component.third, component.fourth);
+		String text = StringTemplate.capply(component.third, component.fourth.get());
 
 		//指定されたスコアをアップデートする
 		board.updateScore(component.second, text);

@@ -55,6 +55,7 @@ public class CoinCommand implements Command {
 		switch(args.next()){
 		case "deposit":{
 			if(!args.hasNextInt()){
+				System.out.println(playerName);
 				sender.warn(StringTemplate.apply(": Syntax error > /coin $0 deposit [coins]", playerName));
 				return;
 			}

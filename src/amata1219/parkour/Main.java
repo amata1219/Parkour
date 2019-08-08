@@ -26,6 +26,7 @@ import amata1219.parkour.listener.ApplyUserStateListener;
 import amata1219.parkour.listener.PassFinishLineListener;
 import amata1219.parkour.listener.PassStartLineListener;
 import amata1219.parkour.listener.SetCheckpointListener;
+import amata1219.parkour.listener.UpdateInformationBoardListener;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelectionSet;
 import amata1219.parkour.stage.Stages;
@@ -88,7 +89,8 @@ public class Main extends Plugin {
 			new PassStartLineListener(),
 			new SetCheckpointListener(),
 			new DisableDamageListener(),
-			new DisableFoodLevelChangeListener()
+			new DisableFoodLevelChangeListener(),
+			new UpdateInformationBoardListener()
 		);
 
 		startTasks(

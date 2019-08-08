@@ -4,15 +4,19 @@ import java.util.function.Consumer;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+
 import amata1219.parkour.function.ToggleHideMode;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.stage.Stage;
@@ -152,6 +156,11 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 	}
 
 	@EventHandler
+	public void onRespawn(PlayerRespawnEvent event){
+		initializeSlots(event.getPlayer());
+	}
+
+	@EventHandler
 	public void clickSlot(PlayerInteractEvent event){
 		//クリック以外の動作であれば戻る
 		if(event.getAction() == Action.PHYSICAL) return;
@@ -211,6 +220,15 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 	@EventHandler
 	public void onDrop(PlayerDropItemEvent event){
 		if(event.getPlayer().getGameMode() != GameMode.CREATIVE) event.setCancelled(true);
+	}
+
+	@EventHandler
+	public void onPickUp(EntityPickupItemEvent event){
+		Entity entity = event.getEntity();
+
+		if(entity instanceof Player)
+			if(((Player) entity).getGameMode() != GameMode.CREATIVE)
+				event.setCancelled(true);
 	}
 
 	@EventHandler
