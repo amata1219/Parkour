@@ -7,10 +7,10 @@ author: amata1219(Twitter@amata1219)
 commands:
   checkarea:
   coin:
-  finishline:
   giveselectiontool:
   parkour:
-  parkourregion:
   setdirection:
+  setfinishline:
+  setparkourregion:
+  setstartline:
   stage:
-  startline:
