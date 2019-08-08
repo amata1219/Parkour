@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 import amata1219.amalib.message.MessageTemplate;
 import amata1219.parkour.format.TimeFormat;
 import amata1219.parkour.function.ApplyRankToDisplayName;
-import amata1219.parkour.parkour.OldParkourRegion;
 import amata1219.parkour.parkour.Parkour;
+import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.parkour.Records;
 import amata1219.parkour.user.User;
@@ -20,7 +20,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 	}
 
 	@Override
-	public void onMove(Player player, User user, Parkour parkour, OldParkourRegion from, OldParkourRegion to) {
+	public void onMove(Player player, User user, Parkour parkour, ParkourRegion from, ParkourRegion to) {
 		//フィニッシュラインに初めて踏み込んだのでなければ戻る
 		if(user.parkourPlayingNow == null || from != null || to == null)
 			return;
@@ -98,7 +98,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			}
 		}
 
-		int coins = haveCleared ? parkour.secondAndSubsequentRewardCoins : parkour.firstRewardCoins;
+		int coins = parkour.rewards.getReward(haveCleared ? 1 : 0);
 
 		//報酬のコインを与える
 		user.depositCoins(coins);

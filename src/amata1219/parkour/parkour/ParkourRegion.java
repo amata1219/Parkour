@@ -21,7 +21,7 @@ public class ParkourRegion extends Region {
 	private static final ParticleParam PARTICLE_DATA = CraftParticle.toNMS(org.bukkit.Particle.REDSTONE, null);
 
 	//この領域のあるアスレ(飽く迄プレイヤーのコネクションを取得する為の存在)
-	private final Parkour parkour;
+	public final Parkour parkour;
 
 	//各地点のパーティクル
 	private final List<PacketPlayOutWorldParticles> packets;

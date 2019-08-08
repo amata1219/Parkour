@@ -2,7 +2,6 @@ package amata1219.parkour.parkour;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 import amata1219.amalib.color.Color;
 import amata1219.amalib.location.ImmutableBlockLocation;
