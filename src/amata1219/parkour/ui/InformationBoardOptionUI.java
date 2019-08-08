@@ -79,11 +79,16 @@ public class InformationBoardOptionUI implements InventoryUI {
 						//設定を反転させる
 						state.apply(true);
 
-						//表示する設定であれば発光させる
-						if(state.apply(false)) icon.gleam();
+						//表示する設定の場合
+						if(state.apply(false)){
+							icon.displayName = StringTemplate.capply("&b-$0", component.third);
+							icon.gleam();
 
-						//そうでなければ発光を削除する
-						else icon.tarnish();
+						//表示しない設定の場合
+						}else{
+							icon.displayName = StringTemplate.capply("&7-$0", component.third);
+							icon.tarnish();
+						}
 					});
 
 				}, component.first);
