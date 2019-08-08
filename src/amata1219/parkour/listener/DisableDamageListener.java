@@ -1,5 +1,6 @@
 package amata1219.parkour.listener;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,17 +11,21 @@ public class DisableDamageListener implements Listener {
 
 	@EventHandler
 	public void disableBlockDamage(EntityDamageEvent event){
+		Entity entity = event.getEntity();
 		//ダメージを受けたエンティティがプレイヤーでなければ戻る
-		if(!(event.getEntity() instanceof Player)) return;
+		if(!(entity instanceof Player)) return;
 
 		switch(event.getCause()){
 		case DROWNING:
 		case ENTITY_ATTACK:
 		case FALL:
+		case STARVATION:
+			event.setCancelled(true);
+			return;
 		case FIRE:
 		case FIRE_TICK:
 		case LAVA:
-		case STARVATION:
+			entity.setFireTicks(0);
 			event.setCancelled(true);
 			return;
 		case CONTACT:

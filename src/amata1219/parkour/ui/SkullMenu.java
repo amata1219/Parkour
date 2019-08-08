@@ -6,9 +6,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -35,9 +33,9 @@ public class SkullMenu implements InventoryUI {
 		Builder<UUID, Triple<ItemStack, String, Integer>> builder = ImmutableMap.builder();
 
 		initializeWithPlayerHeads(builder,
-			"58becc44-c5b7-420f-8800-15ba88820973,1000000",//ledlaggazi
-			"82669f11-f1e5-402c-9642-75aff8a47613,500000",//YukiLeafX
-			"7daf21e7-b275-43dd-bc0d-4762c73d6199,500000"//siloneco
+			"ledlaggazi,58becc44-c5b7-420f-8800-15ba88820973,1000000",
+			"YukiLeafX,82669f11-f1e5-402c-9642-75aff8a47613,500000",
+			"siloneco,7daf21e7-b275-43dd-bc0d-4762c73d6199,500000"
 		);
 
 		initializeWithCustomHeads(builder
@@ -53,22 +51,9 @@ public class SkullMenu implements InventoryUI {
 			String[] data = text.split(",");
 
 			//第1引数をUUIDに変換する
-			UUID uuid = UUID.fromString(data[0]);
+			UUID uuid = UUID.fromString(data[1]);
 
-			OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-			String playerName = player.getName();
-
-			//プレイヤーに基づきスカルを作成する
-			ItemStack skull = SkullMaker.fromOfflinePlayer(player);
-
-			//第2引数を整数型に変換する
-			int value = Integer.parseInt(data[1]);
-
-			//表示例: ledlaggazi > Coins @ 10000
-			//meta.setDisplayName(StringTemplate.format("$0 > Coins @ $1", playerName, coins));
-			//meta.setLore(Arrays.asList(StringTemplate.format("$0: Click > Buy $1 Head!", ChatColor.GRAY, playerName)));
-
-			builder.put(uuid, new Triple<>(skull, playerName, value));
+			builder.put(uuid, new Triple<>(SkullMaker.fromPlayerUniqueId(uuid), data[0], Integer.parseInt(data[2])));
 		}
 	}
 
@@ -147,7 +132,7 @@ public class SkullMenu implements InventoryUI {
 							i.basedItemStack = skull;
 
 							//表示例: amata1219 @ 500000 coins!
-							i.displayName = StringTemplate.capply("&b-$0 &7-@ &b-&m-$1 coins", skullName, value);
+							i.displayName = StringTemplate.capply("&b-$0 &7-@ &b-$1 coins", skullName, value);
 
 							//表示例: Click to buy amata1219's skull!
 							i.lore(StringTemplate.capply("&7-Click to buy $0's skull!", skullName));

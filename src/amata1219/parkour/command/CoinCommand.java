@@ -18,6 +18,11 @@ public class CoinCommand implements Command {
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {
+		if(!args.hasNext()){
+			sender.warn(StringTemplate.apply(": Syntax error > /coin [player_name] (deposit|withdraw) [coins] | /coin [player_name] see"));
+			return;
+		}
+
 		//第1引数をプレイヤー名として取得する
 		String playerName = args.next();
 

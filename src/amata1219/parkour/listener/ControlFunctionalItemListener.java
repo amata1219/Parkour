@@ -183,19 +183,19 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		//スロットに対応した処理をする
 		switch(player.getInventory().getHeldItemSlot()){
 		case 0:
-			if(item.equals(teleporterToLastCheckpoint)) teleporterToLastCheckpoint.second.accept(user);
+			if(item.equals(teleporterToLastCheckpoint.first)) teleporterToLastCheckpoint.second.accept(user);
 			break;
 		case 2:
-			if(item.equals(checkpointSelector)) checkpointSelector.second.accept(user);
+			if(item.equals(checkpointSelector.first)) checkpointSelector.second.accept(user);
 			break;
 		case 4:
-			if(item.equals(stageSelector)) stageSelector.second.accept(user);
+			if(item.equals(stageSelector.first)) stageSelector.second.accept(user);
 			break;
 		case 6:
-			if(item.equals(hideModeToggler)) hideModeToggler.second.accept(user);
+			if(item.equals(hideModeToggler.first)) hideModeToggler.second.accept(user);
 			break;
 		case 8:
-			if(item.equals(menuOpener)) menuOpener.second.accept(user);
+			if(item.equals(menuOpener.first)) menuOpener.second.accept(user);
 			break;
 		default:
 			return;
