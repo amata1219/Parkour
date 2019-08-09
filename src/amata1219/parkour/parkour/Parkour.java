@@ -16,9 +16,6 @@ import amata1219.parkour.user.User;
 
 public class Parkour {
 
-	private final Stages stages = Stages.getInstance();
-	private final Parkours parkours = Parkours.getInstance();
-
 	public final String name;
 	public boolean enable;
 	public Color borderColor;
@@ -85,7 +82,7 @@ public class Parkour {
 
 	//このマップがあるステージを返す
 	public Stage getStage(){
-		return stages.getStageByParkourName(name);
+		return Stages.getInstance().getStageByParkourName(name);
 	}
 
 	public void apply(Consumer<Parkour> apply){
@@ -93,13 +90,15 @@ public class Parkour {
 	}
 
 	public void applyParkourRegion(Consumer<Parkour> apply){
+		Parkours parkours = Parkours.getInstance();
+
 		if(enable) parkours.unregisterParkour(this);
 		apply.accept(this);
 		if(enable) parkours.registerParkour(this);
 	}
 
 	public void save(){
-		Yaml yaml = parkours.makeYaml(name);
+		Yaml yaml = Parkours.getInstance().makeYaml(name);
 
 		ImmutableBlockLocation origin = region.lesserBoundaryCorner;
 

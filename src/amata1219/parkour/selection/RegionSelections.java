@@ -67,13 +67,14 @@ public class RegionSelections implements Listener {
 
 	//新しい範囲選択ツールを作成する
 	public ItemStack makeNewSelectionTool(UUID uuid){
-		return applySelectionInformationToDisplayName(uuid, selectionTool.clone());
+		ItemStack clone = selectionTool.clone();
+		applySelectionInformationToDisplayName(uuid, clone);
+		return clone;
 	}
 
 	//範囲選択ツールの表示名に選択情報を適用する
-	public ItemStack applySelectionInformationToDisplayName(UUID uuid, ItemStack tool){
-		if(!selections.containsKey(uuid))
-			return tool;
+	public void applySelectionInformationToDisplayName(UUID uuid, ItemStack tool){
+		if(!selections.containsKey(uuid)) return;
 
 		//選択中のアスレの名前を取得する
 		String parkourName = getSelectedParkourName(uuid);
@@ -85,7 +86,7 @@ public class RegionSelections implements Listener {
 		String selectionInformation = selection.toString().replace(",", StringColor.color("&7-,-&b"));
 
 		//表示名を作成する
-		String displayName = StringTemplate.capply("&b-$0 &7-@ &b", parkourName, selectionInformation);
+		String displayName = StringTemplate.capply("&b-$0 &7-@ &b-$1", parkourName, selectionInformation);
 
 		ItemMeta meta = tool.getItemMeta();
 
@@ -94,14 +95,14 @@ public class RegionSelections implements Listener {
 
 		//変更を適用する
 		tool.setItemMeta(meta);
-
-		return tool;
 	}
 
 	@EventHandler
 	public void setSelection(PlayerInteractEvent event){
 		Player player = event.getPlayer();
 		UUID uuid = player.getUniqueId();
+
+		System.out.println("0");
 
 		//範囲選択中のプレイヤーでなければ戻る
 		if(!selections.containsKey(uuid)) return;
@@ -113,10 +114,16 @@ public class RegionSelections implements Listener {
 
 		//ブロックやアイテムをクリックしていなければ戻る
 		if(!event.hasBlock() || !event.hasItem()) return;
+
 		ItemStack clickedItem = event.getItem();
+
+		System.out.println("1");
+		System.out.println(GleamEnchantment.isGleaming(clickedItem));
 
 		//範囲選択ツールでなければ戻る
 		if(clickedItem.getType() != Material.STONE_AXE || !GleamEnchantment.isGleaming(clickedItem)) return;
+
+		System.out.println("2");
 
 		//セレクションを取得する
 		RegionSelection selection = getSelection(uuid);

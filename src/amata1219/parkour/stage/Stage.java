@@ -12,8 +12,6 @@ import amata1219.parkour.parkour.Parkours;
 
 public class Stage {
 
-	private final Parkours parkours = Parkours.getInstance();
-
 	//ステージ名
 	public final String name;
 
@@ -45,6 +43,8 @@ public class Stage {
 
 	//このステージ内のアスレを取得する
 	public List<Parkour> getParkourList(){
+		Parkours parkours = Parkours.getInstance();
+
 		return parkourNames.stream()
 				.filter(parkours::containsParkour)
 				.map(parkours::getParkour)

@@ -99,6 +99,10 @@ public class MenuUI implements InventoryUI {
 					//本番環境では変える
 					clicker.teleport(Bukkit.getWorld("world").getSpawnLocation());
 
+					user.parkourPlayingNow = null;
+					user.currentParkour = null;
+					user.currentStage = null;
+
 					//表示例: Teleported to lobby!
 					MessageColor.color("&b-Teleported to lobby!").displayOnActionBar(player);
 				});
