@@ -13,7 +13,7 @@ import amata1219.parkour.parkour.Parkours;
 public class Stage {
 
 	private final Stages stages = Stages.getInstance();
-	private final Parkours parkourSet = Parkours.getInstance();
+	private final Parkours parkours = Parkours.getInstance();
 
 	//ステージ名
 	public final String name;
@@ -30,8 +30,8 @@ public class Stage {
 	public Stage(Yaml yaml){
 		name = yaml.name;
 		category = StageCategory.valueOf(yaml.getString("Category"));
-		spawnPoint = ImmutableEntityLocation.deserialize(yaml.getString("Spawn location"));
-		parkourNames = yaml.getStringList("Parkour list");
+		spawnPoint = ImmutableEntityLocation.deserialize(yaml.getString("Spawn points"));
+		parkourNames = yaml.getStringList("Parkours");
 	}
 
 	public ImmutableEntityLocation getSpawnLocation(){
@@ -46,22 +46,18 @@ public class Stage {
 
 	//このステージ内のアスレを取得する
 	public List<Parkour> getParkourList(){
-		return parkourNames.stream().filter(parkourSet::containsParkour).map(parkourSet::getParkour).collect(Collectors.toList());
+		return parkourNames.stream()
+				.filter(parkours::containsParkour)
+				.map(parkours::getParkour)
+				.filter(parkour -> parkour.enable)
+				.collect(Collectors.toList());
 	}
 
 	public void save(){
 		Yaml yaml = stages.makeYaml(name);
-
-		//カテゴリーを記録する
 		yaml.set("Category", category.toString());
-
-		//スポーン地点を記録する
 		yaml.set("Spawn location", spawnPoint.serialize());
-
-		//アスレリストを記録する
-		yaml.set("Parkour list", parkourNames);
-
-		//セーブする
+		yaml.set("Parkours", parkourNames);
 		yaml.save();
 	}
 

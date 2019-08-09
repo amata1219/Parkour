@@ -46,6 +46,13 @@ public class StageCommand implements Command {
 
 			//コンフィグに基づきステージを生成する
 			Stage stage = new Stage(yaml);
+
+			//コマンドを送信したプレイヤーの座標を取得する
+			Location spawnPoint = sender.asPlayerCommandSender().getLocation();
+
+			//スポーン地点を設定する
+			stage.setSpawnLocation(spawnPoint);
+
 			stages.registerStage(stage);
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を作成しました。", stageName));

@@ -1,129 +1,133 @@
 package amata1219.parkour.command;
 
-import java.io.File;
-import java.util.Optional;
+import org.bukkit.Location;
 
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.yaml.Yaml;
+import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.stage.Stages;
 import net.md_5.bungee.api.ChatColor;
 
 public class ParkourCommand implements Command {
 
-	private final Parkours parkourSet = Parkours.getInstance();
+	private final Parkours parkours = Parkours.getInstance();
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {
 		//送信者がプレイヤーでなければ戻る
 		if(blockNonPlayer(sender)) return;
 
-		//第1引数で分岐する
+		//第1引数が無ければ戻る
+		if(!args.hasNext()){
+			sender.warn("/parkour [parkour_name] [create/delete/register/unregister] | /parkour list");
+			return;
+		}
+
+		//第1引数をアスレ名として取得する
+		String parkourName = ChatColor.translateAlternateColorCodes('&', args.next());
+
+		//第1引数がlistであればアスレ名を全て表示する
+		if(parkourName.equals("list")){
+			parkours.getParkours().stream()
+			.map(parkour -> StringTemplate.capply("&7-: $0($1)", parkour.name, (parkour.enable ? "&b-有効" : "&7-無効")))
+			.forEach(sender::message);
+			return;
+		}
+
+		//第2引数で分岐する
 		switch(args.next()){
 		case "create":{
-			//第2引数をアスレ名として取得する
-			String parkourName = color(args.next());
-
 			//対応したファイルが存在していれば戻る
-			if(parkourSet.existsFile(parkourName)){
+			if(parkours.existsFile(parkourName)){
 				sender.warn(StringTemplate.capply("$0-&r-&c-は既に存在しています。", parkourName));
 				return;
 			}
 
 			//ファイルを作成する
-			parkourSet.makeYaml(parkourName);
+			parkours.makeYaml(parkourName);
+
+			//無効化された状態で登録する
+			parkours.registerParkour(parkourName);
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を作成しました。", parkourName));
 			return;
 		}case "delete":{
-			//第2引数をアスレ名として取得する
-			String parkourName = color(args.next());
-
-			//対応したファイルが存在していなければ戻る
-			if(!parkourSet.existsFile(parkourName)){
-				sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
-				return;
-			}
+			//指定されたアスレが存在しなければ戻る
+			if(blockNotExistParkour(sender, parkourName)) return;
 
 			//アスレが登録されていれば登録を解除する
-			parkourSet.unregisterParkour(parkourName);
+			parkours.unregisterParkour(parkourName);
 
 			//ステージからアスレを削除する
 			Stages.getInstance().removeParkour(parkourName);
 
 			//ファイルを削除する
-			parkourSet.makeYaml(parkourName).file.delete();
+			parkours.makeYaml(parkourName).file.delete();
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を削除しました。", parkourName));
 			return;
-		}case "setspawn":{
-			//第2引数をアスレ名として取得する
-			String parkourName = color(args.next());
+		}case "enable":{
+			//指定されたアスレが存在しなければ戻る
+			if(blockNotExistParkour(sender, parkourName)) return;
 
-			//対応したファイルが存在していなければ戻る
-			if(!parkourSet.existsFile(parkourName)){
-				sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
+			Parkour parkour = parkours.getParkour(parkourName);
+
+			if(parkour.enable){
+				sender.warn(StringTemplate.capply("$0-&r-&c-は既に有効化されています。", parkourName));
 				return;
 			}
 
-			Yaml yaml = parkourSet.makeYaml(parkourName);
+			//アスレを有効化する
+			parkour.apply(it -> it.enable = true);
 
-			yaml.set("Spawn location", new ImmutableEntityLocation(sender.asPlayerCommandSender().getLocation()).middle().serialize());
+			sender.info(StringTemplate.capply("$0-&r-&b-を有効化しました。", parkourName));
+			return;
+		}case "disable":{
+			//指定されたアスレが存在しなければ戻る
+			if(blockNotExistParkour(sender, parkourName)) return;
+
+			Parkour parkour = parkours.getParkour(parkourName);
+
+			if(!parkour.enable){
+				sender.warn(StringTemplate.capply("$0-&r-&c-は既に無効化されています。", parkourName));
+				return;
+			}
+
+			//アスレを無効化する
+			parkour.apply(it -> it.enable = false);
+
+			sender.info(StringTemplate.capply("$0-&r-&b-を無効化しました。", parkourName));
+			return;
+		}case "setspawn":{
+			//指定されたアスレが存在しなければ戻る
+			if(blockNotExistParkour(sender, parkourName)) return;
+
+			Parkour parkour = parkours.getParkour(parkourName);
+
+			//プレイヤーの座標を取得する
+			Location location = sender.asPlayerCommandSender().getLocation();
+
+			//イミュータブルな座標にしブロックの中央に調整した上でセットする
+			parkour.apply(it -> it.spawnPoint = new ImmutableEntityLocation(location).middle());
 
 			sender.info(StringTemplate.capply("$0-&r-&b-のスポーン地点を現在地点に書き換えました。", parkourName));
 			return;
-		}case "register":{
-			//第2引数をアスレ名として取得する
-			String parkourName = color(args.next());
-
-			//既に登録されていれば戻る
-			if(parkourSet.containsParkour(parkourName)){
-				sender.warn(StringTemplate.capply("$0-&r-&c-は既に登録されています。", parkourName));
-				return;
-			}
-
-			//アスレを登録する
-			parkourSet.registerParkour(parkourName);
-
-			sender.info(StringTemplate.capply("$0-&r-&b-を登録しました。", parkourName));
-			return;
-		}case "unregister":{
-			//第2引数をアスレ名として取得する
-			String parkourName = color(args.next());
-
-			//登録されていなければ戻る
-			if(!parkourSet.containsParkour(parkourName)){
-				sender.warn(StringTemplate.capply("$0-&r-&c-は登録されていません。", parkourName));
-				return;
-			}
-
-			//アスレの登録を解除する
-			parkourSet.unregisterParkour(parkourName);
-
-			sender.info(StringTemplate.capply("$0-&r-&b-の登録を解除しました。", parkourName));
-			return;
-		}case "list":{
-			//登録されている全アスレ名を表示する
-			for(File file : Optional.ofNullable(parkourSet.folder.listFiles()).orElse(new File[0])){
-				//拡張子を除いたファイル名をアスレ名として取得する
-				String parkourName = file.getName().replace(".yml", "");
-
-				sender.info(StringTemplate.apply("&7-: &b-$0", parkourName));
-			}
-			return;
 		}default:
-			sender.warn("/parkour [create/delete/register/unregister] [parkour_name] | /parkour list");
+			sender.warn("/parkour [parkour_name] [create/delete/register/unregister] | /parkour list");
 			return;
 		}
 
 	}
 
-	private String color(String text){
-		return ChatColor.translateAlternateColorCodes('&', text);
+	private boolean blockNotExistParkour(Sender sender, String parkourName){
+		if(parkours.containsParkour(parkourName)) return false;
+
+		sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
+		return true;
 	}
 
 }

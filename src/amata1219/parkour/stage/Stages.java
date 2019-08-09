@@ -2,6 +2,7 @@ package amata1219.parkour.stage;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +58,7 @@ public class Stages {
 	}
 
 	public void saveAll(){
-		//stages.values().forEach(Stage::save);
+		stages.values().forEach(Stage::save);
 	}
 
 	public boolean existsFile(String stageName){
@@ -88,13 +89,8 @@ public class Stages {
 		if(stages.containsKey(stageName)) unregisterStage(stages.get(stageName));
 	}
 
-	public List<Stage> getStages(){
-		List<Stage> stages = new ArrayList<>(this.stages.size());
-
-		//全ステージをリストに追加する
-		this.stages.values().forEach(stages::add);
-
-		return stages;
+	public Collection<Stage> getStages(){
+		return stages.values();
 	}
 
 	public Stage getStage(String stageName){

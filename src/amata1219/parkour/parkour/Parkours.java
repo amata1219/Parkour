@@ -1,6 +1,7 @@
 package amata1219.parkour.parkour;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -67,6 +68,9 @@ public class Parkours {
 	public void registerParkour(Parkour parkour){
 		parkours.put(parkour.name, parkour);
 
+		//有効化されていなければ戻る
+		if(!parkour.enable) return;
+
 		//スタートラインを登録する
 		registerStartLine(parkour.startLine);
 
@@ -104,6 +108,10 @@ public class Parkours {
 
 	public void unregisterParkour(String parkourName){
 		if(containsParkour(parkourName)) unregisterParkour(getParkour(parkourName));
+	}
+
+	public Collection<Parkour> getParkours(){
+		return parkours.values();
 	}
 
 	public Parkour getParkour(String parkourName){

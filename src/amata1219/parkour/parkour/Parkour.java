@@ -2,6 +2,7 @@ package amata1219.parkour.parkour;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.util.Consumer;
 
 import amata1219.amalib.location.ImmutableBlockLocation;
 import amata1219.amalib.location.ImmutableEntityLocation;
@@ -87,24 +88,13 @@ public class Parkour {
 		return stages.getStageByParkourName(name);
 	}
 
-	//スポーン地点を設定する
-	public void setSpawnLocation(ImmutableEntityLocation spawnLocation){
-		//ブロック中央に座標を修正する
-		this.spawnPoint = spawnLocation.middle();
+	public void apply(Consumer<Parkour> apply){
+		apply.accept(this);
 	}
 
-	public void apply(Parkour parkour){
-		if(enable) 	parkours.unregisterParkour(this);
-
-		enable = parkour.enable;
-		region = parkour.region;
-		borderColor = parkour.borderColor;
-		spawnPoint = parkour.spawnPoint;
-		startLine = parkour.startLine;
-		finishLine = parkour.finishLine;
-		checkAreas = parkour.checkAreas;
-		rewards = parkour.rewards;
-
+	public void applyParkourRegion(Consumer<Parkour> apply){
+		if(enable) parkours.unregisterParkour(this);
+		apply.accept(this);
 		if(enable) parkours.registerParkour(this);
 	}
 
