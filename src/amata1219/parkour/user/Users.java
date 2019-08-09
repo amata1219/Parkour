@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import amata1219.amalib.listener.PlayerJoinListener;
@@ -77,7 +78,7 @@ public class Users implements PlayerJoinListener {
 		return new Yaml(plugin, new File(folder, StringTemplate.apply("$0.yml", uuid)), "user.yml");
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onJoin(PlayerJoinEvent event){
 		UUID uuid = event.getPlayer().getUniqueId();
 

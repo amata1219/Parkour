@@ -30,7 +30,7 @@ public class Stage {
 	public Stage(Yaml yaml){
 		name = yaml.name;
 		category = StageCategory.valueOf(yaml.getString("Category"));
-		spawnPoint = ImmutableEntityLocation.deserialize(yaml.getString("Spawn points"));
+		spawnPoint = ImmutableEntityLocation.deserialize(yaml.getString("Spawn point"));
 		parkourNames = yaml.getStringList("Parkours");
 	}
 

@@ -2,6 +2,7 @@ package amata1219.parkour.listener;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -16,7 +17,8 @@ public class UpdateInformationBoardListener implements PlayerJoinListener, Playe
 
 	private final Users users = Users.getInstnace();
 
-	@EventHandler
+	@Override
+	@EventHandler(priority = EventPriority.LOW)
 	public void onJoin(PlayerJoinEvent event){
 		User user = getUser(event.getPlayer());
 
@@ -24,10 +26,14 @@ public class UpdateInformationBoardListener implements PlayerJoinListener, Playe
 		user.board = new InformationBoard(user);
 		user.board.loadScoreboard();
 
-		users.getOnlineUsers().stream().map(ur -> ur.getInformationBoard()).forEach(InformationBoard::updateOnlinePlayers);
+		users.getOnlineUsers().stream()
+		.filter(ur -> ur.board != null)
+		.map(ur -> ur.getInformationBoard())
+		.forEach(InformationBoard::updateOnlinePlayers);
 	}
 
 	@Override
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onQuit(PlayerQuitEvent event) {
 		User user = getUser(event.getPlayer());
 

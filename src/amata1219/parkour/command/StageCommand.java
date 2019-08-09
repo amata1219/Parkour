@@ -17,11 +17,11 @@ public class StageCommand implements Command {
 
 	@Override
 	public void onCommand(Sender sender, Arguments args){
-		if(!blockNonPlayer(sender)) return;
+		if(blockNonPlayer(sender)) return;
 
 		//第1引数が無ければ戻る
 		if(!args.hasNext()){
-			sender.warn("/stage");
+			sender.warn("/stage list | /stage [stage_name] [create/delete/addparkour/removeparkour] [parkour_name] | /stage [stage_name] [parkourlist]");
 			return;
 		}
 
