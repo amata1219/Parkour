@@ -1,6 +1,5 @@
 package amata1219.parkour.command;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
@@ -9,20 +8,17 @@ import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
 import amata1219.amalib.selection.RegionSelection;
-import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.yaml.Yaml;
+import amata1219.parkour.parkour.CheckAreas;
+import amata1219.parkour.parkour.Parkour;
+import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
 
 public class CheckAreaCommand implements Command {
 
-	private final Parkours parkourSet = Parkours.getInstance();
+	private final Parkours parkours = Parkours.getInstance();
 	private final RegionSelections selections = RegionSelections.getInstance();
-
-	/*
-	 * checkarea [add/list], checkarea [set/remove] [number], checkarea color [RGB(000,000,000)]
-	 */
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {
@@ -35,46 +31,47 @@ public class CheckAreaCommand implements Command {
 		//第1引数で分岐する
 		switch(args.next()){
 		case "add":{
-			if(!selections.hasSelection(uuid)){
-				sender.warn("チェックエリアに設定する範囲を指定して下さい。");
-				return;
-			}
+			//セレクションが存在しなければ戻る
+			if(blockNotHasSelection(sender, uuid)) return;
 
+			//セレクションを取得する
 			RegionSelection selection = selections.getSelection(uuid);
+
+			//編集するアスレの名前を取得する
 			String parkourName = selections.getSelectedParkourName(uuid);
 
-			Yaml yaml = parkourSet.makeYaml(parkourName);
+			//指定されたアスレが存在しなければ戻る
+			if(blockNotExistParkour(sender, parkourName)) return;
 
-			List<String> checkAreas = yaml.getStringList("Check areas");
-			checkAreas.add(selection.toString());
+			Parkour parkour = parkours.getParkour(parkourName);
 
-			yaml.set("Check areas", checkAreas);
+			//セレクションを基にチェックエリアを作成する
+			ParkourRegion checkArea = new ParkourRegion(parkour, selection);
 
-			yaml.save();
+			//チェックエリアを追加する
+			int checkAreaNumber = parkour.checkAreas.addCheckArea(checkArea);
 
-			sender.info(StringTemplate.capply("$0-&r-&b-にチェックエリアを追加しました。", parkourName));
+			sender.info(StringTemplate.capply("$0-&r-&b-にチェックエリア$1を追加しました。", parkourName, checkAreaNumber));
 			return;
 		}case "list":{
 			String parkourName = selections.hasSelection(uuid) ? selections.getSelectedParkourName(uuid) : args.next();
 
-			//アスレが存在しなければ戻る
-			if(!parkourSet.existsFile(parkourName)){
-				sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
-				return;
-			}
+			//指定されたアスレが存在しなければ戻る
+			if(blockNotExistParkour(sender, parkourName)) return;
 
-			Yaml yaml = parkourSet.makeYaml(parkourName);
-
-			List<String> checkAreas = yaml.getStringList("Check areas");
+			//チェックエリアリストを取得する
+			CheckAreas checkAreas = parkours.getParkour(parkourName).checkAreas;
 
 			//チェックエリアが無ければ戻る
-			if(checkAreas.isEmpty()){
+			if(checkAreas.areas.isEmpty()){
 				sender.warn(StringTemplate.capply("$0-&r-&c-のチェックエリアはまだありません。", parkourName));
 				return;
 			}
 
-			for(int checkAreaNumber = 0; checkAreaNumber < checkAreas.size(); checkAreaNumber++)
-				sender.info(StringTemplate.capply("&7-: &b-$0 &7-@ &b-$1", checkAreaNumber, checkAreas.get(checkAreaNumber)));
+			//全チェックエリアを表示する
+			for(int checkAreaNumber = 0; checkAreaNumber < checkAreas.areas.size(); checkAreaNumber++)
+				sender.info(StringTemplate.capply("&7-: &b-$0 &7-@ &b-$1", checkAreaNumber + 1, checkAreas.getCheckArea(checkAreaNumber)));
+
 			return;
 		}case "set":{
 			if(!args.hasNextInt()){
@@ -82,94 +79,81 @@ public class CheckAreaCommand implements Command {
 				return;
 			}
 
-			int checkAreaNumber = args.nextInt();
+			int checkAreaNumber = args.nextInt() - 1;
 
-			if(checkAreaNumber <= 0){
+			//最小値メソッドで勝手に補正しては困る処理なので警告を表示する
+			if(checkAreaNumber < 0){
 				sender.warn("チェックエリア番号は1以上で指定して下さい。");
 				return;
 			}
 
-			if(!selections.hasSelection(uuid)){
-				sender.warn("チェックエリアに設定する範囲を指定して下さい。");
-				return;
-			}
+			//セレクションが存在しなければ戻る
+			if(blockNotHasSelection(sender, uuid)) return;
 
+			//セレクションを取得する
 			RegionSelection selection = selections.getSelection(uuid);
+
+			//編集するアスレの名前を取得する
 			String parkourName = selections.getSelectedParkourName(uuid);
 
-			Yaml yaml = parkourSet.makeYaml(parkourName);
+			//指定されたアスレが存在しなければ戻る
+			if(blockNotExistParkour(sender, parkourName)) return;
 
-			List<String> checkAreas = yaml.getStringList("Check areas");
+			Parkour parkour = parkours.getParkour(parkourName);
 
-			if(checkAreaNumber <= checkAreas.size()){
-				sender.warn("指定されたチェックエリア番号は大きすぎます。");
+			//チェックエリアリストを取得する
+			CheckAreas checkAreas = parkour.checkAreas;
+
+			int maxCheckAreaNumber = checkAreas.areas.size();
+
+			//チェックエリア番号が大きすぎる場合
+			if(maxCheckAreaNumber <= checkAreaNumber){
+				sender.warn(StringTemplate.capply("チェックエリア番号が大きすぎます。$0以下に設定して下さい。", maxCheckAreaNumber));
 				return;
 			}
 
-			checkAreas.set(checkAreaNumber - 1, selection.toString());
+			//セレクションを基にチェックエリアを作成する
+			ParkourRegion checkArea = new ParkourRegion(parkour, selection);
 
-			yaml.set("Check areas", checkAreas);
+			//番号に対応したチェックエリアを書き換える
+			checkAreas.setCheckArea(checkAreaNumber, checkArea);
 
-			yaml.save();
-
-			sender.info(StringTemplate.capply("$0-&r-&b-のチェックエリア$1を書き換えました。", parkourName, checkAreaNumber));
+			sender.info(StringTemplate.capply("$0-&r-&b-のチェックエリア$1を書き換えました。", parkourName, checkAreaNumber + 1));
 			return;
 		}case "remove":{
 			String parkourName = selections.hasSelection(uuid) ? selections.getSelectedParkourName(uuid) : args.next();
+
+			//指定されたアスレが存在しなければ戻る
+			if(blockNotExistParkour(sender, parkourName)) return;
 
 			if(!args.hasNextInt()){
 				sender.warn("削除するチェックエリアの番号を指定して下さい。");
 				return;
 			}
 
-			int checkAreaNumber = args.nextInt();
+			int checkAreaNumber = args.nextInt() - 1;
 
-			if(checkAreaNumber <= 0){
+			if(checkAreaNumber < 0){
 				sender.warn("チェックエリア番号は1以上で指定して下さい。");
 				return;
 			}
 
-			Yaml yaml = parkourSet.makeYaml(parkourName);
+			Parkour parkour = parkours.getParkour(parkourName);
 
-			List<String> checkAreas = yaml.getStringList("Check areas");
+			//チェックエリアリストを取得する
+			CheckAreas checkAreas = parkour.checkAreas;
 
-			if(checkAreaNumber <= checkAreas.size()){
-				sender.warn("指定されたチェックエリア番号は大きすぎます。");
+			int maxCheckAreaNumber = checkAreas.areas.size();
+
+			//チェックエリア番号が大きすぎる場合
+			if(maxCheckAreaNumber <= checkAreaNumber){
+				sender.warn(StringTemplate.capply("チェックエリア番号が大きすぎます。$0以下に設定して下さい。", maxCheckAreaNumber));
 				return;
 			}
 
-			checkAreas.remove(checkAreaNumber - 1);
+			checkAreas.removeCheckArea(checkAreaNumber);
 
-			yaml.set("Check areas", checkAreas);
-
-			yaml.save();
-
-			sender.info(StringTemplate.capply("$0-&r-&b-のチェックエリア$1を削除しました。", parkourName, checkAreaNumber));
-			return;
-		}case "color":{
-			String parkourName = selections.hasSelection(uuid) ? selections.getSelectedParkourName(uuid) : args.next();
-
-			String text = args.next();
-
-			if(text.isEmpty() || !text.contains(",")){
-				sender.warn("パーティクルカラーはR,G,Bの形で指定して下さい。");
-				return;
-			}
-
-			int[] color = StringSplit.splitToIntArguments(text);
-
-			if(color.length != 3){
-				sender.warn("パーティクルカラーはR,G,Bの形で指定して下さい。");
-				return;
-			}
-
-			Yaml yaml = parkourSet.makeYaml(parkourName);
-
-			yaml.set("Particle color", StringTemplate.apply("$0,$1,$2", adjustRGBValue(color[0]), adjustRGBValue(color[1]), adjustRGBValue(color[2])));
-
-			yaml.save();
-
-			sender.info(StringTemplate.capply("$0-&r-&b-のパーティクルカラーを書き換えました。", parkourName));
+			sender.info(StringTemplate.capply("$0-&r-&b-のチェックエリア$1を削除しました。", parkourName, checkAreaNumber + 1));
 			return;
 		}default:
 			sender.warn("範囲指定した状態で、/checkarea [add/list] | /checkarea [set/remove] [check_area_number] | /checkarea color [R,G,B]");
@@ -178,8 +162,18 @@ public class CheckAreaCommand implements Command {
 		}
 	}
 
-	private int adjustRGBValue(int value){
-		return Math.max(Math.min(value, 255), 0);
+	private boolean blockNotHasSelection(Sender sender, UUID uuid){
+		if(selections.hasSelection(uuid)) return false;
+
+		sender.warn("チェックエリアとして設定する範囲を選択して下さい。");
+		return true;
+	}
+
+	private boolean blockNotExistParkour(Sender sender, String parkourName){
+		if(parkours.containsParkour(parkourName)) return false;
+
+		sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
+		return true;
 	}
 
 }

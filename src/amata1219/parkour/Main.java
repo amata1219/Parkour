@@ -99,7 +99,6 @@ public class Main extends Plugin {
 
 		cancelTasks();
 
-		//Users.getInstance().～
 		Parkours.getInstance().saveAll();
 		Stages.getInstance().saveAll();
 	}

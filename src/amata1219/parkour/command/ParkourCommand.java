@@ -1,18 +1,25 @@
 package amata1219.parkour.command;
 
+import java.util.regex.Pattern;
+
 import org.bukkit.Location;
 
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
 import amata1219.amalib.location.ImmutableEntityLocation;
+import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.string.StringTemplate;
+import amata1219.amalib.util.Color;
 import amata1219.parkour.parkour.Parkour;
+import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.stage.Stages;
 import net.md_5.bungee.api.ChatColor;
 
 public class ParkourCommand implements Command {
+
+	private static final Pattern RGB_FORMAT = Pattern.compile("^((2[0-4]\\d|25[0-5]|1\\d{1,2}|[1-9]\\d|\\d)( ?, ?)){2}(2[0-4]\\d|25[0-5]|1\\d{1,2}|[1-9]\\d|\\d)");
 
 	private final Parkours parkours = Parkours.getInstance();
 
@@ -23,7 +30,7 @@ public class ParkourCommand implements Command {
 
 		//第1引数が無ければ戻る
 		if(!args.hasNext()){
-			sender.warn("/parkour [parkour_name] [create/delete/register/unregister] | /parkour list");
+			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/setspawn/color] | /parkour list");
 			return;
 		}
 
@@ -116,8 +123,39 @@ public class ParkourCommand implements Command {
 
 			sender.info(StringTemplate.capply("$0-&r-&b-のスポーン地点を現在地点に書き換えました。", parkourName));
 			return;
+		}case "color":{
+			//指定されたアスレが存在しなければ戻る
+			if(blockNotExistParkour(sender, parkourName)) return;
+
+			String text = args.next();
+
+			//RGB形式でなければ戻る
+			if(!RGB_FORMAT.matcher(text).matches()){
+				sender.warn("パーティクル色はRGB形式で指定して下さい。");
+				return;
+			}
+
+			//各値に分割する
+			int[] values = StringSplit.splitToIntArguments(text);
+
+			Color color = new Color(values[0], values[1], values[2]);
+
+			//適用する
+			parkours.getParkour(parkourName).apply(it -> {
+				it.borderColor = color;
+
+				//各アスレ領域の境界線用パケットを再生成する
+				if(it.startLine != null) it.startLine.generateParticlePackets();
+
+				if(it.finishLine != null) it.finishLine.generateParticlePackets();
+
+				it.checkAreas.areas.forEach(ParkourRegion::generateParticlePackets);
+			});
+
+			sender.info(StringTemplate.capply("$0-&r-&b-のパーティクル色を書き換えました。", parkourName));
+			return;
 		}default:
-			sender.warn("/parkour [parkour_name] [create/delete/register/unregister] | /parkour list");
+			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/setspawn] | /parkour [parkour_name] color [RGB] | /parkour list");
 			return;
 		}
 

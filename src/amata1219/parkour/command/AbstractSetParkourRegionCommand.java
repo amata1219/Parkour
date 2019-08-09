@@ -7,16 +7,19 @@ import org.bukkit.entity.Player;
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
+import amata1219.amalib.location.ImmutableBlockLocation;
+import amata1219.amalib.region.Region;
 import amata1219.amalib.selection.RegionSelection;
 import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.yaml.Yaml;
+import amata1219.parkour.parkour.Parkour;
+import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
 
 public abstract class AbstractSetParkourRegionCommand implements Command {
 
 	private final RegionSelections selections = RegionSelections.getInstance();
-	private final Parkours parkourSet = Parkours.getInstance();
+	private final Parkours parkours = Parkours.getInstance();
 
 	private final ParkourRegionType type;
 
@@ -44,14 +47,31 @@ public abstract class AbstractSetParkourRegionCommand implements Command {
 		//セレクションを取得する
 		RegionSelection selection = selections.getSelection(uuid);
 
+		ImmutableBlockLocation lesserBoundaryCorner = selection.getLesserBoundaryCorner();
+		ImmutableBlockLocation greaterBoundaryCorner = selection.getGreaterBoundaryCorner();
+
+		//編集するアスレの名前を取得する
 		String parkourName = selections.getSelectedParkourName(uuid);
 
-		//アスレのコンフィグを取得する
-		Yaml yaml = parkourSet.makeYaml(parkourName);
+		//アスレを取得する
+		Parkour parkour = parkours.getParkour(parkourName);
 
-		yaml.set(type.keyToSaveRegion, selection.toString());
-
-		yaml.save();
+		//タイプに合わせて適用する
+		parkour.apply(it -> {
+			switch(type){
+			case PARKOUR_REGION:
+				it.region = new Region(lesserBoundaryCorner, greaterBoundaryCorner);
+				break;
+			case START_LINE:
+				it.startLine = new ParkourRegion(it, lesserBoundaryCorner, greaterBoundaryCorner);
+				break;
+			case FINISH_LINE:
+				it.finishLine = new ParkourRegion(it, lesserBoundaryCorner, greaterBoundaryCorner);
+				break;
+			default:
+				throw new IllegalStateException("Invalid parkour region type");
+			}
+		});
 
 		//表示例: Update1のスタートラインを設定しました(world,0,0,0,20,1,2)。
 		sender.info(StringTemplate.capply("$0-&r-&b-の$1を設定しました($2)。", parkourName, type.regionName, selection));
@@ -63,7 +83,7 @@ public abstract class AbstractSetParkourRegionCommand implements Command {
 		START_LINE("スタートライン", "Start line"),
 		FINISH_LINE("フィニッシュライン", "Finish line");
 
-		//日本語の領域名
+		//領域の名前
 		public final String regionName;
 
 		//コンフィグのキー

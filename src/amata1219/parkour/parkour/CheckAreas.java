@@ -10,65 +10,76 @@ public class CheckAreas {
 
 	private final Parkours parkours = Parkours.getInstance();
 
-	public final List<ParkourRegion> checkAreas;
+	public final List<ParkourRegion> areas;
 
 	public CheckAreas(Parkour parkour, Yaml yaml){
-		checkAreas = yaml.getStringList("Check areas").stream()
+		areas = yaml.getStringList("Check areas").stream()
 							.map(text -> new ParkourRegion(parkour, Region.deserializeToCorners(text)))
 							.collect(Collectors.toList());
 	}
 
 	public int getCheckAreaNumber(ParkourRegion checkArea){
-		return checkAreas.indexOf(checkArea);
+		return areas.indexOf(checkArea);
 	}
 
 	public ParkourRegion getCheckArea(int checkAreaNumber){
-		return checkAreaNumber < checkAreas.size() ? checkAreas.get(checkAreaNumber) : null;
+		return checkAreaNumber < areas.size() ? areas.get(checkAreaNumber) : null;
 	}
 
-	public void addCheckArea(ParkourRegion checkArea){
-		setCheckArea(checkAreas.size(), checkArea);
+	public int addCheckArea(ParkourRegion checkArea){
+		areas.add(checkArea);
+
+		//新しいチェックエリアを登録する
+		parkours.registerCheckArea(checkArea);
+
+		return areas.size() - 1;
 	}
 
 	public void setCheckArea(int checkAreaNumber, ParkourRegion checkArea){
-		//既存のチェックエリアの新しいそれに書き換える
-		if(checkAreaNumber < checkAreas.size()){
-			//既存のチェックエリアを取得する
-			ParkourRegion old = checkAreas.get(checkAreaNumber);
+		if(checkAreaNumber >= areas.size()) throw new IllegalArgumentException("Check area number must be less than or equal to number of check areas");
 
-			//登録を解除する
-			parkours.unregisterCheckArea(old);
+		//既存のチェックエリアを取得する
+		ParkourRegion old = areas.get(checkAreaNumber);
 
-			//チェックエリアを書き換える
-			checkAreas.set(checkAreaNumber, checkArea);
+		//登録を解除する
+		parkours.unregisterCheckArea(old);
 
-		//新しいチェックエリアを追加する
-		}else{
-			checkAreas.add(checkArea);
-		}
+		//チェックエリアを書き換える
+		areas.set(checkAreaNumber, checkArea);
 
 		//新しいチェックエリアを登録する
 		parkours.registerCheckArea(checkArea);
 	}
 
+	public void removeCheckArea(int checkAreaNumber){
+		if(checkAreaNumber >= areas.size()) throw new IllegalArgumentException("Check area number must be less than or equal to number of check areas");
+
+		//既存のチェックエリアを取得する
+		ParkourRegion old = areas.get(checkAreaNumber);
+
+		//登録を解除する
+		parkours.unregisterCheckArea(old);
+		areas.remove(old);
+	}
+
 	public void displayAll(){
-		checkAreas.forEach(ParkourRegion::displayBorders);
+		areas.forEach(ParkourRegion::displayBorders);
 	}
 
 	public void undisplayAll(){
-		checkAreas.forEach(ParkourRegion::undisplayBorders);
+		areas.forEach(ParkourRegion::undisplayBorders);
 	}
 
 	public void registerAll(){
-		checkAreas.forEach(parkours::registerCheckArea);
+		areas.forEach(parkours::registerCheckArea);
 	}
 
 	public void unregisterAll(){
-		checkAreas.forEach(parkours::unregisterCheckArea);
+		areas.forEach(parkours::unregisterCheckArea);
 	}
 
 	public void save(Yaml yaml){
-		yaml.set("Check areas", checkAreas.stream().map(ParkourRegion::serialize).collect(Collectors.toList()));
+		yaml.set("Check areas", areas.stream().map(ParkourRegion::serialize).collect(Collectors.toList()));
 	}
 
 }
