@@ -21,7 +21,7 @@ public class StageCommand implements Command {
 
 		//第1引数が無ければ戻る
 		if(!args.hasNext()){
-			sender.warn("/stage list | /stage [stage_name] [create/delete/addparkour/removeparkour] [parkour_name] | /stage [stage_name] [parkourlist]");
+			sender.warn("/stage list | /stage [stage_name] [create/delete/setspawn] | /stage [stage_name] [addparkour/removeparkour] [parkour_name] | /stage [stage_name] [parkourlist]");
 			return;
 		}
 
@@ -125,7 +125,7 @@ public class StageCommand implements Command {
 			stage.parkourNames.stream().map(parkourName -> StringTemplate.capply("&7-: &b-$0", parkourName)).forEach(sender::info);
 			return;
 		}default:
-			sender.warn("/stage list | /stage [stage_name] [create/delete/addparkour/removeparkour] [parkour_name] | /stage [stage_name] [parkourlist]");
+			sender.warn("/stage list | /stage [stage_name] [create/delete/setspawn] | /stage [stage_name] [addparkour/removeparkour] [parkour_name] | /stage [stage_name] [parkourlist]");
 			return;
 		}
 	}

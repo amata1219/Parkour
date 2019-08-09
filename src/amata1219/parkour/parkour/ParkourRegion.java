@@ -3,7 +3,6 @@ package amata1219.parkour.parkour;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.bukkit.craftbukkit.v1_13_R2.CraftParticle;
 import org.bukkit.scheduler.BukkitTask;
 
 import amata1219.amalib.border.LocationOnBorderCollector;
@@ -15,11 +14,9 @@ import amata1219.amalib.selection.RegionSelection;
 import amata1219.amalib.tuplet.Tuple;
 import amata1219.amalib.util.Color;
 import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
-import net.minecraft.server.v1_13_R2.ParticleParam;
+import net.minecraft.server.v1_13_R2.ParticleParamRedstone;
 
 public class ParkourRegion extends Region {
-
-	private static final ParticleParam PARTICLE_DATA = CraftParticle.toNMS(org.bukkit.Particle.REDSTONE, null);
 
 	//この領域のあるアスレ(飽く迄プレイヤーのコネクションを取得する為の存在)
 	public final Parkour parkour;
@@ -60,10 +57,16 @@ public class ParkourRegion extends Region {
 
 		//各座標に対応したパーティクルパケットを作成する
 		packets = locations.stream()
-				.map(location -> new PacketPlayOutWorldParticles(PARTICLE_DATA, true,
-						(float) location.getEntityX(), (float) location.getEntityY(), (float) location.getEntityZ(),
-						color.adjustRed(30) / 255f, color.adjustGreen(30) / 255f, color.adjustBlue(30) / 255f, 1, 0))
-				.collect(Collectors.toList());
+							.map(location -> {
+								float red = color.adjustRed(30) / 255f;
+								float green = color.adjustGreen(30) / 255f;
+								float blue = color.adjustBlue(30) / 255f;
+
+								return new PacketPlayOutWorldParticles(new ParticleParamRedstone(red, green, blue, 1), true,
+										(float) location.getEntityX(), (float) location.getEntityY(), (float) location.getEntityZ(),
+										red, green, blue, 1, 0);
+								})
+							.collect(Collectors.toList());
 
 		position1 = 0;
 

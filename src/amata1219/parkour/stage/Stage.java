@@ -12,7 +12,6 @@ import amata1219.parkour.parkour.Parkours;
 
 public class Stage {
 
-	private final Stages stages = Stages.getInstance();
 	private final Parkours parkours = Parkours.getInstance();
 
 	//ステージ名
@@ -54,9 +53,9 @@ public class Stage {
 	}
 
 	public void save(){
-		Yaml yaml = stages.makeYaml(name);
+		Yaml yaml = Stages.getInstance().makeYaml(name);
 		yaml.set("Category", category.toString());
-		yaml.set("Spawn location", spawnPoint.serialize());
+		yaml.set("Spawn point", spawnPoint.serialize());
 		yaml.set("Parkours", parkourNames);
 		yaml.save();
 	}
