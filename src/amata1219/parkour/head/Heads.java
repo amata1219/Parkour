@@ -60,6 +60,8 @@ public class Heads {
 		.map(text -> text.split(","))
 		.map(parts -> new Head(UUID.fromString(parts[0]), parts[1], Integer.parseInt(parts[2])))
 		.forEach(head -> HEADS.put(head.uuid, head));
+
+		HEADS.forEach((k, v) -> System.out.println(v.name));
 	}
 
 	private static void initializeWithCustomHeads(String... texts){

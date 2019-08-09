@@ -21,11 +21,11 @@ import amata1219.parkour.listener.DisablePlayerCollisionListener;
 import amata1219.parkour.listener.DisplayRegionBorderListener;
 import amata1219.parkour.listener.GiveVoteRewardCoinsListener;
 import amata1219.parkour.listener.HideNewPlayerListener;
-import amata1219.parkour.listener.IncrementJumpsListener;
-import amata1219.parkour.listener.ApplyUserStateListener;
+import amata1219.parkour.listener.LoadUserDataListener;
 import amata1219.parkour.listener.PassFinishLineListener;
 import amata1219.parkour.listener.PassStartLineListener;
 import amata1219.parkour.listener.SetCheckpointListener;
+import amata1219.parkour.listener.UnloadUserDataListener;
 import amata1219.parkour.listener.UpdateInformationBoardListener;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
@@ -74,13 +74,13 @@ public class Main extends Plugin {
 			new DisplayRegionBorderListener(),
 			new GiveVoteRewardCoinsListener(),
 			new HideNewPlayerListener(),
-			new IncrementJumpsListener(),
-			new ApplyUserStateListener(),
+			new LoadUserDataListener(),
 			new PassFinishLineListener(),
 			new PassStartLineListener(),
 			new SetCheckpointListener(),
 			new DisableDamageListener(),
 			new DisableFoodLevelChangeListener(),
+			new UnloadUserDataListener(),
 			new UpdateInformationBoardListener()
 		);
 

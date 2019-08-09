@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.yaml.Yaml;
+import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.stage.Stage;
@@ -55,10 +56,10 @@ public class User {
 	public final PurchasedHeads heads;
 
 	//スコアボードの管理インスタンス
-	public final InformationBoard board;
+	private InformationBoard board;
 
 	//InventoryUIの管理インスタンス
-	public final InventoryUIs inventoryUISet;
+	private InventoryUIs inventoryUIs;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
@@ -97,11 +98,6 @@ public class User {
 
 		//購入済みのスカルのIDをUUIDに変換したリストを作成する
 		heads = new PurchasedHeads(this, yaml);
-
-		//スコアボードの管理インスタンスを作成する
-		board = new InformationBoard(this);
-
-		inventoryUISet = new InventoryUIs(this);
 	}
 
 	public Player asBukkitPlayer(){
@@ -142,6 +138,29 @@ public class User {
 
 	public boolean isPlayingWithParkour(){
 		return parkourPlayingNow != null;
+	}
+
+	public InformationBoard getInformationBoard(){
+		return board;
+	}
+
+	public InventoryUIs getInventoryUIs(){
+		return inventoryUIs;
+	}
+
+	public void onJoin(){
+		ApplyRankToDisplayName.apply(this);
+
+		//スコアボードの管理インスタンスを作成する
+		board = new InformationBoard(this);
+		board.loadScoreboard();
+		inventoryUIs = new InventoryUIs(this);
+	}
+
+	public void onQuit(){
+		board.clearScoreboard();
+		board = null;
+		inventoryUIs = null;
 	}
 
 	public void save(){

@@ -103,7 +103,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			Player player = user.asBukkitPlayer();
 
 			//どこかのステージにいれば最終チェックポイント一覧を開く
-			if(user.currentStage != null) user.inventoryUISet.lastCheckpointUI.openInventory(player);
+			if(user.currentStage != null) user.getInventoryUIs().lastCheckpointUI.openInventory(player);
 
 			//無ければ警告する
 			else MessageColor.color("&c-Operation blocked &7-@ &c-You are not on any stage").displayOnActionBar(player);
@@ -140,7 +140,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		applyMetaToItem(itemOfMenuOpener, StringColor.color("&b-Menu opener"));
 
 		//メニューを開くアイテムの機能内容を定義する
-		menuOpener = new Tuple<>(itemOfMenuOpener, user -> user.inventoryUISet.menu.openInventory(user.asBukkitPlayer()));
+		menuOpener = new Tuple<>(itemOfMenuOpener, user -> user.getInventoryUIs().menu.openInventory(user.asBukkitPlayer()));
 	}
 
 	private void applyMetaToItem(ItemStack item, String displayName){
