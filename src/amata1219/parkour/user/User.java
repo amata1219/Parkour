@@ -3,7 +3,6 @@ package amata1219.parkour.user;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -53,7 +52,7 @@ public class User {
 	public ImmutableEntityLocation creativeWorldCheckpoint;
 
 	//購入したヘッドのセット
-	public final Set<UUID> purchasedHeads;
+	public final PurchasedHeads heads;
 
 	//スコアボードの管理インスタンス
 	public final InformationBoard board;
@@ -97,7 +96,7 @@ public class User {
 		creativeWorldCheckpoint = ImmutableEntityLocation.deserialize(yaml.getString("Creative world checkpoint"));
 
 		//購入済みのスカルのIDをUUIDに変換したリストを作成する
-		purchasedHeads = yaml.getStringList("Purchased skulls").stream().map(UUID::fromString).collect(Collectors.toSet());
+		heads = new PurchasedHeads(this, yaml);
 
 		//スコアボードの管理インスタンスを作成する
 		board = new InformationBoard(this);
@@ -169,11 +168,10 @@ public class User {
 		//クリア済みのアスレの名前リストを記録する
 		yaml.set("Cleared parkour names", clearedParkourNames);
 
-		//購入済みのスカルのIDを文字列に変換したリストを記録する
-		yaml.set("Purchased skulls", purchasedHeads.stream().map(UUID::toString).collect(Collectors.toList()));
-
 		//クリエイティブワールドのチェックポイントを記録する
 		yaml.set("Creative world checkpoint", creativeWorldCheckpoint.serialize());
+
+		heads.save(yaml);
 
 		//全チェックポイントを記録する
 		checkpoints.save(yaml);

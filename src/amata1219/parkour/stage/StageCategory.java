@@ -2,11 +2,11 @@ package amata1219.parkour.stage;
 
 public enum StageCategory {
 
-	BIOME,
-	SEGMENT,
-	EXTEND,
+	NORMAL,
 	UPDATE,
-	NORMAL;
+	EXTEND,
+	SEGMENT,
+	BIOME;
 
 	public String getName(){
 		String name = toString();

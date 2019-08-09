@@ -1,14 +1,17 @@
 package amata1219.parkour.ui;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
+import amata1219.amalib.inventory.ui.option.InventoryLine;
 import amata1219.amalib.message.MessageTemplate;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.stage.Stage;
@@ -17,27 +20,6 @@ import amata1219.parkour.stage.Stages;
 import amata1219.parkour.user.Users;
 
 public class StageSelectionUI implements InventoryUI {
-
-	/*
-	 *
-	 * 	Normal
-		Update
-		Extend
-		Segment
-		Biome
-	 *
-	 */
-
-	/*
-	 *
-	 * oooooxxxx
-	 * xxxxxxxxx
-	 * xxxxxxxxx
-	 * xxxxxxxxx
-	 * xxxxxxxxx
-	 * oxoxoxoxo
-	 *
-	 */
 
 	private final Users users = Users.getInstnace();
 	private final StageCategory category;
@@ -51,7 +33,9 @@ public class StageSelectionUI implements InventoryUI {
 		//カテゴリ内のステージリストを取得する
 		List<Stage> stages = Stages.getInstance().getStagesByCategory(category);
 
-		return build(stages.size() + 9, (l) -> {
+		InventoryLine line = InventoryLine.necessaryInventoryLine(stages.size() + 9);
+
+		return build(line, (l) -> {
 			//表示例: Extend
 			l.title = StringTemplate.capply("&b-$0", category.getName());
 
@@ -64,11 +48,9 @@ public class StageSelectionUI implements InventoryUI {
 
 			});
 
-			//各ステージ毎に処理をする
-			for(int slotIndex = 0; slotIndex < stages.size(); slotIndex++){
-				//対応したステージを取得する
-				Stage stage = stages.get(slotIndex);
+			AtomicInteger slotIndex = new AtomicInteger();
 
+			stages.forEach(stage -> {
 				String stageName = stage.name;
 
 				l.put((s) -> {
@@ -85,7 +67,7 @@ public class StageSelectionUI implements InventoryUI {
 						MessageTemplate.capply("&b-Teleported to $0-&r-&b-!", stageName).displayOnActionBar(player);
 					});
 
-					s.icon(Material.GRASS_BLOCK, (i) -> {
+					s.icon(Material.GLASS, (i) -> {
 						//表示名: The Earth of Marmalade
 						i.displayName = StringTemplate.capply("&b-$0", stageName);
 
@@ -93,40 +75,39 @@ public class StageSelectionUI implements InventoryUI {
 						i.lore = stage.parkourNames.stream().map(parkourName -> StringTemplate.capply("&7-: &b-$0", parkourName)).collect(Collectors.toList());
 					});
 
-				}, slotIndex);
+				}, slotIndex.getAndIncrement());
 
-			}
+			});
 
-			//ステージのカテゴリ一覧
-			StageCategory[] categories = StageCategory.values();
+			AtomicInteger counter = new AtomicInteger();
 
-			//このインベントリの最後のスロットのインデックス
-			int lastSlotIndex = l.option.size - 1;
-
-			for(int count = 0; count < 5; count++){
-				StageCategory slotCategory = categories[count];
-
-				//スロットのインデックス
-				int slotIndex = lastSlotIndex - count * 2;
+			IntStream.range(0, 5)
+			.map(i -> i * 2)
+			.map(i -> line.inventorySize() - 1 - i)
+			.sorted()
+			.forEach(i -> {
+				//対応したカテゴリーを取得する
+				StageCategory category = StageCategory.values()[counter.getAndIncrement()];
 
 				l.put((s) -> {
 
 					s.onClick((event) -> {
 						//カテゴリに対応したステージリストを開かせる
-						StageSelectionUIs.getInstance().getStagesUI(slotCategory).openInventory(event.player);
+						StageSelectionUIs.getInstance().getStagesUI(category).openInventory(event.player);
 					});
 
-					s.icon(Material.FEATHER, (i) -> {
+					s.icon(Material.FEATHER, (ic) -> {
 						//表示例: Update
-						i.displayName = StringTemplate.capply("&b-$0", slotCategory.getName());
+						ic.displayName = StringTemplate.capply("&b-$0", category.getName());
 
 						//今開いているステージリストのカテゴリと同じであれば発光させる
-						if(slotCategory == category) i.gleam();
+						if(category == this.category) ic.gleam();
 
 					});
 
-				}, slotIndex);
-			}
+				}, i);
+
+			});
 
 		});
 	}
