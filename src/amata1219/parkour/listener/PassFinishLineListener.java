@@ -4,7 +4,7 @@ import java.util.Set;
 
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.message.MessageTemplate;
+import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;

@@ -31,19 +31,22 @@ import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
 import amata1219.parkour.stage.Stages;
 import amata1219.parkour.task.AsyncTask;
+import amata1219.parkour.task.SaveParkourDataTask;
+import amata1219.parkour.task.SaveStageDataTask;
+import amata1219.parkour.task.SaveUserDataTask;
 import amata1219.parkour.task.UpdatePingTask;
 import amata1219.parkour.task.UpdateTimePlayedTask;
 import amata1219.parkour.user.Users;
 
 public class Main extends Plugin {
 
-	//https://twitter.com/share?url=https://minecraft.jp/servers/azisaba.net&text=ここにテキスト
+	//https://twitter.com/intent/tweet?text=ツイート本文
 	//アスレクリア時やランクアップ時など
 	//各動作に音を付ける
 
 	private static Main plugin;
 
-	private final ArrayList<AsyncTask> activeTasks = new ArrayList<>(2);
+	private final ArrayList<AsyncTask> activeTasks = new ArrayList<>(5);
 
 	@Override
 	public void onEnable(){
@@ -86,6 +89,9 @@ public class Main extends Plugin {
 		);
 
 		startTasks(
+			new SaveParkourDataTask(),
+			new SaveStageDataTask(),
+			new SaveUserDataTask(),
 			new UpdateTimePlayedTask(),
 			new UpdatePingTask()
 		);

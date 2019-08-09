@@ -78,6 +78,10 @@ public class Users implements PlayerJoinListener {
 		return new Yaml(plugin, new File(folder, StringTemplate.apply("$0.yml", uuid)), "user.yml");
 	}
 
+	public void saveAll(){
+		users.values().forEach(User::save);
+	}
+
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onJoin(PlayerJoinEvent event){
 		UUID uuid = event.getPlayer().getUniqueId();

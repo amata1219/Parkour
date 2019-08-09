@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.amalib.location.ImmutableEntityLocation;
-import amata1219.amalib.message.MessageTemplate;
+import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.parkour.ParkourRegion;

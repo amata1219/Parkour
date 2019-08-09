@@ -36,9 +36,9 @@ import amata1219.amalib.enchantment.GleamEnchantment;
 import amata1219.amalib.listener.PlayerJoinListener;
 import amata1219.amalib.listener.PlayerQuitListener;
 import amata1219.amalib.location.ImmutableEntityLocation;
-import amata1219.amalib.message.MessageColor;
-import amata1219.amalib.message.MessageTemplate;
 import amata1219.amalib.string.StringColor;
+import amata1219.amalib.string.message.MessageColor;
+import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.amalib.tuplet.Tuple;
 
 public class ControlFunctionalItemListener implements PlayerJoinListener, PlayerQuitListener {

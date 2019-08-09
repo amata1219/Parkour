@@ -11,15 +11,18 @@ import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.util.Color;
+import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.Rewards;
 import amata1219.parkour.stage.Stages;
 import net.md_5.bungee.api.ChatColor;
 
 public class ParkourCommand implements Command {
 
 	private static final Pattern RGB_FORMAT = Pattern.compile("^((2[0-4]\\d|25[0-5]|1\\d{1,2}|[1-9]\\d|\\d)( ?, ?)){2}(2[0-4]\\d|25[0-5]|1\\d{1,2}|[1-9]\\d|\\d)");
+	private static final Pattern REWARDS_FORMAT = Pattern.compile("[0-9]{1,8},[0-9]{1,8}");
 
 	private final Parkours parkours = Parkours.getInstance();
 
@@ -30,7 +33,7 @@ public class ParkourCommand implements Command {
 
 		//第1引数が無ければ戻る
 		if(!args.hasNext()){
-			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/setspawn/color] | /parkour list");
+			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/spawn] | /parkour [parkour_name] color [R,G,B] | /parkour [parkour_name] rewards [coin,coin] | /parkour list");
 			return;
 		}
 
@@ -109,7 +112,7 @@ public class ParkourCommand implements Command {
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を無効化しました。", parkourName));
 			return;
-		}case "setspawn":{
+		}case "spawn":{
 			//指定されたアスレが存在しなければ戻る
 			if(blockNotExistParkour(sender, parkourName)) return;
 
@@ -135,13 +138,15 @@ public class ParkourCommand implements Command {
 				return;
 			}
 
+			Parkour parkour = parkours.getParkour(parkourName);
+
 			//各値に分割する
 			int[] values = StringSplit.splitToIntArguments(text);
 
 			Color color = new Color(values[0], values[1], values[2]);
 
 			//適用する
-			parkours.getParkour(parkourName).apply(it -> {
+			parkour.apply(it -> {
 				it.borderColor = color;
 
 				//各アスレ領域の境界線用パケットを再生成する
@@ -154,8 +159,38 @@ public class ParkourCommand implements Command {
 
 			sender.info(StringTemplate.capply("$0-&r-&b-のパーティクル色を書き換えました。", parkourName));
 			return;
+		}case "rewards":{
+			//指定されたアスレが存在しなければ戻る
+			if(blockNotExistParkour(sender, parkourName)) return;
+
+			String text = args.next();
+
+			if(!REWARDS_FORMAT.matcher(text).matches()){
+				sender.warn("/setreward [parkour_name] [first/second_and_subsequent]");
+				return;
+			}
+
+			Parkour parkour = parkours.getParkour(parkourName);
+
+			//各値に分割する
+			int[] coins = StringSplit.splitToIntArguments(text);
+
+			//報酬として扱える様にする
+			Rewards rewards = new Rewards(coins);
+
+			//適用する
+			parkour.apply(it -> it.rewards = rewards);
+
+			Yaml yaml = parkours.makeYaml(parkourName);
+
+			yaml.set("Reward coins", StringTemplate.apply("$0,$1", coins[0], coins[1]));
+
+			yaml.save();
+
+			sender.info(StringTemplate.capply("$0-&r-&b-の報酬を書き換えました。", parkourName));
+			return;
 		}default:
-			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/setspawn] | /parkour [parkour_name] color [RGB] | /parkour list");
+			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/spawn] | /parkour [parkour_name] color [R,G,B] | /parkour [parkour_name] rewards [coin,coin] | /parkour list");
 			return;
 		}
 

@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
-import amata1219.amalib.message.MessageTemplate;
+import amata1219.amalib.string.message.MessageTemplate;
 
 public class SetDirectionCommand implements Command {
 

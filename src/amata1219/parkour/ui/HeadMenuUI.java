@@ -8,14 +8,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import amata1219.amalib.inventory.ui.InventoryLine;
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.Icon;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
-import amata1219.amalib.inventory.ui.option.InventoryLine;
-import amata1219.amalib.message.MessageColor;
-import amata1219.amalib.message.MessageTemplate;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
+import amata1219.amalib.string.message.MessageColor;
+import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.parkour.head.Head;
 import amata1219.parkour.head.Heads;
 import amata1219.parkour.user.PurchasedHeads;

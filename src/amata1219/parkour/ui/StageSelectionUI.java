@@ -9,11 +9,11 @@ import java.util.stream.IntStream;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import amata1219.amalib.inventory.ui.InventoryLine;
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
-import amata1219.amalib.inventory.ui.option.InventoryLine;
-import amata1219.amalib.message.MessageTemplate;
 import amata1219.amalib.string.StringTemplate;
+import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.parkour.stage.Stage;
 import amata1219.parkour.stage.StageCategory;
 import amata1219.parkour.stage.Stages;

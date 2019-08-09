@@ -5,9 +5,9 @@ import java.util.stream.Collectors;
 
 import org.bukkit.scheduler.BukkitTask;
 
-import amata1219.amalib.border.LocationOnBorderCollector;
 import amata1219.amalib.location.ImmutableBlockLocation;
 import amata1219.amalib.location.ImmutableEntityLocation;
+import amata1219.amalib.region.LocationOnBorderCollector;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.schedule.Async;
 import amata1219.amalib.selection.RegionSelection;
