@@ -126,10 +126,14 @@ public class User {
 
 	public void depositCoins(int coins){
 		this.coins += coins;
+
+		if(board != null) board.updateCoins();
 	}
 
 	public void withdrawCoins(int coins){
 		this.coins = Math.max(this.coins - coins, 0);
+
+		if(board != null) board.updateCoins();
 	}
 
 	public Stage getCurrentStage(){

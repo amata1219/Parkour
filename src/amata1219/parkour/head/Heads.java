@@ -1,13 +1,13 @@
 package amata1219.parkour.head;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 
 public class Heads {
 
-	public final static Map<UUID, Head> HEADS = new HashMap<>();
+	public final static List<Head> HEADS = new ArrayList<>(37);
 
 	static{
 		initializeWithPlayerHeads(
@@ -59,16 +59,14 @@ public class Heads {
 		Arrays.stream(texts)
 		.map(text -> text.split(","))
 		.map(parts -> new Head(UUID.fromString(parts[0]), parts[1], Integer.parseInt(parts[2])))
-		.forEach(head -> HEADS.put(head.uuid, head));
-
-		HEADS.forEach((k, v) -> System.out.println(v.name));
+		.forEach(HEADS::add);
 	}
 
 	private static void initializeWithCustomHeads(String... texts){
 		Arrays.stream(texts)
 		.map(text -> text.split(","))
 		.map(parts -> new Head(UUID.fromString(parts[0]), parts[1], Integer.parseInt(parts[2]), parts[3]))
-		.forEach(head -> HEADS.put(head.uuid, head));
+		.forEach(HEADS::add);
 	}
 
 }

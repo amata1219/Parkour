@@ -38,7 +38,8 @@ import amata1219.parkour.user.Users;
 public class Main extends Plugin {
 
 	//https://twitter.com/share?url=https://minecraft.jp/servers/azisaba.net&text=ここにテキスト
-	//アスレTP時にチャットに送信
+	//アスレクリア時やランクアップ時など
+	//各動作に音を付ける
 
 	private static Main plugin;
 
