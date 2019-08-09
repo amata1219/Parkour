@@ -6,11 +6,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import amata1219.amalib.listener.PlayerJoinListener;
 import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.UserSet;
+import amata1219.parkour.user.Users;
 
 public class ApplyUserStateListener implements PlayerJoinListener {
 
-	private final UserSet users = UserSet.getInstnace();
+	private final Users users = Users.getInstnace();
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event){

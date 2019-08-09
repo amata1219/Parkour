@@ -30,17 +30,17 @@ public class InformationBoard {
 
 		//スコアボード用の情報群を詰め込む
 		components.addAll(Arrays.asList(
-			//何故か一番上の行が表示されない問題(死)
+			//何故か一番上の行が表示されない問題
 			makeComponent(() -> true, 11, " ", () -> ""),
 			makeComponent(() -> true, 10, " ", () -> ""),
-			makeComponent(() -> setting.displayTraceur, 9, "&b-Traceur &7-@ &b-$0", () -> user.asBukkitPlayer().getName()),
-			makeComponent(() -> setting.displayUpdateRank, 8, "&b-Update Rank &7-@ &b-$0", () -> user.updateRank),
-			makeComponent(() -> setting.displayExtendRank, 7, "&b-Extend Rank &7-@ &b-$0", () -> user.extendRank),
-			makeComponent(() -> setting.displayJumps, 6, "&b-Jumps &7-@ &b-$0", () -> user.asBukkitPlayer().getStatistic(Statistic.JUMP)),
-			makeComponent(() -> setting.displayCoins, 5, "&b-Coins &7-@ &b-$0", () -> user.getCoins()),
-			makeComponent(() -> setting.displayTimePlayed, 4, "&b-Time Played &7-@ &b-$0h", () -> user.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
-			makeComponent(() -> setting.displayOnlinePlayers, 3, "&b-Online Players &7-@ &b-$0", () -> Bukkit.getOnlinePlayers().size()),
-			makeComponent(() -> setting.displayPing, 2, "&b-Ping &7-@ &b-$0ms", () -> ((CraftPlayer) user.asBukkitPlayer()).getHandle().ping),
+			makeComponent(() -> setting.displayTraceur, 9, "&b-Traceur &7-@ &f-$0", () -> user.asBukkitPlayer().getName()),
+			makeComponent(() -> setting.displayUpdateRank, 8, "&b-Update Rank &7-@ &f-$0", () -> user.updateRank),
+			makeComponent(() -> setting.displayExtendRank, 7, "&b-Extend Rank &7-@ &f-$0", () -> user.extendRank),
+			makeComponent(() -> setting.displayJumps, 6, "&b-Jumps &7-@ &f-$0", () -> user.asBukkitPlayer().getStatistic(Statistic.JUMP)),
+			makeComponent(() -> setting.displayCoins, 5, "&b-Coins &7-@ &f-$0", () -> user.getCoins()),
+			makeComponent(() -> setting.displayTimePlayed, 4, "&b-Time Played &7-@ &f-$0h", () -> user.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
+			makeComponent(() -> setting.displayOnlinePlayers, 3, "&b-Online Players &7-@ &f-$0", () -> Bukkit.getOnlinePlayers().size()),
+			makeComponent(() -> setting.displayPing, 2, "&b-Ping &7-@ &f-$0ms", () -> ((CraftPlayer) user.asBukkitPlayer()).getHandle().ping),
 			makeComponent(() -> true, 1, "", () -> ""),
 			makeComponent(() -> setting.displayServerAddress, 0, "&b-$0", () -> "   azisaba.net")
 		));

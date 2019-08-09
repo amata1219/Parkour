@@ -8,11 +8,11 @@ import amata1219.amalib.event.PlayerJumpEvent;
 import amata1219.amalib.listener.PlayerJoinListener;
 import amata1219.amalib.listener.PlayerQuitListener;
 import amata1219.parkour.user.InformationBoard;
-import amata1219.parkour.user.UserSet;
+import amata1219.parkour.user.Users;
 
 public class UpdateInformationBoardListener implements PlayerJoinListener, PlayerQuitListener {
 
-	private final UserSet users = UserSet.getInstnace();
+	private final Users users = Users.getInstnace();
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event){

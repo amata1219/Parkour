@@ -14,7 +14,7 @@ import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.stage.Stage;
-import amata1219.parkour.user.CheckpointSet;
+import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
 
 public class LastCheckpointSelectionUI implements InventoryUI {
@@ -49,7 +49,7 @@ public class LastCheckpointSelectionUI implements InventoryUI {
 
 			});
 
-			CheckpointSet checkpoints = user.checkpoints;
+			Checkpoints checkpoints = user.checkpoints;
 
 			//各アスレ毎に処理をする
 			for(int slotIndex = 0; slotIndex < parkourListInStage.size(); slotIndex++){

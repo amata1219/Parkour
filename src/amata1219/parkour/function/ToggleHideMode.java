@@ -10,7 +10,7 @@ import amata1219.amalib.message.MessageColor;
 import amata1219.amalib.schedule.Sync;
 import amata1219.parkour.Main;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.UserSet;
+import amata1219.parkour.user.Users;
 import amata1219.parkour.user.UserSetting;
 
 public class ToggleHideMode {
@@ -21,7 +21,7 @@ public class ToggleHideMode {
 		return instance != null ? instance : (instance = new ToggleHideMode());
 	}
 
-	private final UserSet userSet = UserSet.getInstnace();
+	private final Users userSet = Users.getInstnace();
 
 	//非表示モードの使用者
 	private final HashSet<User> hideModeUsers = new HashSet<>();

@@ -13,24 +13,24 @@ import org.bukkit.inventory.ItemStack;
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.inventory.ui.option.InventoryLine;
-import amata1219.amalib.item.skull.SkullMaker;
 import amata1219.amalib.message.MessageColor;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.tuplet.Quadruple;
+import amata1219.amalib.util.SkullMaker;
 import amata1219.parkour.user.User;
 
-public class Menu implements InventoryUI {
+public class MenuUI implements InventoryUI {
 
 	private final User user;
 	private final ArrayList<Quadruple<Integer, Material, String, InventoryUI>> components = new ArrayList<>(3);
 
-	public Menu(User user){
+	public MenuUI(User user){
 		this.user = user;
 
 		components.addAll(Arrays.asList(
 			component(5, Material.FEATHER, StringColor.color("&b-Open scoreboard options"), new InformationBoardOptionUI(user)),
-			component(6, Material.FEATHER, StringColor.color("&b-Open skull menu"), new SkullMenu(user))
+			component(6, Material.FEATHER, StringColor.color("&b-Open skull menu"), new SkullUI(user))
 		));
 	}
 

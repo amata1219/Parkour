@@ -10,11 +10,11 @@ import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.parkour.Parkours;
-import amata1219.parkour.selection.RegionSelectionSet;
+import amata1219.parkour.selection.RegionSelections;
 
 public class GiveSelectionToolCommand implements Command {
 
-	private final RegionSelectionSet selections = RegionSelectionSet.getInstance();
+	private final RegionSelections selections = RegionSelections.getInstance();
 	private final Parkours parkourSet = Parkours.getInstance();
 
 	@Override

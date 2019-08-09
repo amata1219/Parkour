@@ -1,6 +1,6 @@
 package amata1219.parkour.task;
 
-import amata1219.parkour.user.UserSet;
+import amata1219.parkour.user.Users;
 
 public class UpdateTimePlayedTask extends AsyncTask {
 
@@ -10,7 +10,7 @@ public class UpdateTimePlayedTask extends AsyncTask {
 
 	@Override
 	public void run() {
-		UserSet.getInstnace().getOnlineUsers().forEach(user -> user.board.updateTimePlayed());
+		Users.getInstnace().getOnlineUsers().forEach(user -> user.board.updateTimePlayed());
 	}
 
 }

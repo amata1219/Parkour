@@ -11,11 +11,11 @@ import amata1219.amalib.selection.RegionSelection;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.parkour.Parkours;
-import amata1219.parkour.selection.RegionSelectionSet;
+import amata1219.parkour.selection.RegionSelections;
 
 public abstract class AbstractSetParkourRegionCommand implements Command {
 
-	private final RegionSelectionSet selections = RegionSelectionSet.getInstance();
+	private final RegionSelections selections = RegionSelections.getInstance();
 	private final Parkours parkourSet = Parkours.getInstance();
 
 	private final ParkourRegionType type;

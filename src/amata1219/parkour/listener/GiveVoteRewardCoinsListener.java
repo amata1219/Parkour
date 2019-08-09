@@ -11,11 +11,11 @@ import com.vexsoftware.votifier.model.Vote;
 import com.vexsoftware.votifier.model.VotifierEvent;
 
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.UserSet;
+import amata1219.parkour.user.Users;
 
 public class GiveVoteRewardCoinsListener implements Listener {
 
-	private final UserSet users = UserSet.getInstnace();
+	private final Users users = Users.getInstnace();
 
 	@EventHandler
 	public void onVote(VotifierEvent event){

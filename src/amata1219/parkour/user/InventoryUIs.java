@@ -1,16 +1,16 @@
 package amata1219.parkour.user;
 
 import amata1219.parkour.ui.LastCheckpointSelectionUI;
-import amata1219.parkour.ui.Menu;
+import amata1219.parkour.ui.MenuUI;
 
-public class InventoryUISet {
+public class InventoryUIs {
 
 	public final LastCheckpointSelectionUI lastCheckpointUI;
-	public final Menu menu;
+	public final MenuUI menu;
 
-	public InventoryUISet(User user){
+	public InventoryUIs(User user){
 		lastCheckpointUI = new LastCheckpointSelectionUI(user);
-		menu = new Menu(user);
+		menu = new MenuUI(user);
 	}
 
 }

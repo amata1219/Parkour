@@ -28,40 +28,31 @@ import amata1219.parkour.listener.PassStartLineListener;
 import amata1219.parkour.listener.SetCheckpointListener;
 import amata1219.parkour.listener.UpdateInformationBoardListener;
 import amata1219.parkour.parkour.Parkours;
-import amata1219.parkour.selection.RegionSelectionSet;
+import amata1219.parkour.selection.RegionSelections;
 import amata1219.parkour.stage.Stages;
 import amata1219.parkour.task.AsyncTask;
 import amata1219.parkour.task.UpdatePingTask;
 import amata1219.parkour.task.UpdateTimePlayedTask;
-import amata1219.parkour.user.UserSet;
-import de.domedd.betternick.BetterNick;
-import de.domedd.betternick.api.betternickapi.BetterNickAPI;
+import amata1219.parkour.user.Users;
 
 public class Main extends Plugin {
 
 	//https://twitter.com/share?url=https://minecraft.jp/servers/azisaba.net&text=ここにテキスト
 	//アスレTP時にチャットに送信
-	/*
-	 * update time played
-	 * my state
-	 * cancel damage
-	 */
 
 	private static Main plugin;
-	private static BetterNickAPI nickAPI;
 
 	private final ArrayList<AsyncTask> activeTasks = new ArrayList<>(2);
 
 	@Override
 	public void onEnable(){
 		plugin = this;
-		nickAPI = BetterNick.getApi();
 
 		//インスタンスを生成する
 		Parkours.load();
 		Stages.load();
-		UserSet.load();
-		RegionSelectionSet.load();
+		Users.load();
+		RegionSelections.load();
 
 		registerCommands(
 			new StageCommand(),
@@ -76,8 +67,8 @@ public class Main extends Plugin {
 		);
 
 		registerListeners(
-			UserSet.getInstnace(),
-			RegionSelectionSet.getInstance(),
+			Users.getInstnace(),
+			RegionSelections.getInstance(),
 			new ControlFunctionalItemListener(),
 			new DisablePlayerCollisionListener(),
 			new DisplayRegionBorderListener(),
@@ -106,14 +97,14 @@ public class Main extends Plugin {
 		super.onDisable();
 
 		cancelTasks();
+
+		//Users.getInstance().～
+		Parkours.getInstance().saveAll();
+		Stages.getInstance().saveAll();
 	}
 
 	public static Main getPlugin(){
 		return plugin;
-	}
-
-	public static BetterNickAPI getNickAPI(){
-		return nickAPI;
 	}
 
 	public static World getCreativeWorld(){

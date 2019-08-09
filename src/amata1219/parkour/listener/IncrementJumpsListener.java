@@ -5,11 +5,11 @@ import org.bukkit.event.Listener;
 
 import amata1219.amalib.event.PlayerJumpEvent;
 import amata1219.parkour.user.InformationBoard;
-import amata1219.parkour.user.UserSet;
+import amata1219.parkour.user.Users;
 
 public class IncrementJumpsListener implements Listener {
 
-	private final UserSet users = UserSet.getInstnace();
+	private final Users users = Users.getInstnace();
 
 	@EventHandler
 	public void incrementJumps(PlayerJumpEvent event){

@@ -1,4 +1,4 @@
-package amata1219.parkour.sound;
+package amata1219.parkour.util;
 
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;

@@ -20,15 +20,15 @@ import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.tuplet.Tuple;
 
-public class RegionSelectionSet implements Listener {
+public class RegionSelections implements Listener {
 
-	private static RegionSelectionSet instance;
+	private static RegionSelections instance;
 
 	public static void load(){
-		instance = new RegionSelectionSet();
+		instance = new RegionSelections();
 	}
 
-	public static RegionSelectionSet getInstance(){
+	public static RegionSelections getInstance(){
 		return instance;
 	}
 	//範囲選択用のツール
@@ -36,7 +36,7 @@ public class RegionSelectionSet implements Listener {
 
 	private final HashMap<UUID, Tuple<String, RegionSelection>> selections = new HashMap<>();
 
-	private RegionSelectionSet(){
+	private RegionSelections(){
 		selectionTool = new ItemStack(Material.STONE_AXE);
 
 		//発光用エンチャントを付与する

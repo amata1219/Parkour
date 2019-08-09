@@ -67,10 +67,7 @@ public class InformationBoardOptionUI implements InventoryUI {
 
 				l.put((s) -> {
 					s.icon(component.second, (i) -> {
-						i.displayName = StringTemplate.capply("&b-$0", component.third);
-
-						//表示する設定であれば発光させる
-						if(state.apply(false)) i.gleam();
+						applyState(i, component.third, state.apply(false));
 					});
 
 					s.onClick((event) -> {
@@ -79,22 +76,26 @@ public class InformationBoardOptionUI implements InventoryUI {
 						//設定を反転させる
 						state.apply(true);
 
-						//表示する設定の場合
-						if(state.apply(false)){
-							icon.displayName = StringTemplate.capply("&b-$0", component.third);
-							icon.gleam();
-
-						//表示しない設定の場合
-						}else{
-							icon.displayName = StringTemplate.capply("&7-$0", component.third);
-							icon.tarnish();
-						}
+						applyState(icon, component.third, state.apply(false));
 					});
 
 				}, component.first);
 			}
 
 		});
+	}
+
+	private void applyState(Icon icon, String name, boolean state){
+		//表示する設定の場合
+		if(state){
+			icon.displayName = StringTemplate.capply("&b-$0", name);
+			icon.gleam();
+
+		//表示しない設定の場合
+		}else{
+			icon.displayName = StringTemplate.capply("&7-$0", name);
+			icon.tarnish();
+		}
 	}
 
 }

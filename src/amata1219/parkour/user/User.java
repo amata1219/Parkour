@@ -41,7 +41,7 @@ public class User {
 	public long timeToStartPlaying;
 
 	//各アスレのチェックポイント
-	public final CheckpointSet checkpoints;
+	public final Checkpoints checkpoints;
 
 	//個人設定
 	public final UserSetting setting;
@@ -59,7 +59,7 @@ public class User {
 	public final InformationBoard board;
 
 	//InventoryUIの管理インスタンス
-	public final InventoryUISet inventoryUISet;
+	public final InventoryUIs inventoryUISet;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
@@ -85,7 +85,7 @@ public class User {
 		//最後にアスレをプレイし始めた時間を取得する
 		timeToStartPlaying = yaml.getLong("Time to start playing");
 
-		checkpoints = new CheckpointSet(yaml);
+		checkpoints = new Checkpoints(yaml);
 
 		//個人設定はYamlに基づき生成する
 		setting = new UserSetting(yaml);
@@ -102,7 +102,7 @@ public class User {
 		//スコアボードの管理インスタンスを作成する
 		board = new InformationBoard(this);
 
-		inventoryUISet = new InventoryUISet(this);
+		inventoryUISet = new InventoryUIs(this);
 	}
 
 	public Player asBukkitPlayer(){
@@ -146,7 +146,7 @@ public class User {
 	}
 
 	public void save(){
-		Yaml yaml = UserSet.getInstnace().makeYaml(uuid);
+		Yaml yaml = Users.getInstnace().makeYaml(uuid);
 
 		//Updateランクを記録する
 		yaml.set("Update rank", updateRank);

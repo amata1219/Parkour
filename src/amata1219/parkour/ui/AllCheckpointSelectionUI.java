@@ -14,7 +14,7 @@ import amata1219.amalib.message.MessageTemplate;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.user.CheckpointSet;
+import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
 
 public class AllCheckpointSelectionUI implements InventoryUI {
@@ -29,7 +29,7 @@ public class AllCheckpointSelectionUI implements InventoryUI {
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
-		CheckpointSet checkpoints = user.checkpoints;
+		Checkpoints checkpoints = user.checkpoints;
 
 		//チェックポイントの座標リストを取得する
 		List<ImmutableEntityLocation> locations = checkpoints.containsParkour(parkour) ? checkpoints.getCheckpoints(parkour) : Collections.emptyList();

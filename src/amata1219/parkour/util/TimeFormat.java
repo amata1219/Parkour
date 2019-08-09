@@ -1,4 +1,4 @@
-package amata1219.parkour.format;
+package amata1219.parkour.util;
 
 import java.text.SimpleDateFormat;
 

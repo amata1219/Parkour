@@ -3,11 +3,11 @@ package amata1219.parkour.parkour;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 
-import amata1219.amalib.color.Color;
 import amata1219.amalib.location.ImmutableBlockLocation;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.string.StringSplit;
+import amata1219.amalib.util.Color;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.stage.Stage;
 import amata1219.parkour.stage.Stages;

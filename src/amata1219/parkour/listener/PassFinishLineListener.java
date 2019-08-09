@@ -5,13 +5,13 @@ import java.util.Set;
 import org.bukkit.entity.Player;
 
 import amata1219.amalib.message.MessageTemplate;
-import amata1219.parkour.format.TimeFormat;
 import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.parkour.Records;
 import amata1219.parkour.user.User;
+import amata1219.parkour.util.TimeFormat;
 
 public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 

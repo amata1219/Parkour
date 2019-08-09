@@ -28,7 +28,7 @@ public class Parkours {
 	public final File folder = new File(plugin.getDataFolder() + File.separator + "Parkours");
 
 	//アスレのマップ
-	private final Map<String, Parkour> parkourMap = new HashMap<>();
+	private final Map<String, Parkour> parkours = new HashMap<>();
 
 	//スタートラインのチャンクマップ
 	public final ChunksToObjectsMap<ParkourRegion> chunksToStartLinesMap = new ChunksToObjectsMap<>();
@@ -56,12 +56,16 @@ public class Parkours {
 		}
 	}
 
+	public void saveAll(){
+		parkours.values().forEach(Parkour::save);
+	}
+
 	public boolean existsFile(String parkourName){
 		return new File(folder, StringTemplate.apply("$0.yml", parkourName)).exists();
 	}
 
 	public void registerParkour(Parkour parkour){
-		parkourMap.put(parkour.name, parkour);
+		parkours.put(parkour.name, parkour);
 
 		//スタートラインを登録する
 		registerStartLine(parkour.startLine);
@@ -95,7 +99,7 @@ public class Parkours {
 		//全チェックエリアの登録を解除する
 		parkour.checkAreas.unregisterAll();
 
-		parkourMap.remove(parkour.name);
+		parkours.remove(parkour.name);
 	}
 
 	public void unregisterParkour(String parkourName){
@@ -103,7 +107,7 @@ public class Parkours {
 	}
 
 	public Parkour getParkour(String parkourName){
-		return parkourMap.get(parkourName);
+		return parkours.get(parkourName);
 	}
 
 	public boolean containsParkour(Parkour parkour){
@@ -111,7 +115,7 @@ public class Parkours {
 	}
 
 	public boolean containsParkour(String parkourName){
-		return parkourMap.containsKey(parkourName);
+		return parkours.containsKey(parkourName);
 	}
 
 	public void registerStartLine(ParkourRegion startLine){

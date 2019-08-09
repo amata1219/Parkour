@@ -18,14 +18,16 @@ import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.Icon;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.inventory.ui.option.InventoryLine;
-import amata1219.amalib.item.skull.SkullMaker;
+import amata1219.amalib.message.MessageColor;
+import amata1219.amalib.message.MessageTemplate;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.tuplet.Triple;
-import amata1219.parkour.sound.SoundPlayer;
+import amata1219.amalib.util.SkullMaker;
 import amata1219.parkour.user.User;
+import amata1219.parkour.util.SoundPlayer;
 
-public class SkullMenu implements InventoryUI {
+public class SkullUI implements InventoryUI {
 
 	private static final Map<UUID, Triple<ItemStack, String, Integer>> HEADS;
 
@@ -39,7 +41,7 @@ public class SkullMenu implements InventoryUI {
 		);
 
 		initializeWithCustomHeads(builder
-			//UUID(こちらで設定)headName,base64,価格
+			//headName,UUID(こちらで設定),base64,価格
 		);
 
 		HEADS = builder.build();
@@ -80,7 +82,7 @@ public class SkullMenu implements InventoryUI {
 
 	private User user;
 
-	public SkullMenu(User user){
+	public SkullUI(User user){
 		this.user = user;
 	}
 
@@ -100,6 +102,8 @@ public class SkullMenu implements InventoryUI {
 			AtomicInteger slotIndex = new AtomicInteger();
 
 			for(Entry<UUID, Triple<ItemStack, String, Integer>> entry : HEADS.entrySet()){
+				UUID uuid = entry.getKey();
+
 				//スカルデータを取得する
 				Triple<ItemStack, String, Integer> triple = entry.getValue();
 
@@ -110,13 +114,13 @@ public class SkullMenu implements InventoryUI {
 
 				l.put((s) -> {
 					//購入したスカルの場合
-					if(user.purchasedHeads.contains(entry.getKey())){
+					if(user.purchasedHeads.contains(uuid)){
 						s.icon((i) -> {
 							//基となるアイテムを設定する
 							i.basedItemStack = skull;
 
 							//表示例: amata1219 @ 500000 coins!
-							i.displayName = StringTemplate.capply("&b-$0 &7-@ &b-&m-$1 coins", skullName, value);
+							i.displayName = StringTemplate.capply("&b-$0 &7-@ &c-&m-$1 coins", skullName, value);
 
 							//表示例: Click to put on amata1219's skull!
 							i.lore(StringTemplate.capply("&7-Click to put on $0's skull!", skullName));
@@ -140,21 +144,24 @@ public class SkullMenu implements InventoryUI {
 
 						s.onClick((event) -> {
 							if(user.getCoins() < value){
-								//進捗ポップアップライブラリを作成したらメッセージも表示する
-
-								//警告音を再生する
-								SoundPlayer.play(event.player, Sound.BLOCK_ANVIL_PLACE, 1, 1);
+								MessageColor.color("&c-Operation blocked &7-@ &c-Not enough money").displayOnActionBar(event.player);
 								return;
 							}
 
 							//スカルの価格分のコインを減らす
 							user.withdrawCoins(value);
 
+							user.purchasedHeads.add(uuid);
+
 							//クリックしたスカルを取得する
 							Icon clickedIcon = event.currentIcon;
 
+							MessageTemplate.capply("&b-Bought $0's skull", skullName).displayOnActionBar(event.player);
+
+							SoundPlayer.play(event.player, Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+
 							//表示例: amata1219 @ 500000 coins!
-							clickedIcon.displayName = StringTemplate.capply("&b-$0 &7-@ &b-&m-$1 coins", skullName, value);
+							clickedIcon.displayName = StringTemplate.capply("&b-$0 &7-@ &c-&m-$1 coins", skullName, value);
 
 							//表示例: Click to put on amata1219's skull!
 							clickedIcon.lore(StringTemplate.capply("&7-Click to put on $0's skull!", skullName));
@@ -188,6 +195,8 @@ public class SkullMenu implements InventoryUI {
 	private void putOnSkull(Player player, ItemStack skull){
 		//スカルを被らせる
 		player.getInventory().setHelmet(skull);
+
+		player.updateInventory();
 
 		//装備音を設定する
 		SoundPlayer.play(player, Sound.ITEM_ARMOR_EQUIP_CHAIN, 1, 1);

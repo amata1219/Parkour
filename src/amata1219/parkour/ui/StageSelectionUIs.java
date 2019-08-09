@@ -1,20 +1,20 @@
-package amata1219.parkour.ui.stage;
+package amata1219.parkour.ui;
 
 import java.util.HashMap;
 
 import amata1219.parkour.stage.StageCategory;
 
-public class StageSelectionUISet {
+public class StageSelectionUIs {
 
-	private static StageSelectionUISet instance;
+	private static StageSelectionUIs instance;
 
-	public static StageSelectionUISet getInstance(){
-		return instance != null ? instance : (instance = new StageSelectionUISet());
+	public static StageSelectionUIs getInstance(){
+		return instance != null ? instance : (instance = new StageSelectionUIs());
 	}
 
 	private final HashMap<StageCategory, StageSelectionUI> stageUIs = new HashMap<>(StageCategory.values().length);
 
-	private StageSelectionUISet(){
+	private StageSelectionUIs(){
 		for(StageCategory category : StageCategory.values()) stageUIs.put(category, new StageSelectionUI(category));
 	}
 

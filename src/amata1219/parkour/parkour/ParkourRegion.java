@@ -7,12 +7,12 @@ import org.bukkit.craftbukkit.v1_13_R2.CraftParticle;
 import org.bukkit.scheduler.BukkitTask;
 
 import amata1219.amalib.border.LocationOnBorderCollector;
-import amata1219.amalib.color.Color;
 import amata1219.amalib.location.ImmutableBlockLocation;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.schedule.Async;
 import amata1219.amalib.tuplet.Tuple;
+import amata1219.amalib.util.Color;
 import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_13_R2.ParticleParam;
 

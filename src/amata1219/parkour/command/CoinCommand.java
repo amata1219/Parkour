@@ -10,11 +10,11 @@ import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.UserSet;
+import amata1219.parkour.user.Users;
 
 public class CoinCommand implements Command {
 
-	private final UserSet users = UserSet.getInstnace();
+	private final Users users = Users.getInstnace();
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {

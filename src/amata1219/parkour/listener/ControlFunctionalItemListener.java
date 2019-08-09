@@ -21,10 +21,10 @@ import amata1219.parkour.function.ToggleHideMode;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.stage.Stage;
 import amata1219.parkour.stage.StageCategory;
-import amata1219.parkour.ui.stage.StageSelectionUISet;
-import amata1219.parkour.user.CheckpointSet;
+import amata1219.parkour.ui.StageSelectionUIs;
+import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.UserSet;
+import amata1219.parkour.user.Users;
 
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
@@ -50,7 +50,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 	private final Tuple<ItemStack, Consumer<User>> menuOpener;
 	private final ItemStack empty = new ItemStack(Material.AIR);
 
-	private final UserSet users = UserSet.getInstnace();
+	private final Users users = Users.getInstnace();
 
 	public ControlFunctionalItemListener(){
 		ItemStack itemOfTeleporterToLastCheckpoint = new ItemStack(Material.FEATHER);
@@ -70,7 +70,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			//プレイ中のアスレを取得する
 			Parkour parkourPlayingNow = user.parkourPlayingNow;
 
-			CheckpointSet checkpoints = user.checkpoints;
+			Checkpoints checkpoints = user.checkpoints;
 
 			//最終チェックポイントを取得する
 			ImmutableEntityLocation lastCheckpoint = checkpoints.getLastCheckpoint(parkourPlayingNow);
@@ -122,7 +122,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			StageCategory category = stage != null ? stage.category : StageCategory.NORMAL;
 
 			//カテゴリーに対応したステージリストを開かせる
-			StageSelectionUISet.getInstance().getStagesUI(category).openInventory(user.asBukkitPlayer());
+			StageSelectionUIs.getInstance().getStagesUI(category).openInventory(user.asBukkitPlayer());
 
 		});
 

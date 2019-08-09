@@ -56,6 +56,10 @@ public class Stages {
 		}
 	}
 
+	public void saveAll(){
+		//stages.values().forEach(Stage::save);
+	}
+
 	public boolean existsFile(String stageName){
 		return new File(folder, stageName).exists();
 	}
