@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.yaml.Yaml;
-import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.stage.Stage;
@@ -56,10 +55,10 @@ public class User {
 	public final PurchasedHeads heads;
 
 	//スコアボードの管理インスタンス
-	private InformationBoard board;
+	public InformationBoard board;
 
 	//InventoryUIの管理インスタンス
-	private InventoryUIs inventoryUIs;
+	public InventoryUIs inventoryUIs;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
@@ -150,21 +149,6 @@ public class User {
 
 	public InventoryUIs getInventoryUIs(){
 		return inventoryUIs;
-	}
-
-	public void onJoin(){
-		ApplyRankToDisplayName.apply(this);
-
-		//スコアボードの管理インスタンスを作成する
-		board = new InformationBoard(this);
-		board.loadScoreboard();
-		inventoryUIs = new InventoryUIs(this);
-	}
-
-	public void onQuit(){
-		board.clearScoreboard();
-		board = null;
-		inventoryUIs = null;
 	}
 
 	public void save(){

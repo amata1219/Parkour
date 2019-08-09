@@ -1,17 +1,21 @@
 package amata1219.parkour.listener;
 
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
-
 import amata1219.amalib.listener.PlayerJoinListener;
+import amata1219.parkour.function.ApplyRankToDisplayName;
+import amata1219.parkour.user.InventoryUIs;
+import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
 public class LoadUserDataListener implements PlayerJoinListener {
 
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler
 	public void onJoin(PlayerJoinEvent event){
-		Users.getInstnace().getUser(event.getPlayer()).onJoin();
+		User user = Users.getInstnace().getUser(event.getPlayer());
+
+		ApplyRankToDisplayName.apply(user);
+		user.inventoryUIs = new InventoryUIs(user);
 	}
 
 }
