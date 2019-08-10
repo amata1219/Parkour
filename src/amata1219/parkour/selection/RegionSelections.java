@@ -117,13 +117,8 @@ public class RegionSelections implements Listener {
 
 		ItemStack clickedItem = event.getItem();
 
-		System.out.println("1");
-		System.out.println(GleamEnchantment.isGleaming(clickedItem));
-
 		//範囲選択ツールでなければ戻る
 		if(clickedItem.getType() != Material.STONE_AXE || !GleamEnchantment.isGleaming(clickedItem)) return;
-
-		System.out.println("2");
 
 		//セレクションを取得する
 		RegionSelection selection = getSelection(uuid);

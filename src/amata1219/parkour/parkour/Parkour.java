@@ -33,14 +33,14 @@ public class Parkour {
 		//アスレの基準点を生成する
 		ImmutableBlockLocation origin = ImmutableBlockLocation.deserialize(yaml.getString("Origin"));
 
-		spawnPoint = (ImmutableEntityLocation) ImmutableEntityLocation.deserialize(yaml.getString("Spawn point")).add(origin).middle();
+		spawnPoint = (ImmutableEntityLocation) ImmutableEntityLocation.deserialize(yaml.getString("Spawn point")).add(origin);
 		region = Region.deserialize(yaml.getString("Region"));
 		borderColor = Color.deserialize(yaml.getString("Border color"));
 		startLine = new ParkourRegion(this, Region.deserializeToCorners(yaml.getString("Start line")));
 		finishLine =  new ParkourRegion(this, Region.deserializeToCorners(yaml.getString("Finish line")));
 		checkAreas = new CheckAreas(this, yaml);
 		records = new Records(yaml);
-		rewards = new Rewards(StringSplit.splitToIntArguments(yaml.getString("Reward coins")));
+		rewards = new Rewards(StringSplit.splitToIntArguments(yaml.getString("Rewards")));
 	}
 
 	public String getColorlessName(){
@@ -102,8 +102,9 @@ public class Parkour {
 
 		ImmutableBlockLocation origin = region.lesserBoundaryCorner;
 
+		yaml.set("Origin", origin.serialize());
 		yaml.set("Region", region.relative(origin).serialize());
-		yaml.set("Spawn location", spawnPoint.relative(origin).serialize());
+		yaml.set("Spawn point", spawnPoint.relative(origin).serialize());
 		yaml.set("Border color", borderColor.serialize());
 		yaml.set("Start line", startLine.relative(origin).serialize());
 		yaml.set("Finish line", finishLine.relative(origin).serialize());

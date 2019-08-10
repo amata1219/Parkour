@@ -91,6 +91,21 @@ public class ParkourCommand implements Command {
 				return;
 			}
 
+			if(parkour.region == null){
+				sender.warn(StringTemplate.capply("$0-&r-&c-の領域を設定して下さい。", parkourName));
+				return;
+			}
+
+			if(parkour.startLine == null){
+				sender.warn(StringTemplate.capply("$0-&r-&c-のスタートラインを設定して下さい。", parkourName));
+				return;
+			}
+
+			if(parkour.finishLine == null){
+				sender.warn(StringTemplate.capply("$0-&r-&c-のフィニッシュラインを設定して下さい。", parkourName));
+				return;
+			}
+
 			//アスレを有効化する
 			parkour.apply(it -> it.enable = true);
 
@@ -166,7 +181,7 @@ public class ParkourCommand implements Command {
 			String text = args.next();
 
 			if(!REWARDS_FORMAT.matcher(text).matches()){
-				sender.warn("/setreward [parkour_name] [first/second_and_subsequent]");
+				sender.warn("/setreward [parkour_name] [first,second_and_subsequent]");
 				return;
 			}
 
@@ -190,7 +205,7 @@ public class ParkourCommand implements Command {
 			sender.info(StringTemplate.capply("$0-&r-&b-の報酬を書き換えました。", parkourName));
 			return;
 		}default:
-			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/spawn] | /parkour [parkour_name] color [R,G,B] | /parkour [parkour_name] rewards [coin,coin] | /parkour list");
+			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/spawn] | /parkour [parkour_name] color [R,G,B] | /parkour [parkour_name] rewards [first,second_and_subsequent] | /parkour list");
 			return;
 		}
 

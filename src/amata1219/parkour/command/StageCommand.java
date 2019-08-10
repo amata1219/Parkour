@@ -7,6 +7,7 @@ import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
+import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.stage.Stage;
 import amata1219.parkour.stage.Stages;
 import net.md_5.bungee.api.ChatColor;
@@ -142,7 +143,7 @@ public class StageCommand implements Command {
 	}
 
 	private boolean blockNotExistParkour(Sender sender, String parkourName){
-		if(stages.containsStage(parkourName)) return false;
+		if(Parkours.getInstance().containsParkour(parkourName)) return false;
 
 		sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
 		return true;

@@ -1,6 +1,7 @@
 package amata1219.parkour.parkour;
 
-import amata1219.amalib.string.StringJoin;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class Rewards {
 
@@ -15,7 +16,7 @@ public class Rewards {
 	}
 
 	public String serialize(){
-		return StringJoin.join(coins, ",");
+		return String.join(",", Arrays.stream(coins).mapToObj(String::valueOf).collect(Collectors.toList()));
 	}
 
 }
