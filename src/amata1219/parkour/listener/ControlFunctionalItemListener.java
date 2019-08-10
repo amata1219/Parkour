@@ -21,7 +21,7 @@ import amata1219.parkour.function.ToggleHideMode;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.stage.Stage;
 import amata1219.parkour.stage.StageCategory;
-import amata1219.parkour.ui.StageSelectionUIs;
+import amata1219.parkour.ui.ParkourMenuUI;
 import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
@@ -122,7 +122,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			StageCategory category = stage != null ? stage.category : StageCategory.NORMAL;
 
 			//カテゴリーに対応したステージリストを開かせる
-			StageSelectionUIs.getInstance().getStagesUI(category).openInventory(user.asBukkitPlayer());
+			ParkourMenuUI.getInstance().getStagesUI(category).openInventory(user.asBukkitPlayer());
 
 		});
 

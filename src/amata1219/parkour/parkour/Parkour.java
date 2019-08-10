@@ -10,14 +10,13 @@ import amata1219.amalib.region.Region;
 import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.util.Color;
 import amata1219.amalib.yaml.Yaml;
-import amata1219.parkour.stage.Stage;
-import amata1219.parkour.stage.Stages;
 import amata1219.parkour.user.User;
 
 public class Parkour {
 
 	public final String name;
 	public boolean enable;
+	public ParkourCategory category;
 	public Color borderColor;
 	public Region region;
 	public ImmutableEntityLocation spawnPoint;
@@ -78,11 +77,6 @@ public class Parkour {
 		startLine.undisplayBorders();
 		finishLine.undisplayBorders();
 		checkAreas.undisplayAll();
-	}
-
-	//このマップがあるステージを返す
-	public Stage getStage(){
-		return Stages.getInstance().getStageByParkourName(name);
 	}
 
 	public void apply(Consumer<Parkour> apply){

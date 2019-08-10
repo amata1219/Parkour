@@ -16,7 +16,6 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.parkour.Rewards;
-import amata1219.parkour.stage.Stages;
 import net.md_5.bungee.api.ChatColor;
 
 public class ParkourCommand implements Command {
@@ -72,9 +71,6 @@ public class ParkourCommand implements Command {
 			//アスレが登録されていれば登録を解除する
 			parkours.unregisterParkour(parkourName);
 
-			//ステージからアスレを削除する
-			Stages.getInstance().removeParkour(parkourName);
-
 			//ファイルを削除する
 			parkours.makeYaml(parkourName).file.delete();
 
@@ -107,7 +103,7 @@ public class ParkourCommand implements Command {
 			}
 
 			//アスレを有効化する
-			parkour.apply(it -> it.enable = true);
+			parkour.applyParkourRegion(it -> it.enable = true);
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を有効化しました。", parkourName));
 			return;
@@ -123,7 +119,7 @@ public class ParkourCommand implements Command {
 			}
 
 			//アスレを無効化する
-			parkour.apply(it -> it.enable = false);
+			parkour.applyParkourRegion(it -> it.enable = false);
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を無効化しました。", parkourName));
 			return;

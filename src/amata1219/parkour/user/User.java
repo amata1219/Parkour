@@ -11,7 +11,6 @@ import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.Parkours;
-import amata1219.parkour.stage.Stage;
 
 public class User {
 
@@ -19,16 +18,13 @@ public class User {
 	public final UUID uuid;
 
 	//Updateのランク
-	public int updateRank;
+	private int updateRank;
 
 	//Extendのランク
-	public int extendRank;
+	private int extendRank;
 
 	//コイン
 	private int coins;
-
-	//今いるステージ
-	public Stage currentStage;
 
 	//現在いるアスレ
 	public Parkour currentParkour;
@@ -135,20 +131,15 @@ public class User {
 		if(board != null) board.updateCoins();
 	}
 
-	public Stage getCurrentStage(){
-		return currentStage;
-	}
-
 	public boolean isPlayingWithParkour(){
 		return parkourPlayingNow != null;
 	}
 
-	public InformationBoard getInformationBoard(){
-		return board;
-	}
+	public void exitParkour(){
+		if(currentParkour == null) return;
 
-	public InventoryUIs getInventoryUIs(){
-		return inventoryUIs;
+		currentParkour.exit(this);
+		currentParkour = parkourPlayingNow = null;
 	}
 
 	public void save(){

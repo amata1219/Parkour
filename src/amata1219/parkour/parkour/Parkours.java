@@ -3,8 +3,10 @@ package amata1219.parkour.parkour;
 import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.amalib.string.StringTemplate;
@@ -112,6 +114,12 @@ public class Parkours {
 
 	public Collection<Parkour> getParkours(){
 		return parkours.values();
+	}
+
+	public List<Parkour> getParkours(ParkourCategory category){
+		return parkours.values().stream()
+				.filter(parkour -> parkour.category == category)
+				.collect(Collectors.toList());
 	}
 
 	public Parkour getParkour(String parkourName){

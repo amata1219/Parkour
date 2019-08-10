@@ -13,7 +13,6 @@ import amata1219.parkour.command.SetDirectionCommand;
 import amata1219.parkour.command.SetFinishLineCommand;
 import amata1219.parkour.command.SetParkourRegionCommand;
 import amata1219.parkour.command.SetStartLineCommand;
-import amata1219.parkour.command.StageCommand;
 import amata1219.parkour.listener.ControlFunctionalItemListener;
 import amata1219.parkour.listener.DisableDamageListener;
 import amata1219.parkour.listener.DisableFoodLevelChangeListener;
@@ -29,7 +28,6 @@ import amata1219.parkour.listener.UnloadUserDataListener;
 import amata1219.parkour.listener.UpdateInformationBoardListener;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
-import amata1219.parkour.stage.Stages;
 import amata1219.parkour.task.AsyncTask;
 import amata1219.parkour.task.SaveParkourDataTask;
 import amata1219.parkour.task.SaveStageDataTask;
@@ -54,12 +52,10 @@ public class Main extends Plugin {
 
 		//インスタンスを生成する
 		Parkours.load();
-		Stages.load();
 		Users.load();
 		RegionSelections.load();
 
 		registerCommands(
-			new StageCommand(),
 			new ParkourCommand(),
 			new GiveSelectionToolCommand(),
 			new SetParkourRegionCommand(),
@@ -106,7 +102,6 @@ public class Main extends Plugin {
 		cancelTasks();
 
 		Parkours.getInstance().saveAll();
-		Stages.getInstance().saveAll();
 	}
 
 	public static Main getPlugin(){

@@ -14,17 +14,14 @@ import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.string.message.MessageTemplate;
-import amata1219.parkour.stage.Stage;
-import amata1219.parkour.stage.StageCategory;
-import amata1219.parkour.stage.Stages;
 import amata1219.parkour.user.Users;
 
-public class StageSelectionUI implements InventoryUI {
+public class CategorizedParkoursSelectionUI implements InventoryUI {
 
 	private final Users users = Users.getInstnace();
 	private final StageCategory category;
 
-	public StageSelectionUI(StageCategory category){
+	public CategorizedParkoursSelectionUI(StageCategory category){
 		this.category = category;
 	}
 
@@ -93,7 +90,7 @@ public class StageSelectionUI implements InventoryUI {
 
 					s.onClick((event) -> {
 						//カテゴリに対応したステージリストを開かせる
-						StageSelectionUIs.getInstance().getStagesUI(category).openInventory(event.player);
+						ParkourMenuUI.getInstance().getStagesUI(category).openInventory(event.player);
 					});
 
 					s.icon(Material.FEATHER, (ic) -> {

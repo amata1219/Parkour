@@ -13,7 +13,8 @@ import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.stage.Stage;
+import amata1219.parkour.parkour.ParkourCategory;
+import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
 
@@ -28,17 +29,17 @@ public class LastCheckpointSelectionUI implements InventoryUI {
 	@Override
 	public Function<Player, InventoryLayout> layout() {
 		//現在プレイ中のアスレを取得する
-		Parkour parkourPlayingNow = user.parkourPlayingNow;
+		Parkour currentParkour = user.currentParkour;
 
-		//今いるステージを取得する
-		Stage stage = user.currentStage;
+		//カテゴリーを取得する
+		ParkourCategory category = currentParkour != null ? currentParkour.category : ParkourCategory.NORMAL;
 
-		//ステージ内にあるアスレを取得する
-		List<Parkour> parkourListInStage = stage.getParkourList();
+		//カテゴリー内の全アスレを取得する
+		List<Parkour> parkours = Parkours.getInstance().getParkours(category);
 
-		return build(parkourListInStage.size(), (l) -> {
+		return build(parkours.size(), (l) -> {
 			//表示例: Last checkpoints @ The Earth of Marmalade
-			l.title = StringTemplate.capply("&b-Last checkpoints &7-@ &b-$0", stage.name);
+			l.title = StringTemplate.capply("&b-Last checkpoints &7-@ &b-$0", category.toString());
 
 			//デフォルトスロットを設定する
 			l.defaultSlot((s) -> {
@@ -52,9 +53,9 @@ public class LastCheckpointSelectionUI implements InventoryUI {
 			Checkpoints checkpoints = user.checkpoints;
 
 			//各アスレ毎に処理をする
-			for(int slotIndex = 0; slotIndex < parkourListInStage.size(); slotIndex++){
+			for(int slotIndex = 0; slotIndex < parkours.size(); slotIndex++){
 				//インデックスに対応したアスレを取得する
-				Parkour parkour = parkourListInStage.get(slotIndex);
+				Parkour parkour = parkours.get(slotIndex);
 
 				//アスレに対応したチェックポイントが存在しなければ繰り返す
 				if(!checkpoints.containsParkour(parkour)) continue;
@@ -105,7 +106,7 @@ public class LastCheckpointSelectionUI implements InventoryUI {
 						);
 
 						//現在プレイ中のアスレであれば発光させる
-						if(parkour.equals(parkourPlayingNow)) i.gleam();
+						if(parkour.equals(currentParkour)) i.gleam();
 
 					});
 
