@@ -16,6 +16,7 @@ import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
 public class CategorizedParkoursSelectionUI implements InventoryUI {
@@ -64,8 +65,11 @@ public class CategorizedParkoursSelectionUI implements InventoryUI {
 						//ステージのスポーン地点にテレポートさせる
 						player.teleport(parkour.spawnPoint.asBukkitLocation());
 
-						//選択したアスレを今いるアスレとして設定する
-						users.getUser(player).currentParkour = parkour;
+						//ユーザーを取得する
+						User user = users.getUser(player);
+
+						//アスレに参加させる
+						parkour.entry(user);
 
 						//表示例: Teleported to The Earth of Marmalade!
 						MessageTemplate.capply("&b-Teleported to $0-&r-&b-!", parkourName).displayOnActionBar(player);

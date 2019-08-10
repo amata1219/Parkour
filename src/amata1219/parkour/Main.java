@@ -17,7 +17,7 @@ import amata1219.parkour.listener.ControlFunctionalItemListener;
 import amata1219.parkour.listener.DisableDamageListener;
 import amata1219.parkour.listener.DisableFoodLevelChangeListener;
 import amata1219.parkour.listener.DisablePlayerCollisionListener;
-import amata1219.parkour.listener.DisplayRegionBorderListener;
+import amata1219.parkour.listener.ControlRegionBorderDisplayerListener;
 import amata1219.parkour.listener.GiveVoteRewardCoinsListener;
 import amata1219.parkour.listener.HideNewPlayerListener;
 import amata1219.parkour.listener.LoadUserDataListener;
@@ -72,7 +72,7 @@ public class Main extends Plugin {
 			RegionSelections.getInstance(),
 			new ControlFunctionalItemListener(),
 			new DisablePlayerCollisionListener(),
-			new DisplayRegionBorderListener(),
+			new ControlRegionBorderDisplayerListener(),
 			new GiveVoteRewardCoinsListener(),
 			new HideNewPlayerListener(),
 			new LoadUserDataListener(),

@@ -11,7 +11,7 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
-public class DisplayRegionBorderListener implements PlayerJoinListener, PlayerQuitListener {
+public class ControlRegionBorderDisplayerListener implements PlayerJoinListener, PlayerQuitListener {
 
 	private final Users users = Users.getInstnace();
 

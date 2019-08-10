@@ -39,6 +39,7 @@ public class Parkour {
 		startLine = new ParkourRegion(this, Region.deserializeToCorners(yaml.getString("Start line")));
 		finishLine =  new ParkourRegion(this, Region.deserializeToCorners(yaml.getString("Finish line")));
 		checkAreas = new CheckAreas(this, yaml);
+		enableTimeAttack = yaml.getBoolean("Enable time attack");
 		records = new Records(yaml);
 		rewards = new Rewards(StringSplit.splitToIntArguments(yaml.getString("Rewards")));
 	}
@@ -62,6 +63,8 @@ public class Parkour {
 	public void entry(User user){
 		if(user.isPlayingWithParkour()) user.parkourPlayingNow.exit(user);
 
+		user.currentParkour = this;
+
 		connections.add(user.asBukkitPlayer());
 
 		startLine.displayBorders();
@@ -70,6 +73,8 @@ public class Parkour {
 	}
 
 	public void exit(User user){
+		user.currentParkour = null;
+
 		connections.remove(user.asBukkitPlayer());
 
 		//人がいれば戻る
@@ -84,7 +89,7 @@ public class Parkour {
 		apply.accept(this);
 	}
 
-	public void applyParkourRegion(Consumer<Parkour> apply){
+	public void applyAndUpdate(Consumer<Parkour> apply){
 		Parkours parkours = Parkours.getInstance();
 
 		if(enable) parkours.unregisterParkour(this);
@@ -103,9 +108,9 @@ public class Parkour {
 		yaml.set("Border color", borderColor.serialize());
 		yaml.set("Start line", startLine.relative(origin).serialize());
 		yaml.set("Finish line", finishLine.relative(origin).serialize());
-		yaml.set("Rewards", rewards.serialize());
-
 		checkAreas.save(yaml);
+		yaml.set("Rewards", rewards.serialize());
+		yaml.set("Enable time attack", enableTimeAttack);
 		records.save(yaml);
 
 		yaml.save();

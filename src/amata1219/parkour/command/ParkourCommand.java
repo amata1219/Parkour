@@ -42,7 +42,7 @@ public class ParkourCommand implements Command {
 		//第1引数がlistであればアスレ名を全て表示する
 		if(parkourName.equals("list")){
 			parkours.getParkours().stream()
-			.map(parkour -> StringTemplate.capply("&7-: $0($1)", parkour.name, (parkour.enable ? "&b-有効" : "&7-無効")))
+			.map(parkour -> StringTemplate.capply("&7-: &r-$0($1)", parkour.name, (parkour.enable ? "&b-有効" : "&7-無効")))
 			.forEach(sender::message);
 			return;
 		}
@@ -103,7 +103,7 @@ public class ParkourCommand implements Command {
 			}
 
 			//アスレを有効化する
-			parkour.applyParkourRegion(it -> it.enable = true);
+			parkour.applyAndUpdate(it -> it.enable = true);
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を有効化しました。", parkourName));
 			return;
@@ -119,7 +119,7 @@ public class ParkourCommand implements Command {
 			}
 
 			//アスレを無効化する
-			parkour.applyParkourRegion(it -> it.enable = false);
+			parkour.applyAndUpdate(it -> it.enable = false);
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を無効化しました。", parkourName));
 			return;
