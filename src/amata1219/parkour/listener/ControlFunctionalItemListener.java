@@ -19,8 +19,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 import amata1219.parkour.function.ToggleHideMode;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.stage.Stage;
-import amata1219.parkour.stage.StageCategory;
+import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.ui.ParkourMenuUI;
 import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
@@ -103,23 +102,23 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			Player player = user.asBukkitPlayer();
 
 			//どこかのステージにいれば最終チェックポイント一覧を開く
-			if(user.currentStage != null) user.getInventoryUIs().lastCheckpointUI.openInventory(player);
+			if(user.currentParkour != null) user.inventoryUIs.lastCheckpointUI.openInventory(player);
 
 			//無ければ警告する
-			else MessageColor.color("&c-Operation blocked &7-@ &c-You are not on any stage").displayOnActionBar(player);
+			else MessageColor.color("&c-Operation blocked &7-@ &c-You are not on any parkour").displayOnActionBar(player);
 		});
 
 		ItemStack itemOfStageSelector = new ItemStack(Material.FEATHER);
 
-		applyMetaToItem(itemOfStageSelector, StringColor.color("&b-Stage selector"));
+		applyMetaToItem(itemOfStageSelector, StringColor.color("&b-Parkour selector"));
 
 		//ステージ一覧を開くアイテムの機能内容を定義する
 		stageSelector = new Tuple<>(itemOfStageSelector, user -> {
-			//プレイヤーが今いるステージを取得する
-			Stage stage = user.getCurrentStage();
+			//プレイヤーが今いるアスレを取得する
+			Parkour parkour = user.currentParkour;
 
 			//ステージのカテゴリーを取得する
-			StageCategory category = stage != null ? stage.category : StageCategory.NORMAL;
+			ParkourCategory category = parkour != null ? parkour.category : ParkourCategory.NORMAL;
 
 			//カテゴリーに対応したステージリストを開かせる
 			ParkourMenuUI.getInstance().getInventoryUI(category).openInventory(user.asBukkitPlayer());
@@ -140,7 +139,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		applyMetaToItem(itemOfMenuOpener, StringColor.color("&b-Menu opener"));
 
 		//メニューを開くアイテムの機能内容を定義する
-		menuOpener = new Tuple<>(itemOfMenuOpener, user -> user.getInventoryUIs().menu.openInventory(user.asBukkitPlayer()));
+		menuOpener = new Tuple<>(itemOfMenuOpener, user -> user.inventoryUIs.menu.openInventory(user.asBukkitPlayer()));
 	}
 
 	private void applyMetaToItem(ItemStack item, String displayName){

@@ -73,9 +73,9 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			int rank = Integer.parseInt(parkour.getColorlessName().replace("Update", ""));
 
 			//プレイヤーのランクがこれより低い場合
-			if(user.updateRank < rank){
+			if(user.getUpdateRank() < rank){
 				//ランクを更新する
-				user.updateRank = rank;
+				user.incrementUpdateRank();
 
 				ApplyRankToDisplayName.apply(user);
 
@@ -89,9 +89,9 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			int rank = Integer.parseInt(parkour.getColorlessName().replace("Extend", ""));
 
 			//プレイヤーのランクがこれより低い場合
-			if(user.extendRank < rank){
+			if(user.getExtendRank() < rank){
 				//ランクを更新する
-				user.extendRank = rank;
+				user.incrementExtendRank();
 
 				//表示例: Rank up @ amata1219's extend rank is 7!
 				MessageTemplate.capply("&b-Rank up &7-@ &b-$0's extend rank is $1-&r-&b-!", playerName, rank).broadcast();

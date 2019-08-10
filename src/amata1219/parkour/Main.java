@@ -30,7 +30,6 @@ import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
 import amata1219.parkour.task.AsyncTask;
 import amata1219.parkour.task.SaveParkourDataTask;
-import amata1219.parkour.task.SaveStageDataTask;
 import amata1219.parkour.task.SaveUserDataTask;
 import amata1219.parkour.task.UpdatePingTask;
 import amata1219.parkour.task.UpdateTimePlayedTask;
@@ -88,7 +87,6 @@ public class Main extends Plugin {
 
 		startTasks(
 			new SaveParkourDataTask(),
-			new SaveStageDataTask(),
 			new SaveUserDataTask(),
 			new UpdateTimePlayedTask(),
 			new UpdatePingTask()

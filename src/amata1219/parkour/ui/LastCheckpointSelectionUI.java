@@ -32,14 +32,14 @@ public class LastCheckpointSelectionUI implements InventoryUI {
 		Parkour currentParkour = user.currentParkour;
 
 		//カテゴリーを取得する
-		ParkourCategory category = currentParkour != null ? currentParkour.category : ParkourCategory.NORMAL;
+		ParkourCategory category = currentParkour.category;
 
 		//カテゴリー内の全アスレを取得する
 		List<Parkour> parkours = Parkours.getInstance().getParkours(category);
 
 		return build(parkours.size(), (l) -> {
 			//表示例: Last checkpoints @ The Earth of Marmalade
-			l.title = StringTemplate.capply("&b-Last checkpoints &7-@ &b-$0", category.toString());
+			l.title = StringTemplate.capply("&b-Last checkpoints &7-@ &b-$0", category.name);
 
 			//デフォルトスロットを設定する
 			l.defaultSlot((s) -> {
@@ -69,9 +69,9 @@ public class LastCheckpointSelectionUI implements InventoryUI {
 				//リストのサイズを最終チェックエリアの番号として扱う
 				int displayCheckAreaNumber = locations.size();
 
-				l.put((s) -> {
+				l.put(s -> {
 
-					s.onClick((event) -> {
+					s.onClick(event -> {
 						//クリックしたプレイヤーを取得する
 						Player player = event.player;
 
@@ -95,7 +95,7 @@ public class LastCheckpointSelectionUI implements InventoryUI {
 
 					});
 
-					s.icon(Material.GRASS_BLOCK, (i) -> {
+					s.icon(Material.GRASS_BLOCK, i -> {
 						//表示例: 1 @ Update1
 						i.displayName = StringTemplate.capply("&7-$0 @ $1", displayCheckAreaNumber, parkourName);
 

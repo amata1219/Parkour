@@ -3,7 +3,6 @@ package amata1219.parkour.ui;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.bukkit.Material;
@@ -14,7 +13,9 @@ import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.string.message.MessageTemplate;
+import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
+import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.user.Users;
 
 public class CategorizedParkoursSelectionUI implements InventoryUI {
@@ -28,14 +29,17 @@ public class CategorizedParkoursSelectionUI implements InventoryUI {
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
-		//カテゴリ内のステージリストを取得する
-		List<Stage> stages = Stages.getInstance().getStagesByCategory(category);
+		//カテゴリ名を取得する
+		String categoryName = category.name;
 
-		InventoryLine line = InventoryLine.necessaryInventoryLine(stages.size() + 9);
+		//カテゴリ内のステージリストを取得する
+		List<Parkour> parkours = Parkours.getInstance().getParkours(category);
+
+		InventoryLine line = InventoryLine.necessaryInventoryLine(parkours.size() + 9);
 
 		return build(line, (l) -> {
 			//表示例: Extend
-			l.title = StringTemplate.capply("&b-$0", category.getName());
+			l.title = StringTemplate.capply("&b-$0", categoryName);
 
 			//デフォルトスロットを設定する
 			l.defaultSlot((s) -> {
@@ -48,8 +52,9 @@ public class CategorizedParkoursSelectionUI implements InventoryUI {
 
 			AtomicInteger slotIndex = new AtomicInteger();
 
-			stages.forEach(stage -> {
-				String stageName = stage.name;
+			parkours.forEach(parkour -> {
+				//アスレ名を取得する
+				String parkourName = parkour.name;
 
 				l.put((s) -> {
 
@@ -57,20 +62,18 @@ public class CategorizedParkoursSelectionUI implements InventoryUI {
 						Player player = event.player;
 
 						//ステージのスポーン地点にテレポートさせる
-						player.teleport(stage.getSpawnLocation().asBukkitLocation());
+						player.teleport(parkour.spawnPoint.asBukkitLocation());
 
-						users.getUser(player).currentStage = stage;
+						//選択したアスレを今いるアスレとして設定する
+						users.getUser(player).currentParkour = parkour;
 
 						//表示例: Teleported to The Earth of Marmalade!
-						MessageTemplate.capply("&b-Teleported to $0-&r-&b-!", stageName).displayOnActionBar(player);
+						MessageTemplate.capply("&b-Teleported to $0-&r-&b-!", parkourName).displayOnActionBar(player);
 					});
 
 					s.icon(Material.GLASS, (i) -> {
 						//表示名: The Earth of Marmalade
-						i.displayName = StringTemplate.capply("&b-$0", stageName);
-
-						//ステージ内のアスレの名前を説明文にセットする
-						i.lore = stage.parkourNames.stream().map(parkourName -> StringTemplate.capply("&7-: &b-$0", parkourName)).collect(Collectors.toList());
+						i.displayName = StringTemplate.capply("&b-$0", parkourName);
 					});
 
 				}, slotIndex.getAndIncrement());
@@ -96,7 +99,7 @@ public class CategorizedParkoursSelectionUI implements InventoryUI {
 
 					s.icon(Material.FEATHER, (ic) -> {
 						//表示例: Update
-						ic.displayName = StringTemplate.capply("&b-$0", category.getName());
+						ic.displayName = StringTemplate.capply("&b-$0", categoryName);
 
 						//今開いているステージリストのカテゴリと同じであれば発光させる
 						if(category == this.category) ic.gleam();

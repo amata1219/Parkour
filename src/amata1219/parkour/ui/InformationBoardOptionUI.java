@@ -58,19 +58,17 @@ public class InformationBoardOptionUI implements InventoryUI {
 
 			});
 
-			l.onClose((event) -> {
-				user.getInformationBoard().loadScoreboard();
-			});
+			l.onClose(event -> user.board.loadScoreboard());
 
 			for(Quadruple<Integer, Material, String, Function<Boolean, Boolean>> component : components){
 				Function<Boolean, Boolean> state = component.fourth;
 
-				l.put((s) -> {
-					s.icon(component.second, (i) -> {
+				l.put(s -> {
+					s.icon(component.second, i -> {
 						applyState(i, component.third, state.apply(false));
 					});
 
-					s.onClick((event) -> {
+					s.onClick(event -> {
 						Icon icon = event.currentIcon;
 
 						//設定を反転させる

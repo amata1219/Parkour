@@ -22,8 +22,9 @@ public class Parkour {
 	public ImmutableEntityLocation spawnPoint;
 	public ParkourRegion startLine, finishLine;
 	public CheckAreas checkAreas;
-	public Records records;
 	public Rewards rewards;
+	public boolean enableTimeAttack;
+	public Records records;
 	public PlayerConnections connections;
 
 	public Parkour(Yaml yaml){

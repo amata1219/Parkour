@@ -10,7 +10,7 @@ public class UpdateTimePlayedTask extends AsyncTask {
 
 	@Override
 	public void run() {
-		Users.getInstnace().getOnlineUsers().forEach(user -> user.getInformationBoard().updateTimePlayed());
+		Users.getInstnace().getOnlineUsers().forEach(user -> user.board.updateTimePlayed());
 	}
 
 }
