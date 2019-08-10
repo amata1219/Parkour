@@ -122,7 +122,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			StageCategory category = stage != null ? stage.category : StageCategory.NORMAL;
 
 			//カテゴリーに対応したステージリストを開かせる
-			ParkourMenuUI.getInstance().getStagesUI(category).openInventory(user.asBukkitPlayer());
+			ParkourMenuUI.getInstance().getInventoryUI(category).openInventory(user.asBukkitPlayer());
 
 		});
 

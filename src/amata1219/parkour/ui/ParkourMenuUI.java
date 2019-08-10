@@ -2,25 +2,29 @@ package amata1219.parkour.ui;
 
 import java.util.HashMap;
 
-import amata1219.parkour.stage.StageCategory;
+import amata1219.parkour.parkour.ParkourCategory;
 
 public class ParkourMenuUI {
 
 	private static ParkourMenuUI instance;
 
-	public static ParkourMenuUI getInstance(){
-		return instance != null ? instance : (instance = new ParkourMenuUI());
+	public static void load(){
+		instance = new ParkourMenuUI();
 	}
 
-	private final HashMap<StageCategory, CategorizedParkoursSelectionUI> stageUIs = new HashMap<>(StageCategory.values().length);
+	public static ParkourMenuUI getInstance(){
+		return instance;
+	}
+
+	private final HashMap<ParkourCategory, CategorizedParkoursSelectionUI> uis = new HashMap<>(ParkourCategory.values().length);
 
 	private ParkourMenuUI(){
-		for(StageCategory category : StageCategory.values()) stageUIs.put(category, new CategorizedParkoursSelectionUI(category));
+		for(ParkourCategory category : ParkourCategory.values()) uis.put(category, new CategorizedParkoursSelectionUI(category));
 	}
 
 	//カテゴリーに対応したステージリストを取得する
-	public CategorizedParkoursSelectionUI getStagesUI(StageCategory category){
-		return stageUIs.get(category);
+	public CategorizedParkoursSelectionUI getInventoryUI(ParkourCategory category){
+		return uis.get(category);
 	}
 
 }
