@@ -28,6 +28,9 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		//アスレ名を取得する
 		String parkourName = parkour.name;
 
+		//タイムアタックが有効かどうか
+		boolean enableTimeAttack = parkour.enableTimeAttack;
+
 		//クリア済みのアスレ名リストを取得する
 		Set<String> clearedParkourNames = user.clearedParkourNames;
 
@@ -37,14 +40,15 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		//クリア済みのアスレとして記録する(コレクションにはSetを用いているため要素の重複は起こらない)
 		user.clearedParkourNames.add(parkourName);
 
-		//アスレをプレイし始めた時間を取得する
-		long timeToStartPlaying = user.timeToStartPlaying;
-
 		String playerName = player.getName();
 
-		if(timeToStartPlaying > 0){
+		//タイムアタックが有効の場合
+		if(enableTimeAttack){
 			//ゴールタイムを秒単位で出す
 			float time = (System.currentTimeMillis() - user.timeToStartPlaying) / 1000F;
+
+			//タイムを削除する
+			user.timeToStartPlaying = 0;
 
 			Records records = parkour.records;
 
@@ -60,9 +64,6 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			//表示例: amata1219 cleared Update6!
 			MessageTemplate.capply("$0 cleared $1!", playerName, parkourName).broadcast();
 		}
-
-		//タイムを削除する
-		user.timeToStartPlaying = 0;
 
 		//遊んでいるアスレを削除する
 		user.parkourPlayingNow = null;

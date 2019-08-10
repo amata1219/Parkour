@@ -28,7 +28,7 @@ public class UpdateInformationBoardListener implements PlayerJoinListener, Playe
 
 		users.getOnlineUsers().stream()
 		.filter(ur -> ur.board != null)
-		.map(ur -> ur.getInformationBoard())
+		.map(ur -> ur.board)
 		.forEach(InformationBoard::updateOnlinePlayers);
 	}
 
@@ -47,7 +47,7 @@ public class UpdateInformationBoardListener implements PlayerJoinListener, Playe
 	}
 
 	private InformationBoard getBoard(Player player){
-		return getUser(player).getInformationBoard();
+		return getUser(player).board;
 	}
 
 	private User getUser(Player player){

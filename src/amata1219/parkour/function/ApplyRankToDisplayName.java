@@ -12,7 +12,7 @@ public class ApplyRankToDisplayName {
 		//ニックネームAPIを取得する
 		//BetterNickAPI api = Main.getNickAPI();
 
-		int rank = user.updateRank;
+		int rank = user.getUpdateRank();
 
 		//プレイヤーを取得する
 		Player player = user.asBukkitPlayer();
