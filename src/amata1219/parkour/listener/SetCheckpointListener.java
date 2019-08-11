@@ -62,7 +62,7 @@ public class SetCheckpointListener implements Listener {
 		int checkAreaNumber = parkour.checkAreas.getCheckAreaNumber(checkArea);
 
 		//不正な番号であれば戻る
-		if(checkAreaNumber <= -1) return;
+		if(checkAreaNumber < 0) return;
 
 		//チェックポイントとして設定する
 		user.checkpoints.setCheckpoint(parkour, checkAreaNumber, new ImmutableEntityLocation(location));

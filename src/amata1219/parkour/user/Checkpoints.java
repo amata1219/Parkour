@@ -19,7 +19,7 @@ public class Checkpoints {
 
 	private final Parkours parkourSet = Parkours.getInstance();
 
-	private final Map<String, List<ImmutableEntityLocation>> checkpoints = new HashMap<>();
+	private final Map<String, Map<Integer, ImmutableEntityLocation>> checkpoints = new HashMap<>();
 
 	public Checkpoints(Yaml yaml){
 		//セクションが存在しなければ戻る
@@ -86,28 +86,29 @@ public class Checkpoints {
 		String parkourName = parkour.name;
 
 		//パルクールに対応したチェックポイントリストを取得、存在しなければ新規作成する
-		List<ImmutableEntityLocation> points = checkpoints.get(parkourName);
-		if(points == null) checkpoints.put(parkourName, points = new ArrayList<>());
+		Map<Integer, ImmutableEntityLocation> points = checkpoints.get(parkourName);
+		if(points == null) checkpoints.put(parkourName, points = new HashMap<>());
 
-		if(points.size() >= checkAreaNumber)
-			//新しいチェックポイントであればそのまま追加
-			points.add(location);
-		else
-			//既に存在しているチェックポイントであれば更新する
-			points.set(checkAreaNumber, location);
+		//対応した番号にチェックポイントをセットする
+		points.put(checkAreaNumber, location);
 	}
 
 	public void save(Yaml yaml){
 		//各チェックポイントを記録する
-		for(Entry<String, List<ImmutableEntityLocation>> entry : checkpoints.entrySet()){
+		for(Entry<String, Map<Integer, ImmutableEntityLocation>> eachParkourCheckpointsEntry : checkpoints.entrySet()){
 			//アスレ名を取得する
-			String parkourName = entry.getKey();
+			String parkourName = eachParkourCheckpointsEntry.getKey();
 
-			//座標を文字列に変換しリスト化する
-			List<String> points = entry.getValue().stream().map(ImmutableEntityLocation::serialize).collect(Collectors.toList());
+			for(Entry<Integer, ImmutableEntityLocation> eachCheckpointEntry : eachParkourCheckpointsEntry.getValue().entrySet()){
+				//チェックエリア番号を取得する
+				String checkAreaNumber = eachCheckpointEntry.getKey().toString();
 
-			//対応したアスレ名の階層にチェックポイントリストを記録する
-			yaml.set(StringTemplate.apply("Check points.$0", parkourName), points);
+				//チェックポイントを取得する
+				ImmutableEntityLocation point = eachCheckpointEntry.getValue();
+
+				//対応したアスレ、チェックエリア番号にセットする
+				yaml.set(StringTemplate.apply("Check points.$0.$1", parkourName, checkAreaNumber), point.serialize());
+			}
 		}
 	}
 
