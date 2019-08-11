@@ -1,4 +1,5 @@
 'Enable': false
+'Category': NORMAL
 'Origin': "world,0,0,0,0,0"
 'Border color': "0,0,0"
 'Region': "world,0,0,0,0,0,0"

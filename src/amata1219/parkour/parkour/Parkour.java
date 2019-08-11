@@ -25,20 +25,22 @@ public class Parkour {
 	public Rewards rewards;
 	public boolean enableTimeAttack;
 	public Records records;
-	public PlayerConnections connections;
+	public PlayerConnections connections = new PlayerConnections();
 
 	public Parkour(Yaml yaml){
 		name = yaml.name;
 
+		category = ParkourCategory.valueOf(yaml.getString("Category"));
+
 		//アスレの基準点を生成する
 		ImmutableBlockLocation origin = ImmutableBlockLocation.deserialize(yaml.getString("Origin"));
 
-		spawnPoint = (ImmutableEntityLocation) ImmutableEntityLocation.deserialize(yaml.getString("Spawn point")).add(origin);
-		region = Region.deserialize(yaml.getString("Region"));
+		spawnPoint = (ImmutableEntityLocation) origin.add(ImmutableEntityLocation.deserialize(yaml.getString("Spawn point")));
+		region = origin.add(Region.deserialize(yaml.getString("Region")));
 		borderColor = Color.deserialize(yaml.getString("Border color"));
-		startLine = new ParkourRegion(this, Region.deserializeToCorners(yaml.getString("Start line")));
-		finishLine =  new ParkourRegion(this, Region.deserializeToCorners(yaml.getString("Finish line")));
-		checkAreas = new CheckAreas(this, yaml);
+		startLine = new ParkourRegion(this, origin.add(Region.deserialize(yaml.getString("Start line"))));
+		finishLine =  new ParkourRegion(this, origin.add(Region.deserialize(yaml.getString("Finish line"))));
+		checkAreas = new CheckAreas(yaml, this, origin);
 		enableTimeAttack = yaml.getBoolean("Enable time attack");
 		records = new Records(yaml);
 		rewards = new Rewards(StringSplit.splitToIntArguments(yaml.getString("Rewards")));
@@ -100,15 +102,17 @@ public class Parkour {
 	public void save(){
 		Yaml yaml = Parkours.getInstance().makeYaml(name);
 
+		yaml.set("Category", category.toString());
+
 		ImmutableBlockLocation origin = region.lesserBoundaryCorner;
 
 		yaml.set("Origin", origin.serialize());
-		yaml.set("Region", region.relative(origin).serialize());
-		yaml.set("Spawn point", spawnPoint.relative(origin).serialize());
+		yaml.set("Region", origin.relative(region).serialize());
+		yaml.set("Spawn point", origin.relative(spawnPoint).serialize());
 		yaml.set("Border color", borderColor.serialize());
-		yaml.set("Start line", startLine.relative(origin).serialize());
-		yaml.set("Finish line", finishLine.relative(origin).serialize());
-		checkAreas.save(yaml);
+		yaml.set("Start line", origin.relative(startLine).serialize());
+		yaml.set("Finish line", origin.relative(finishLine).serialize());
+		checkAreas.save(yaml, origin);
 		yaml.set("Rewards", rewards.serialize());
 		yaml.set("Enable time attack", enableTimeAttack);
 		records.save(yaml);

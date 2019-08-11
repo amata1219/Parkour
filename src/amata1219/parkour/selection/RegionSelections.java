@@ -102,8 +102,6 @@ public class RegionSelections implements Listener {
 		Player player = event.getPlayer();
 		UUID uuid = player.getUniqueId();
 
-		System.out.println("0");
-
 		//範囲選択中のプレイヤーでなければ戻る
 		if(!selections.containsKey(uuid)) return;
 

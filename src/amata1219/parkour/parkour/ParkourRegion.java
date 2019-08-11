@@ -11,7 +11,6 @@ import amata1219.amalib.region.LocationOnBorderCollector;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.schedule.Async;
 import amata1219.amalib.selection.RegionSelection;
-import amata1219.amalib.tuplet.Tuple;
 import amata1219.amalib.util.Color;
 import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_13_R2.ParticleParamRedstone;
@@ -34,8 +33,8 @@ public class ParkourRegion extends Region {
 		this(parkour, selection.getLesserBoundaryCorner(), selection.getGreaterBoundaryCorner());
 	}
 
-	public ParkourRegion(Parkour parkour, Tuple<ImmutableBlockLocation, ImmutableBlockLocation> corners){
-		this(parkour, corners.first, corners.second);
+	public ParkourRegion(Parkour parkour, Region region){
+		this(parkour, region.lesserBoundaryCorner, region.greaterBoundaryCorner);
 	}
 
 	public ParkourRegion(Parkour parkour, ImmutableBlockLocation lesserBoundaryCorner, ImmutableBlockLocation greaterBoundaryCorner){

@@ -3,6 +3,7 @@ package amata1219.parkour.ui;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.bukkit.Material;
@@ -34,7 +35,9 @@ public class CategorizedParkoursSelectionUI implements InventoryUI {
 		String categoryName = category.name;
 
 		//カテゴリ内のステージリストを取得する
-		List<Parkour> parkours = Parkours.getInstance().getParkours(category);
+		List<Parkour> parkours = Parkours.getInstance().getParkours(category).stream()
+											.filter(parkour -> parkour.enable)
+											.collect(Collectors.toList());
 
 		InventoryLine line = InventoryLine.necessaryInventoryLine(parkours.size() + 9);
 

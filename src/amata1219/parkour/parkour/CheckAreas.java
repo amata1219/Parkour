@@ -3,6 +3,7 @@ package amata1219.parkour.parkour;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import amata1219.amalib.location.ImmutableBlockLocation;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.yaml.Yaml;
 
@@ -12,9 +13,9 @@ public class CheckAreas {
 
 	public final List<ParkourRegion> areas;
 
-	public CheckAreas(Parkour parkour, Yaml yaml){
+	public CheckAreas(Yaml yaml, Parkour parkour, ImmutableBlockLocation origin){
 		areas = yaml.getStringList("Check areas").stream()
-							.map(text -> new ParkourRegion(parkour, Region.deserializeToCorners(text)))
+							.map(text -> new ParkourRegion(parkour, origin.add(Region.deserialize(text))))
 							.collect(Collectors.toList());
 	}
 
@@ -78,8 +79,13 @@ public class CheckAreas {
 		areas.forEach(parkours::unregisterCheckArea);
 	}
 
-	public void save(Yaml yaml){
-		yaml.set("Check areas", areas.stream().map(ParkourRegion::serialize).collect(Collectors.toList()));
+	public void save(Yaml yaml, ImmutableBlockLocation origin){
+		yaml.set("Check areas",
+				areas.stream()
+						.map(area -> origin.relative(area))
+						.map(Region::serialize)
+						.collect(Collectors.toList())
+				);
 	}
 
 }

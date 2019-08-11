@@ -12,6 +12,7 @@ import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.util.Color;
 import amata1219.parkour.parkour.Parkour;
+import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.parkour.Rewards;
@@ -122,6 +123,24 @@ public class ParkourCommand implements Command {
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を無効化しました。", parkourName));
 			return;
+		}case "category":{
+			//指定されたアスレが存在しなければ戻る
+			if(blockNotExistParkour(sender, parkourName)) return;
+
+			String text = args.next().toUpperCase();
+			ParkourCategory category;
+			try{
+				category = ParkourCategory.valueOf(text);
+			}catch(Exception e){
+				sender.warn("/parkour [parkour_name] [category] [NORMAL/UPDATE/EXTEND/SEGMENT/BIOME]");
+				return;
+			}
+
+			Parkour parkour = parkours.getParkour(parkourName);
+			parkour.apply(it -> it.category = category);
+
+			sender.info(StringTemplate.capply("$0-&r-&b-のカテゴリーを$1に設定しました。", parkourName, category));
+			return;
 		}case "spawn":{
 			//指定されたアスレが存在しなければ戻る
 			if(blockNotExistParkour(sender, parkourName)) return;
@@ -132,7 +151,7 @@ public class ParkourCommand implements Command {
 			Location location = sender.asPlayerCommandSender().getLocation();
 
 			//イミュータブルな座標にしブロックの中央に調整した上でセットする
-			parkour.apply(it -> it.spawnPoint = new ImmutableEntityLocation(location).middle());
+			parkour.apply(it -> it.spawnPoint = (ImmutableEntityLocation) new ImmutableEntityLocation(location).middle());
 
 			sender.info(StringTemplate.capply("$0-&r-&b-のスポーン地点を現在地点に書き換えました。", parkourName));
 			return;
@@ -176,7 +195,7 @@ public class ParkourCommand implements Command {
 			String text = args.next();
 
 			if(!REWARDS_FORMAT.matcher(text).matches()){
-				sender.warn("/setreward [parkour_name] [first,second_and_subsequent]");
+				sender.warn("/parkour [parkour_name] [first,second_and_subsequent]");
 				return;
 			}
 
@@ -196,7 +215,7 @@ public class ParkourCommand implements Command {
 			if(blockNotExistParkour(sender, parkourName)) return;
 
 			if(!args.hasNextBoolean()){
-				sender.warn("/setreward [parkour_name] [timeattack] [true/false]");
+				sender.warn("/parkour [parkour_name] [timeattack] [true/false]");
 				return;
 			}
 
