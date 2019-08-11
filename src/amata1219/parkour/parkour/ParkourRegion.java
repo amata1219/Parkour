@@ -50,6 +50,8 @@ public class ParkourRegion extends Region {
 
 		if(running) undisplayBorders();
 
+		System.out.println("generate particle packets on pr");
+
 		List<ImmutableEntityLocation> locations = LocationOnBorderCollector.collect(this, 4);
 
 		Color color = parkour.borderColor;
@@ -100,12 +102,15 @@ public class ParkourRegion extends Region {
 				connection.sendPacket(packet1);
 				connection.sendPacket(packet2);
 			});
-		}).executeTimer(0, 1);
+		}).executeTimer(0, 2);
 	}
 
 	//境界線を非表示にする
 	public void undisplayBorders(){
-		if(task != null) task.cancel();
+		if(task == null) return;
+
+		task.cancel();
+		task = null;
 	}
 
 }

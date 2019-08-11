@@ -96,14 +96,16 @@ public class Parkours {
 	}
 
 	public void unregisterParkour(Parkour parkour){
-		//スタートラインの登録を解除する
-		unregisterStartLine(parkour.startLine);
+		if(parkour.enable){
+			//スタートラインの登録を解除する
+			unregisterStartLine(parkour.startLine);
 
-		//フィニッシュラインの登録を解除する
-		unregisterFinishLine(parkour.finishLine);
+			//フィニッシュラインの登録を解除する
+			unregisterFinishLine(parkour.finishLine);
 
-		//全チェックエリアの登録を解除する
-		parkour.checkAreas.unregisterAll();
+			//全チェックエリアの登録を解除する
+			parkour.checkAreas.unregisterAll();
+		}
 
 		parkours.remove(parkour.name);
 	}
