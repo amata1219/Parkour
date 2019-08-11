@@ -9,7 +9,9 @@ import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.RankedParkour;
 import amata1219.parkour.parkour.Records;
+import amata1219.parkour.parkour.RankedParkour.RankedParkourType;
 import amata1219.parkour.user.User;
 import amata1219.parkour.util.TimeFormat;
 
@@ -67,37 +69,40 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		//遊んでいるアスレを削除する
 		user.parkourPlayingNow = null;
 
-		//Updateの場合
-		if(parkour.isUpdate()){
-			//アスレのランクを取得する
-			int rank = Integer.parseInt(parkour.getColorlessName().replace("Update", ""));
+		//ランクアップアスレの場合
+		label: if(parkour instanceof RankedParkour){
+			RankedParkour rankedParkour = (RankedParkour) parkour;
+			RankedParkourType type = rankedParkour.type;
+			int rank = rankedParkour.rank;
 
-			//プレイヤーのランクがこれより低い場合
-			if(user.getUpdateRank() < rank){
+			//各タイプで分岐する
+			switch(type){
+			case UPDATE:
+				//プレイヤーのランクの方が高ければ抜ける
+				if(user.getUpdateRank() >= rank) break;
+
 				//ランクを更新する
 				user.incrementUpdateRank();
 
+				//表示名を更新する
 				ApplyRankToDisplayName.apply(user);
+				break;
+			case EXTEND:
+				//プレイヤーのランクの方が高ければ抜ける
+				if(user.getExtendRank() >= rank) break;
 
-				//表示例: Rank up @ amata1219's update rank is 8!
-				MessageTemplate.capply("&b-Rank up &7-@ &b-$0's update rank is $1-&r-&b-!", playerName, rank).broadcast();
-			}
-
-		//Extendの場合
-		}else if(parkour.isExtend()){
-			//アスレのランクを取得する
-			int rank = Integer.parseInt(parkour.getColorlessName().replace("Extend", ""));
-
-			//プレイヤーのランクがこれより低い場合
-			if(user.getExtendRank() < rank){
 				//ランクを更新する
 				user.incrementExtendRank();
-
-				//表示例: Rank up @ amata1219's extend rank is 7!
-				MessageTemplate.capply("&b-Rank up &7-@ &b-$0's extend rank is $1-&r-&b-!", playerName, rank).broadcast();
+				break;
+			default:
+				break label;
 			}
+
+			//表示例: Rank up @ amata1219's update rank is 7!
+			MessageTemplate.capply("&b-&l-Rank up &7-@ &b-$0's $1 rank is $2!", playerName, type.toString().toLowerCase(), rank).broadcast();
 		}
 
+		//クリア回数に基づき報酬を取得する
 		int coins = parkour.rewards.getReward(haveCleared ? 1 : 0);
 
 		//報酬のコインを与える

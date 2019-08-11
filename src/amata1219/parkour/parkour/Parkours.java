@@ -52,7 +52,7 @@ public class Parkours {
 			Yaml yaml = new Yaml(plugin, file);
 
 			//Yamlに基づきアスレを生成する
-			Parkour parkour = new Parkour(this, yaml);
+			Parkour parkour = RankedParkour.isRankedParkour(yaml.name) ? new RankedParkour(this, yaml) : new Parkour(this, yaml);
 
 			//アスレを登録する
 			registerParkour(parkour);

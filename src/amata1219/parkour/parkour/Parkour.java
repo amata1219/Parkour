@@ -57,14 +57,6 @@ public class Parkour {
 		return ChatColor.stripColor(name);
 	}
 
-	public boolean isUpdate(){
-		return getColorlessName().startsWith("Update");
-	}
-
-	public boolean isExtend(){
-		return getColorlessName().startsWith("Extend");
-	}
-
 	public World getWorld(){
 		return region.world;
 	}
