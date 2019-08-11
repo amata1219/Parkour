@@ -12,6 +12,7 @@ import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
+import amata1219.parkour.parkour.RankedParkour.RankedParkourType;
 
 public class Parkours {
 
@@ -119,6 +120,22 @@ public class Parkours {
 	public List<Parkour> getParkours(ParkourCategory category){
 		return parkours.values().stream()
 				.filter(parkour -> parkour.category == category)
+				.collect(Collectors.toList());
+	}
+
+	public List<RankedParkour> getUpdateParkours(){
+		return getRankedParkours(RankedParkourType.UPDATE);
+	}
+
+	public List<RankedParkour> getExtendParkours(){
+		return getRankedParkours(RankedParkourType.EXTEND);
+	}
+
+	private List<RankedParkour> getRankedParkours(RankedParkourType type){
+		return parkours.values().stream()
+				.filter(parkour -> parkour instanceof RankedParkour)
+				.map(parkour -> (RankedParkour) parkour)
+				.filter(parkour -> parkour.type == type)
 				.collect(Collectors.toList());
 	}
 

@@ -130,8 +130,18 @@ public class ParkourSelectionUI implements InventoryUI {
 				l.put(s -> {
 
 					s.onClick(e -> {
-						//カテゴリに対応したステージリストを開かせる
-						ParkourMenuUI.getInstance().getInventoryUI(category).openInventory(e.player);
+						//カテゴリーに対応したアスレリストを開かせる
+						switch(category){
+						case UPDATE:
+
+							break;
+						case EXTEND:
+
+							break;
+						default:
+							ParkourMenuUI.getInstance().getInventoryUI(category).openInventory(e.player);
+							break;
+						}
 					});
 
 					s.icon(Material.FEATHER, i -> {

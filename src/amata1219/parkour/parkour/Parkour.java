@@ -39,6 +39,7 @@ public class Parkour {
 		//アスレの領域の基準点を生成する
 		ImmutableBlockLocation origin = ImmutableBlockLocation.deserialize(yaml.getString("Origin"));
 
+		//スポーン地点を設定する
 		ImmutableEntityLocation relativeSpawnPoint = ImmutableEntityLocation.deserialize(yaml.getString("Spawn point"));
 		ImmutableEntityLocation absoluteSpawnPoint = (ImmutableEntityLocation) origin.add(relativeSpawnPoint);
 		spawnPoint = new ImmutableEntityLocation(origin.world, absoluteSpawnPoint.x, absoluteSpawnPoint.y, absoluteSpawnPoint.z, relativeSpawnPoint.yaw, relativeSpawnPoint.pitch);
