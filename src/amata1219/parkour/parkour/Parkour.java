@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.util.Consumer;
 
+import amata1219.amalib.location.EntityLocation;
 import amata1219.amalib.location.ImmutableBlockLocation;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.region.Region;
@@ -35,7 +36,13 @@ public class Parkour {
 		//アスレの基準点を生成する
 		ImmutableBlockLocation origin = ImmutableBlockLocation.deserialize(yaml.getString("Origin"));
 
-		spawnPoint = (ImmutableEntityLocation) origin.add(ImmutableEntityLocation.deserialize(yaml.getString("Spawn point")));
+		ImmutableEntityLocation loc = ImmutableEntityLocation.deserialize(yaml.getString("Spawn point"));
+		EntityLocation eloc = origin.add(loc);
+		System.out.println(eloc instanceof ImmutableEntityLocation);
+
+		spawnPoint = (ImmutableEntityLocation) eloc;
+
+		//spawnPoint = (ImmutableEntityLocation) origin.add(ImmutableEntityLocation.deserialize(yaml.getString("Spawn point")));
 		region = origin.add(Region.deserialize(yaml.getString("Region")));
 		borderColor = Color.deserialize(yaml.getString("Border color"));
 		startLine = new ParkourRegion(this, origin.add(Region.deserialize(yaml.getString("Start line"))));
