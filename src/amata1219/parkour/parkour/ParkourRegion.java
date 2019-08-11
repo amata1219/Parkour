@@ -62,7 +62,7 @@ public class ParkourRegion extends Region {
 								float blue = color.adjustBlue(30) / 255f;
 
 								return new PacketPlayOutWorldParticles(new ParticleParamRedstone(red, green, blue, 1), true,
-										(float) location.getEntityX(), (float) location.getEntityY(), (float) location.getEntityZ(),
+										(float) location.getEntityX(), (float) location.getEntityY() + 0.15f, (float) location.getEntityZ(),
 										red, green, blue, 1, 0);
 								})
 							.collect(Collectors.toList());
@@ -100,7 +100,7 @@ public class ParkourRegion extends Region {
 				connection.sendPacket(packet1);
 				connection.sendPacket(packet2);
 			});
-		}).executeTimer(0, 3);
+		}).executeTimer(0, 1);
 	}
 
 	//境界線を非表示にする

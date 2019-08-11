@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -32,7 +33,7 @@ public class TestCommand implements Command {
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {
-		if(!blockNonPlayer(sender)) return;
+		if(blockNonPlayer(sender)) return;
 
 		//test 128,128,128
 
@@ -79,14 +80,14 @@ public class TestCommand implements Command {
 								float blue = color.adjustBlue(30) / 255f;
 
 								return new PacketPlayOutWorldParticles(new ParticleParamRedstone(red, green, blue, 1), true,
-										(float) location.getEntityX(), (float) location.getEntityY(), (float) location.getEntityZ(),
+										(float) location.getEntityX(), (float) location.getEntityY() + 0.1f, (float) location.getEntityZ(),
 										red, green, blue, 1, 0);
 								})
 							.collect(Collectors.toList());
 
 		AtomicInteger counter = new AtomicInteger();
 		AtomicInteger position1 = new AtomicInteger(0);
-		AtomicInteger position2 = new AtomicInteger( packets.size() / 2);
+		AtomicInteger position2 = new AtomicInteger(packets.size() / 2);
 
 		final int size = packets.size();
 
@@ -105,8 +106,10 @@ public class TestCommand implements Command {
 			PacketPlayOutWorldParticles packet1 = packets.get(position1.getAndIncrement());
 			PacketPlayOutWorldParticles packet2 = packets.get(position2.getAndIncrement());
 
-			((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet1);
-			((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet2);
+			for(Player pl : Bukkit.getOnlinePlayers()){
+				((CraftPlayer) pl).getHandle().playerConnection.sendPacket(packet1);
+				((CraftPlayer) pl).getHandle().playerConnection.sendPacket(packet2);
+			}
 		}).executeTimer(0, 3);
 	}
 

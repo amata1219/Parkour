@@ -32,11 +32,10 @@ public class PassStartLineListener extends PassRegionBoundaryAbstractListener {
 			if(enableTimeAttack){
 				//プレイし始めた時間を記録する
 				user.timeToStartPlaying = System.currentTimeMillis();
-
-				//表示例: Challenge started @ Update10
-				MessageTemplate.capply("&b-Challenge started @ $0-&r-&b-!", parkourName).displayOnActionBar(player);
 			}
 
+			//表示例: Challenge started @ Update10
+			MessageTemplate.capply("&b-Challenge started @ $0-&r-&b-!", parkourName).displayOnActionBar(player);
 		//スタートラインからスポーン地点側に踏み込んだ時
 		}else if(from != null && to == null){
 

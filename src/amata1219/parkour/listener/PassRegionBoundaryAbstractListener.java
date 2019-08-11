@@ -58,6 +58,8 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 		if(parkour == null)
 			return;
 
+		System.out.println("onMove");
+
 		onMove(player, user, parkour, fromRegion, toRegion);
 	}
 

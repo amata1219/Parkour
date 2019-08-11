@@ -4,7 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.util.Consumer;
 
-import amata1219.amalib.location.EntityLocation;
 import amata1219.amalib.location.ImmutableBlockLocation;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.region.Region;
@@ -30,19 +29,16 @@ public class Parkour {
 
 	public Parkour(Yaml yaml){
 		name = yaml.name;
-
+		enable = yaml.getBoolean("Enable");
 		category = ParkourCategory.valueOf(yaml.getString("Category"));
 
 		//アスレの基準点を生成する
 		ImmutableBlockLocation origin = ImmutableBlockLocation.deserialize(yaml.getString("Origin"));
 
-		ImmutableEntityLocation loc = ImmutableEntityLocation.deserialize(yaml.getString("Spawn point"));
-		EntityLocation eloc = origin.add(loc);
-		System.out.println(eloc instanceof ImmutableEntityLocation);
+		ImmutableEntityLocation relativeSpawnPoint = ImmutableEntityLocation.deserialize(yaml.getString("Spawn point"));
+		ImmutableEntityLocation absoluteSpawnPoint = (ImmutableEntityLocation) origin.add(relativeSpawnPoint);
+		spawnPoint = new ImmutableEntityLocation(origin.world, absoluteSpawnPoint.x, absoluteSpawnPoint.y, absoluteSpawnPoint.z, relativeSpawnPoint.yaw, relativeSpawnPoint.pitch);
 
-		spawnPoint = (ImmutableEntityLocation) eloc;
-
-		//spawnPoint = (ImmutableEntityLocation) origin.add(ImmutableEntityLocation.deserialize(yaml.getString("Spawn point")));
 		region = origin.add(Region.deserialize(yaml.getString("Region")));
 		borderColor = Color.deserialize(yaml.getString("Border color"));
 		startLine = new ParkourRegion(this, origin.add(Region.deserialize(yaml.getString("Start line"))));
@@ -109,6 +105,7 @@ public class Parkour {
 	public void save(){
 		Yaml yaml = Parkours.getInstance().makeYaml(name);
 
+		yaml.set("Enable", enable);
 		yaml.set("Category", category.toString());
 
 		ImmutableBlockLocation origin = region.lesserBoundaryCorner;
