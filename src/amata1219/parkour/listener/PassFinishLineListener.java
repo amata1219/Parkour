@@ -21,9 +21,8 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 
 	@Override
 	public void onMove(Player player, User user, Parkour parkour, ParkourRegion from, ParkourRegion to) {
-		//フィニッシュラインに初めて踏み込んだのでなければ戻る
-		if(user.parkourPlayingNow == null || from != null || to == null)
-			return;
+		//アスレをゴールしたのでなければ戻る
+		if(user.parkourPlayingNow == null || from != null || to == null) return;
 
 		//アスレ名を取得する
 		String parkourName = parkour.name;

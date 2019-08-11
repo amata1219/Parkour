@@ -1,6 +1,7 @@
 package amata1219.parkour.user;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,19 +27,27 @@ public class Checkpoints {
 		if(!yaml.isConfigurationSection("Check points")) return;
 
 		//セクションを取得する
-		ConfigurationSection section = yaml.getConfigurationSection("Check points");
+		ConfigurationSection parkourSection = yaml.getConfigurationSection("Check points");
 
 		//各アスレ名毎に処理する
-		for(String parkourName : section.getKeys(false)){
+		for(String parkourName : parkourSection.getKeys(false)){
 			//アスレ名と対応したアスレを取得する
 			Parkour parkour = parkourSet.getParkour(parkourName);
 
-			//チェックポイントを取得する
-			List<ImmutableEntityLocation> points = section.getStringList(parkourName).stream().map(ImmutableEntityLocation::deserialize).collect(Collectors.toList());
+			//このアスレのセクションを取得する
+			ConfigurationSection checkAreaSection = parkourSection.getConfigurationSection(parkourName);
 
-			//エリア番号と結び付けてチェックポイントをセットする
-			for(int checkAreaNumber = 0; checkAreaNumber < points.size(); checkAreaNumber++)
-				setCheckpoint(parkour, checkAreaNumber, points.get(checkAreaNumber));
+			//各チェックエリア番号毎に処理をする
+			for(String checkAreaNumberText : checkAreaSection.getKeys(false)){
+				//チェックエリア番号を整数型に変換する
+				int checkAreaNumber = Integer.parseInt(checkAreaNumberText);
+
+				//チェックポイントのデータをデシリアライズする
+				ImmutableEntityLocation point = ImmutableEntityLocation.deserialize(checkAreaSection.getString(checkAreaNumberText));
+
+				//チェックポイントとして登録する
+				setCheckpoint(parkour, checkAreaNumber, point);
+			}
 		}
 	}
 
@@ -59,7 +68,7 @@ public class Checkpoints {
 	}
 
 	public List<ImmutableEntityLocation> getCheckpoints(String parkourName){
-		return checkpoints.get(parkourName);
+		return checkpoints.containsKey(parkourName) ? new ArrayList<>(checkpoints.get(parkourName).values()) : Collections.emptyList();
 	}
 
 	public int getCheckpointSize(Parkour parkour){

@@ -55,7 +55,7 @@ public class User {
 	public InformationBoard board;
 
 	//InventoryUIの管理インスタンス
-	public InventoryUIs inventoryUIs;
+	public InventoryUserInterfaces inventoryUserInterfaces;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する

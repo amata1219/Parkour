@@ -1,4 +1,4 @@
-package amata1219.parkour.ui;
+package amata1219.parkour.ui.parkour;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,12 +20,12 @@ import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
-public class CategorizedParkoursSelectionUI implements InventoryUI {
+public class ParkourSelectionUI implements InventoryUI {
 
 	private final Users users = Users.getInstnace();
 	private final ParkourCategory category;
 
-	public CategorizedParkoursSelectionUI(ParkourCategory category){
+	public ParkourSelectionUI(ParkourCategory category){
 		this.category = category;
 	}
 

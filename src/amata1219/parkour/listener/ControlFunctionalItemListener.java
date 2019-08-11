@@ -20,7 +20,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import amata1219.parkour.function.ToggleHideMode;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
-import amata1219.parkour.ui.ParkourMenuUI;
+import amata1219.parkour.ui.parkour.ParkourMenuUI;
 import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
@@ -84,6 +84,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			//最終チェックポイントにテレポートさせる
 			player.teleport(lastCheckpoint.asBukkitLocation());
 
+			//表示用のチェックエリア番号
 			int displayCheckAreaNumber = checkpoints.getCheckpointSize(parkourPlayingNow);
 
 			//アスレ名を取得する
@@ -102,7 +103,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			Player player = user.asBukkitPlayer();
 
 			//どこかのステージにいれば最終チェックポイント一覧を開く
-			if(user.currentParkour != null) user.inventoryUIs.lastCheckpointUI.openInventory(player);
+			if(user.currentParkour != null) user.inventoryUserInterfaces.lastCheckpointUI.openInventory(player);
 
 			//無ければ警告する
 			else MessageColor.color("&c-Operation blocked &7-@ &c-You are not on any parkour").displayOnActionBar(player);
@@ -139,7 +140,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		applyMetaToItem(itemOfMenuOpener, StringColor.color("&b-Menu opener"));
 
 		//メニューを開くアイテムの機能内容を定義する
-		menuOpener = new Tuple<>(itemOfMenuOpener, user -> user.inventoryUIs.menu.openInventory(user.asBukkitPlayer()));
+		menuOpener = new Tuple<>(itemOfMenuOpener, user -> user.inventoryUserInterfaces.menuUI.openInventory(user.asBukkitPlayer()));
 	}
 
 	private void applyMetaToItem(ItemStack item, String displayName){

@@ -3,7 +3,6 @@ package amata1219.parkour.listener;
 import org.bukkit.entity.Player;
 
 import amata1219.parkour.parkour.ParkourRegion;
-import amata1219.amalib.string.message.MessageColor;
 import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.Parkours;
@@ -22,34 +21,17 @@ public class PassStartLineListener extends PassRegionBoundaryAbstractListener {
 		//タイムアタックが有効かどうか
 		boolean enableTimeAttack = parkour.enableTimeAttack;
 
-		//スタートラインに初めて踏み込んだ時
-		if(from == null && to != null){
+		//アスレをプレイし始めたのでなければ戻る
+		if(from != null || to == null) return;
 
-			//プレイ中のアスレとして設定する
-			user.parkourPlayingNow = parkour;
+		//プレイ中のアスレとして設定する
+		user.parkourPlayingNow = parkour;
 
-			//タイムアタックが有効の場合
-			if(enableTimeAttack){
-				//プレイし始めた時間を記録する
-				user.timeToStartPlaying = System.currentTimeMillis();
-			}
+		//タイムアタックが有効であればプレイし始めた時間を記録する
+		if(enableTimeAttack) user.timeToStartPlaying = System.currentTimeMillis();
 
-			//表示例: Challenge started @ Update10
-			MessageTemplate.capply("&b-&l-Challenge started &7-@ &f-$0", parkourName).displayOnActionBar(player);
-		//スタートラインからスポーン地点側に踏み込んだ時
-		}else if(from != null && to == null){
-
-			//プレイ中のアスレを削除する
-			user.parkourPlayingNow = null;
-
-			//タイムアタックが有効の場合
-			if(enableTimeAttack){
-				//タイムを削除する
-				user.timeToStartPlaying = 0L;
-
-				MessageColor.color("&c-&l-Reset your timer").displayOnActionBar(player);
-			}
-		}
+		//表示例: Challenge started @ Update10
+		MessageTemplate.capply("&b-&l-Challenge started &7-@ &f-$0", parkourName).displayOnActionBar(player);
 	}
 
 }
