@@ -11,7 +11,6 @@ import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.util.Color;
-import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
@@ -188,17 +187,25 @@ public class ParkourCommand implements Command {
 
 			//報酬として扱える様にする
 			Rewards rewards = new Rewards(coins);
-
-			//適用する
 			parkour.apply(it -> it.rewards = rewards);
 
-			Yaml yaml = parkours.makeYaml(parkourName);
-
-			yaml.set("Reward coins", StringTemplate.apply("$0,$1", coins[0], coins[1]));
-
-			yaml.save();
-
 			sender.info(StringTemplate.capply("$0-&r-&b-の報酬を書き換えました。", parkourName));
+			return;
+		}case "timeattack":{
+			//指定されたアスレが存在しなければ戻る
+			if(blockNotExistParkour(sender, parkourName)) return;
+
+			if(!args.hasNextBoolean()){
+				sender.warn("/setreward [parkour_name] [timeattack] [true/false]");
+				return;
+			}
+
+			boolean enableTimeAttack = args.nextBoolean();
+
+			Parkour parkour = parkours.getParkour(parkourName);
+			parkour.apply(it -> it.enableTimeAttack = enableTimeAttack);
+
+			sender.info(StringTemplate.capply("$0-&r-&b-でのタイムアタックを$0にしました。", parkourName, (enableTimeAttack ? "有効": "無効")));
 			return;
 		}default:
 			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/spawn] | /parkour [parkour_name] color [R,G,B] | /parkour [parkour_name] rewards [first,second_and_subsequent] | /parkour list");
