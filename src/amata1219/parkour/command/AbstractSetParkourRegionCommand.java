@@ -57,7 +57,7 @@ public abstract class AbstractSetParkourRegionCommand implements Command {
 		Parkour parkour = parkours.getParkour(parkourName);
 
 		//タイプに合わせて適用する
-		parkour.applyAndUpdate(it -> {
+		parkour.applyAndTryRegister(it -> {
 			switch(type){
 			case PARKOUR_REGION:
 				it.region = new Region(lesserBoundaryCorner, greaterBoundaryCorner);

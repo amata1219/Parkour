@@ -36,7 +36,7 @@ public class Parkour {
 		enable = yaml.getBoolean("Enable");
 		category = ParkourCategory.valueOf(yaml.getString("Category"));
 
-		//アスレの基準点を生成する
+		//アスレの領域の基準点を生成する
 		ImmutableBlockLocation origin = ImmutableBlockLocation.deserialize(yaml.getString("Origin"));
 
 		ImmutableEntityLocation relativeSpawnPoint = ImmutableEntityLocation.deserialize(yaml.getString("Spawn point"));
@@ -68,6 +68,7 @@ public class Parkour {
 
 		connections.add(user.asBukkitPlayer());
 
+		//全境界線を表示する
 		startLine.displayBorders();
 		finishLine.displayBorders();
 		checkAreas.displayAll();
@@ -78,9 +79,10 @@ public class Parkour {
 
 		connections.remove(user.asBukkitPlayer());
 
-		//人がいれば戻る
+		//プレイヤーがいれば戻る
 		if(!connections.isEmpty()) return;
 
+		//全境界線を非表示にする
 		startLine.undisplayBorders();
 		finishLine.undisplayBorders();
 		checkAreas.undisplayAll();
@@ -90,9 +92,11 @@ public class Parkour {
 		apply.accept(this);
 	}
 
-	public void applyAndUpdate(Consumer<Parkour> apply){
+	public void applyAndTryRegister(Consumer<Parkour> apply){
 		if(enable) parkours.unregisterParkour(this);
+
 		apply.accept(this);
+
 		if(enable) parkours.registerParkour(this);
 	}
 
@@ -102,6 +106,7 @@ public class Parkour {
 		yaml.set("Enable", enable);
 		yaml.set("Category", category.toString());
 
+		//アスレの領域の基準点を取得する
 		ImmutableBlockLocation origin = region.lesserBoundaryCorner;
 
 		yaml.set("Origin", origin.serialize());

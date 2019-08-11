@@ -1,19 +1,22 @@
 package amata1219.parkour.ui.parkour;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-
 import amata1219.amalib.inventory.ui.InventoryLine;
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.string.message.MessageTemplate;
+import amata1219.amalib.tuplet.Tuple;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.Parkours;
@@ -81,6 +84,33 @@ public class ParkourSelectionUI implements InventoryUI {
 					s.icon(Material.GLASS, (i) -> {
 						//表示名: The Earth of Marmalade
 						i.displayName = StringTemplate.capply("&b-$0", parkourName);
+
+						List<String> lore = new ArrayList<>();
+
+						//チェックエリア数を表示する
+						lore.add(StringTemplate.capply("&7-: &b-Check areas &7-@ &f-$0", parkour.checkAreas.areas.size()));
+
+						//タイムアタックが有効かどうかを表示する
+						lore.add(StringTemplate.capply("&7-: &b-Enable time attack &7-@ &f-$0", parkour.enableTimeAttack));
+
+						//タイムアタックが有効の場合
+						label: if(parkour.enableTimeAttack){
+							//上位記録を取得する
+							List<Tuple<UUID, String>> records = parkour.records.topTenRecords;
+
+							//記録が無ければ表示しない
+							if(records.isEmpty()) break label;
+
+							lore.add("");
+
+							//表示例: Top 10 records
+							lore.add(StringTemplate.capply("&7-: &b-Top $0 records", records.size()));
+
+							//最大で上位10名の記録を表示する
+							records.stream()
+							.map(record -> StringTemplate.capply("&7 - &b-$0 &7-@ &f-$1", Bukkit.getOfflinePlayer(record.first).getName(), record.second))
+							.forEach(lore::add);
+						}
 					});
 
 				}, slotIndex.getAndIncrement());
@@ -93,27 +123,27 @@ public class ParkourSelectionUI implements InventoryUI {
 			.map(i -> i * 2)
 			.map(i -> line.inventorySize() - 1 - i)
 			.sorted()
-			.forEach(i -> {
+			.forEach(index -> {
 				//対応したカテゴリーを取得する
 				ParkourCategory category = ParkourCategory.values()[counter.getAndIncrement()];
 
-				l.put((s) -> {
+				l.put(s -> {
 
-					s.onClick((event) -> {
+					s.onClick(e -> {
 						//カテゴリに対応したステージリストを開かせる
-						ParkourMenuUI.getInstance().getInventoryUI(category).openInventory(event.player);
+						ParkourMenuUI.getInstance().getInventoryUI(category).openInventory(e.player);
 					});
 
-					s.icon(Material.FEATHER, (ic) -> {
+					s.icon(Material.FEATHER, i -> {
 						//表示例: Update
-						ic.displayName = StringTemplate.capply("&b-$0", categoryName);
+						i.displayName = StringTemplate.capply("&b-$0", categoryName);
 
 						//今開いているステージリストのカテゴリと同じであれば発光させる
-						if(category == this.category) ic.gleam();
+						if(category == this.category) i.gleam();
 
 					});
 
-				}, i);
+				}, index);
 
 			});
 

@@ -26,9 +26,9 @@ public class Records {
 	private final Map<UUID, Float> records;
 
 	//上位10件の記録
-	private final List<Tuple<UUID, String>> topTenRecords = new ArrayList<>(10);
+	public final List<Tuple<UUID, String>> topTenRecords = new ArrayList<>(10);
 
-	private final List<UUID> cheaters = new ArrayList<>();
+	private final List<UUID> invalidRecorders = new ArrayList<>();
 
 	public Records(Yaml yaml){
 		if(!yaml.isConfigurationSection("Records")){
@@ -42,8 +42,12 @@ public class Records {
 		records = new HashMap<>(keys.size());
 
 		for(String key : keys){
+			//UUIDに変換する
 			UUID uuid = UUID.fromString(key);
+
+			//タイムに変換する
 			float time = Float.parseFloat(section.getString(key));
+
 			records.put(uuid, time);
 		}
 
@@ -51,15 +55,14 @@ public class Records {
 	}
 
 	public boolean record(UUID uuid, float time){
-		if(records.getOrDefault(uuid, Float.MAX_VALUE) <= time)
-			return false;
+		if(records.getOrDefault(uuid, Float.MAX_VALUE) <= time) return false;
 
 		records.put(uuid, time);
 		return true;
 	}
 
-	public void deleteCheaterRecord(UUID uuid){
-		//validate uuid... records.remove(uuid); cheaters.add(uuid); sort();
+	public void deleteInvalidRecord(UUID uuid){
+		//validate uuid... records.remove(uuid); invalidRecorders.add(uuid); sort();
 	}
 
 	public void sort(){
@@ -84,11 +87,11 @@ public class Records {
 	}
 
 	public void save(Yaml yaml){
-		for(Entry<UUID, Float> entry : records.entrySet())
-			yaml.set(StringTemplate.apply("Records.$0", entry.getKey()) , entry.getValue());
+		//レコードを記録する
+		for(Entry<UUID, Float> entry : records.entrySet()) yaml.set(StringTemplate.apply("Records.$0", entry.getKey()) , entry.getValue());
 
-		for(UUID cheater : cheaters)
-			yaml.set(StringTemplate.apply("Records.$0", cheater), null);
+		//不正なレコードを削除する
+		for(UUID invalidRecorder : invalidRecorders) yaml.set(StringTemplate.apply("Records.$0", invalidRecorder), null);
 	}
 
 }

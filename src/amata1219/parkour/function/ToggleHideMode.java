@@ -21,7 +21,7 @@ public class ToggleHideMode {
 		return instance != null ? instance : (instance = new ToggleHideMode());
 	}
 
-	private final Users userSet = Users.getInstnace();
+	private final Users users = Users.getInstnace();
 
 	//非表示モードの使用者
 	private final HashSet<User> hideModeUsers = new HashSet<>();
@@ -39,7 +39,7 @@ public class ToggleHideMode {
 		forEachHideModeUser((user) -> hide(user, player));
 
 		//ユーザーを取得する
-		User user = userSet.getUser(player);
+		User user = users.getUser(player);
 
 		//ユーザー設定を取得する
 		UserSetting setting = user.setting;
@@ -56,7 +56,7 @@ public class ToggleHideMode {
 		//forEachHideModeUser((user) -> show(user, player));
 
 		//ユーザーを取得する
-		User user = userSet.getUser(player);
+		User user = users.getUser(player);
 
 		//非表示モードの使用者リストから削除する
 		hideModeUsers.remove(user);
@@ -99,7 +99,7 @@ public class ToggleHideMode {
 	private void show(Player player, Player target){
 		player.showPlayer(Main.getPlugin(), target);
 
-		MessageColor.color("&b-Disabled hide mode").displayOnActionBar(player);
+		MessageColor.color("&7-Disabled hide mode").displayOnActionBar(player);
 	}
 
 	//targetをplayerに表示する
