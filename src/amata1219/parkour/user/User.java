@@ -3,6 +3,7 @@ package amata1219.parkour.user;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -164,7 +165,7 @@ public class User {
 		yaml.set("Time to start playing", timeToStartPlaying);
 
 		//クリア済みのアスレの名前リストを記録する
-		yaml.set("Cleared parkour names", clearedParkourNames);
+		yaml.set("Cleared parkour names", clearedParkourNames.stream().collect(Collectors.toList()));
 
 		//クリエイティブワールドのチェックポイントを記録する
 		yaml.set("Creative world checkpoint", creativeWorldCheckpoint.serialize());

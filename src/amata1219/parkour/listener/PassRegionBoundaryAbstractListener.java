@@ -29,7 +29,6 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 		ParkourRegion fromRegion = null;
 
 		for(ParkourRegion region : chunksToRegionsMap.get(from)){
-			System.out.println("!" + region.serialize());
 			if(!region.isIn(from))
 				continue;
 
@@ -42,7 +41,6 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 		ParkourRegion toRegion = null;
 
 		for(ParkourRegion region : chunksToRegionsMap.get(to)){
-			System.out.println("?" + region.serialize());
 			if(!region.isIn(to))
 				continue;
 

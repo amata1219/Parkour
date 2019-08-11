@@ -24,7 +24,7 @@ public class ParkourRegion extends Region {
 	private List<PacketPlayOutWorldParticles> packets;
 
 	//パーティクルの表示位置
-	private int position1, position2;
+	private int position;
 
 	//パーティクルパケットを送信する非同期のループタスク
 	private BukkitTask task;
@@ -67,10 +67,7 @@ public class ParkourRegion extends Region {
 								})
 							.collect(Collectors.toList());
 
-		position1 = 0;
-
-		//index2はその対角線上の頂点を始点とする
-		position2 = packets.size() / 2;
+		position = 0;
 
 		if(running) displayBorders();
 	}
@@ -82,15 +79,16 @@ public class ParkourRegion extends Region {
 			return;
 
 		final int size = packets.size();
+		final int halfSize = size / 2;
+		final int lastIndex = size - 1;
 
 		//非同期で実行する
 		task = Async.define(() -> {
-			if(position1 >= size) position1 = 0;
-			if(position2 >= size) position2 = 0;
+			if(position >= size) position = 0;
 
 			//各ポジションに対応したパケットを取得する
-			PacketPlayOutWorldParticles packet1 = packets.get(position1++);
-			PacketPlayOutWorldParticles packet2 = packets.get(position2++);
+			PacketPlayOutWorldParticles packet1 = packets.get(position);
+			PacketPlayOutWorldParticles packet2 = packets.get(position < halfSize ? position + halfSize : position + halfSize - lastIndex);
 
 			parkour.connections.getConnections().forEach(connection -> {
 				connection.sendPacket(packet1);
