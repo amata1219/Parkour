@@ -9,11 +9,13 @@ import amata1219.amalib.yaml.Yaml;
 
 public class CheckAreas {
 
-	private final Parkours parkours = Parkours.getInstance();
+	private final Parkours parkours;
 
 	public final List<ParkourRegion> areas;
 
-	public CheckAreas(Yaml yaml, Parkour parkour, ImmutableBlockLocation origin){
+	public CheckAreas(Parkours parkours, Yaml yaml, Parkour parkour, ImmutableBlockLocation origin){
+		this.parkours = parkours;
+
 		areas = yaml.getStringList("Check areas").stream()
 							.map(text -> new ParkourRegion(parkour, origin.add(Region.deserialize(text))))
 							.collect(Collectors.toList());

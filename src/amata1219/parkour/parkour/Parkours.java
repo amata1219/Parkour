@@ -52,7 +52,7 @@ public class Parkours {
 			Yaml yaml = new Yaml(plugin, file);
 
 			//Yamlに基づきアスレを生成する
-			Parkour parkour = new Parkour(yaml);
+			Parkour parkour = new Parkour(this, yaml);
 
 			//アスレを登録する
 			registerParkour(parkour);
@@ -90,22 +90,20 @@ public class Parkours {
 		Yaml yaml = makeYaml(parkourName);
 
 		//コンフィグに基づきアスレを生成する
-		Parkour parkour = new Parkour(yaml);
+		Parkour parkour = new Parkour(this, yaml);
 
 		registerParkour(parkour);
 	}
 
 	public void unregisterParkour(Parkour parkour){
-		if(parkour.enable){
-			//スタートラインの登録を解除する
-			unregisterStartLine(parkour.startLine);
+		//スタートラインの登録を解除する
+		if(parkour.startLine != null) unregisterStartLine(parkour.startLine);
 
-			//フィニッシュラインの登録を解除する
-			unregisterFinishLine(parkour.finishLine);
+		//フィニッシュラインの登録を解除する
+		if(parkour.finishLine != null) unregisterFinishLine(parkour.finishLine);
 
-			//全チェックエリアの登録を解除する
-			parkour.checkAreas.unregisterAll();
-		}
+		//全チェックエリアの登録を解除する
+		parkour.checkAreas.unregisterAll();
 
 		parkours.remove(parkour.name);
 	}

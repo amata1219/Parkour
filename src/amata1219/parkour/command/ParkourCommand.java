@@ -151,7 +151,7 @@ public class ParkourCommand implements Command {
 			Location location = sender.asPlayerCommandSender().getLocation();
 
 			//イミュータブルな座標にしブロックの中央に調整した上でセットする
-			parkour.apply(it -> it.spawnPoint = (ImmutableEntityLocation) new ImmutableEntityLocation(location).middle());
+			parkour.apply(it -> it.spawnPoint = (ImmutableEntityLocation) new ImmutableEntityLocation(location));
 
 			sender.info(StringTemplate.capply("$0-&r-&b-のスポーン地点を現在地点に書き換えました。", parkourName));
 			return;

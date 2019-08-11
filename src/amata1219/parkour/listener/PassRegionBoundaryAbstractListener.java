@@ -54,11 +54,13 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 		//アスレを取得する
 		Parkour parkour = (fromRegion != null ? fromRegion.parkour : (toRegion != null ? toRegion.parkour : null));
 
+		System.out.println("onMove1");
+
 		//アスレが存在しなければ戻る
 		if(parkour == null)
 			return;
 
-		System.out.println("onMove");
+		System.out.println("onMove2");
 
 		onMove(player, user, parkour, fromRegion, toRegion);
 	}

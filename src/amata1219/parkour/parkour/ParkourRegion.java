@@ -50,8 +50,6 @@ public class ParkourRegion extends Region {
 
 		if(running) undisplayBorders();
 
-		System.out.println("generate particle packets on pr");
-
 		List<ImmutableEntityLocation> locations = LocationOnBorderCollector.collect(this, 4);
 
 		Color color = parkour.borderColor;
@@ -79,9 +77,6 @@ public class ParkourRegion extends Region {
 
 	//境界線を表示する
 	public void displayBorders(){
-		//既に実行されていれば戻る
-		if(task != null) return;
-
 		//コネクションリストが空であれば戻る
 		if(parkour.connections.isEmpty())
 			return;
@@ -90,9 +85,8 @@ public class ParkourRegion extends Region {
 
 		//非同期で実行する
 		task = Async.define(() -> {
-			//ポジションがリストのサイズを超えない様にクリアする(position1 >= size の時、position2 == position1 - (size / 2) である事が保証される為、片方ずつの判定にしている)
 			if(position1 >= size) position1 = 0;
-			else if(position2 >= size) position2 = 0;
+			if(position2 >= size) position2 = 0;
 
 			//各ポジションに対応したパケットを取得する
 			PacketPlayOutWorldParticles packet1 = packets.get(position1++);
@@ -102,7 +96,7 @@ public class ParkourRegion extends Region {
 				connection.sendPacket(packet1);
 				connection.sendPacket(packet2);
 			});
-		}).executeTimer(0, 2);
+		}).executeTimer(0, 1);
 	}
 
 	//境界線を非表示にする

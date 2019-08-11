@@ -14,6 +14,8 @@ import amata1219.parkour.user.User;
 
 public class Parkour {
 
+	private final Parkours parkours;
+
 	public final String name;
 	public boolean enable;
 	public ParkourCategory category;
@@ -27,7 +29,9 @@ public class Parkour {
 	public Records records;
 	public PlayerConnections connections = new PlayerConnections();
 
-	public Parkour(Yaml yaml){
+	public Parkour(Parkours parkours, Yaml yaml){
+		this.parkours = parkours;
+
 		name = yaml.name;
 		enable = yaml.getBoolean("Enable");
 		category = ParkourCategory.valueOf(yaml.getString("Category"));
@@ -43,7 +47,7 @@ public class Parkour {
 		borderColor = Color.deserialize(yaml.getString("Border color"));
 		startLine = new ParkourRegion(this, origin.add(Region.deserialize(yaml.getString("Start line"))));
 		finishLine =  new ParkourRegion(this, origin.add(Region.deserialize(yaml.getString("Finish line"))));
-		checkAreas = new CheckAreas(yaml, this, origin);
+		checkAreas = new CheckAreas(parkours, yaml, this, origin);
 		enableTimeAttack = yaml.getBoolean("Enable time attack");
 		records = new Records(yaml);
 		rewards = new Rewards(StringSplit.splitToIntArguments(yaml.getString("Rewards")));
@@ -95,8 +99,6 @@ public class Parkour {
 	}
 
 	public void applyAndUpdate(Consumer<Parkour> apply){
-		Parkours parkours = Parkours.getInstance();
-
 		if(enable) parkours.unregisterParkour(this);
 		apply.accept(this);
 		if(enable) parkours.registerParkour(this);
@@ -112,7 +114,10 @@ public class Parkour {
 
 		yaml.set("Origin", origin.serialize());
 		yaml.set("Region", origin.relative(region).serialize());
-		yaml.set("Spawn point", origin.relative(spawnPoint).serialize());
+
+		ImmutableEntityLocation relativeSpawnPoint = (ImmutableEntityLocation) origin.relative(spawnPoint);
+		yaml.set("Spawn point", new ImmutableEntityLocation(origin.world, relativeSpawnPoint.x, relativeSpawnPoint.y, relativeSpawnPoint.z, spawnPoint.yaw, spawnPoint.pitch).serialize());
+
 		yaml.set("Border color", borderColor.serialize());
 		yaml.set("Start line", origin.relative(startLine).serialize());
 		yaml.set("Finish line", origin.relative(finishLine).serialize());
