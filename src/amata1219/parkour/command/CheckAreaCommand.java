@@ -51,7 +51,7 @@ public class CheckAreaCommand implements Command {
 			//チェックエリアを追加する
 			int checkAreaNumber = parkour.checkAreas.addCheckArea(checkArea);
 
-			sender.info(StringTemplate.capply("$0-&r-&b-にチェックエリア$1を追加しました。", parkourName, checkAreaNumber));
+			sender.info(StringTemplate.capply("$0-&r-&b-にチェックエリア$1を追加しました。", parkourName, checkAreaNumber + 1));
 			return;
 		}case "list":{
 			String parkourName = selections.hasSelection(uuid) ? selections.getSelectedParkourName(uuid) : args.next();
@@ -70,7 +70,7 @@ public class CheckAreaCommand implements Command {
 
 			//全チェックエリアを表示する
 			for(int checkAreaNumber = 0; checkAreaNumber < checkAreas.areas.size(); checkAreaNumber++)
-				sender.info(StringTemplate.capply("&7-: &b-$0 &7-@ &b-$1", checkAreaNumber + 1, checkAreas.getCheckArea(checkAreaNumber)));
+				sender.info(StringTemplate.capply("&7-: &b-$0 &7-@ &b-$1", checkAreaNumber + 1, checkAreas.getCheckArea(checkAreaNumber).serialize()));
 
 			return;
 		}case "set":{

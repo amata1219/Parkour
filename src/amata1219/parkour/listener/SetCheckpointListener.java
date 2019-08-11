@@ -35,8 +35,8 @@ public class SetCheckpointListener implements Listener {
 		//足を地に着いていなければ戻る
 		if(!player.isOnGround()) return;
 
-		//現在アスレをプレイ中でなければ戻る
-		if(!user.isPlayingWithParkour()) return;
+		//アスレにいなければ戻る
+		if(user.currentParkour == null) return;
 
 		Location location = player.getLocation();
 
@@ -55,8 +55,8 @@ public class SetCheckpointListener implements Listener {
 		//チェックエリアがあるアスレを取得する
 		Parkour parkour = checkArea.parkour;
 
-		//プレイヤーが今遊んでいるアスレでなければ戻る
-		if(!user.parkourPlayingNow.equals(parkour)) return;
+		//プレイヤーが今いるアスレでなければ戻る
+		if(!user.currentParkour.equals(parkour)) return;
 
 		//チェックエリアの番号を取得する
 		int checkAreaNumber = parkour.checkAreas.getCheckAreaNumber(checkArea);

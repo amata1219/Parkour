@@ -29,6 +29,7 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 		ParkourRegion fromRegion = null;
 
 		for(ParkourRegion region : chunksToRegionsMap.get(from)){
+			System.out.println("!" + region.serialize());
 			if(!region.isIn(from))
 				continue;
 
@@ -41,6 +42,7 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 		ParkourRegion toRegion = null;
 
 		for(ParkourRegion region : chunksToRegionsMap.get(to)){
+			System.out.println("?" + region.serialize());
 			if(!region.isIn(to))
 				continue;
 
@@ -54,13 +56,8 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 		//アスレを取得する
 		Parkour parkour = (fromRegion != null ? fromRegion.parkour : (toRegion != null ? toRegion.parkour : null));
 
-		System.out.println("onMove1");
-
 		//アスレが存在しなければ戻る
-		if(parkour == null)
-			return;
-
-		System.out.println("onMove2");
+		if(parkour == null) return;
 
 		onMove(player, user, parkour, fromRegion, toRegion);
 	}

@@ -86,7 +86,8 @@ public class Checkpoints {
 		String parkourName = parkour.name;
 
 		//パルクールに対応したチェックポイントリストを取得、存在しなければ新規作成する
-		List<ImmutableEntityLocation> points = checkpoints.containsKey(parkourName) ? checkpoints.get(parkourName) : checkpoints.put(parkourName, new ArrayList<>());
+		List<ImmutableEntityLocation> points = checkpoints.get(parkourName);
+		if(points == null) checkpoints.put(parkourName, points = new ArrayList<>());
 
 		if(points.size() >= checkAreaNumber)
 			//新しいチェックポイントであればそのまま追加
