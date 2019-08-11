@@ -105,7 +105,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		user.depositCoins(coins);
 
 		//表示例: Gave amata1219 1000 coins as a reward!
-		MessageTemplate.capply("&b-Gave $0 $1 coins as a reard!", playerName, coins).display(player);
+		MessageTemplate.capply("&b-Gave $0 $1 coins as a reward!", playerName, coins).display(player);
 	}
 
 }

@@ -90,6 +90,8 @@ public class ParkourRegion extends Region {
 			PacketPlayOutWorldParticles packet1 = packets.get(position);
 			PacketPlayOutWorldParticles packet2 = packets.get(position < halfSize ? position + halfSize : position + halfSize - lastIndex);
 
+			position++;
+
 			parkour.connections.getConnections().forEach(connection -> {
 				connection.sendPacket(packet1);
 				connection.sendPacket(packet2);

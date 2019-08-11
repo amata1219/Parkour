@@ -35,7 +35,7 @@ public class PassStartLineListener extends PassRegionBoundaryAbstractListener {
 			}
 
 			//表示例: Challenge started @ Update10
-			MessageTemplate.capply("&b-Challenge started @ $0-&r-&b-!", parkourName).displayOnActionBar(player);
+			MessageTemplate.capply("&b-&l-Challenge started &7-@ &f-$0", parkourName).displayOnActionBar(player);
 		//スタートラインからスポーン地点側に踏み込んだ時
 		}else if(from != null && to == null){
 
@@ -47,7 +47,7 @@ public class PassStartLineListener extends PassRegionBoundaryAbstractListener {
 				//タイムを削除する
 				user.timeToStartPlaying = 0L;
 
-				MessageColor.color("&b-Reset your timer!").displayOnActionBar(player);
+				MessageColor.color("&c-&l-Reset your timer").displayOnActionBar(player);
 			}
 		}
 	}
