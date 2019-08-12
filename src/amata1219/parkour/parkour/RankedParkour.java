@@ -19,8 +19,10 @@ public class RankedParkour extends Parkour {
 	public RankedParkour(Parkours parkours, Yaml yaml) {
 		super(parkours, yaml);
 
-		String parkourName = super.name;
+		//装飾コードを除いたアスレ名を取得する
+		String parkourName = getColorlessName();
 
+		//ランクアップアスレでなければ戻る
 		if(!isRankedParkour(parkourName)) throw new IllegalArgumentException("Parkour must be ranked");
 
 		//接頭辞を取得する

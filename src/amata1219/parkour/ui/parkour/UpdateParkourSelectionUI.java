@@ -90,22 +90,22 @@ public class UpdateParkourSelectionUI implements InventoryUI {
 						lore.add(StringTemplate.capply("&7-: &b-Enable time attack &7-@ &f-$0", parkour.enableTimeAttack));
 
 						//タイムアタックが有効の場合
-						label: if(parkour.enableTimeAttack){
+						if(parkour.enableTimeAttack){
 							//上位記録を取得する
 							List<Tuple<UUID, String>> records = parkour.records.topTenRecords;
 
-							//記録が無ければ表示しない
-							if(records.isEmpty()) break label;
+							//記録が1つでもある場合
+							if(!records.isEmpty()){
+								lore.add("");
 
-							lore.add("");
+								//表示例: Top 10 records
+								lore.add(StringTemplate.capply("&7-: &b-Top $0 records", records.size()));
 
-							//表示例: Top 10 records
-							lore.add(StringTemplate.capply("&7-: &b-Top $0 records", records.size()));
-
-							//最大で上位10名の記録を表示する
-							records.stream()
-							.map(record -> StringTemplate.capply("&7 - &b-$0 &7-@ &f-$1", Bukkit.getOfflinePlayer(record.first).getName(), record.second))
-							.forEach(lore::add);
+								//最大で上位10名の記録を表示する
+								records.stream()
+								.map(record -> StringTemplate.capply("&7 - &b-$0 &7-@ &f-$1", Bukkit.getOfflinePlayer(record.first).getName(), record.second))
+								.forEach(lore::add);
+							}
 						}
 
 						//今いるアスレなら発光させる

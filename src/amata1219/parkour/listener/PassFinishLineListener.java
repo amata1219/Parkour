@@ -72,7 +72,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		user.parkourPlayingNow = null;
 
 		//ランクアップアスレの場合
-		label: if(parkour instanceof RankedParkour){
+		if(parkour instanceof RankedParkour){
 			RankedParkour rankedParkour = (RankedParkour) parkour;
 			RankedParkourType type = rankedParkour.type;
 			int rank = rankedParkour.rank;
@@ -97,7 +97,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 				user.incrementExtendRank();
 				break;
 			default:
-				break label;
+				throw new NullPointerException("Ranked parkour type can not be null");
 			}
 
 			//表示例: Rank up @ amata1219's update rank is 7!

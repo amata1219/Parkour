@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -12,6 +13,7 @@ import amata1219.amalib.inventory.ui.InventoryLine;
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.Icon;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
+import amata1219.amalib.sound.SoundMetadata;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.string.message.MessageColor;
@@ -22,6 +24,9 @@ import amata1219.parkour.user.PurchasedHeads;
 
 public class HeadMenuUI implements InventoryUI {
 
+	private static final SoundMetadata BUY_SE = new SoundMetadata(Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.5f, 1);
+	private static final SoundMetadata PUT_ON_SE = new SoundMetadata(Sound.ITEM_ARMOR_EQUIP_CHAIN, 2f, 1f);
+
 	private final PurchasedHeads heads;
 
 	public HeadMenuUI(PurchasedHeads heads){
@@ -30,6 +35,7 @@ public class HeadMenuUI implements InventoryUI {
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
+		//ヘッドの数から必要な行数を計算する
 		InventoryLine line = InventoryLine.necessaryInventoryLine(Heads.HEADS.size());
 
 		return build(line, (l) -> {
@@ -71,22 +77,24 @@ public class HeadMenuUI implements InventoryUI {
 							i.lore(StringTemplate.capply("&7-Click to buy $0's skull!", headName));
 						});
 
-						s.onClick(event -> {
+						s.onClick(e -> {
 							//コインが足りなければ戻る
 							if(!heads.canBuy(head)){
-								MessageColor.color("&c-Operation blocked &7-@ &c-Not enough money").displayOnActionBar(event.player);
+								MessageColor.color("&c-Operation blocked &7-@ &c-Not enough money").displayOnActionBar(e.player);
 								return;
 							}
 
 							heads.buy(head);
 
 							//表示名と説明文を変更する
-							setPurchasedHeadText(event.currentIcon, head);
+							setPurchasedHeadText(e.currentIcon, head);
 
 							//クリック時の処理を変更する
-							s.onClick((e) -> setHead(e.player, head));
+							s.onClick((ev) -> setHead(ev.player, head));
 
-							MessageTemplate.capply("&b-Bought $0's skull", headName).displayOnActionBar(event.player);
+							BUY_SE.play(e.player);
+
+							MessageTemplate.capply("&b-Bought $0's skull", headName).displayOnActionBar(e.player);
 						});
 
 					}
@@ -107,13 +115,13 @@ public class HeadMenuUI implements InventoryUI {
 					if(head != null && head.getType() != Material.AIR) i.gleam();
 				});
 
-				s.onClick(event -> {
-					Player player = event.player;
+				s.onClick(e -> {
+					Player player = e.player;
 					PlayerInventory inventory = player.getInventory();
 					ItemStack head = inventory.getHelmet();
 
 					//何も被っていなければ戻る
-					if(head == null || head.getType() == Material.AIR)  return;
+					if(head == null || head.getType() == Material.AIR) return;
 
 					//ヘッドを外す
 					inventory.setHelmet(new ItemStack(Material.AIR));
@@ -140,6 +148,8 @@ public class HeadMenuUI implements InventoryUI {
 		//被らせる
 		player.getInventory().setHelmet(head.item);
 		player.updateInventory();
+
+		PUT_ON_SE.play(player);
 
 		MessageTemplate.capply("&b-Put on $0's skull", head.name).displayOnActionBar(player);
 	}

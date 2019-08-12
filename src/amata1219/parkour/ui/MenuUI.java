@@ -44,14 +44,14 @@ public class MenuUI implements InventoryUI {
 
 		String playerName = player.getName();
 
-		return build(InventoryLine.x1, (l) -> {
+		return build(InventoryLine.x1, l -> {
 			//表示例: amata1219's menu
 			l.title = StringTemplate.capply("&b-$0's menu", playerName);
 
 			//デフォルトスロットを設定する
 			l.defaultSlot((s) -> {
 
-				s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, (i) -> {
+				s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> {
 					i.displayName = " ";
 				});
 
@@ -62,7 +62,7 @@ public class MenuUI implements InventoryUI {
 				//プレイヤーのスカルヘッドを作成する
 				ItemStack skull = SkullMaker.fromPlayerUniqueId(user.uuid);
 
-				s.icon(skull, (i) -> {
+				s.icon(skull, i -> {
 					i.displayName = StringTemplate.capply("&b-$0's state", playerName);
 
 					i.lore(
