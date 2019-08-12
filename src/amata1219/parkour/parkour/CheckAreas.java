@@ -13,6 +13,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import amata1219.amalib.location.ImmutableBlockLocation;
 import amata1219.amalib.region.Region;
+import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 
 public class CheckAreas {
@@ -29,133 +30,131 @@ public class CheckAreas {
 
 		ConfigurationSection checkAreaSection = yaml.getConfigurationSection("Check areas");
 
-		//各メインチェックエリア番号毎に処理をする
-		for(String mainCheckAreaNumberText : checkAreaSection.getKeys(false)){
-			//メインチェックエリア番号を整数型に変換する
-			int mainCheckAreaNumber = Integer.parseInt(mainCheckAreaNumberText);
+		//各メジャーチェックエリア番号毎に処理をする
+		for(String majorCheckAreaNumberText : checkAreaSection.getKeys(false)){
+			//メジャーチェックエリア番号を整数型に変換する
+			int majorCheckAreaNumber = Integer.parseInt(majorCheckAreaNumberText);
 
-			//メインチェックエリアの領域データをデシリアライズしてリストにする
-			List<ParkourRegion> areas = checkAreaSection.getStringList(mainCheckAreaNumberText).stream()
+			//メジャーチェックエリアの領域データをデシリアライズしてリストにする
+			List<ParkourRegion> areas = checkAreaSection.getStringList(majorCheckAreaNumberText).stream()
 										.map(text -> new ParkourRegion(parkour, origin.add(Region.deserialize(text))))
 										.collect(Collectors.toList());
 
-			//メインチェックエリア番号とバインドする
-			checkAreas.put(mainCheckAreaNumber, areas);
+			//メジャーチェックエリア番号とバインドする
+			checkAreas.put(majorCheckAreaNumber, areas);
 		}
 	}
 
-	//メインチェックエリア番号を取得する
-	public int getCheckAreaMainNumber(ParkourRegion checkArea){
+	//メジャーチェックエリア番号を取得する
+	public int getMajorCheckAreaNumber(ParkourRegion checkArea){
 		for(Entry<Integer, List<ParkourRegion>> checkAreasEntry : checkAreas.entrySet()){
-			//メインチェックエリア番号を取得する
-			int mainCheckAreaNumber = checkAreasEntry.getKey();
+			//メジャーチェックエリア番号を取得する
+			int majorCheckAreaNumber = checkAreasEntry.getKey();
 
-			//サブチェックエリア番号を取得する
-			int subCheckAreaNumber = checkAreasEntry.getValue().indexOf(checkArea);
+			//マイナーチェックエリア番号を取得する
+			int minorCheckAreaNumber = checkAreasEntry.getValue().indexOf(checkArea);
 
-			//リスト内に同じチェックエリアが存在すればそのメインチェックエリア番号を返す
-			if(subCheckAreaNumber >= 0) return mainCheckAreaNumber;
+			//リスト内に同じチェックエリアが存在すればそのメジャーチェックエリア番号を返す
+			if(minorCheckAreaNumber >= 0) return majorCheckAreaNumber;
 		}
 
 		return -1;
 	}
 
-	//メインチェックエリア番号にバインドされたチェックエリアリストを取得する
-	public List<ParkourRegion> getCheckAreas(int mainCheckAreaNumber){
-		return checkAreas.containsKey(mainCheckAreaNumber) ? checkAreas.get(mainCheckAreaNumber) : Collections.emptyList();
+	//マイナーチェックエリア番号を取得する
+	public int getMinorCheckAreaNumber(ParkourRegion checkArea){
+		int majorCheckAreaNumber = getMajorCheckAreaNumber(checkArea);
+
+		//バインドされていないチェックエリアであれば-1を返す
+		if(majorCheckAreaNumber <= -1) return -1;
+
+		//メジャーチェックエリア番号にバインドされたチェックエリアのリストを取得する
+		List<ParkourRegion> areas = getCheckAreas(majorCheckAreaNumber);
+
+		return areas.indexOf(checkArea);
 	}
 
-	//チェックエリアをメインチェックエリア番号にバインドする
-	public void bindCheckArea(int mainCheckAreaNumber, ParkourRegion checkArea){
+	//メジャーチェックエリア番号にバインドされたチェックエリアリストを取得する
+	public List<ParkourRegion> getCheckAreas(int majorCheckAreaNumber){
+		return checkAreas.containsKey(majorCheckAreaNumber) ? checkAreas.get(majorCheckAreaNumber) : Collections.emptyList();
+	}
+
+	//チェックエリアをメジャーチェックエリア番号にバインドする
+	public void bindCheckArea(int majorCheckAreaNumber, ParkourRegion checkArea){
 		//チェックエリアリストを取得する
-		List<ParkourRegion> areas = checkAreas.get(mainCheckAreaNumber);
+		List<ParkourRegion> areas = checkAreas.get(majorCheckAreaNumber);
 
 		//リストが無ければ作成する
-		if(areas == null) checkAreas.put(mainCheckAreaNumber, areas = new ArrayList<>());
+		if(areas == null) checkAreas.put(majorCheckAreaNumber, areas = new ArrayList<>());
 
 		//リストにチェックエリアを追加する
 		areas.add(checkArea);
+
+		parkours.registerCheckArea(checkArea);
 	}
 
-	public void setCheckArea(int mainCheckAreaNumber, int subCheckAreaNumber, ParkourRegion checkArea){
+	//指定されたチェックエリア番号のチェックエリアを書き換える
+	public void setCheckArea(int majorCheckAreaNumber, int minorCheckAreaNumber, ParkourRegion checkArea){
+		List<ParkourRegion> areas = getCheckAreas(majorCheckAreaNumber);
 
+		//メジャーチェックエリア番号が未使用であれば戻る
+		if(areas.isEmpty()) return;
+
+		//マイナーチェックエリア番号が大きすぎれば戻る
+		if(minorCheckAreaNumber >= areas.size()) return;
+
+		//チェックエリアを書き換える
+		ParkourRegion replacedCheckArea = areas.set(minorCheckAreaNumber, checkArea);
+
+		parkours.unregisterCheckArea(replacedCheckArea);
+		parkours.registerCheckArea(checkArea);
 	}
 
+	//チェックエリアをアンバインドする
 	public void unbindCheckArea(ParkourRegion checkArea){
+		int majorCheckAreaNumber = getMajorCheckAreaNumber(checkArea);
 
+		//バインドされていないチェックエリアであれば戻る
+		if(majorCheckAreaNumber <= -1) return;
+
+		List<ParkourRegion> areas = getCheckAreas(majorCheckAreaNumber);
+
+		areas.remove(checkArea);
+
+		parkours.unregisterCheckArea(checkArea);
 	}
 
 	public void registerAll(){
-		applyAllCheckAreas(parkours::registerCheckArea);
+		applyToAllCheckAreas(parkours::registerCheckArea);
 	}
 
 	public void unregisterAll(){
-		applyAllCheckAreas(parkours::unregisterCheckArea);
+		applyToAllCheckAreas(parkours::unregisterCheckArea);
 	}
 
 	public void displayAll(){
-		applyAllCheckAreas(ParkourRegion::displayBorders);
+		applyToAllCheckAreas(ParkourRegion::displayBorders);
 	}
 
 	public void undisplayAll(){
-		applyAllCheckAreas(ParkourRegion::undisplayBorders);
+		applyToAllCheckAreas(ParkourRegion::undisplayBorders);
 	}
 
-	private void applyAllCheckAreas(Consumer<ParkourRegion> applier){
+	private void applyToAllCheckAreas(Consumer<ParkourRegion> applier){
 		for(List<ParkourRegion> areas : checkAreas.values())
 			for(ParkourRegion area : areas) applier.accept(area);
 	}
 
-	/*public void setCheckArea(int checkAreaNumber, ParkourRegion checkArea){
-		if(checkAreaNumber >= areas.size()) throw new IllegalArgumentException("Check area number must be less than or equal to number of check areas");
-
-		//既存のチェックエリアを取得する
-		ParkourRegion old = areas.get(checkAreaNumber);
-
-		//登録を解除する
-		parkours.unregisterCheckArea(old);
-
-		//チェックエリアを書き換える
-		areas.set(checkAreaNumber, checkArea);
-
-		//新しいチェックエリアを登録する
-		parkours.registerCheckArea(checkArea);
-	}
-
-	public void removeCheckArea(int checkAreaNumber){
-		if(checkAreaNumber >= areas.size()) throw new IllegalArgumentException("Check area number must be less than or equal to number of check areas");
-
-		//既存のチェックエリアを取得する
-		ParkourRegion old = areas.get(checkAreaNumber);
-
-		//登録を解除する
-		parkours.unregisterCheckArea(old);
-		areas.remove(old);
-	}
-
-	public void displayAll(){
-		areas.forEach(ParkourRegion::displayBorders);
-	}
-
-	public void undisplayAll(){
-		areas.forEach(ParkourRegion::undisplayBorders);
-	}
-
-	public void registerAll(){
-		areas.forEach(parkours::registerCheckArea);
-	}
-
-	public void unregisterAll(){
-		areas.forEach(parkours::unregisterCheckArea);
-	}
-
 	public void save(Yaml yaml, ImmutableBlockLocation origin){
-		yaml.set("Check areas",
-				areas.stream()
-						.map(area -> origin.relative(area))
-						.map(Region::serialize)
-						.collect(Collectors.toList())
-				);
-	}*/
+		for(Entry<Integer, List<ParkourRegion>> checkAreasEntry : checkAreas.entrySet()){
+			int majorCheckAreaNumber = checkAreasEntry.getKey();
+
+			//チェックエリアをテキストデータにシリアライズする
+			List<String> deserializedCheckAreas = checkAreasEntry.getValue().stream().map(ParkourRegion::serialize).collect(Collectors.toList());
+
+			//指定階層にセットする
+			yaml.set(StringTemplate.apply("Check areas.$0", majorCheckAreaNumber), deserializedCheckAreas);
+		}
+	}
 
 }
