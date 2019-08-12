@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -72,14 +71,6 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		teleporterToLastOrLatestCheckpoint = new Tuple<>(itemOfTeleporterToLastCheckpoint, (user, clickRight) -> {
 			Player player = user.asBukkitPlayer();
 
-			//右クリックした場合
-			if(clickRight){
-
-			//左クリックした場合
-			}else{
-
-			}
-
 			//アスレをプレイ中でなければ戻る
 			if(!user.isPlayingWithParkour()){
 				MessageColor.color("&c-Operation blocked &7-@ &c-You are not playing with parkour").displayOnActionBar(player);
@@ -87,31 +78,33 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			}
 
 			//プレイ中のアスレを取得する
-			Parkour parkourPlayingNow = user.parkourPlayingNow;
-
+			Parkour parkour = user.parkourPlayingNow;
 			Checkpoints checkpoints = user.checkpoints;
 
-			//最終チェックポイントを取得する
-			ImmutableEntityLocation lastCheckpoint = checkpoints.getLastCheckpoint(parkourPlayingNow);
-
-			//無ければ戻る
-			if(lastCheckpoint == null){
+			if(!checkpoints.containsParkour(parkour)){
 				//表示例: Operation blocked @ Missing last checkpoint
-				MessageColor.color("&c-Operation blocked &7-@ &c-Missing last checkpoint").displayOnActionBar(player);
+				MessageColor.color("&c-Operation blocked &7-@ &c-Missing checkpoint").displayOnActionBar(player);
 				return;
 			}
 
-			//最終チェックポイントにテレポートさせる
-			player.teleport(lastCheckpoint.asBukkitLocation());
+			//右クリックしたのであれば最終チェックポイントを、左クリックしたんどえあれば最新チェックポイントを取得する
+			ImmutableEntityLocation checkpoint = clickRight ? checkpoints.getLastCheckpoint(parkour) : checkpoints.getLatestCheckpoint(parkour);
 
-			//表示用のチェックエリア番号
-			int displayCheckAreaNumber = checkpoints.getCheckpointSize(parkourPlayingNow);
+			//チェックポイントが無ければ戻る
+			if(checkpoint == null){
+				//表示例: Operation blocked @ Missing last checkpoint
+				MessageColor.color("&c-Operation blocked &7-@ &c-Missing checkpoint").displayOnActionBar(player);
+				return;
+			}
 
-			//アスレ名を取得する
-			String parkourName = parkourPlayingNow.name;
+			//チェックエリアの番号を取得し表示用に+1する
+			int displayCheckAreaNumber = (clickRight ? checkpoints.getLastCheckpointNumber(parkour) : checkpoints.getLatestCheckpointNumber(parkour)) + 1;
+
+			//チェックポイントにテレポートさせる
+			player.teleport(checkpoint.asBukkitLocation());
 
 			//表示例: Teleported to checkpoint 1 @ Update1!
-			MessageTemplate.capply("&b-Teleported to a checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkourName).displayOnActionBar(player);
+			MessageTemplate.capply("&b-Teleported to checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkour.name).displayOnActionBar(player);
 		});
 
 		ItemStack itemOfCheckpointSelector = new ItemStack(Material.FEATHER);
@@ -182,8 +175,10 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 
 	@EventHandler
 	public void clickSlot(PlayerInteractEvent event){
+		Action action = event.getAction();
+
 		//クリック以外の動作であれば戻る
-		if(event.getAction() == Action.PHYSICAL) return;
+		if(action == Action.PHYSICAL) return;
 
 		//メインハンドのクリックでなければ戻る
 		if(event.getHand() != EquipmentSlot.HAND) return;
@@ -203,7 +198,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		//スロットに対応した処理をする
 		switch(player.getInventory().getHeldItemSlot()){
 		case 0:
-			if(item.equals(teleporterToLastOrLatestCheckpoint.first)) teleporterToLastOrLatestCheckpoint.second.accept(user);
+			if(item.equals(teleporterToLastOrLatestCheckpoint.first)) teleporterToLastOrLatestCheckpoint.second.accept(user, action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
 			break;
 		case 2:
 			if(item.equals(checkpointSelector.first)) checkpointSelector.second.accept(user);
