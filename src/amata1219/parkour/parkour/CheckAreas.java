@@ -61,6 +61,10 @@ public class CheckAreas {
 		return -1;
 	}
 
+	public int getMaxMajorCheckAreaNumber(){
+		return checkAreas.size() - 1;
+	}
+
 	//マイナーチェックエリア番号を取得する
 	public int getMinorCheckAreaNumber(ParkourRegion checkArea){
 		int majorCheckAreaNumber = getMajorCheckAreaNumber(checkArea);

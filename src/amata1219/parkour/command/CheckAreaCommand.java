@@ -2,13 +2,12 @@ package amata1219.parkour.command;
 
 import java.util.UUID;
 
-import org.bukkit.entity.Player;
+import org.bukkit.ChatColor;
 
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
 import amata1219.amalib.selection.RegionSelection;
-import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.parkour.CheckAreas;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
@@ -17,163 +16,110 @@ import amata1219.parkour.selection.RegionSelections;
 
 public class CheckAreaCommand implements Command {
 
+	/*
+	 * add
+	 * add [major]
+	 * set [major] [minor]
+	 * remove [major] [minor]
+	 * clear [major]
+	 * list
+	 *
+	 */
+
 	private final Parkours parkours = Parkours.getInstance();
 	private final RegionSelections selections = RegionSelections.getInstance();
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {
-		//プレイヤーでなければ戻る
+		//送信者がプレイヤーでなければ戻る
 		if(blockNonPlayer(sender)) return;
 
-		Player player = sender.asPlayerCommandSender();
-		UUID uuid = player.getUniqueId();
+		//第1引数が無ければ戻る
+		if(!args.hasNext()){
+			displayCommandUsage(sender);
+			return;
+		}
 
-		//第1引数で分岐する
-		switch(args.next()){
-		case "add":{
-			//セレクションが存在しなければ戻る
-			if(blockNotHasSelection(sender, uuid)) return;
+		//送信者のUUIDを取得する
+		UUID uuid = sender.asPlayerCommandSender().getUniqueId();
 
-			//セレクションを取得する
+		//対象となるアスレの名前を取得する
+		String parkourName = selections.hasSelection(uuid) ? selections.getSelectedParkourName(uuid) : ChatColor.translateAlternateColorCodes('&', args.next());
+
+		//アスレが存在しなければ戻る
+		if(!parkours.containsParkour(parkourName)){
+			sender.warn("指定されたアスレは存在しません。");
+			return;
+		}
+
+		Parkour parkour = parkours.getParkour(parkourName);
+		CheckAreas checkAreas = parkour.checkAreas;
+
+		switch (args.next()) {
+		case "add":
+			//範囲選択がされていなければ戻る
+			if(blockNotSelected(sender)) return;
+
+			//選択範囲を取得する
 			RegionSelection selection = selections.getSelection(uuid);
 
-			//編集するアスレの名前を取得する
-			String parkourName = selections.getSelectedParkourName(uuid);
+			int maxMojorCheckAreaNumber = checkAreas.getMaxMajorCheckAreaNumber();
 
-			//指定されたアスレが存在しなければ戻る
-			if(blockNotExistParkour(sender, parkourName)) return;
+			//メジャーチェックエリア番号を取得する
+			int majorCheckAreaNumber = args.hasNextInt() ? args.nextInt() - 1 : maxMojorCheckAreaNumber + 1;
 
-			Parkour parkour = parkours.getParkour(parkourName);
-
-			//セレクションを基にチェックエリアを作成する
-			ParkourRegion checkArea = new ParkourRegion(parkour, selection);
-
-			//チェックエリアを追加する
-			int checkAreaNumber = parkour.checkAreas.addCheckArea(checkArea);
-
-			sender.info(StringTemplate.capply("$0-&r-&b-にチェックエリア$1を追加しました。", parkourName, checkAreaNumber + 1));
-			return;
-		}case "list":{
-			String parkourName = selections.hasSelection(uuid) ? selections.getSelectedParkourName(uuid) : args.next();
-
-			//指定されたアスレが存在しなければ戻る
-			if(blockNotExistParkour(sender, parkourName)) return;
-
-			//チェックエリアリストを取得する
-			CheckAreas checkAreas = parkours.getParkour(parkourName).checkAreas;
-
-			//チェックエリアが無ければ戻る
-			if(checkAreas.areas.isEmpty()){
-				sender.warn(StringTemplate.capply("$0-&r-&c-のチェックエリアはまだありません。", parkourName));
+			//不正な番号が指定された場合
+			if(majorCheckAreaNumber < 0 || maxMojorCheckAreaNumber - 1 > maxMojorCheckAreaNumber){
+				sender.warn("指定されたメジャーCA番号は正しくありません。");
 				return;
 			}
 
-			//全チェックエリアを表示する
-			for(int checkAreaNumber = 0; checkAreaNumber < checkAreas.areas.size(); checkAreaNumber++)
-				sender.info(StringTemplate.capply("&7-: &b-$0 &7-@ &b-$1", checkAreaNumber + 1, checkAreas.getCheckArea(checkAreaNumber).serialize()));
+			//新しくチェックエリアを生成する
+			ParkourRegion newCheckArea = generateParkourRegion(parkour, selection);
 
-			return;
-		}case "set":{
-			if(!args.hasNextInt()){
-				sender.warn("書き換えるチェックエリアの番号を指定して下さい。");
-				return;
-			}
+			//バインドする
+			checkAreas.bindCheckArea(majorCheckAreaNumber, newCheckArea);
 
-			int checkAreaNumber = args.nextInt() - 1;
+			sender.info("指定されたアスレに");
+			break;
+		case "set":
+			//範囲選択がされていなければ戻る
+			if(blockNotSelected(sender)) return;
+			break;
+		case "remove":
 
-			//最小値メソッドで勝手に補正しては困る処理なので警告を表示する
-			if(checkAreaNumber < 0){
-				sender.warn("チェックエリア番号は1以上で指定して下さい。");
-				return;
-			}
+			break;
+		case "clear":
 
-			//セレクションが存在しなければ戻る
-			if(blockNotHasSelection(sender, uuid)) return;
+			break;
+		case "list":
 
-			//セレクションを取得する
-			RegionSelection selection = selections.getSelection(uuid);
-
-			//編集するアスレの名前を取得する
-			String parkourName = selections.getSelectedParkourName(uuid);
-
-			//指定されたアスレが存在しなければ戻る
-			if(blockNotExistParkour(sender, parkourName)) return;
-
-			Parkour parkour = parkours.getParkour(parkourName);
-
-			//チェックエリアリストを取得する
-			CheckAreas checkAreas = parkour.checkAreas;
-
-			int maxCheckAreaNumber = checkAreas.areas.size();
-
-			//チェックエリア番号が大きすぎる場合
-			if(maxCheckAreaNumber <= checkAreaNumber){
-				sender.warn(StringTemplate.capply("チェックエリア番号が大きすぎます。$0以下に設定して下さい。", maxCheckAreaNumber));
-				return;
-			}
-
-			//セレクションを基にチェックエリアを作成する
-			ParkourRegion checkArea = new ParkourRegion(parkour, selection);
-
-			//番号に対応したチェックエリアを書き換える
-			checkAreas.setCheckArea(checkAreaNumber, checkArea);
-
-			sender.info(StringTemplate.capply("$0-&r-&b-のチェックエリア$1を書き換えました。", parkourName, checkAreaNumber + 1));
-			return;
-		}case "remove":{
-			String parkourName = selections.hasSelection(uuid) ? selections.getSelectedParkourName(uuid) : args.next();
-
-			//指定されたアスレが存在しなければ戻る
-			if(blockNotExistParkour(sender, parkourName)) return;
-
-			if(!args.hasNextInt()){
-				sender.warn("削除するチェックエリアの番号を指定して下さい。");
-				return;
-			}
-
-			int checkAreaNumber = args.nextInt() - 1;
-
-			if(checkAreaNumber < 0){
-				sender.warn("チェックエリア番号は1以上で指定して下さい。");
-				return;
-			}
-
-			Parkour parkour = parkours.getParkour(parkourName);
-
-			//チェックエリアリストを取得する
-			CheckAreas checkAreas = parkour.checkAreas;
-
-			int maxCheckAreaNumber = checkAreas.areas.size();
-
-			//チェックエリア番号が大きすぎる場合
-			if(maxCheckAreaNumber <= checkAreaNumber){
-				sender.warn(StringTemplate.capply("チェックエリア番号が大きすぎます。$0以下に設定して下さい。", maxCheckAreaNumber));
-				return;
-			}
-
-			checkAreas.removeCheckArea(checkAreaNumber);
-
-			sender.info(StringTemplate.capply("$0-&r-&b-のチェックエリア$1を削除しました。", parkourName, checkAreaNumber + 1));
-			return;
-		}default:
-			sender.warn("範囲指定した状態で、/checkarea [add/list] | /checkarea [set/remove] [check_area_number] | /checkarea color [R,G,B]");
-			sender.warn("または、/checkarea list [parkour_name] | /checkarea [set/remove] [parkour_name] [check_area_number] | /checkarea color [parkour_name] [R,G,B]");
-			return;
+			break;
+		default:
+			displayCommandUsage(sender);
+			break;
 		}
 	}
 
-	private boolean blockNotHasSelection(Sender sender, UUID uuid){
-		if(selections.hasSelection(uuid)) return false;
+	private void displayCommandUsage(Sender sender){
+		sender.warn("/checkarea add @ アスレにCAを追加する");
+		sender.warn("/checkarea add [major] @ アスレの指定メジャーCA番号にCAを追加する");
+		sender.warn("/checkarea set [major] [minor] @ アスレの指定メジャーCA番号、マイナーCA番号に設定されているCAを書き換える");
+		sender.warn("/checkarea [parkour] remove [major] [minor] @ アスレの指定メジャーCA番号、マイナーCA番号に設定されているCAを削除する");
+		sender.warn("/checkarea [parkour] clear [major] @ アスレの指定メジャーCA番号に設定されているCAを全て削除する");
+		sender.warn("/checkarea [parkour] list @ アスレ内のCA一覧を表示する");
+		sender.warn("アスレの範囲選択中であれば[parkour]は省略出来る");
+	}
 
-		sender.warn("チェックエリアとして設定する範囲を選択して下さい。");
+	private boolean blockNotSelected(Sender sender){
+		if(selections.hasSelection(sender.asPlayerCommandSender().getUniqueId())) return false;
+
+		sender.warn("範囲を指定して下さい。");
 		return true;
 	}
 
-	private boolean blockNotExistParkour(Sender sender, String parkourName){
-		if(parkours.containsParkour(parkourName)) return false;
-
-		sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
-		return true;
+	private ParkourRegion generateParkourRegion(Parkour parkour, RegionSelection selection){
+		return new ParkourRegion(parkour, selection);
 	}
 
 }
