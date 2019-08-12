@@ -42,6 +42,16 @@ import amata1219.amalib.tuplet.Tuple;
 
 public class ControlFunctionalItemListener implements PlayerJoinListener, PlayerQuitListener {
 
+	private static ControlFunctionalItemListener instance;
+
+	public static void load(){
+		instance = new ControlFunctionalItemListener();
+	}
+
+	public static ControlFunctionalItemListener getInstance(){
+		return instance;
+	}
+
 	private final Tuple<ItemStack, Consumer<User>> teleporterToLastCheckpoint;
 	private final Tuple<ItemStack, Consumer<User>> checkpointSelector;
 	private final Tuple<ItemStack, Consumer<User>> stageSelector;

@@ -4,7 +4,9 @@ import java.util.Set;
 
 import org.bukkit.entity.Player;
 
+import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.string.message.MessageTemplate;
+import amata1219.parkour.Tweet;
 import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
@@ -100,6 +102,9 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 
 			//表示例: Rank up @ amata1219's update rank is 7!
 			MessageTemplate.capply("&b-&l-Rank up &7-@ &b-$0's $1 rank is $2!", playerName, type.toString().toLowerCase(), rank).broadcast();
+
+			//ツイートリンクを表示する
+			Tweet.display(player, StringTemplate.apply("$0を初クリアしました！！！", parkour.getColorlessName()));
 		}
 
 		//クリア回数に基づき報酬を取得する

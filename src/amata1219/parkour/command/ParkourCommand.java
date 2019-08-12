@@ -32,7 +32,7 @@ public class ParkourCommand implements Command {
 
 		//第1引数が無ければ戻る
 		if(!args.hasNext()){
-			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/spawn] | /parkour [parkour_name] color [R,G,B] | /parkour [parkour_name] rewards [coin,coin] | /parkour list");
+			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/spawn] | /parkour [parkour_name] color [R,G,B] | /parkour [parkour_name] rewards [coin,coin] | /parkour [parkour_name] timeattack [true/false] | /parkour list");
 			return;
 		}
 
@@ -84,21 +84,6 @@ public class ParkourCommand implements Command {
 
 			if(parkour.enable){
 				sender.warn(StringTemplate.capply("$0-&r-&c-は既に有効化されています。", parkourName));
-				return;
-			}
-
-			if(parkour.region == null){
-				sender.warn(StringTemplate.capply("$0-&r-&c-の領域を設定して下さい。", parkourName));
-				return;
-			}
-
-			if(parkour.startLine == null){
-				sender.warn(StringTemplate.capply("$0-&r-&c-のスタートラインを設定して下さい。", parkourName));
-				return;
-			}
-
-			if(parkour.finishLine == null){
-				sender.warn(StringTemplate.capply("$0-&r-&c-のフィニッシュラインを設定して下さい。", parkourName));
 				return;
 			}
 
@@ -227,7 +212,7 @@ public class ParkourCommand implements Command {
 			sender.info(StringTemplate.capply("$0-&r-&b-でのタイムアタックを$0にしました。", parkourName, (enableTimeAttack ? "有効": "無効")));
 			return;
 		}default:
-			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/spawn] | /parkour [parkour_name] color [R,G,B] | /parkour [parkour_name] rewards [first,second_and_subsequent] | /parkour list");
+			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/spawn] | /parkour [parkour_name] color [R,G,B] | /parkour [parkour_name] rewards [coin,coin] | /parkour [parkour_name] timeattack [true/false] | /parkour list");
 			return;
 		}
 

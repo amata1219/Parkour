@@ -73,7 +73,7 @@ public class AllCheckpointSelectionUI implements InventoryUI {
 						MessageTemplate.capply("&b-Teleported to checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkourName).displayOnActionBar(player);
 					});
 
-					s.icon(Material.GRASS_BLOCK,(i) -> {
+					s.icon(Material.GLASS,(i) -> {
 						//表示例: 1 @ Update1
 						i.displayName = StringTemplate.capply("&7-$0 @ $1", displayCheckAreaNumber, parkourName);
 

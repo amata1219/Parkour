@@ -27,14 +27,12 @@ public class GiveVoteRewardCoinsListener implements Listener {
 		OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
 
 		//サーバーに接続した事のないプレイヤーであれば戻る
-		if(player == null || !player.hasPlayedBefore())
-			return;
+		if(player == null || !player.hasPlayedBefore()) return;
 
 		UUID uuid = player.getUniqueId();
 
 		//ユーザーデータが存在しなければ戻る
-		if(!users.containsUser(uuid))
-			return;
+		if(!users.containsUser(uuid)) return;
 
 		//ユーザーデータを取得する
 		User user = users.getUser(uuid);

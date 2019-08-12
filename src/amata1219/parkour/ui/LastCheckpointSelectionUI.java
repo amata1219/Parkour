@@ -95,7 +95,7 @@ public class LastCheckpointSelectionUI implements InventoryUI {
 
 					});
 
-					s.icon(Material.GRASS_BLOCK, i -> {
+					s.icon(Material.GLASS, i -> {
 						//表示例: 1 @ Update1
 						i.displayName = StringTemplate.capply("&7-$0 @ $1", displayCheckAreaNumber, parkourName);
 

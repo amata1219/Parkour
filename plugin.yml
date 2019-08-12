@@ -13,5 +13,4 @@ commands:
   setfinishline:
   setparkourregion:
   setstartline:
-  stage:
-  test:
+  relayout:
