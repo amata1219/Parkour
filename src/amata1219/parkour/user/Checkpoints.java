@@ -21,6 +21,7 @@ public class Checkpoints {
 	private final Parkours parkourSet = Parkours.getInstance();
 
 	private final Map<String, Map<Integer, ImmutableEntityLocation>> checkpoints = new HashMap<>();
+	private final Map<String, Integer> latestCheckpoints = new HashMap<>();
 
 	public Checkpoints(Yaml yaml){
 		//セクションが存在しなければ戻る
@@ -48,6 +49,10 @@ public class Checkpoints {
 				//チェックポイントとして登録する
 				setCheckpoint(parkour, checkAreaNumber, point);
 			}
+
+			//最新のチェックエリア番号を取得する
+			int latestCheckAreaNumber = checkAreaSection.getInt("Latest");
+			latestCheckpoints.put(parkourName, latestCheckAreaNumber);
 		}
 	}
 
@@ -71,16 +76,8 @@ public class Checkpoints {
 		return checkpoints.containsKey(parkourName) ? new ArrayList<>(checkpoints.get(parkourName).values()) : Collections.emptyList();
 	}
 
-	public int getCheckpointSize(Parkour parkour){
-		return getCheckpointSize(parkour.name);
-	}
-
-	public int getCheckpointSize(String parkourName){
-		return getCheckpoints(parkourName).size();
-	}
-
 	public ImmutableEntityLocation getLastCheckpoint(Parkour parkour){
-		return getLastCheckpoint(parkour);
+		return getLastCheckpoint(parkour.name);
 	}
 
 	public ImmutableEntityLocation getLastCheckpoint(String parkourName){
@@ -89,6 +86,42 @@ public class Checkpoints {
 
 		//空であればnull、そうでなければ最後のチェックポイントを返す
 		return locations.isEmpty() ? null : locations.get(locations.size() - 1);
+	}
+
+	public int getLastCheckpointNumber(Parkour parkour){
+		return getLastCheckpointNumber(parkour);
+	}
+
+	public int getLastCheckpointNumber(String parkourName){
+		return getCheckpoints(parkourName).size() - 1;
+	}
+
+	public ImmutableEntityLocation getLatestCheckpoint(Parkour parkour){
+		return getLatestCheckpoint(parkour.name);
+	}
+
+	public ImmutableEntityLocation getLatestCheckpoint(String parkourName){
+		//最新のチェックポイントが存在しなければnullを返す
+		if(!latestCheckpoints.containsKey(parkourName)) return null;
+
+		//最新のチェックエリア番号を取得する
+		int latestCheckAreaNumber = latestCheckpoints.get(parkourName);
+
+		//念の為にチェックポイントマップが存在しなければnullを返す
+		if(!checkpoints.containsKey(parkourName)) return null;
+
+		//アスレ内のチェックポイントマップを取得する
+		Map<Integer, ImmutableEntityLocation> points = checkpoints.get(parkourName);
+
+		return points.get(latestCheckAreaNumber);
+	}
+
+	public int getLatestCheckpointNumber(Parkour parkour){
+		return getLatestCheckpointNumber(parkour.name);
+	}
+
+	public int getLatestCheckpointNumber(String parkourName){
+		return latestCheckpoints.containsKey(parkourName) ? latestCheckpoints.get(parkourName) : -1;
 	}
 
 	public void setCheckpoint(Parkour parkour, int checkAreaNumber, ImmutableEntityLocation location){
@@ -100,6 +133,9 @@ public class Checkpoints {
 
 		//対応した番号にチェックポイントをセットする
 		points.put(checkAreaNumber, location);
+
+		//最新のチェックポイントを更新する
+		latestCheckpoints.put(parkourName, checkAreaNumber);
 	}
 
 	public void save(Yaml yaml){
@@ -118,6 +154,9 @@ public class Checkpoints {
 				//対応したアスレ、チェックエリア番号にセットする
 				yaml.set(StringTemplate.apply("Check points.$0.$1", parkourName, checkAreaNumber), point.serialize());
 			}
+
+			//最新のチェックポイントをセットする
+			yaml.set(StringTemplate.apply("Check points.$0.Latest", parkourName), latestCheckpoints.get(parkourName));
 		}
 	}
 

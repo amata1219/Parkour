@@ -33,6 +33,9 @@ public class RankedParkour extends Parkour {
 
 		//アスレ名からランクを取得する
 		rank = Integer.parseInt(parkourName.replace(prefix, ""));
+
+		//カテゴリーを設定する
+		category = ParkourCategory.valueOf(type.toString());
 	}
 
 	public static enum RankedParkourType {

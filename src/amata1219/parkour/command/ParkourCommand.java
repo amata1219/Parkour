@@ -209,7 +209,7 @@ public class ParkourCommand implements Command {
 			Parkour parkour = parkours.getParkour(parkourName);
 			parkour.apply(it -> it.enableTimeAttack = enableTimeAttack);
 
-			sender.info(StringTemplate.capply("$0-&r-&b-でのタイムアタックを$0にしました。", parkourName, (enableTimeAttack ? "有効": "無効")));
+			sender.info(StringTemplate.capply("$0-&r-&b-でのタイムアタックを$1にしました。", parkourName, (enableTimeAttack ? "有効": "無効")));
 			return;
 		}default:
 			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/spawn] | /parkour [parkour_name] color [R,G,B] | /parkour [parkour_name] rewards [coin,coin] | /parkour [parkour_name] timeattack [true/false] | /parkour list");

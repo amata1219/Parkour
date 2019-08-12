@@ -161,7 +161,7 @@ public class ParkourSelectionUI implements InventoryUI {
 
 					s.icon(Material.FEATHER, i -> {
 						//表示例: Update
-						i.displayName = StringTemplate.capply("&b-$0", categoryName);
+						i.displayName = StringTemplate.capply("&b-$0", category.name);
 
 						//今開いているステージリストのカテゴリと同じであれば発光させる
 						if(category == this.category) i.gleam();

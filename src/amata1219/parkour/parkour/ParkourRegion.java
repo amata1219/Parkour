@@ -74,6 +74,9 @@ public class ParkourRegion extends Region {
 
 	//境界線を表示する
 	public void displayBorders(){
+		//既にタスクが存在していれば戻る
+		if(task != null) return;
+
 		//コネクションリストが空であれば戻る
 		if(parkour.connections.isEmpty())
 			return;

@@ -73,8 +73,8 @@ public class Records {
 			//記録を昇順ソートする
 			list.sort(Entry.comparingByValue());
 
-			//上位10件の記録をリストに追加する
-			for(int index = 0; index < 10; index++){
+			//最大で上位10件の記録をリストに追加する
+			for(int index = 0; index < Math.min(10, records.size()); index++){
 				//ソート済みリストから記録を取得する
 				Entry<UUID, Float> record = list.get(index);
 

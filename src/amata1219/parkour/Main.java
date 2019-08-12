@@ -56,6 +56,7 @@ public class Main extends Plugin {
 		Users.load();
 		RegionSelections.load();
 		ParkourMenuUI.load();
+		ControlFunctionalItemListener.load();
 
 		registerCommands(
 			new ParkourCommand(),

@@ -1,5 +1,6 @@
 package amata1219.parkour.listener;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import org.bukkit.GameMode;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -52,7 +54,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		return instance;
 	}
 
-	private final Tuple<ItemStack, Consumer<User>> teleporterToLastCheckpoint;
+	private final Tuple<ItemStack, BiConsumer<User, Boolean>> teleporterToLastOrLatestCheckpoint;
 	private final Tuple<ItemStack, Consumer<User>> checkpointSelector;
 	private final Tuple<ItemStack, Consumer<User>> stageSelector;
 	private final Tuple<ItemStack, Consumer<User>> hideModeToggler;
@@ -64,11 +66,19 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 	public ControlFunctionalItemListener(){
 		ItemStack itemOfTeleporterToLastCheckpoint = new ItemStack(Material.FEATHER);
 
-		applyMetaToItem(itemOfTeleporterToLastCheckpoint, StringColor.color("&b-Teleporter to last checkpoint"));
+		applyMetaToItem(itemOfTeleporterToLastCheckpoint, StringColor.color("&b-Teleporter to last or latest checkpoint"));
 
 		//最終チェックポイントにテレポートさせるアイテムの機能内容を定義する
-		teleporterToLastCheckpoint = new Tuple<>(itemOfTeleporterToLastCheckpoint, user -> {
+		teleporterToLastOrLatestCheckpoint = new Tuple<>(itemOfTeleporterToLastCheckpoint, (user, clickRight) -> {
 			Player player = user.asBukkitPlayer();
+
+			//右クリックした場合
+			if(clickRight){
+
+			//左クリックした場合
+			}else{
+
+			}
 
 			//アスレをプレイ中でなければ戻る
 			if(!user.isPlayingWithParkour()){
@@ -193,7 +203,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		//スロットに対応した処理をする
 		switch(player.getInventory().getHeldItemSlot()){
 		case 0:
-			if(item.equals(teleporterToLastCheckpoint.first)) teleporterToLastCheckpoint.second.accept(user);
+			if(item.equals(teleporterToLastOrLatestCheckpoint.first)) teleporterToLastOrLatestCheckpoint.second.accept(user);
 			break;
 		case 2:
 			if(item.equals(checkpointSelector.first)) checkpointSelector.second.accept(user);
@@ -252,7 +262,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 	public void initializeSlots(Player player){
 		Inventory inventory = player.getInventory();
 
-		inventory.setItem(0, teleporterToLastCheckpoint.first);
+		inventory.setItem(0, teleporterToLastOrLatestCheckpoint.first);
 		inventory.setItem(2, checkpointSelector.first);
 		inventory.setItem(4, stageSelector.first);
 		inventory.setItem(6, hideModeToggler.first);
