@@ -111,6 +111,12 @@ public class ParkourSelectionUI implements InventoryUI {
 							.map(record -> StringTemplate.capply("&7 - &b-$0 &7-@ &f-$1", Bukkit.getOfflinePlayer(record.first).getName(), record.second))
 							.forEach(lore::add);
 						}
+
+						//ユーザーを取得する
+						User user = users.getUser(l.player);
+
+						//今いるアスレなら発光させる
+						if(user.isPlayingWithParkour() && parkour.equals(user.currentParkour)) i.gleam();
 					});
 
 				}, slotIndex.getAndIncrement());

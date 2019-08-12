@@ -1,6 +1,8 @@
 package amata1219.parkour.ui.parkour;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -15,6 +17,8 @@ import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.string.message.MessageColor;
+import amata1219.amalib.string.message.MessageTemplate;
+import amata1219.amalib.tuplet.Tuple;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.parkour.RankedParkour;
@@ -51,14 +55,61 @@ public class UpdateParkourSelectionUI implements InventoryUI {
 
 			});
 
-			//プレイ可能なアスレのテレポーターをセットする
-			for(int slotIndex = 0; slotIndex <= rank; slotIndex++){
+			//プレイ可能なアスレを表示する
+			for(int slotIndex = 0; slotIndex <= Math.min(rank, parkours.size() - 1); slotIndex++){
 				RankedParkour parkour = parkours.get(slotIndex);
 
-				l.put(s -> {
+				//アスレ名を取得する
+				String parkourName = parkour.name;
+
+				l.put((s) -> {
 
 					s.onClick(e -> {
+						Player player = e.player;
 
+						//ステージのスポーン地点にテレポートさせる
+						player.teleport(parkour.spawnPoint.asBukkitLocation());
+
+						//アスレに参加させる
+						parkour.entry(user);
+
+						//表示例: Teleported to The Earth of Marmalade!
+						MessageTemplate.capply("&b-Teleported to $0-&r-&b-!", parkourName).displayOnActionBar(player);
+					});
+
+					s.icon(Material.GLASS, i -> {
+						//表示名: The Earth of Marmalade
+						i.displayName = StringTemplate.capply("&b-$0", parkourName);
+
+						List<String> lore = new ArrayList<>();
+
+						//チェックエリア数を表示する
+						lore.add(StringTemplate.capply("&7-: &b-Check areas &7-@ &f-$0", parkour.checkAreas.areas.size()));
+
+						//タイムアタックが有効かどうかを表示する
+						lore.add(StringTemplate.capply("&7-: &b-Enable time attack &7-@ &f-$0", parkour.enableTimeAttack));
+
+						//タイムアタックが有効の場合
+						label: if(parkour.enableTimeAttack){
+							//上位記録を取得する
+							List<Tuple<UUID, String>> records = parkour.records.topTenRecords;
+
+							//記録が無ければ表示しない
+							if(records.isEmpty()) break label;
+
+							lore.add("");
+
+							//表示例: Top 10 records
+							lore.add(StringTemplate.capply("&7-: &b-Top $0 records", records.size()));
+
+							//最大で上位10名の記録を表示する
+							records.stream()
+							.map(record -> StringTemplate.capply("&7 - &b-$0 &7-@ &f-$1", Bukkit.getOfflinePlayer(record.first).getName(), record.second))
+							.forEach(lore::add);
+						}
+
+						//今いるアスレなら発光させる
+						if(user.isPlayingWithParkour() && parkour.equals(user.currentParkour)) i.gleam();
 					});
 
 				}, slotIndex);
@@ -66,7 +117,7 @@ public class UpdateParkourSelectionUI implements InventoryUI {
 
 			int lastSlotIndex = line.inventorySize() - 1;
 
-			//ロビーテレポーターをセットする
+			//ロビー移動ボタンを表示する
 			l.put(s -> {
 
 				s.onClick(e -> {
@@ -99,18 +150,22 @@ public class UpdateParkourSelectionUI implements InventoryUI {
 				l.put(s -> {
 
 					s.onClick(e -> {
-						//カテゴリーに対応したアスレリストを開かせる
+						InventoryUI inventoryUI = null;
+
+						//カテゴリーに対応したアスレリストを取得する
 						switch(category){
 						case UPDATE:
-							
+							inventoryUI = user.inventoryUserInterfaces.updateParkourSelectionUI;
 							break;
 						case EXTEND:
-							
+							inventoryUI = user.inventoryUserInterfaces.extendParkourSelectionUI;
 							break;
 						default:
-							ParkourMenuUI.getInstance().getInventoryUI(category).openInventory(e.player);
+							inventoryUI = ParkourMenuUI.getInstance().getInventoryUI(category);
 							break;
 						}
+
+						inventoryUI.openInventory(e.player);
 					});
 
 					s.icon(Material.FEATHER, i -> {
