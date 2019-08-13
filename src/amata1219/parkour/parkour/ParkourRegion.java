@@ -42,10 +42,10 @@ public class ParkourRegion extends Region {
 
 		this.parkour = parkour;
 
-		generateParticlePackets();
+		recolorParticles();
 	}
 
-	public void generateParticlePackets(){
+	public void recolorParticles(){
 		boolean running = task != null;
 
 		if(running) undisplayBorders();

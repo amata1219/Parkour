@@ -1,6 +1,8 @@
 package amata1219.parkour.command;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
@@ -9,6 +11,7 @@ import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
 import amata1219.amalib.selection.RegionSelection;
+import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.parkour.CheckAreas;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
@@ -152,10 +155,44 @@ public class CheckAreaCommand implements Command {
 			sender.warn("指定された番号のチェックエリアを削除しました。");
 			break;
 		}case "clear":{
-			
+			//メジャーチェックエリア番号が指定されていなければ戻る
+			if(!args.hasNextInt()){
+				sender.warn("メジャーCA番号を指定して下さい。");
+				return;
+			}
+
+			//メジャーチェックエリア番号を取得する
+			int majorCheckAreaNumber = args.nextInt() - 1;
+
+			//不正なメジャーチェックエリア番号であれば戻る
+			if(blockInvalidMajorCheckAreaNumber(sender, checkAreas, majorCheckAreaNumber)) return;
+
+			//指定された番号にバインドされたチェックエリアを全て削除する
+			checkAreas.unbindAllCheckAreas(majorCheckAreaNumber);
+
+			sender.warn("指定された番号のチェックエリアを全て削除しました。");
 			break;
 		}case "list":{
+			Map<Integer, List<ParkourRegion>> areasMap = checkAreas.getCheckAreas();
 
+			//空であればその趣旨のメッセージを表示して戻る
+			if(areasMap.isEmpty()){
+				sender.info("このアスレにチェックエリアは存在しません。");
+				return;
+			}
+
+			//各メジャーチェックエリア番号毎に処理をする
+			for(Entry<Integer, List<ParkourRegion>> areasEntry : areasMap.entrySet()){
+				int majorCheckAreaNumber = areasEntry.getKey();
+
+				//番号を表示する
+				sender.message(StringTemplate.capply("&7-: &b-$0", majorCheckAreaNumber));
+
+				List<ParkourRegion> areas = areasEntry.getValue();
+
+				//各チェックエリアの座標情報を表示する
+				for(ParkourRegion area : areas) sender.message(StringTemplate.capply("&7-: &f-$0", area.serialize().replace(",", "§7,§f")));
+			}
 			break;
 		}default:
 			displayCommandUsage(sender);

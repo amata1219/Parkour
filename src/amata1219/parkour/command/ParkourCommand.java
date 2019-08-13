@@ -164,11 +164,11 @@ public class ParkourCommand implements Command {
 				it.borderColor = color;
 
 				//各アスレ領域の境界線用パケットを再生成する
-				if(it.startLine != null) it.startLine.generateParticlePackets();
+				if(it.startLine != null) it.startLine.recolorParticles();
 
-				if(it.finishLine != null) it.finishLine.generateParticlePackets();
+				if(it.finishLine != null) it.finishLine.recolorParticles();
 
-				it.checkAreas.areas.forEach(ParkourRegion::generateParticlePackets);
+				it.checkAreas.areas.forEach(ParkourRegion::recolorParticles);
 			});
 
 			sender.info(StringTemplate.capply("$0-&r-&b-のパーティクル色を書き換えました。", parkourName));

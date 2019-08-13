@@ -61,6 +61,7 @@ public class CheckAreas {
 		return -1;
 	}
 
+	//使用されているメジャーチェックエリア番号で最大の物を返す
 	public int getMaxMajorCheckAreaNumber(){
 		return checkAreas.keySet().stream().mapToInt(Integer::intValue).max().orElse(-1);
 	}
@@ -76,6 +77,11 @@ public class CheckAreas {
 		List<ParkourRegion> areas = getCheckAreas(majorCheckAreaNumber);
 
 		return areas.indexOf(checkArea);
+	}
+
+	//チェックエリアの複製マップを返す
+	public Map<Integer, List<ParkourRegion>> getCheckAreas(){
+		return new HashMap<>(checkAreas);
 	}
 
 	//メジャーチェックエリア番号にバインドされたチェックエリアリストを取得する
@@ -155,7 +161,7 @@ public class CheckAreas {
 	}
 
 	//指定されたメジャーチェックエリア番号のチェックエリアを全て削除する
-	public void unbindAllCheckArea(int majorCheckAreaNumber){
+	public void unbindAllCheckAreas(int majorCheckAreaNumber){
 		getCheckAreas(majorCheckAreaNumber).forEach(this::unbindCheckArea);
 	}
 
@@ -164,8 +170,8 @@ public class CheckAreas {
 		//現在使用されているメジャーチェックエリア番号を昇順にソートされた状態で取得する
 		List<Integer> sortedMajorCheckAreaNumbers = checkAreas.keySet().stream().sorted((x, y) -> Integer.compare(x, y)).collect(Collectors.toList());
 
-		//チェックエリアマップを複製する
-		Map<Integer, List<ParkourRegion>> duplicatedCheckAreas = new HashMap<>(checkAreas);
+		//チェックエリアの複製マップを取得する
+		Map<Integer, List<ParkourRegion>> duplicatedCheckAreas = getCheckAreas();
 
 		//チェックエリアマップをクリアする
 		checkAreas.clear();
@@ -197,6 +203,10 @@ public class CheckAreas {
 
 	public void undisplayAll(){
 		applyToAllCheckAreas(ParkourRegion::undisplayBorders);
+	}
+
+	public void recolorAll(){
+		applyToAllCheckAreas(ParkourRegion::recolorParticles);
 	}
 
 	private void applyToAllCheckAreas(Consumer<ParkourRegion> applier){
