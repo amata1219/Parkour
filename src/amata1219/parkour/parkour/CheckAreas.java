@@ -184,8 +184,8 @@ public class CheckAreas {
 			//対応したチェックエリアのリストを取得する
 			List<ParkourRegion> areas = duplicatedCheckAreas.get(originallyMajorCheckAreaNumber);
 
-			//再セットする
-			checkAreas.put(originallyMajorCheckAreaNumber, areas);
+			//正しいメジャーチェックエリア番号とバインドする
+			checkAreas.put(majorCheckAreaNumber, areas);
 		}
 	}
 
@@ -219,7 +219,7 @@ public class CheckAreas {
 			int majorCheckAreaNumber = checkAreasEntry.getKey();
 
 			//チェックエリアをテキストデータにシリアライズする
-			List<String> deserializedCheckAreas = checkAreasEntry.getValue().stream().map(ParkourRegion::serialize).collect(Collectors.toList());
+			List<String> deserializedCheckAreas = checkAreasEntry.getValue().stream().map(origin::relative).map(Region::serialize).collect(Collectors.toList());
 
 			//指定階層にセットする
 			yaml.set(StringTemplate.apply("Check areas.$0", majorCheckAreaNumber), deserializedCheckAreas);

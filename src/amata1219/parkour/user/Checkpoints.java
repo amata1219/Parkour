@@ -40,6 +40,8 @@ public class Checkpoints {
 
 			//各チェックエリア番号毎に処理をする
 			for(String checkAreaNumberText : checkAreaSection.getKeys(false)){
+				if(checkAreaNumberText.equals("Latest")) continue;
+
 				//チェックエリア番号を整数型に変換する
 				int checkAreaNumber = Integer.parseInt(checkAreaNumberText);
 
@@ -89,7 +91,7 @@ public class Checkpoints {
 	}
 
 	public int getLastCheckpointNumber(Parkour parkour){
-		return getLastCheckpointNumber(parkour);
+		return getLastCheckpointNumber(parkour.name);
 	}
 
 	public int getLastCheckpointNumber(String parkourName){

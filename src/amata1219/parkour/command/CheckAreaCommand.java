@@ -176,7 +176,7 @@ public class CheckAreaCommand implements Command {
 				int majorCheckAreaNumber = areasEntry.getKey();
 
 				//番号を表示する
-				sender.message(StringTemplate.capply("&7-: &b-$0", majorCheckAreaNumber));
+				sender.message(StringTemplate.capply("&7-: &b-$0", majorCheckAreaNumber + 1));
 
 				List<ParkourRegion> areas = areasEntry.getValue();
 
