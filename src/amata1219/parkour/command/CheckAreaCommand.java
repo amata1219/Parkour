@@ -1,5 +1,6 @@
 package amata1219.parkour.command;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
@@ -56,23 +57,23 @@ public class CheckAreaCommand implements Command {
 		CheckAreas checkAreas = parkour.checkAreas;
 
 		switch (args.next()) {
-		case "add":
+		case "add":{
 			//範囲選択がされていなければ戻る
 			if(blockNotSelected(sender)) return;
 
-			//選択範囲を取得する
-			RegionSelection selection = selections.getSelection(uuid);
-
-			int maxMojorCheckAreaNumber = checkAreas.getMaxMajorCheckAreaNumber();
+			int maxMajorCheckAreaNumber = checkAreas.getMaxMajorCheckAreaNumber();
 
 			//メジャーチェックエリア番号を取得する
-			int majorCheckAreaNumber = args.hasNextInt() ? args.nextInt() - 1 : maxMojorCheckAreaNumber + 1;
+			int majorCheckAreaNumber = args.hasNextInt() ? args.nextInt() - 1 : maxMajorCheckAreaNumber + 1;
 
 			//不正な番号が指定された場合
-			if(majorCheckAreaNumber < 0 || maxMojorCheckAreaNumber - 1 > maxMojorCheckAreaNumber){
+			if(majorCheckAreaNumber < 0 || majorCheckAreaNumber - 1 > maxMajorCheckAreaNumber){
 				sender.warn("指定されたメジャーCA番号は正しくありません。");
 				return;
 			}
+
+			//選択範囲を取得する
+			RegionSelection selection = selections.getSelection(uuid);
 
 			//新しくチェックエリアを生成する
 			ParkourRegion newCheckArea = generateParkourRegion(parkour, selection);
@@ -80,22 +81,56 @@ public class CheckAreaCommand implements Command {
 			//バインドする
 			checkAreas.bindCheckArea(majorCheckAreaNumber, newCheckArea);
 
-			sender.info("指定されたアスレに");
+			sender.info("指定されたアスレにチェックエリアを追加しました。");
 			break;
-		case "set":
+		}case "set":{
 			//範囲選択がされていなければ戻る
 			if(blockNotSelected(sender)) return;
+
+			//メジャーチェックエリア番号が指定されていなければ戻る
+			if(!args.hasNextInt()){
+				sender.warn("メジャーCA番号を指定して下さい。");
+				return;
+			}
+
+			//メジャーチェックエリア番号を取得する
+			int majorCheckAreaNumber = args.nextInt() - 1;
+
+			//不正なメジャーチェックエリア番号であれば戻る
+			if(blockInvalidMajorCheckAreaNumber(sender, checkAreas, majorCheckAreaNumber)) return;
+
+			//マイナーチェックエリア番号が指定されていなければ戻る
+			if(!args.hasNextInt()){
+				sender.warn("マイナーCA番号を指定して下さい。");
+				return;
+			}
+
+			//マイナーチェックエリア番号を取得する
+			int minorCheckAreaNumber = args.nextInt() - 1;
+
+			//不正なマイナーチェックエリア番号であれば戻る
+			if(blockInvalidMinorCheckAreaNumber(sender, checkAreas, majorCheckAreaNumber, minorCheckAreaNumber)) return;
+
+			//選択範囲を取得する
+			RegionSelection selection = selections.getSelection(uuid);
+
+			//新しくチェックエリアを生成する
+			ParkourRegion newCheckArea = generateParkourRegion(parkour, selection);
+
+			checkAreas.setCheckArea(majorCheckAreaNumber, minorCheckAreaNumber, newCheckArea);
+
+			sender.warn("指定した番号のチェックエリアを書き換えました。");
 			break;
-		case "remove":
+		}case "remove":{
 
 			break;
-		case "clear":
+		}case "clear":{
 
 			break;
-		case "list":
+		}case "list":{
 
 			break;
-		default:
+		}default:
 			displayCommandUsage(sender);
 			break;
 		}
@@ -115,6 +150,22 @@ public class CheckAreaCommand implements Command {
 		if(selections.hasSelection(sender.asPlayerCommandSender().getUniqueId())) return false;
 
 		sender.warn("範囲を指定して下さい。");
+		return true;
+	}
+
+	private boolean blockInvalidMajorCheckAreaNumber(Sender sender, CheckAreas checkAreas, int majorCheckAreaNumber){
+		if(majorCheckAreaNumber >= 0 && majorCheckAreaNumber <= checkAreas.getMaxMajorCheckAreaNumber()) return false;
+
+		sender.warn("指定されたメジャーCA番号は不正です。");
+		return true;
+	}
+
+	private boolean blockInvalidMinorCheckAreaNumber(Sender sender, CheckAreas checkAreas, int majorCheckAreaNumber, int minorCheckAreaNumber){
+		List<ParkourRegion> areas = checkAreas.getCheckAreas(majorCheckAreaNumber);
+
+		if(minorCheckAreaNumber >= 0 && minorCheckAreaNumber < areas.size()) return false;
+
+		sender.warn("指定されたマイナーCA番号は不正です。");
 		return true;
 	}
 
