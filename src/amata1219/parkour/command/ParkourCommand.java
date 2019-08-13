@@ -1,27 +1,14 @@
 package amata1219.parkour.command;
 
-import java.util.regex.Pattern;
-
-import org.bukkit.Location;
-
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
-import amata1219.amalib.location.ImmutableEntityLocation;
-import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.util.Color;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.parkour.ParkourCategory;
-import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
-import amata1219.parkour.parkour.Rewards;
 import net.md_5.bungee.api.ChatColor;
 
 public class ParkourCommand implements Command {
-
-	private static final Pattern RGB_FORMAT = Pattern.compile("^((2[0-4]\\d|25[0-5]|1\\d{1,2}|[1-9]\\d|\\d)( ?, ?)){2}(2[0-4]\\d|25[0-5]|1\\d{1,2}|[1-9]\\d|\\d)");
-	private static final Pattern REWARDS_FORMAT = Pattern.compile("[0-9]{1,8},[0-9]{1,8}");
 
 	private final Parkours parkours = Parkours.getInstance();
 
@@ -54,7 +41,7 @@ public class ParkourCommand implements Command {
 
 		//第1引数が無ければ戻る
 		if(!args.hasNext()){
-			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/spawn] | /parkour [parkour_name] color [R,G,B] | /parkour [parkour_name] rewards [coin,coin] | /parkour [parkour_name] timeattack [true/false] | /parkour list");
+			displayCommandUsage(sender);
 			return;
 		}
 
@@ -63,9 +50,11 @@ public class ParkourCommand implements Command {
 
 		//第1引数がlistであればアスレ名を全て表示する
 		if(parkourName.equals("list")){
-			parkours.getParkours().stream()
-			.map(parkour -> StringTemplate.capply("&7-: &r-$0($1)", parkour.name, (parkour.enable ? "&b-有効" : "&7-無効")))
-			.forEach(sender::message);
+			for(Parkour parkour : parkours.getParkours()){
+				String text = StringTemplate.capply("&7-: &r-$0 $7-@ &r-$1", parkour.name, parkour.enable ? "&b-有効" : "&7-無効");
+				sender.message(text);
+
+			}
 			return;
 		}
 
@@ -85,7 +74,7 @@ public class ParkourCommand implements Command {
 			parkours.registerParkour(parkourName);
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を作成しました。", parkourName));
-			return;
+			break;
 		}case "delete":{
 			//指定されたアスレが存在しなければ戻る
 			if(blockNotExistParkour(sender, parkourName)) return;
@@ -97,12 +86,12 @@ public class ParkourCommand implements Command {
 			parkours.makeYaml(parkourName).file.delete();
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を削除しました。", parkourName));
-			return;
+			break;
 		}case "enable":{
 			//指定されたアスレが存在しなければ戻る
 			if(blockNotExistParkour(sender, parkourName)) return;
 
-			Parkour parkour = parkours.getParkour(parkourName);
+			Parkour parkour = getParkour(parkourName);
 
 			if(parkour.enable){
 				sender.warn(StringTemplate.capply("$0-&r-&c-は既に有効化されています。", parkourName));
@@ -113,12 +102,12 @@ public class ParkourCommand implements Command {
 			parkour.update(it -> it.enable = true);
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を有効化しました。", parkourName));
-			return;
+			break;
 		}case "disable":{
 			//指定されたアスレが存在しなければ戻る
 			if(blockNotExistParkour(sender, parkourName)) return;
 
-			Parkour parkour = parkours.getParkour(parkourName);
+			Parkour parkour = getParkour(parkourName);
 
 			if(!parkour.enable){
 				sender.warn(StringTemplate.capply("$0-&r-&c-は既に無効化されています。", parkourName));
@@ -129,115 +118,23 @@ public class ParkourCommand implements Command {
 			parkour.update(it -> it.enable = false);
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を無効化しました。", parkourName));
-			return;
-		}case "category":{
-			//指定されたアスレが存在しなければ戻る
-			if(blockNotExistParkour(sender, parkourName)) return;
-
-			String text = args.next().toUpperCase();
-			ParkourCategory category;
-			try{
-				category = ParkourCategory.valueOf(text);
-			}catch(Exception e){
-				sender.warn("/parkour [parkour_name] [category] [NORMAL/UPDATE/EXTEND/SEGMENT/BIOME]");
-				return;
-			}
-
-			Parkour parkour = parkours.getParkour(parkourName);
-			parkour.apply(it -> it.category = category);
-
-			sender.info(StringTemplate.capply("$0-&r-&b-のカテゴリーを$1に設定しました。", parkourName, category));
-			return;
-		}case "spawn":{
-			//指定されたアスレが存在しなければ戻る
-			if(blockNotExistParkour(sender, parkourName)) return;
-
-			Parkour parkour = parkours.getParkour(parkourName);
-
-			//プレイヤーの座標を取得する
-			Location location = sender.asPlayerCommandSender().getLocation();
-
-			//イミュータブルな座標にしブロックの中央に調整した上でセットする
-			parkour.apply(it -> it.spawnPoint = (ImmutableEntityLocation) new ImmutableEntityLocation(location));
-
-			sender.info(StringTemplate.capply("$0-&r-&b-のスポーン地点を現在地点に書き換えました。", parkourName));
-			return;
-		}case "color":{
-			//指定されたアスレが存在しなければ戻る
-			if(blockNotExistParkour(sender, parkourName)) return;
-
-			String text = args.next();
-
-			//RGB形式でなければ戻る
-			if(!RGB_FORMAT.matcher(text).matches()){
-				sender.warn("パーティクル色はRGB形式で指定して下さい。");
-				return;
-			}
-
-			Parkour parkour = parkours.getParkour(parkourName);
-
-			//各値に分割する
-			int[] values = StringSplit.splitToIntArguments(text);
-
-			Color color = new Color(values[0], values[1], values[2]);
-
-			//適用する
-			parkour.apply(it -> {
-				it.borderColor = color;
-
-				//各アスレ領域の境界線用パケットを再生成する
-				if(it.startLine != null) it.startLine.recolorParticles();
-
-				if(it.finishLine != null) it.finishLine.recolorParticles();
-
-				it.checkAreas.areas.forEach(ParkourRegion::recolorParticles);
-			});
-
-			sender.info(StringTemplate.capply("$0-&r-&b-のパーティクル色を書き換えました。", parkourName));
-			return;
-		}case "rewards":{
-			//指定されたアスレが存在しなければ戻る
-			if(blockNotExistParkour(sender, parkourName)) return;
-
-			String text = args.next();
-
-			if(!REWARDS_FORMAT.matcher(text).matches()){
-				sender.warn("/parkour [parkour_name] [first,second_and_subsequent]");
-				return;
-			}
-
-			Parkour parkour = parkours.getParkour(parkourName);
-
-			//各値に分割する
-			int[] coins = StringSplit.splitToIntArguments(text);
-
-			//報酬として扱える様にする
-			Rewards rewards = new Rewards(coins);
-			parkour.apply(it -> it.rewards = rewards);
-
-			sender.info(StringTemplate.capply("$0-&r-&b-の報酬を書き換えました。", parkourName));
-			return;
-		}case "timeattack":{
-			//指定されたアスレが存在しなければ戻る
-			if(blockNotExistParkour(sender, parkourName)) return;
-
-			if(!args.hasNextBoolean()){
-				sender.warn("/parkour [parkour_name] [timeattack] [true/false]");
-				return;
-			}
-
-			boolean enableTimeAttack = args.nextBoolean();
-
-			Parkour parkour = parkours.getParkour(parkourName);
-			parkour.apply(it -> it.enableTimeAttack = enableTimeAttack);
-
-			sender.info(StringTemplate.capply("$0-&r-&b-でのタイムアタックを$1にしました。", parkourName, (enableTimeAttack ? "有効": "無効")));
-			return;
+			break;
 		}default:
-			sender.warn("/parkour [parkour_name] [create/delete/enable/disable/spawn] | /parkour [parkour_name] color [R,G,B] | /parkour [parkour_name] rewards [coin,coin] | /parkour [parkour_name] timeattack [true/false] | /parkour list");
-			return;
+			displayCommandUsage(sender);
+			break;
 		}
+	}
 
+	private void displayCommandUsage(Sender sender){
+		sender.warn("/parkour [parkour] create @ 指定された名前でアスレを作成します。");
+		sender.warn("/parkour [parkour] delete @ アスレを削除します。");
+		sender.warn("/parkour [parkour] enable @ 有効化し選択画面に表示します。");
+		sender.warn("/parkour [parkour] disable @ 無効化し選択画面から非表示にします。");
+		sender.warn("アスレ名の装飾コードはアンパサンドを使用して下さい。");
+	}
+
+	private Parkour getParkour(String parkourName){
+		return parkours.getParkour(parkourName);
 	}
 
 	private boolean blockNotExistParkour(Sender sender, String parkourName){
