@@ -22,22 +22,35 @@ public class UserSetting {
 	public UserSetting(Yaml yaml){
 		hideMode = yaml.getBoolean("Hide mode");
 
-		ConfigurationSection section = yaml.getConfigurationSection("Values displayed on scoreboard");
+		ConfigurationSection scoreboardSection = yaml.getConfigurationSection("Values displayed on scoreboard");
 
-		displayScoreboard = section.getBoolean("Scoreboard");
-		displayTraceur = section.getBoolean("Traceur");
-		displayUpdateRank = section.getBoolean("Update rank");
-		displayExtendRank = section.getBoolean("Extend rank");
-		displayJumps = section.getBoolean("Jumps");
-		displayCoins = section.getBoolean("Coins");
-		displayTimePlayed = section.getBoolean("Time played");
-		displayOnlinePlayers = section.getBoolean("Online players");
-		displayPing = section.getBoolean("Ping");
-		displayServerAddress = section.getBoolean("Server address");
+		displayScoreboard = scoreboardSection.getBoolean("Scoreboard");
+		displayTraceur = scoreboardSection.getBoolean("Traceur");
+		displayUpdateRank = scoreboardSection.getBoolean("Update rank");
+		displayExtendRank = scoreboardSection.getBoolean("Extend rank");
+		displayJumps = scoreboardSection.getBoolean("Jumps");
+		displayCoins = scoreboardSection.getBoolean("Coins");
+		displayTimePlayed = scoreboardSection.getBoolean("Time played");
+		displayOnlinePlayers = scoreboardSection.getBoolean("Online players");
+		displayPing = scoreboardSection.getBoolean("Ping");
+		displayServerAddress = scoreboardSection.getBoolean("Server address");
 	}
 
 	public void save(Yaml yaml){
+		yaml.set("Hide mode", hideMode);
 
+		ConfigurationSection scoreboardSection = yaml.getConfigurationSection("Values displayed on scoreboard");
+
+		scoreboardSection.set("Scoreboard", displayScoreboard);
+		scoreboardSection.set("Traceur", displayTraceur);
+		scoreboardSection.set("Update rank", displayUpdateRank);
+		scoreboardSection.set("Extend rank", displayExtendRank);
+		scoreboardSection.set("Jumps", displayJumps);
+		scoreboardSection.set("Coins", displayCoins);
+		scoreboardSection.set("Time played", displayTimePlayed);
+		scoreboardSection.set("Online players", displayOnlinePlayers);
+		scoreboardSection.set("Ping", displayPing);
+		scoreboardSection.set("Server address", displayServerAddress);
 	}
 
 }

@@ -2,7 +2,6 @@ package amata1219.parkour.listener;
 
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 
 import amata1219.amalib.sound.SoundMetadata;
 import amata1219.parkour.parkour.Parkour;
@@ -22,7 +21,6 @@ public class PassCheckAreaListener extends PassRegionBoundaryAbstractListener {
 	}
 
 	@Override
-	@EventHandler
 	public void onMove(Player player, User user, Parkour parkour, ParkourRegion from, ParkourRegion to) {
 		boolean existsFrom = from != null;
 		boolean existsTo = to != null;

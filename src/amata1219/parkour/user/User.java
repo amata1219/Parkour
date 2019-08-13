@@ -178,6 +178,8 @@ public class User {
 		//全チェックポイントを記録する
 		checkpoints.save(yaml);
 
+		setting.save(yaml);
+
 		//セーブする
 		yaml.save();
 	}
