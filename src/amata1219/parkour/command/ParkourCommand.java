@@ -22,16 +22,19 @@ public class ParkourCommand implements Command {
 	 *
 	 * setparkourregion command
 	 *
-	 * [parkour] setregion
-	 * [parkour] setstartline
-	 * [parkour] setfinishline
+	 * [parkour?] setregion
+	 * [parkour?] setstartline
+	 * [parkour?] setfinishline
 	 *
 	 * parkoursetting command
 	 *
-	 * [parkour] spawn
-	 * [parkour] color [R,G,B]
-	 * [parkour] rewards [F,S]
-	 * [parkour] timeattack [true/false]
+	 * [parkour?] category
+	 * [parkour?] spawn
+	 * [parkour?] color [R,G,B]
+	 * [parkour?] rewards [F,S]
+	 * [parkour?] timeattack [true/false]
+	 *
+	 * [parkour?] - アスレの編集中であれば入力する必要が無くなる引数
 	 */
 
 	@Override

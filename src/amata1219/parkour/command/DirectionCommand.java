@@ -30,7 +30,7 @@ public class DirectionCommand implements Command {
 
 			//第2引数が存在しない或いはfloat型の値ではない場合は警告しつつ戻る
 			if(!args.hasNextFloat()){
-				sender.warn(": Syntax error > /setdr [yaw] [pitch]");
+				sender.warn(": Syntax error > /direction [yaw] [pitch]");
 				return;
 			}
 
@@ -43,7 +43,7 @@ public class DirectionCommand implements Command {
 			switch(args.next()){
 			case "yaw":
 				if(!args.hasNextFloat()){
-					sender.warn(": Syntax error > /setdr yaw [yaw]");
+					sender.warn(": Syntax error > /direction yaw [yaw]");
 					return;
 				}
 
@@ -53,7 +53,7 @@ public class DirectionCommand implements Command {
 				break;
 			case "pitch":
 				if(!args.hasNextFloat()){
-					sender.warn(": Syntax error > /setdr pitch [pitch]");
+					sender.warn(": Syntax error > /direction pitch [pitch]");
 					return;
 				}
 
@@ -62,7 +62,7 @@ public class DirectionCommand implements Command {
 				adjustAndSetPitch(location, pitch);
 				break;
 			default:
-				sender.warn(": Syntax error > /setdr [yaw] [pitch] | /set yaw [yaw] | /set pitch [pitch]");
+				sender.warn(": Syntax error > /direction [yaw] [pitch] | /set yaw [yaw] | /set pitch [pitch]");
 				return;
 			}
 		}
