@@ -12,7 +12,7 @@ import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
 
-public class GiveSelectionToolCommand implements Command {
+public class EditParkourCommand implements Command {
 
 	private final RegionSelections selections = RegionSelections.getInstance();
 	private final Parkours parkourSet = Parkours.getInstance();

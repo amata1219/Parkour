@@ -89,15 +89,13 @@ public class Parkour {
 		checkAreas.undisplayAll();
 	}
 
-	public void apply(Consumer<Parkour> apply){
-		apply.accept(this);
+	public void apply(Consumer<Parkour> applier){
+		applier.accept(this);
 	}
 
-	public void overwriteParkourRegion(Consumer<Parkour> apply){
+	public void update(Consumer<Parkour> applier){
 		if(enable) parkours.unregisterParkour(this);
-
-		apply.accept(this);
-
+		apply(applier);
 		if(enable) parkours.registerParkour(this);
 	}
 

@@ -8,7 +8,7 @@ import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
 import amata1219.amalib.string.StringTemplate;
 
-public class SetDirectionCommand implements Command {
+public class DirectionCommand implements Command {
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {

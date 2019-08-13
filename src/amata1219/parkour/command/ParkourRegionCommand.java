@@ -14,7 +14,7 @@ import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
 
-public class SetParkourRegionCommand implements Command {
+public class ParkourRegionCommand implements Command {
 
 	private final Parkours parkours = Parkours.getInstance();
 	private final RegionSelections selections = RegionSelections.getInstance();
@@ -58,15 +58,15 @@ public class SetParkourRegionCommand implements Command {
 
 		switch(args.next()){
 		case "region":{
-			parkour.overwriteParkourRegion(it -> it.region = new Region(lesserBoundaryCorner, greaterBoundaryCorner));
+			parkour.update(it -> it.region = new Region(lesserBoundaryCorner, greaterBoundaryCorner));
 			regionName = "領域";
 			break;
 		}case "startline":{
-			parkour.overwriteParkourRegion(it -> it.startLine = new ParkourRegion(parkour, lesserBoundaryCorner, greaterBoundaryCorner));
+			parkour.update(it -> it.startLine = new ParkourRegion(parkour, lesserBoundaryCorner, greaterBoundaryCorner));
 			regionName = "スタートライン";
 			break;
 		}case "finishline":{
-			parkour.overwriteParkourRegion(it -> it.finishLine = new ParkourRegion(parkour, lesserBoundaryCorner, greaterBoundaryCorner));
+			parkour.update(it -> it.finishLine = new ParkourRegion(parkour, lesserBoundaryCorner, greaterBoundaryCorner));
 			regionName = "フィニッシュライン";
 			break;
 		}default:

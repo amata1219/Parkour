@@ -7,13 +7,11 @@ import org.bukkit.World;
 import amata1219.amalib.Plugin;
 import amata1219.parkour.command.CheckAreaCommand;
 import amata1219.parkour.command.CoinCommand;
-import amata1219.parkour.command.GiveSelectionToolCommand;
+import amata1219.parkour.command.EditParkourCommand;
 import amata1219.parkour.command.ParkourCommand;
 import amata1219.parkour.command.RelayoutCommand;
-import amata1219.parkour.command.SetDirectionCommand;
-import amata1219.parkour.command.SetFinishLineCommand;
-import amata1219.parkour.command.OldSetParkourRegionCommand;
-import amata1219.parkour.command.SetStartLineCommand;
+import amata1219.parkour.command.DirectionCommand;
+import amata1219.parkour.command.ParkourRegionCommand;
 import amata1219.parkour.listener.ControlFunctionalItemListener;
 import amata1219.parkour.listener.DisableDamageListener;
 import amata1219.parkour.listener.DisableFoodLevelChangeListener;
@@ -60,13 +58,11 @@ public class Main extends Plugin {
 
 		registerCommands(
 			new ParkourCommand(),
-			new GiveSelectionToolCommand(),
-			new OldSetParkourRegionCommand(),
-			new SetStartLineCommand(),
-			new SetFinishLineCommand(),
+			new EditParkourCommand(),
+			new ParkourRegionCommand(),
 			new CheckAreaCommand(),
 			new CoinCommand(),
-			new SetDirectionCommand(),
+			new DirectionCommand(),
 			new RelayoutCommand()
 		);
 

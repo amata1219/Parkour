@@ -26,14 +26,20 @@ public class ParkourCommand implements Command {
 	private final Parkours parkours = Parkours.getInstance();
 
 	/*
+	 * parkour command
+	 *
 	 * [parkour] create
 	 * [parkour] delete
 	 * [parkour] enable
 	 * [parkour] disable
 	 *
+	 * setparkourregion command
+	 *
 	 * [parkour] setregion
 	 * [parkour] setstartline
 	 * [parkour] setfinishline
+	 *
+	 * parkoursetting command
 	 *
 	 * [parkour] spawn
 	 * [parkour] color [R,G,B]
@@ -104,7 +110,7 @@ public class ParkourCommand implements Command {
 			}
 
 			//アスレを有効化する
-			parkour.overwriteParkourRegion(it -> it.enable = true);
+			parkour.update(it -> it.enable = true);
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を有効化しました。", parkourName));
 			return;
@@ -120,7 +126,7 @@ public class ParkourCommand implements Command {
 			}
 
 			//アスレを無効化する
-			parkour.overwriteParkourRegion(it -> it.enable = false);
+			parkour.update(it -> it.enable = false);
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を無効化しました。", parkourName));
 			return;

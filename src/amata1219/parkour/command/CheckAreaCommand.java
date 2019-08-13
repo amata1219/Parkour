@@ -191,12 +191,12 @@ public class CheckAreaCommand implements Command {
 	}
 
 	private void displayCommandUsage(Sender sender){
-		sender.warn("/checkarea add @ アスレにCAを追加する");
-		sender.warn("/checkarea add [major] @ アスレの指定メジャーCA番号にCAを追加する");
-		sender.warn("/checkarea set [major] [minor] @ アスレの指定メジャーCA番号、マイナーCA番号に設定されているCAを書き換える");
-		sender.warn("/checkarea [parkour] remove [major] [minor] @ アスレの指定メジャーCA番号、マイナーCA番号に設定されているCAを削除する");
-		sender.warn("/checkarea [parkour] clear [major] @ アスレの指定メジャーCA番号に設定されているCAを全て削除する");
-		sender.warn("/checkarea [parkour] list @ アスレ内のCA一覧を表示する");
+		sender.warn("/checkarea add @ CAを追加する");
+		sender.warn("/checkarea add [major] @ 指定メジャーCA番号にCAを追加する");
+		sender.warn("/checkarea set [major] [minor] @ 指定メジャーCA番号、マイナーCA番号に設定されているCAを書き換える");
+		sender.warn("/checkarea [parkour] remove [major] [minor] @ 指定メジャーCA番号、マイナーCA番号に設定されているCAを削除する");
+		sender.warn("/checkarea [parkour] clear [major] @ 指定メジャーCA番号に設定されているCAを全て削除する");
+		sender.warn("/checkarea [parkour] list @ CA一覧を表示する");
 		sender.warn("アスレの範囲選択中であれば[parkour]は省略出来る");
 	}
 
