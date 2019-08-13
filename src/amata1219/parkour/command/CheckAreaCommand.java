@@ -122,10 +122,37 @@ public class CheckAreaCommand implements Command {
 			sender.warn("指定した番号のチェックエリアを書き換えました。");
 			break;
 		}case "remove":{
+			//メジャーチェックエリア番号が指定されていなければ戻る
+			if(!args.hasNextInt()){
+				sender.warn("メジャーCA番号を指定して下さい。");
+				return;
+			}
 
+			//メジャーチェックエリア番号を取得する
+			int majorCheckAreaNumber = args.nextInt() - 1;
+
+			//不正なメジャーチェックエリア番号であれば戻る
+			if(blockInvalidMajorCheckAreaNumber(sender, checkAreas, majorCheckAreaNumber)) return;
+
+			//マイナーチェックエリア番号が指定されていなければ戻る
+			if(!args.hasNextInt()){
+				sender.warn("マイナーCA番号を指定して下さい。");
+				return;
+			}
+
+			//マイナーチェックエリア番号を取得する
+			int minorCheckAreaNumber = args.nextInt() - 1;
+
+			//不正なマイナーチェックエリア番号であれば戻る
+			if(blockInvalidMinorCheckAreaNumber(sender, checkAreas, majorCheckAreaNumber, minorCheckAreaNumber)) return;
+
+			//指定された番号にバインドされたチェックエリアを削除する
+			checkAreas.unbindCheckArea(majorCheckAreaNumber, minorCheckAreaNumber);
+
+			sender.warn("指定された番号のチェックエリアを削除しました。");
 			break;
 		}case "clear":{
-
+			
 			break;
 		}case "list":{
 

@@ -62,7 +62,7 @@ public class CheckAreas {
 	}
 
 	public int getMaxMajorCheckAreaNumber(){
-		return checkAreas.size() - 1;
+		return checkAreas.keySet().stream().mapToInt(Integer::intValue).max().orElse(-1);
 	}
 
 	//マイナーチェックエリア番号を取得する
@@ -104,8 +104,8 @@ public class CheckAreas {
 		//メジャーチェックエリア番号が未使用であれば戻る
 		if(areas.isEmpty()) return;
 
-		//マイナーチェックエリア番号が大きすぎれば戻る
-		if(minorCheckAreaNumber >= areas.size()) return;
+		//マイナーチェックエリア番号が0未満又は大きすぎれば戻る
+		if(minorCheckAreaNumber < 0 || minorCheckAreaNumber >= areas.size()) return;
 
 		//チェックエリアを書き換える
 		ParkourRegion replacedCheckArea = areas.set(minorCheckAreaNumber, checkArea);
@@ -126,6 +126,61 @@ public class CheckAreas {
 		areas.remove(checkArea);
 
 		parkours.unregisterCheckArea(checkArea);
+
+		//メジャーチェックエリア番号にバインドされたチェックエリアがまだ存在するのであれば戻る
+		if(!areas.isEmpty()) return;
+
+		//メジャーチェックエリア番号を削除する
+		checkAreas.remove(majorCheckAreaNumber);
+
+		//空いた番号を埋める為に順序を修正する
+		correctCheckAreas();
+	}
+
+	//指定されたチェックエリア番号のチェックエリアをアンバインドする
+	public void unbindCheckArea(int majorCheckAreaNumber, int minorCheckAreaNumber){
+		List<ParkourRegion> areas = getCheckAreas(majorCheckAreaNumber);
+
+		//メジャーチェックエリア番号が未使用であれば戻る
+		if(areas.isEmpty()) return;
+
+		//マイナーチェックエリア番号が0未満又は大きすぎれば戻る
+		if(minorCheckAreaNumber < 0 || minorCheckAreaNumber >= areas.size()) return;
+
+		//チェックエリアを削除する
+		ParkourRegion targetedCheckArea = areas.remove(minorCheckAreaNumber);
+
+		//残りの処理は他のメソッドに任せる
+		unbindCheckArea(targetedCheckArea);
+	}
+
+	//指定されたメジャーチェックエリア番号のチェックエリアを全て削除する
+	public void unbindAllCheckArea(int majorCheckAreaNumber){
+		getCheckAreas(majorCheckAreaNumber).forEach(this::unbindCheckArea);
+	}
+
+	//最大のメジャーチェックエリア番号がcheckAreas.size()-1と一致する様に順序を修正する
+	public void correctCheckAreas(){
+		//現在使用されているメジャーチェックエリア番号を昇順にソートされた状態で取得する
+		List<Integer> sortedMajorCheckAreaNumbers = checkAreas.keySet().stream().sorted((x, y) -> Integer.compare(x, y)).collect(Collectors.toList());
+
+		//チェックエリアマップを複製する
+		Map<Integer, List<ParkourRegion>> duplicatedCheckAreas = new HashMap<>(checkAreas);
+
+		//チェックエリアマップをクリアする
+		checkAreas.clear();
+
+		//0から存在するメジャーチェックエリア番号の分だけカウントしつつマップに再セットする
+		for(int majorCheckAreaNumber = 0; majorCheckAreaNumber < sortedMajorCheckAreaNumbers.size(); majorCheckAreaNumber++){
+			//現在のメジャーチェックエリア番号に相当する元々のチェックエリア番号を取得する
+			Integer originallyMajorCheckAreaNumber = sortedMajorCheckAreaNumbers.get(majorCheckAreaNumber);
+
+			//対応したチェックエリアのリストを取得する
+			List<ParkourRegion> areas = duplicatedCheckAreas.get(originallyMajorCheckAreaNumber);
+
+			//再セットする
+			checkAreas.put(originallyMajorCheckAreaNumber, areas);
+		}
 	}
 
 	public void registerAll(){
