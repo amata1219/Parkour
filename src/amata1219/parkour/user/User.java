@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.yaml.Yaml;
+import amata1219.parkour.listener.ControlFunctionalItemListener;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.Parkours;
 
@@ -141,6 +142,8 @@ public class User {
 
 		currentParkour.exit(this);
 		currentParkour = parkourPlayingNow = null;
+
+		ControlFunctionalItemListener.getInstance().setNotifierGleam(asBukkitPlayer(), false);
 	}
 
 	public void save(){

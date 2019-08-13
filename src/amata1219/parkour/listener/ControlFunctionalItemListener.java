@@ -1,9 +1,11 @@
 package amata1219.parkour.listener;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
@@ -21,6 +23,8 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import amata1219.parkour.function.ToggleHideMode;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
+import amata1219.parkour.parkour.ParkourRegion;
+import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.ui.parkour.ParkourMenuUI;
 import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
@@ -39,6 +43,7 @@ import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.message.MessageColor;
 import amata1219.amalib.string.message.MessageTemplate;
+import amata1219.amalib.tuplet.Triple;
 import amata1219.amalib.tuplet.Tuple;
 
 public class ControlFunctionalItemListener implements PlayerJoinListener, PlayerQuitListener {
@@ -53,7 +58,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		return instance;
 	}
 
-	private final Tuple<ItemStack, BiConsumer<User, Boolean>> teleporterToLastOrLatestCheckpoint;
+	private final Triple<ItemStack, ItemStack, BiConsumer<User, Boolean>> teleporterToLastOrLatestCheckpoint;
 	private final Tuple<ItemStack, Consumer<User>> checkpointSelector;
 	private final Tuple<ItemStack, Consumer<User>> stageSelector;
 	private final Tuple<ItemStack, Consumer<User>> hideModeToggler;
@@ -63,12 +68,16 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 	private final Users users = Users.getInstnace();
 
 	public ControlFunctionalItemListener(){
-		ItemStack itemOfTeleporterToLastCheckpoint = new ItemStack(Material.FEATHER);
+		ItemStack itemOfTeleporterToLastCheckpoint = new ItemStack(Material.PRISMARINE_CRYSTALS);
 
 		applyMetaToItem(itemOfTeleporterToLastCheckpoint, StringColor.color("&b-Teleporter to last or latest checkpoint"));
 
+		//同様のアイテムの発光バージョンも作成する
+		ItemStack gleamingItemOfTeleporterToLastCheckpoint = itemOfTeleporterToLastCheckpoint.clone();
+		GleamEnchantment.gleam(gleamingItemOfTeleporterToLastCheckpoint);
+
 		//最終チェックポイントにテレポートさせるアイテムの機能内容を定義する
-		teleporterToLastOrLatestCheckpoint = new Tuple<>(itemOfTeleporterToLastCheckpoint, (user, clickRight) -> {
+		teleporterToLastOrLatestCheckpoint = new Triple<>(itemOfTeleporterToLastCheckpoint, gleamingItemOfTeleporterToLastCheckpoint, (user, clickRight) -> {
 			Player player = user.asBukkitPlayer();
 
 			//アスレをプレイ中でなければ戻る
@@ -107,7 +116,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			MessageTemplate.capply("&b-Teleported to checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkour.name).displayOnActionBar(player);
 		});
 
-		ItemStack itemOfCheckpointSelector = new ItemStack(Material.FEATHER);
+		ItemStack itemOfCheckpointSelector = new ItemStack(Material.PRISMARINE_CRYSTALS);
 
 		applyMetaToItem(itemOfCheckpointSelector, StringColor.color("&b-Checkpoint selector"));
 
@@ -122,7 +131,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			else MessageColor.color("&c-Operation blocked &7-@ &c-You are not on any parkour").displayOnActionBar(player);
 		});
 
-		ItemStack itemOfStageSelector = new ItemStack(Material.FEATHER);
+		ItemStack itemOfStageSelector = new ItemStack(Material.PRISMARINE_CRYSTALS);
 
 		applyMetaToItem(itemOfStageSelector, StringColor.color("&b-Parkour selector"));
 
@@ -139,7 +148,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 
 		});
 
-		ItemStack itemOfHideModeToggler = new ItemStack(Material.FEATHER);
+		ItemStack itemOfHideModeToggler = new ItemStack(Material.PRISMARINE_CRYSTALS);
 
 		applyMetaToItem(itemOfHideModeToggler, StringColor.color("&b-Hide mode toggler"));
 
@@ -148,7 +157,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			ToggleHideMode.getInstance().change(user);
 		});
 
-		ItemStack itemOfMenuOpener = new ItemStack(Material.FEATHER);
+		ItemStack itemOfMenuOpener = new ItemStack(Material.PRISMARINE_CRYSTALS);
 
 		applyMetaToItem(itemOfMenuOpener, StringColor.color("&b-Menu opener"));
 
@@ -160,7 +169,15 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(displayName);
 		item.setItemMeta(meta);
-		GleamEnchantment.gleam(item);
+	}
+
+	public void setNotifierGleam(Player player, boolean gleam){
+		ItemStack item = player.getInventory().getItem(0);
+
+		if(!teleporterToLastOrLatestCheckpoint.first.equals(item) && !teleporterToLastOrLatestCheckpoint.second.equals(item)) return;
+
+		if(gleam) GleamEnchantment.gleam(item);
+		else GleamEnchantment.tarnish(item);
 	}
 
 	@EventHandler
@@ -198,19 +215,19 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		//スロットに対応した処理をする
 		switch(player.getInventory().getHeldItemSlot()){
 		case 0:
-			if(item.equals(teleporterToLastOrLatestCheckpoint.first)) teleporterToLastOrLatestCheckpoint.second.accept(user, action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
+			if(teleporterToLastOrLatestCheckpoint.first.equals(item) || teleporterToLastOrLatestCheckpoint.second.equals(item)) teleporterToLastOrLatestCheckpoint.third.accept(user, action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
 			break;
 		case 2:
-			if(item.equals(checkpointSelector.first)) checkpointSelector.second.accept(user);
+			if(checkpointSelector.first.equals(item)) checkpointSelector.second.accept(user);
 			break;
 		case 4:
-			if(item.equals(stageSelector.first)) stageSelector.second.accept(user);
+			if(stageSelector.first.equals(item)) stageSelector.second.accept(user);
 			break;
 		case 6:
-			if(item.equals(hideModeToggler.first)) hideModeToggler.second.accept(user);
+			if(hideModeToggler.first.equals(item)) hideModeToggler.second.accept(user);
 			break;
 		case 8:
-			if(item.equals(menuOpener.first)) menuOpener.second.accept(user);
+			if(menuOpener.first.equals(item)) menuOpener.second.accept(user);
 			break;
 		default:
 			return;
@@ -257,7 +274,29 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 	public void initializeSlots(Player player){
 		Inventory inventory = player.getInventory();
 
-		inventory.setItem(0, teleporterToLastOrLatestCheckpoint.first);
+		User user = users.getUser(player);
+
+		boolean isInCheckArea = false;
+
+		//アスレをプレイ中の場合
+		if(user.isPlayingWithParkour()){
+			Location location = player.getLocation();
+
+			//現在地点にあるチェックエリアのリストを取得する
+			List<ParkourRegion> checkAreas = Parkours.getInstance().chunksToCheckAreasMap.get(location);
+
+			ParkourRegion result = null;
+			for(ParkourRegion checkArea : checkAreas){
+				if(!checkArea.isIn(location)) continue;
+
+				result = checkArea;
+				break;
+			}
+
+			isInCheckArea = result != null;
+		}
+
+		inventory.setItem(0, isInCheckArea ? teleporterToLastOrLatestCheckpoint.second : teleporterToLastOrLatestCheckpoint.first);
 		inventory.setItem(2, checkpointSelector.first);
 		inventory.setItem(4, stageSelector.first);
 		inventory.setItem(6, hideModeToggler.first);
@@ -268,8 +307,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		Inventory inventory = player.getInventory();
 
 		//ホットバーの偶数スロットをクリアする
-		for(int slotIndex = 0; slotIndex <= 8; slotIndex += 2)
-			inventory.setItem(slotIndex, empty);
+		for(int slotIndex = 0; slotIndex <= 8; slotIndex += 2) inventory.setItem(slotIndex, empty);
 	}
 
 }

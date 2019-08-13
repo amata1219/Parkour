@@ -58,16 +58,16 @@ public class SetCheckpointListener implements Listener {
 		//プレイヤーが今いるアスレでなければ戻る
 		if(!user.currentParkour.equals(parkour)) return;
 
-		//チェックエリアの番号を取得する
-		int checkAreaNumber = parkour.checkAreas.getCheckAreaNumber(checkArea);
+		//メジャーチェックエリア番号を取得する
+		int majorCheckAreaNumber = parkour.checkAreas.getMajorCheckAreaNumber(checkArea);
 
 		//不正な番号であれば戻る
-		if(checkAreaNumber < 0) return;
+		if(majorCheckAreaNumber < 0) return;
 
 		//チェックポイントとして設定する
-		user.checkpoints.setCheckpoint(parkour, checkAreaNumber, new ImmutableEntityLocation(location));
+		user.checkpoints.setCheckpoint(parkour, majorCheckAreaNumber, new ImmutableEntityLocation(location));
 
-		MessageTemplate.capply("&b-Set checkpoint @ $0", checkAreaNumber).displayOnActionBar(player);
+		MessageTemplate.capply("&b-Set checkpoint @ $0", majorCheckAreaNumber).displayOnActionBar(player);
 	}
 
 }

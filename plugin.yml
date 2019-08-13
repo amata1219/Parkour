@@ -7,10 +7,9 @@ author: amata1219(Twitter@amata1219)
 commands:
   checkarea:
   coin:
-  giveselectiontool:
+  direction:
+  editparkour:
   parkour:
-  setdirection:
-  setfinishline:
-  setparkourregion:
-  setstartline:
+  parkourregion:
+  parkoursetting:
   relayout:

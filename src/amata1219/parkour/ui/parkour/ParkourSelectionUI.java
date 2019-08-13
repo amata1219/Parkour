@@ -88,7 +88,7 @@ public class ParkourSelectionUI implements InventoryUI {
 						List<String> lore = new ArrayList<>();
 
 						//チェックエリア数を表示する
-						lore.add(StringTemplate.capply("&7-: &b-Check areas &7-@ &f-$0", parkour.checkAreas.areas.size()));
+						lore.add(StringTemplate.capply("&7-: &b-Check areas &7-@ &f-$0", parkour.checkAreas.getMaxMajorCheckAreaNumber()));
 
 						//タイムアタックが有効かどうかを表示する
 						lore.add(StringTemplate.capply("&7-: &b-Enable time attack &7-@ &f-$0", parkour.enableTimeAttack));
