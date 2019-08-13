@@ -20,6 +20,7 @@ import amata1219.parkour.listener.ControlRegionBorderDisplayerListener;
 import amata1219.parkour.listener.GiveVoteRewardCoinsListener;
 import amata1219.parkour.listener.HideNewPlayerListener;
 import amata1219.parkour.listener.LoadUserDataListener;
+import amata1219.parkour.listener.PassCheckAreaListener;
 import amata1219.parkour.listener.PassFinishLineListener;
 import amata1219.parkour.listener.PassStartLineListener;
 import amata1219.parkour.listener.SetCheckpointListener;
@@ -77,6 +78,7 @@ public class Main extends Plugin {
 			new LoadUserDataListener(),
 			new PassFinishLineListener(),
 			new PassStartLineListener(),
+			new PassCheckAreaListener(),
 			new SetCheckpointListener(),
 			new DisableDamageListener(),
 			new DisableFoodLevelChangeListener(),

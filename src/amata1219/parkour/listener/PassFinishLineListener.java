@@ -47,8 +47,8 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 
 		//タイムアタックが有効の場合
 		if(enableTimeAttack){
-			//ゴールタイムを秒単位で出す
-			float time = (System.currentTimeMillis() - user.timeToStartPlaying) / 1000F;
+			//ゴールタイムを計算する
+			long time = System.currentTimeMillis() - user.timeToStartPlaying;
 
 			//タイムを削除する
 			user.timeToStartPlaying = 0;
@@ -62,10 +62,10 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			records.sort();
 
 			//表示例: amata1219 cleared Update11 @ 00:01:23.231!
-			MessageTemplate.capply("$0 cleared $1 @ $2!", playerName, parkourName, TimeFormat.format(time)).broadcast();
+			MessageTemplate.capply("&b-$0 cleared $1 @ $2!", playerName, parkourName, TimeFormat.format(time)).broadcast();
 		}else{
 			//表示例: amata1219 cleared Update6!
-			MessageTemplate.capply("$0 cleared $1!", playerName, parkourName).broadcast();
+			MessageTemplate.capply("&b-$0 cleared $1!", playerName, parkourName).broadcast();
 		}
 
 		//遊んでいるアスレを削除する
