@@ -26,7 +26,7 @@ public class RankedParkour extends Parkour {
 		if(!isRankedParkour(parkourName)) throw new IllegalArgumentException("Parkour must be ranked");
 
 		//接頭辞を取得する
-		String prefix = parkourName.substring(0, 7);
+		String prefix = parkourName.substring(0, 6);
 
 		//アスレ名からタイプを取得する
 		type = RankedParkourType.valueOf(prefix.toUpperCase());

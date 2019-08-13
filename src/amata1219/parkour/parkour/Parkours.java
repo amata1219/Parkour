@@ -13,6 +13,7 @@ import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
 import amata1219.parkour.parkour.RankedParkour.RankedParkourType;
+import net.md_5.bungee.api.ChatColor;
 
 public class Parkours {
 
@@ -49,14 +50,13 @@ public class Parkours {
 
 		//各アスレコンフィグ毎に処理をする
 		for(File file : Optional.ofNullable(folder.listFiles()).orElse(new File[0])){
-			//ファイルに基づきYamlを生成する
-			Yaml yaml = new Yaml(plugin, file);
+			String fileName = file.getName();
 
-			//Yamlに基づきアスレを生成する
-			Parkour parkour = RankedParkour.isRankedParkour(yaml.name) ? new RankedParkour(this, yaml) : new Parkour(this, yaml);
+			//拡張子を削除してアスレ名を取得する
+			String parkourName = fileName.substring(0, fileName.length() - 4);
 
 			//アスレを登録する
-			registerParkour(parkour);
+			registerParkour(parkourName);
 		}
 	}
 
@@ -64,7 +64,7 @@ public class Parkours {
 		parkours.values().forEach(Parkour::save);
 	}
 
-	public boolean existsFile(String parkourName){
+	public boolean existsFil(String parkourName){
 		return new File(folder, StringTemplate.apply("$0.yml", parkourName)).exists();
 	}
 
@@ -85,13 +85,16 @@ public class Parkours {
 	}
 
 	public void registerParkour(String parkourName){
-		if(!existsFile(parkourName)) return;
+		File file = new File(folder, StringTemplate.apply("$0.yml", parkourName));
+
+		//コンフィグが存在しなければ戻る
+		if(!file.exists()) return;
 
 		//コンフィグを取得する
 		Yaml yaml = makeYaml(parkourName);
 
 		//コンフィグに基づきアスレを生成する
-		Parkour parkour = new Parkour(this, yaml);
+		Parkour parkour = RankedParkour.isRankedParkour(ChatColor.stripColor(yaml.name)) ? new RankedParkour(this, yaml) : new Parkour(this, yaml);
 
 		registerParkour(parkour);
 	}

@@ -81,7 +81,7 @@ public class RegionSelections implements Listener {
 
 	//アイテムが範囲選択ツールかどうか判定する
 	public boolean isSelectionTool(ItemStack item){
-		if(item.getType() != Material.STONE_AXE) return false;
+		if(item == null || item.getType() != Material.STONE_AXE) return false;
 
 		ItemMeta meta = item.getItemMeta();
 		if(meta == null || !meta.hasLore() || !meta.getLore().contains(selectionToolLore)) return false;

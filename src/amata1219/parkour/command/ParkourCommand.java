@@ -54,7 +54,7 @@ public class ParkourCommand implements Command {
 		//第1引数がlistであればアスレ名を全て表示する
 		if(parkourName.equals("list")){
 			for(Parkour parkour : parkours.getParkours()){
-				String text = StringTemplate.capply("&7-: &r-$0 $7-@ &r-$1", parkour.name, parkour.enable ? "&b-有効" : "&7-無効");
+				String text = StringTemplate.capply("&7-: &r-$0 &7-@ &r-$1", parkour.name, parkour.enable ? "&b-有効" : "&7-無効");
 				sender.message(text);
 
 			}
@@ -65,7 +65,7 @@ public class ParkourCommand implements Command {
 		switch(args.next()){
 		case "create":{
 			//対応したファイルが存在していれば戻る
-			if(parkours.existsFile(parkourName)){
+			if(parkours.containsParkour(parkourName)){
 				sender.warn(StringTemplate.capply("$0-&r-&c-は既に存在しています。", parkourName));
 				return;
 			}

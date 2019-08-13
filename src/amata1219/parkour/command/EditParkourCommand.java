@@ -12,6 +12,7 @@ import amata1219.amalib.command.Sender;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
+import net.md_5.bungee.api.ChatColor;
 
 public class EditParkourCommand implements Command {
 
@@ -29,11 +30,19 @@ public class EditParkourCommand implements Command {
 		}
 
 		//第1引数をアスレ名として取得する
-		String parkourName = args.next();
+		String parkourName = ChatColor.translateAlternateColorCodes('&', args.next());
+
+		//送信者をプレイヤーとして取得する
+		Player player = sender.asPlayerCommandSender();
+		UUID uuid = player.getUniqueId();
 
 		//finishと入力された場合は範囲選択を終了する
 		if(parkourName.equals("finish")){
-			Player player = sender.asPlayerCommandSender();
+			//範囲選択中でなければ戻る
+			if(!selections.hasSelection(uuid)){
+				sender.warn("範囲選択中ではありません。");
+				return;
+			}
 
 			Inventory inventory = player.getInventory();
 
@@ -48,16 +57,11 @@ public class EditParkourCommand implements Command {
 			return;
 		}
 
-		//コンフィグが存在しなければ戻る
+		//アスレが存在しなければ戻る
 		if(!Parkours.getInstance().containsParkour(parkourName)){
 			sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
 			return;
 		}
-
-		//送信者をプレイヤーとして取得する
-		Player player = sender.asPlayerCommandSender();
-
-		UUID uuid = player.getUniqueId();
 
 		//新しいセレクションを作成する
 		selections.setNewSelection(uuid, parkourName);
