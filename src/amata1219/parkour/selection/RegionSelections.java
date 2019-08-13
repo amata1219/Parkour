@@ -1,5 +1,6 @@
 package amata1219.parkour.selection;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -33,11 +34,17 @@ public class RegionSelections implements Listener {
 	}
 	//範囲選択用のツール
 	private final ItemStack selectionTool;
+	private final String selectionToolLore = StringColor.color("&7-&o-@SelectionTool");
 
 	private final HashMap<UUID, Tuple<String, RegionSelection>> selections = new HashMap<>();
 
 	private RegionSelections(){
 		selectionTool = new ItemStack(Material.STONE_AXE);
+
+		ItemMeta meta = selectionTool.getItemMeta();
+		meta.setLore(Arrays.asList(selectionToolLore));
+
+		selectionTool.setItemMeta(meta);
 
 		//発光用エンチャントを付与する
 		GleamEnchantment.gleam(selectionTool);
@@ -70,6 +77,16 @@ public class RegionSelections implements Listener {
 		ItemStack clone = selectionTool.clone();
 		applySelectionInformationToDisplayName(uuid, clone);
 		return clone;
+	}
+
+	//アイテムが範囲選択ツールかどうか判定する
+	public boolean isSelectionTool(ItemStack item){
+		if(item.getType() != Material.STONE_AXE) return false;
+
+		ItemMeta meta = item.getItemMeta();
+		if(meta == null || !meta.hasLore() || !meta.getLore().contains(selectionToolLore)) return false;
+
+		return GleamEnchantment.isGleaming(item);
 	}
 
 	//範囲選択ツールの表示名に選択情報を適用する
@@ -116,7 +133,7 @@ public class RegionSelections implements Listener {
 		ItemStack clickedItem = event.getItem();
 
 		//範囲選択ツールでなければ戻る
-		if(clickedItem.getType() != Material.STONE_AXE || !GleamEnchantment.isGleaming(clickedItem)) return;
+		if(!isSelectionTool(clickedItem)) return;
 
 		//セレクションを取得する
 		RegionSelection selection = getSelection(uuid);

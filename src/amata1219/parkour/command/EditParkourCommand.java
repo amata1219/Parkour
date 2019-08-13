@@ -3,6 +3,7 @@ package amata1219.parkour.command;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import amata1219.amalib.command.Arguments;
@@ -15,7 +16,6 @@ import amata1219.parkour.selection.RegionSelections;
 public class EditParkourCommand implements Command {
 
 	private final RegionSelections selections = RegionSelections.getInstance();
-	private final Parkours parkourSet = Parkours.getInstance();
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {
@@ -31,8 +31,25 @@ public class EditParkourCommand implements Command {
 		//第1引数をアスレ名として取得する
 		String parkourName = args.next();
 
+		//finishと入力された場合は範囲選択を終了する
+		if(parkourName.equals("finish")){
+			Player player = sender.asPlayerCommandSender();
+
+			Inventory inventory = player.getInventory();
+
+			//インベントリ内から範囲選択ツールを削除する
+			for(ItemStack item : inventory.getContents()) if(selections.isSelectionTool(item))
+				inventory.remove(item);
+
+			//セレクションをクリアする
+			selections.clearSelection(player);
+
+			sender.info("範囲選択を終了しました。");
+			return;
+		}
+
 		//コンフィグが存在しなければ戻る
-		if(!parkourSet.existsFile(parkourName)){
+		if(!Parkours.getInstance().containsParkour(parkourName)){
 			sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
 			return;
 		}
