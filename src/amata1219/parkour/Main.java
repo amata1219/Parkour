@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import amata1219.amalib.Plugin;
-import amata1219.parkour.command.OldCheckAreaCommand;
+import amata1219.parkour.command.CheckAreaCommand;
 import amata1219.parkour.command.CoinCommand;
 import amata1219.parkour.command.GiveSelectionToolCommand;
 import amata1219.parkour.command.ParkourCommand;
 import amata1219.parkour.command.RelayoutCommand;
 import amata1219.parkour.command.SetDirectionCommand;
 import amata1219.parkour.command.SetFinishLineCommand;
-import amata1219.parkour.command.SetParkourRegionCommand;
+import amata1219.parkour.command.OldSetParkourRegionCommand;
 import amata1219.parkour.command.SetStartLineCommand;
 import amata1219.parkour.listener.ControlFunctionalItemListener;
 import amata1219.parkour.listener.DisableDamageListener;
@@ -61,10 +61,10 @@ public class Main extends Plugin {
 		registerCommands(
 			new ParkourCommand(),
 			new GiveSelectionToolCommand(),
-			new SetParkourRegionCommand(),
+			new OldSetParkourRegionCommand(),
 			new SetStartLineCommand(),
 			new SetFinishLineCommand(),
-			new OldCheckAreaCommand(),
+			new CheckAreaCommand(),
 			new CoinCommand(),
 			new SetDirectionCommand(),
 			new RelayoutCommand()

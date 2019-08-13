@@ -93,7 +93,7 @@ public class Parkour {
 		apply.accept(this);
 	}
 
-	public void applyAndTryRegister(Consumer<Parkour> apply){
+	public void overwriteParkourRegion(Consumer<Parkour> apply){
 		if(enable) parkours.unregisterParkour(this);
 
 		apply.accept(this);

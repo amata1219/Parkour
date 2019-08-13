@@ -20,16 +20,6 @@ import amata1219.parkour.selection.RegionSelections;
 
 public class CheckAreaCommand implements Command {
 
-	/*
-	 * add
-	 * add [major]
-	 * set [major] [minor]
-	 * remove [major] [minor]
-	 * clear [major]
-	 * list
-	 *
-	 */
-
 	private final Parkours parkours = Parkours.getInstance();
 	private final RegionSelections selections = RegionSelections.getInstance();
 
