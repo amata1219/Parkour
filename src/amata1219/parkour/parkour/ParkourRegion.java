@@ -12,13 +12,18 @@ import amata1219.amalib.region.Region;
 import amata1219.amalib.schedule.Async;
 import amata1219.amalib.selection.RegionSelection;
 import amata1219.amalib.util.Color;
+import net.minecraft.server.v1_13_R2.EntityPlayer;
 import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_13_R2.ParticleParamRedstone;
+import net.minecraft.server.v1_13_R2.PlayerConnection;
 
 public class ParkourRegion extends Region {
 
 	//この領域のあるアスレ(飽く迄プレイヤーのコネクションを取得する為の存在)
 	public final Parkour parkour;
+
+	//この領域の中央の座標
+	public final ImmutableBlockLocation center;
 
 	//各地点のパーティクル
 	private List<PacketPlayOutWorldParticles> packets;
@@ -39,8 +44,8 @@ public class ParkourRegion extends Region {
 
 	public ParkourRegion(Parkour parkour, ImmutableBlockLocation lesserBoundaryCorner, ImmutableBlockLocation greaterBoundaryCorner){
 		super(lesserBoundaryCorner, greaterBoundaryCorner);
-
 		this.parkour = parkour;
+		this.center = new ImmutableBlockLocation(lesserBoundaryCorner.world, (lesserBoundaryCorner.x + greaterBoundaryCorner.x) / 2, lesserBoundaryCorner.y, (lesserBoundaryCorner.z + greaterBoundaryCorner.z) / 2);
 
 		recolorParticles();
 	}
@@ -95,10 +100,21 @@ public class ParkourRegion extends Region {
 
 			position++;
 
-			parkour.connections.getConnections().forEach(connection -> {
+			for(PlayerConnection connection : parkour.connections.getConnections()){
+				EntityPlayer player = connection.player;
+
+				//プレイヤーの描画距離を取得する
+				int viewDistance = player.clientViewDistance.intValue() * 16;
+
+				//プレイヤーと領域の中央座標の二次元距離を取得する
+				double distance = center.distance2D(player.locX, player.locZ);
+
+				//描画距離より大きい距離であれば繰り返す
+				if(viewDistance  < distance) continue;
+
 				connection.sendPacket(packet1);
 				connection.sendPacket(packet2);
-			});
+			}
 		}).executeTimer(0, 1);
 	}
 

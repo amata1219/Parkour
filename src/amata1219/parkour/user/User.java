@@ -88,7 +88,7 @@ public class User {
 		setting = new UserSetting(yaml);
 
 		//クリア済みのアスレ名リストを取得してセットでラップする
-		clearedParkourNames = new HashSet<>(yaml.getStringList("Cleared parkur names"));
+		clearedParkourNames = new HashSet<>(yaml.getStringList("Cleared parkour names"));
 
 		//データを基に座標を作成する
 		creativeWorldCheckpoint = ImmutableEntityLocation.deserialize(yaml.getString("Creative world checkpoint"));

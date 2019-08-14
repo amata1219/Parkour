@@ -51,7 +51,7 @@ public class Checkpoints {
 				int checkAreaNumber = Integer.parseInt(checkAreaNumberText);
 
 				//チェックポイントのデータをデシリアライズする
-				ImmutableEntityLocation point = (ImmutableEntityLocation) origin.add(ImmutableEntityLocation.deserialize(checkAreaSection.getString(checkAreaNumberText)));
+				ImmutableEntityLocation point = (ImmutableEntityLocation) ImmutableEntityLocation.deserialize(checkAreaSection.getString(checkAreaNumberText)).add(origin);
 
 				//チェックポイントとして登録する
 				setCheckpoint(parkour, checkAreaNumber, point);
@@ -169,7 +169,7 @@ public class Checkpoints {
 				String checkAreaNumber = eachCheckpointEntry.getKey().toString();
 
 				//チェックポイントを取得し相対座標化する
-				ImmutableEntityLocation point = (ImmutableEntityLocation) origin.relative(eachCheckpointEntry.getValue());
+				ImmutableEntityLocation point = (ImmutableEntityLocation) eachCheckpointEntry.getValue().relative(origin);
 
 				//対応したアスレ、チェックエリア番号にセットする
 				yaml.set(StringTemplate.apply("Check points.$0.$1", parkourName, checkAreaNumber), point.serialize());

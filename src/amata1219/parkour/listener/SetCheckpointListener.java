@@ -67,12 +67,8 @@ public class SetCheckpointListener implements Listener {
 		//メジャーチェックエリア番号を取得する
 		int majorCheckAreaNumber = parkour.checkAreas.getMajorCheckAreaNumber(checkArea);
 
-		System.out.println("setcheckpointlistener: 0");
-
 		//不正な番号であれば戻る
 		if(majorCheckAreaNumber < 0) return;
-
-		System.out.println("setcheckpointlistener: 1");
 
 		//チェックポイントとして設定する
 		user.checkpoints.setCheckpoint(parkour, majorCheckAreaNumber, new ImmutableEntityLocation(location));
