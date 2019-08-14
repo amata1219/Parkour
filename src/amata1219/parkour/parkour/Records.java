@@ -25,7 +25,7 @@ public class Records {
 	//上位10件の記録
 	public final List<Tuple<UUID, String>> topTenRecords = new ArrayList<>(10);
 
-	private final List<UUID> invalidRecorders = new ArrayList<>();
+	private final List<UUID> removedRecorders = new ArrayList<>();
 
 	public Records(Yaml yaml){
 		if(!yaml.isConfigurationSection("Records")){
@@ -58,8 +58,10 @@ public class Records {
 		return true;
 	}
 
-	public void deleteInvalidRecord(UUID uuid){
-		//validate uuid... records.remove(uuid); invalidRecorders.add(uuid); sort();
+	public void removeRecord(UUID uuid){
+		records.remove(uuid);
+		removedRecorders.add(uuid);
+		sort();
 	}
 
 	public void sort(){
@@ -67,8 +69,10 @@ public class Records {
 		Async.define(() -> {
 			List<Entry<UUID, Long>> list = new ArrayList<>(records.entrySet());
 
-			//記録を昇順ソートする
+			//記録を昇順にソートする
 			list.sort(Entry.comparingByValue());
+
+			topTenRecords.clear();
 
 			//最大で上位10件の記録をリストに追加する
 			for(int index = 0; index < Math.min(10, records.size()); index++){
@@ -88,7 +92,7 @@ public class Records {
 		for(Entry<UUID, Long> recordEntry : records.entrySet()) yaml.set(StringTemplate.apply("Records.$0", recordEntry.getKey()) , recordEntry.getValue());
 
 		//不正なレコードを削除する
-		for(UUID invalidRecorder : invalidRecorders) yaml.set(StringTemplate.apply("Records.$0", invalidRecorder), null);
+		for(UUID removedRecorder : removedRecorders) yaml.set(StringTemplate.apply("Records.$0", removedRecorder), null);
 	}
 
 }
