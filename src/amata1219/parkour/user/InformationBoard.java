@@ -55,7 +55,12 @@ public class InformationBoard {
 		Player player = user.asBukkitPlayer();
 
 		//スコアボードを表示しない設定であれば戻る
-		if(!user.setting.displayScoreboard) return;
+		if(!user.setting.displayScoreboard){
+			//スコアボードが表示されていれば非表示にする
+			if(board != null && board.isDisplay()) board.setDisplay(false);
+
+			return;
+		}
 
 		//スコアボードを新しく作成する
 		board = new Scoreboard(player, StringColor.color("&9-&l-A-&r-&b-zisaba &9-&l-N-&r-&b-etwork"));

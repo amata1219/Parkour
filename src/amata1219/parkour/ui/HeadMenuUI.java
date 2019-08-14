@@ -6,9 +6,11 @@ import java.util.function.Function;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import amata1219.amalib.enchantment.GleamEnchantment;
 import amata1219.amalib.inventory.ui.InventoryLine;
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.Icon;
@@ -62,7 +64,7 @@ public class HeadMenuUI implements InventoryUI {
 							setPurchasedHeadText(i, head);
 						});
 
-						s.onClick((event) -> setHead(event.player, head));
+						s.onClick(e -> setHead(e.clickedInventory, e.player, head));
 
 					//未購入のヘッドの場合
 					}else{
@@ -90,7 +92,7 @@ public class HeadMenuUI implements InventoryUI {
 							setPurchasedHeadText(e.currentIcon, head);
 
 							//クリック時の処理を変更する
-							s.onClick((ev) -> setHead(ev.player, head));
+							s.onClick((ev) -> setHead(ev.clickedInventory, ev.player, head));
 
 							BUY_SE.play(e.player);
 
@@ -126,6 +128,9 @@ public class HeadMenuUI implements InventoryUI {
 					//ヘッドを外す
 					inventory.setHelmet(new ItemStack(Material.AIR));
 
+					//何も被っていない状態になったので発光を削除する
+					e.currentIcon.tarnish();
+
 					MessageColor.color("&b-Take the head off").displayOnActionBar(player);
 				});
 
@@ -144,12 +149,16 @@ public class HeadMenuUI implements InventoryUI {
 		icon.lore(StringTemplate.capply("&7-Click to put on $0's skull!", headName));
 	}
 
-	private void setHead(Player player, Head head){
+	private void setHead(Inventory clickedInventory, Player player, Head head){
 		//被らせる
 		player.getInventory().setHelmet(head.item);
 		player.updateInventory();
 
 		PUT_ON_SE.play(player);
+
+		//ヘッドを被った状態になったので発光させる
+		ItemStack taker = clickedInventory.getItem(clickedInventory.getSize() - 1);
+		GleamEnchantment.gleam(taker);
 
 		MessageTemplate.capply("&b-Put on $0's skull", head.name).displayOnActionBar(player);
 	}

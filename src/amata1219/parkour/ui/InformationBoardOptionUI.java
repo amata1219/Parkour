@@ -58,7 +58,7 @@ public class InformationBoardOptionUI implements InventoryUI {
 
 			});
 
-			l.onClose(event -> user.board.loadScoreboard());
+			l.onClose(e -> user.board.loadScoreboard());
 
 			for(Quadruple<Integer, Material, String, Function<Boolean, Boolean>> component : components){
 				Function<Boolean, Boolean> state = component.fourth;

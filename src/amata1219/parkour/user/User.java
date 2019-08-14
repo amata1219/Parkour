@@ -141,7 +141,6 @@ public class User {
 		if(currentParkour == null) return;
 
 		currentParkour.exit(this);
-		currentParkour = parkourPlayingNow = null;
 
 		ControlFunctionalItemListener.getInstance().setNotifierGleam(asBukkitPlayer(), false);
 	}

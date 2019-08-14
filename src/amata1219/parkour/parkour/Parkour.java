@@ -87,7 +87,7 @@ public class Parkour {
 	}
 
 	public void exit(User user){
-		user.currentParkour = null;
+		user.currentParkour = user.parkourPlayingNow = null;
 
 		Player player = user.asBukkitPlayer();
 
