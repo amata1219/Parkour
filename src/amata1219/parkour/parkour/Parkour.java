@@ -60,6 +60,10 @@ public class Parkour {
 		return ChatColor.stripColor(name);
 	}
 
+	public ImmutableBlockLocation getOrigin(){
+		return region.lesserBoundaryCorner;
+	}
+
 	public World getWorld(){
 		return region.world;
 	}

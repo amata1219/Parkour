@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+import amata1219.amalib.location.ImmutableBlockLocation;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
@@ -32,8 +33,12 @@ public class Checkpoints {
 
 		//各アスレ名毎に処理する
 		for(String parkourName : parkourSection.getKeys(false)){
+			//存在しないアスレであれば繰り返す
+			if(!parkours.containsParkour(parkourName)) continue;
+
 			//アスレ名と対応したアスレを取得する
 			Parkour parkour = parkours.getParkour(parkourName);
+			ImmutableBlockLocation origin = parkour.getOrigin();
 
 			//このアスレのセクションを取得する
 			ConfigurationSection checkAreaSection = parkourSection.getConfigurationSection(parkourName);
@@ -46,7 +51,7 @@ public class Checkpoints {
 				int checkAreaNumber = Integer.parseInt(checkAreaNumberText);
 
 				//チェックポイントのデータをデシリアライズする
-				ImmutableEntityLocation point = ImmutableEntityLocation.deserialize(checkAreaSection.getString(checkAreaNumberText));
+				ImmutableEntityLocation point = (ImmutableEntityLocation) origin.add(ImmutableEntityLocation.deserialize(checkAreaSection.getString(checkAreaNumberText)));
 
 				//チェックポイントとして登録する
 				setCheckpoint(parkour, checkAreaNumber, point);
@@ -154,12 +159,17 @@ public class Checkpoints {
 			//アスレ名を取得する
 			String parkourName = eachParkourCheckpointsEntry.getKey();
 
+			//存在しないアスレであれば繰り返す
+			if(!parkours.containsParkour(parkourName)) continue;
+
+			ImmutableBlockLocation origin = parkours.getParkour(parkourName).getOrigin();
+
 			for(Entry<Integer, ImmutableEntityLocation> eachCheckpointEntry : eachParkourCheckpointsEntry.getValue().entrySet()){
 				//チェックエリア番号を取得する
 				String checkAreaNumber = eachCheckpointEntry.getKey().toString();
 
-				//チェックポイントを取得する
-				ImmutableEntityLocation point = eachCheckpointEntry.getValue();
+				//チェックポイントを取得し相対座標化する
+				ImmutableEntityLocation point = (ImmutableEntityLocation) origin.relative(eachCheckpointEntry.getValue());
 
 				//対応したアスレ、チェックエリア番号にセットする
 				yaml.set(StringTemplate.apply("Check points.$0.$1", parkourName, checkAreaNumber), point.serialize());
