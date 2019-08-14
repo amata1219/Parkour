@@ -1,6 +1,7 @@
 package amata1219.parkour.parkour;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -118,6 +119,61 @@ public class CheckAreas {
 
 		parkours.unregisterCheckArea(replacedCheckArea);
 		parkours.registerCheckArea(checkArea);
+	}
+
+	//指定されたメジャーチェックエリア番号に挿入する
+	//メジャーチェックエリア番号の順序が正常で無ければ使用してはならない
+	public void insertCheckArea(int targetedMajorCheckAreaNumber, ParkourRegion checkArea){
+		//不正なメジャーチェックエリア番号であればエラーを投げる
+		if(targetedMajorCheckAreaNumber < 0) throw new IllegalArgumentException("Targeted major check area number can not be less than 0");
+
+		//最大のメジャーチェックエリア番号より大きければ普通に追加する
+		if(targetedMajorCheckAreaNumber > getMaxMajorCheckAreaNumber()){
+			bindCheckArea(targetedMajorCheckAreaNumber, checkArea);
+			return;
+		}
+
+		//現在使用されているメジャーチェックエリア番号を昇順にソートされた状態で取得する
+		List<Integer> sortedMajorCheckAreaNumbers = checkAreas.keySet().stream().sorted((x, y) -> Integer.compare(x, y)).collect(Collectors.toList());
+
+		//新しいチェックエリアマップ
+		Map<Integer, List<ParkourRegion>> duplicatedCheckAreas = new HashMap<>(checkAreas.size() + 1);
+
+		//チェックエリアを挿入したかどうか
+		boolean inserted = false;
+
+		//各メジャーチェックエリア番号毎に処理をする
+		for(Integer majorCheckAreaNumber : sortedMajorCheckAreaNumbers){
+			//対応したチェックエリアのリストを取得する
+			List<ParkourRegion> areas = checkAreas.get(majorCheckAreaNumber);
+
+			//チェックエリアの挿入をし終えていた場合
+			if(inserted){
+				//メジャーチェックエリア番号に+1してバインドする
+				duplicatedCheckAreas.put(majorCheckAreaNumber + 1, areas);
+			}else{
+				//指定されたメジャーチェックエリア番号の方が同じ場合
+				if(targetedMajorCheckAreaNumber == majorCheckAreaNumber){
+					//指定されたメジャーチェックエリア番号とチェックエリアをバインドする
+					duplicatedCheckAreas.put(targetedMajorCheckAreaNumber, new ArrayList<>(Arrays.asList(checkArea)));
+
+					//メジャーチェックエリア番号に+1してバインドする
+					duplicatedCheckAreas.put(majorCheckAreaNumber + 1, areas);
+
+					//フラグを立てる
+					inserted = true;
+				}else{
+					//そのまま再バインドする
+					duplicatedCheckAreas.put(majorCheckAreaNumber, areas);
+				}
+			}
+		}
+
+		//既存のチェックエリアマップをクリアする
+		checkAreas.clear();
+
+		//チェックエリア挿入後のマップをセットする
+		checkAreas.putAll(duplicatedCheckAreas);
 	}
 
 	//チェックエリアをアンバインドする

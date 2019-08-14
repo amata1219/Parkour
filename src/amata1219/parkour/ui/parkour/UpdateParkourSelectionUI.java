@@ -49,7 +49,7 @@ public class UpdateParkourSelectionUI implements InventoryUI {
 			//デフォルトスロットを設定する
 			l.defaultSlot((s) -> {
 
-				s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, (i) -> {
+				s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> {
 					i.displayName = " ";
 				});
 

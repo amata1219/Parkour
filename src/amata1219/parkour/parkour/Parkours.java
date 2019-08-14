@@ -139,6 +139,7 @@ public class Parkours {
 				.filter(parkour -> parkour instanceof RankedParkour)
 				.map(parkour -> (RankedParkour) parkour)
 				.filter(parkour -> parkour.type == type)
+				.sorted((p1, p2) -> Integer.compare(p1.rank, p2.rank))
 				.collect(Collectors.toList());
 	}
 

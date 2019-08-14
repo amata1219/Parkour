@@ -18,7 +18,7 @@ public class ApplyRankToDisplayName {
 		ChatColor rankColor = RankColor.values()[rank].color;
 
 		//表示例: amata1219 @ 5
-		String displayName = StringTemplate.capply("$0$1 &7-@ $0$2", rankColor, player.getName(), rank);
+		String displayName = StringTemplate.capply("$0$1 &7-@ $0$2-&r", rankColor, player.getName(), rank);
 
 		player.setDisplayName(displayName);
 		player.setPlayerListName(displayName);

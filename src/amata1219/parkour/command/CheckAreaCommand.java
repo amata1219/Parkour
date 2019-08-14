@@ -181,7 +181,10 @@ public class CheckAreaCommand implements Command {
 				List<ParkourRegion> areas = areasEntry.getValue();
 
 				//各チェックエリアの座標情報を表示する
-				for(ParkourRegion area : areas) sender.message(StringTemplate.capply("&7-: &f-$0", area.serialize().replace(",", "§7,§f")));
+				for(int minorCheckAreaNumber = 0; minorCheckAreaNumber < areas.size(); minorCheckAreaNumber++){
+					ParkourRegion area = areas.get(minorCheckAreaNumber);
+					sender.message(StringTemplate.capply("  &7-: &f-$0 - &f-$1", minorCheckAreaNumber + 1, area.serialize().replace(",", "§7,§f")));
+				}
 			}
 			break;
 		}default:

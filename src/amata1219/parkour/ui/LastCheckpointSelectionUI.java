@@ -37,7 +37,7 @@ public class LastCheckpointSelectionUI implements InventoryUI {
 		//カテゴリー内の全アスレを取得する
 		List<Parkour> parkours = Parkours.getInstance().getParkours(category);
 
-		return build(parkours.size(), (l) -> {
+		return build(parkours.size(), l -> {
 			//表示例: Last checkpoints @ The Earth of Marmalade
 			l.title = StringTemplate.capply("&b-Last checkpoints &7-@ &b-$0", category.name);
 
@@ -60,14 +60,14 @@ public class LastCheckpointSelectionUI implements InventoryUI {
 				//アスレに対応したチェックポイントが存在しなければ繰り返す
 				if(!checkpoints.containsParkour(parkour)) continue;
 
-				//チェックポイントのリストを取得する
-				List<ImmutableEntityLocation> locations = checkpoints.getCheckpoints(parkour);
-
 				//アスレ名を取得する
 				String parkourName = parkour.name;
 
-				//リストのサイズを最終チェックエリアの番号として扱う
-				int displayCheckAreaNumber = locations.size();
+				//最終チェックポイントを取得する
+				ImmutableEntityLocation lastCheckpoint = checkpoints.getLastCheckpoint(parkour);
+
+				//メジャーチェックエリア番号を取得する
+				int majorCheckAreaNumberDisplayed = checkpoints.getLastCheckpointNumber(parkour) + 1;
 
 				l.put(s -> {
 
@@ -79,14 +79,11 @@ public class LastCheckpointSelectionUI implements InventoryUI {
 							//別のアスレに移動するのであれば参加処理をする
 							if(parkour != user.currentParkour) parkour.entry(user);
 
-							//最終チェックポイントを取得する
-							ImmutableEntityLocation lastCheckpoint = locations.get(displayCheckAreaNumber - 1);
-
 							//プレイヤーを最終チェックポイントにテレポートさせる
 							player.teleport(lastCheckpoint.asBukkitLocation());
 
 							//表示例: Teleported to checkpoint 1 @ Update1!
-							MessageTemplate.capply("&b-Teleported to a checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkourName).displayOnActionBar(player);
+							MessageTemplate.capply("&b-Teleported to a checkpoint &0 &7-@ &b-$1-&r-&b-!", majorCheckAreaNumberDisplayed, parkourName).displayOnActionBar(player);
 
 						}else if(event.isLeftClick()){
 							//チェックポイントリストを開かせる
@@ -97,7 +94,7 @@ public class LastCheckpointSelectionUI implements InventoryUI {
 
 					s.icon(Material.GLASS, i -> {
 						//表示例: 1 @ Update1
-						i.displayName = StringTemplate.capply("&7-$0 @ $1", displayCheckAreaNumber, parkourName);
+						i.displayName = StringTemplate.capply("&7-$0 @ $1", majorCheckAreaNumberDisplayed, parkourName);
 
 						//説明文を設定する
 						i.lore(

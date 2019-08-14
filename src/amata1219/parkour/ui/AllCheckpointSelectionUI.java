@@ -43,7 +43,7 @@ public class AllCheckpointSelectionUI implements InventoryUI {
 		//アスレ名を取得する
 		String parkourName = parkour.name;
 
-		return build(checkpointSize, (l) -> {
+		return build(checkpointSize, l -> {
 			//タイトルを設定する
 			l.title = StringTemplate.capply("&b-$0 &r-checkpoints", parkourName);
 
@@ -63,11 +63,13 @@ public class AllCheckpointSelectionUI implements InventoryUI {
 				//対応した座標を取得する
 				ImmutableEntityLocation point = points.get(majorCheckAreaNumber);
 
-				l.put((s) -> {
+				int majorCheckAreaNumberDisplayed = majorCheckAreaNumber + 1;
 
-					s.onClick((event) -> {
+				l.put(s -> {
+
+					s.onClick(e -> {
 						//クリックしたプレイヤーを取得する
-						Player player = event.player;
+						Player player = e.player;
 
 						//別のアスレに移動するのであれば参加処理をする
 						if(parkour != user.currentParkour) parkour.entry(user);
@@ -76,17 +78,19 @@ public class AllCheckpointSelectionUI implements InventoryUI {
 						player.teleport(point.asBukkitLocation());
 
 						//表示例: Teleported to checkpoint 1 @ Update1!
-						MessageTemplate.capply("&b-Teleported to checkpoint &0 &7-@ &b-$1-&r-&b-!", majorCheckAreaNumber + 1, parkourName).displayOnActionBar(player);
+						MessageTemplate.capply("&b-Teleported to checkpoint &0 &7-@ &b-$1-&r-&b-!", majorCheckAreaNumberDisplayed, parkourName).displayOnActionBar(player);
 					});
 
-					s.icon(Material.GLASS,(i) -> {
+					s.icon(Material.GLASS, i -> {
 						//表示例: 1 @ Update1
-						i.displayName = StringTemplate.capply("&7-$0 @ $1", majorCheckAreaNumber + 1, parkourName);
+						i.displayName = StringTemplate.capply("&7-$0 @ $1", majorCheckAreaNumberDisplayed, parkourName);
 
 						//説明文を設定する
 						i.lore(
 							StringColor.color("&7-: &b-Click &7-@ &b-Teleport to checkpoint in this parkour")
 						);
+
+						i.amount = majorCheckAreaNumberDisplayed;
 					});
 
 				}, slotIndex);

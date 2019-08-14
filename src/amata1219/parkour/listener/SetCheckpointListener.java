@@ -46,11 +46,17 @@ public class SetCheckpointListener implements Listener {
 		//チェックエリアが存在しなければ戻る
 		if(checkAreas.isEmpty()) return;
 
-		//リストの最初の要素をチェックエリアとして取得する
-		ParkourRegion checkArea = checkAreas.get(0);
+		ParkourRegion checkArea = null;
 
-		//領域内にいなければ戻る
-		if(!checkArea.isIn(location)) return;
+		for(ParkourRegion area : checkAreas){
+			if(!area.isIn(location)) continue;
+
+			checkArea = area;
+			break;
+		}
+
+		//チェックエリア内にいなければ戻る
+		if(checkArea == null) return;
 
 		//チェックエリアがあるアスレを取得する
 		Parkour parkour = checkArea.parkour;
@@ -61,13 +67,17 @@ public class SetCheckpointListener implements Listener {
 		//メジャーチェックエリア番号を取得する
 		int majorCheckAreaNumber = parkour.checkAreas.getMajorCheckAreaNumber(checkArea);
 
+		System.out.println("setcheckpointlistener: 0");
+
 		//不正な番号であれば戻る
 		if(majorCheckAreaNumber < 0) return;
+
+		System.out.println("setcheckpointlistener: 1");
 
 		//チェックポイントとして設定する
 		user.checkpoints.setCheckpoint(parkour, majorCheckAreaNumber, new ImmutableEntityLocation(location));
 
-		MessageTemplate.capply("&b-Set checkpoint @ $0", majorCheckAreaNumber).displayOnActionBar(player);
+		MessageTemplate.capply("&b-Set checkpoint @ $0", majorCheckAreaNumber + 1).displayOnActionBar(player);
 	}
 
 }

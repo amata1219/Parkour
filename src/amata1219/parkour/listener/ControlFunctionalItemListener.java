@@ -60,7 +60,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 	}
 
 	private final Triple<ItemStack, ItemStack, BiConsumer<User, Boolean>> teleporterToLastOrLatestCheckpoint;
-	private final Tuple<ItemStack, Consumer<User>> checkpointSelector;
+	private final Tuple<ItemStack, Consumer<User>> lastOrLatestCheckpointSelector;
 	private final Tuple<ItemStack, Consumer<User>> stageSelector;
 	private final Tuple<ItemStack, Consumer<User>> hideModeToggler;
 	private final Tuple<ItemStack, Consumer<User>> menuOpener;
@@ -122,7 +122,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		applyMetaToItem(itemOfCheckpointSelector, StringColor.color("&b-Checkpoint selector"));
 
 		//ステージ内の最終チェックポイント一覧を開くアイテムの機能内容を定義する
-		checkpointSelector = new Tuple<>(itemOfCheckpointSelector, user -> {
+		lastOrLatestCheckpointSelector = new Tuple<>(itemOfCheckpointSelector, user -> {
 			Player player = user.asBukkitPlayer();
 
 			//どこかのステージにいれば最終チェックポイント一覧を開く
@@ -236,9 +236,9 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			teleporterToLastOrLatestCheckpoint.third.accept(user, action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
 			break;
 		case 2:
-			if(!checkpointSelector.first.equals(item)) return;
+			if(!lastOrLatestCheckpointSelector.first.equals(item)) return;
 
-				checkpointSelector.second.accept(user);
+				lastOrLatestCheckpointSelector.second.accept(user);
 			break;
 		case 4:
 			if(!stageSelector.first.equals(item)) return;
@@ -325,7 +325,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		}
 
 		inventory.setItem(0, isInCheckArea ? teleporterToLastOrLatestCheckpoint.second : teleporterToLastOrLatestCheckpoint.first);
-		inventory.setItem(2, checkpointSelector.first);
+		inventory.setItem(2, lastOrLatestCheckpointSelector.first);
 		inventory.setItem(4, stageSelector.first);
 		inventory.setItem(6, hideModeToggler.first);
 		inventory.setItem(8, menuOpener.first);
