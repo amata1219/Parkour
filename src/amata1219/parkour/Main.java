@@ -11,6 +11,7 @@ import amata1219.parkour.command.CoinCommand;
 import amata1219.parkour.command.EditParkourCommand;
 import amata1219.parkour.command.ParkourCommand;
 import amata1219.parkour.command.RelayoutCommand;
+import amata1219.parkour.command.TweetCommand;
 import amata1219.parkour.command.DirectionCommand;
 import amata1219.parkour.command.ParkourRegionCommand;
 import amata1219.parkour.command.ParkourSettingCommand;
@@ -67,7 +68,8 @@ public class Main extends Plugin {
 			new CheckAreaCommand(),
 			new CoinCommand(),
 			new RelayoutCommand(),
-			new DirectionCommand()
+			new DirectionCommand(),
+			new TweetCommand()
 		);
 
 		registerListeners(

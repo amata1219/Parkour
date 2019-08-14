@@ -108,6 +108,8 @@ public class UpdateParkourSelectionUI implements InventoryUI {
 							}
 						}
 
+						i.lore = lore;
+
 						//今いるアスレなら発光させる
 						if(user.isPlayingWithParkour() && parkour.equals(user.currentParkour)) i.gleam();
 					});

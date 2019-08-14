@@ -83,7 +83,7 @@ public class Parkour {
 		finishLine.displayBorders();
 		checkAreas.displayAll();
 
-		MessageTemplate.capply("&7-: You joined $0", name);
+		MessageTemplate.capply("&7-: You joined $0", name).display(player);
 	}
 
 	public void exit(User user){
@@ -93,7 +93,7 @@ public class Parkour {
 
 		connections.remove(player);
 
-		MessageTemplate.capply("&7-: You quit $0", name);
+		MessageTemplate.capply("&7-: You quit $0", name).display(player);
 
 		//プレイヤーがいれば戻る
 		if(!connections.isEmpty()) return;
