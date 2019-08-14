@@ -60,7 +60,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 	}
 
 	private final Triple<ItemStack, ItemStack, BiConsumer<User, Boolean>> teleporterToLastOrLatestCheckpoint;
-	private final Tuple<ItemStack, Consumer<User>> lastOrLatestCheckpointSelector;
+	private final Tuple<ItemStack, BiConsumer<User, Boolean>> lastOrLatestCheckpointSelector;
 	private final Tuple<ItemStack, Consumer<User>> stageSelector;
 	private final Tuple<ItemStack, Consumer<User>> hideModeToggler;
 	private final Tuple<ItemStack, Consumer<User>> menuOpener;
@@ -122,14 +122,18 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		applyMetaToItem(itemOfCheckpointSelector, StringColor.color("&b-Checkpoint selector"));
 
 		//ステージ内の最終チェックポイント一覧を開くアイテムの機能内容を定義する
-		lastOrLatestCheckpointSelector = new Tuple<>(itemOfCheckpointSelector, user -> {
+		lastOrLatestCheckpointSelector = new Tuple<>(itemOfCheckpointSelector, (user, clickRight) -> {
 			Player player = user.asBukkitPlayer();
 
-			//どこかのステージにいれば最終チェックポイント一覧を開く
-			if(user.currentParkour != null) user.inventoryUserInterfaces.lastCheckpointUI.openInventory(player);
+			//どこのアスレにもいなければ戻る
+			if(user.currentParkour == null){
+				MessageColor.color("&c-Operation blocked &7-@ &c-You are not on any parkour").displayOnActionBar(player);
+				return;
+			}
 
-			//無ければ警告する
-			else MessageColor.color("&c-Operation blocked &7-@ &c-You are not on any parkour").displayOnActionBar(player);
+			//右クリックしたのであれば最終、左クリックしたのであれば最新のチェックポイントリストを表示する
+			InventoryUI inventoryUI = clickRight ? user.inventoryUserInterfaces.lastCheckpointSelectionUI : user.inventoryUserInterfaces.latestCheckpointSelectionUI;
+			inventoryUI.openInventory(player);
 		});
 
 		ItemStack itemOfStageSelector = new ItemStack(Material.PRISMARINE_CRYSTALS);
@@ -238,7 +242,7 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		case 2:
 			if(!lastOrLatestCheckpointSelector.first.equals(item)) return;
 
-				lastOrLatestCheckpointSelector.second.accept(user);
+				lastOrLatestCheckpointSelector.second.accept(user, action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
 			break;
 		case 4:
 			if(!stageSelector.first.equals(item)) return;
