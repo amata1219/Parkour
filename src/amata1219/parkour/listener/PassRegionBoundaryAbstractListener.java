@@ -23,6 +23,12 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 
 	@EventHandler
 	public void onMove(PlayerMoveEvent event){
+		Player player = event.getPlayer();
+		User user = users.getUser(player);
+
+		//アスレをプレイ中でなければ戻る
+		if(!user.isPlayingWithParkour()) return;
+
 		Location from = event.getFrom();
 
 		//元々いた地点に存在していた領域
@@ -47,9 +53,6 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 			toRegion = region;
 			break;
 		}
-
-		Player player = event.getPlayer();
-		User user = users.getUser(player);
 
 		//アスレを取得する
 		Parkour parkour = (fromRegion != null ? fromRegion.parkour : (toRegion != null ? toRegion.parkour : null));

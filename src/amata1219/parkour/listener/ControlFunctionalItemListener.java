@@ -231,23 +231,35 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		//スロットに対応した処理をする
 		switch(player.getInventory().getHeldItemSlot()){
 		case 0:
-			if(teleporterToLastOrLatestCheckpoint.first.equals(item) || teleporterToLastOrLatestCheckpoint.second.equals(item)) teleporterToLastOrLatestCheckpoint.third.accept(user, action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
+			if(!teleporterToLastOrLatestCheckpoint.first.equals(item) && !teleporterToLastOrLatestCheckpoint.second.equals(item)) return;
+
+			teleporterToLastOrLatestCheckpoint.third.accept(user, action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK);
 			break;
 		case 2:
-			if(checkpointSelector.first.equals(item)) checkpointSelector.second.accept(user);
+			if(!checkpointSelector.first.equals(item)) return;
+
+				checkpointSelector.second.accept(user);
 			break;
 		case 4:
-			if(stageSelector.first.equals(item)) stageSelector.second.accept(user);
+			if(!stageSelector.first.equals(item)) return;
+
+			stageSelector.second.accept(user);
 			break;
 		case 6:
-			if(hideModeToggler.first.equals(item)) hideModeToggler.second.accept(user);
+			if(!hideModeToggler.first.equals(item)) return;
+
+			hideModeToggler.second.accept(user);
 			break;
 		case 8:
-			if(menuOpener.first.equals(item)) menuOpener.second.accept(user);
+			if(!menuOpener.first.equals(item)) return;
+
+			menuOpener.second.accept(user);
 			break;
 		default:
 			return;
 		}
+
+		event.setCancelled(true);
 	}
 
 	@EventHandler

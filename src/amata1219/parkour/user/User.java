@@ -71,13 +71,13 @@ public class User {
 		//コイン数を取得する
 		coins = yaml.getInt("Coins");
 
-		Parkours parkourSet = Parkours.getInstance();
+		Parkours parkours = Parkours.getInstance();
 
 		//最後にいたアスレを取得する
-		currentParkour = parkourSet.getParkour("Current parkour");
+		currentParkour = parkours.getParkour("Current parkour");
 
 		//最後に遊んでいたアスレを取得する
-		parkourPlayingNow = parkourSet.getParkour("Currently playing parkour");
+		parkourPlayingNow = parkours.getParkour("Currently playing parkour");
 
 		//最後にアスレをプレイし始めた時間を取得する
 		timeToStartPlaying = yaml.getLong("Time to start playing");

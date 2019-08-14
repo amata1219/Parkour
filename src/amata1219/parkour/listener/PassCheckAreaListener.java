@@ -1,7 +1,13 @@
 package amata1219.parkour.listener;
 
+import java.util.List;
+
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import amata1219.amalib.sound.SoundMetadata;
 import amata1219.parkour.parkour.Parkour;
@@ -38,6 +44,32 @@ public class PassCheckAreaListener extends PassRegionBoundaryAbstractListener {
 			//通知アイテムの発光を削除する
 			controlFunctionalItemListener.setNotifierGleam(player, false);
 		}
+	}
+
+	@EventHandler
+	public void onTeleport(PlayerTeleportEvent event){
+		//プラグインによるテレポートでなければ戻る
+		if(event.getCause() != TeleportCause.PLUGIN) return;
+
+		Player player = event.getPlayer();
+		Location location = player.getLocation();
+
+		//今いるチャンク内にあるチェックエリアのリストを取得する
+		List<ParkourRegion> areas = Parkours.getInstance().chunksToCheckAreasMap.get(location);
+
+		//今いるチェックエリア
+		ParkourRegion result = null;
+
+		for(ParkourRegion area : areas){
+			//チェックエリア内でなければ繰り返す
+			if(!area.isIn(location)) continue;
+
+			result = area;
+			break;
+		}
+
+		//チェックエリア内かどうかで通知アイテムの発光を制御する
+		controlFunctionalItemListener.setNotifierGleam(player, result != null);
 	}
 
 }

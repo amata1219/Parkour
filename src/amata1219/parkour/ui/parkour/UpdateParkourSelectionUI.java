@@ -68,7 +68,7 @@ public class UpdateParkourSelectionUI implements InventoryUI {
 						Player player = e.player;
 
 						//ステージのスポーン地点にテレポートさせる
-						player.teleport(parkour.spawnPoint.asBukkitLocation());
+						parkour.teleportTo(player);
 
 						//アスレに参加させる
 						parkour.entry(user);

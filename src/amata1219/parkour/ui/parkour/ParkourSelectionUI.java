@@ -69,7 +69,7 @@ public class ParkourSelectionUI implements InventoryUI {
 						Player player = event.player;
 
 						//ステージのスポーン地点にテレポートさせる
-						player.teleport(parkour.spawnPoint.asBukkitLocation());
+						parkour.teleportTo(player);
 
 						//ユーザーを取得する
 						User user = users.getUser(player);

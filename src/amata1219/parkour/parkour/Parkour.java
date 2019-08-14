@@ -2,12 +2,14 @@ package amata1219.parkour.parkour;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Consumer;
 
 import amata1219.amalib.location.ImmutableBlockLocation;
 import amata1219.amalib.location.ImmutableEntityLocation;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.string.StringSplit;
+import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.amalib.util.Color;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.user.User;
@@ -62,23 +64,36 @@ public class Parkour {
 		return region.world;
 	}
 
+	public void teleportTo(Player player){
+		player.teleport(spawnPoint.asBukkitLocation());
+	}
+
 	public void entry(User user){
 		if(user.isPlayingWithParkour()) user.parkourPlayingNow.exit(user);
 
 		user.currentParkour = this;
 
-		connections.add(user.asBukkitPlayer());
+		Player player = user.asBukkitPlayer();
+
+		//パケット送信用のコネクションリストに追加する
+		connections.add(player);
 
 		//全境界線を表示する
 		startLine.displayBorders();
 		finishLine.displayBorders();
 		checkAreas.displayAll();
+
+		MessageTemplate.capply("&7-: You joined $0", name);
 	}
 
 	public void exit(User user){
 		user.currentParkour = null;
 
-		connections.remove(user.asBukkitPlayer());
+		Player player = user.asBukkitPlayer();
+
+		connections.remove(player);
+
+		MessageTemplate.capply("&7-: You quit $0", name);
 
 		//プレイヤーがいれば戻る
 		if(!connections.isEmpty()) return;
