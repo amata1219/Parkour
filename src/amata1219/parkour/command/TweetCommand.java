@@ -17,6 +17,7 @@ public class TweetCommand implements Command {
 			return;
 		}
 
+		//全引数を結合して取得する
 		String text = args.getInRange(0, args.args.length);
 
 		Tweet.display(sender.asPlayerCommandSender(), text);
