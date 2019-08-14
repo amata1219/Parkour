@@ -1,5 +1,6 @@
 package amata1219.parkour.function;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import amata1219.amalib.string.StringTemplate;
@@ -9,21 +10,15 @@ import amata1219.parkour.user.User;
 public class ApplyRankToDisplayName {
 
 	public static void apply(User user){
-		//ニックネームAPIを取得する
-		//BetterNickAPI api = Main.getNickAPI();
-
 		int rank = user.getUpdateRank();
 
 		//プレイヤーを取得する
 		Player player = user.asBukkitPlayer();
 
-		//表示例: amata1219 @ 5
-		String displayName = StringTemplate.capply("$0 &7-@ $1$2", player.getName(), RankColor.values()[rank].color, rank);
+		ChatColor rankColor = RankColor.values()[rank].color;
 
-		//表示名を変更する
-		/*api.setPlayerDisplayName(player, displayName, "", "");
-		api.setPlayerChatName(player, displayName, "", "");
-		api.setPlayerTablistName(player, displayName, "", "");*/
+		//表示例: amata1219 @ 5
+		String displayName = StringTemplate.capply("$0$1 &7-@ $0$2", rankColor, player.getName(), rank);
 
 		player.setDisplayName(displayName);
 		player.setPlayerListName(displayName);

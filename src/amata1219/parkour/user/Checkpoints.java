@@ -18,7 +18,7 @@ import amata1219.parkour.parkour.Parkours;
 
 public class Checkpoints {
 
-	private final Parkours parkourSet = Parkours.getInstance();
+	private final Parkours parkours = Parkours.getInstance();
 
 	private final Map<String, Map<Integer, ImmutableEntityLocation>> checkpoints = new HashMap<>();
 	private final Map<String, Integer> latestCheckpoints = new HashMap<>();
@@ -33,7 +33,7 @@ public class Checkpoints {
 		//各アスレ名毎に処理する
 		for(String parkourName : parkourSection.getKeys(false)){
 			//アスレ名と対応したアスレを取得する
-			Parkour parkour = parkourSet.getParkour(parkourName);
+			Parkour parkour = parkours.getParkour(parkourName);
 
 			//このアスレのセクションを取得する
 			ConfigurationSection checkAreaSection = parkourSection.getConfigurationSection(parkourName);
@@ -59,7 +59,7 @@ public class Checkpoints {
 	}
 
 	public List<Parkour> getParkourList(){
-		return checkpoints.keySet().stream().filter(parkourSet::containsParkour).map(parkourSet::getParkour).collect(Collectors.toList());
+		return checkpoints.keySet().stream().filter(parkours::containsParkour).map(parkours::getParkour).collect(Collectors.toList());
 	}
 
 	public boolean containsParkour(Parkour parkour){
@@ -68,6 +68,14 @@ public class Checkpoints {
 
 	public boolean containsParkour(String parkourName){
 		return checkpoints.containsKey(parkourName);
+	}
+
+	public Map<Integer, ImmutableEntityLocation> getMajorCheckAreaNumbersAndCheckpoints(Parkour parkour){
+		return getMajorCheckAreaNumbersAndCheckpoints(parkour.name);
+	}
+
+	public Map<Integer, ImmutableEntityLocation> getMajorCheckAreaNumbersAndCheckpoints(String parkourName){
+		return checkpoints.containsKey(parkourName) ? new HashMap<>(checkpoints.get(parkourName)) : Collections.emptyMap();
 	}
 
 	public List<ImmutableEntityLocation> getCheckpoints(Parkour parkour){

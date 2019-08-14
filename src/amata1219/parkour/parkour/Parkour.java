@@ -94,9 +94,9 @@ public class Parkour {
 	}
 
 	public void update(Consumer<Parkour> applier){
-		if(enable) parkours.unregisterParkour(this);
+		parkours.unregisterParkour(this);
 		apply(applier);
-		if(enable) parkours.registerParkour(this);
+		parkours.registerParkour(this);
 	}
 
 	public void save(){

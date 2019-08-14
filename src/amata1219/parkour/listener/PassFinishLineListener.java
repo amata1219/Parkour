@@ -68,8 +68,16 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			MessageTemplate.capply("&b-$0 cleared $1!", playerName, parkourName).broadcast();
 		}
 
-		//遊んでいるアスレを削除する
-		user.parkourPlayingNow = null;
+		user.exitParkour();
+
+		//クリア回数に基づき報酬を取得する
+		int coins = parkour.rewards.getReward(haveCleared ? 1 : 0);
+
+		//報酬のコインを与える
+		user.depositCoins(coins);
+
+		//表示例: Gave amata1219 1000 coins as a reward!
+		MessageTemplate.capply("&b-Gave $0 $1 coins as a reward!", playerName, coins).display(player);
 
 		//ランクアップアスレの場合
 		if(parkour instanceof RankedParkour){
@@ -80,8 +88,8 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			//各タイプで分岐する
 			switch(type){
 			case UPDATE:
-				//プレイヤーのランクの方が高ければ抜ける
-				if(user.getUpdateRank() >= rank) break;
+				//プレイヤーのランクの方が高ければ戻る
+				if(user.getUpdateRank() >= rank) return;
 
 				//ランクを更新する
 				user.incrementUpdateRank();
@@ -90,8 +98,8 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 				ApplyRankToDisplayName.apply(user);
 				break;
 			case EXTEND:
-				//プレイヤーのランクの方が高ければ抜ける
-				if(user.getExtendRank() >= rank) break;
+				//プレイヤーのランクの方が高ければ戻る
+				if(user.getExtendRank() >= rank) return;
 
 				//ランクを更新する
 				user.incrementExtendRank();
@@ -104,17 +112,8 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			MessageTemplate.capply("&b-&l-Rank up &7-@ &b-$0's $1 rank is $2!", playerName, type.toString().toLowerCase(), rank).broadcast();
 
 			//ツイートリンクを表示する
-			Tweet.display(player, StringTemplate.apply("$0を初クリアしました！！！", parkour.getColorlessName()));
+			Tweet.display(player, StringTemplate.apply("$0を初クリアしました！", parkour.getColorlessName()));
 		}
-
-		//クリア回数に基づき報酬を取得する
-		int coins = parkour.rewards.getReward(haveCleared ? 1 : 0);
-
-		//報酬のコインを与える
-		user.depositCoins(coins);
-
-		//表示例: Gave amata1219 1000 coins as a reward!
-		MessageTemplate.capply("&b-Gave $0 $1 coins as a reward!", playerName, coins).display(player);
 	}
 
 }

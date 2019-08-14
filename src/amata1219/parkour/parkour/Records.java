@@ -35,15 +35,15 @@ public class Records {
 
 		ConfigurationSection recorderSection = yaml.getConfigurationSection("Records");
 
-		Set<String> recorderUUIDs = recorderSection.getKeys(false);
-		records = new HashMap<>(recorderUUIDs.size());
+		Set<String> recorders = recorderSection.getKeys(false);
+		records = new HashMap<>(recorders.size());
 
-		for(String recorderUUID : recorderUUIDs){
+		for(String recorder : recorders){
 			//UUIDに変換する
-			UUID uuid = UUID.fromString(recorderUUID);
+			UUID uuid = UUID.fromString(recorder);
 
 			//タイムに変換する
-			long time = Long.parseLong(yaml.getString(recorderUUID));
+			long time = recorderSection.getLong(recorder);
 
 			records.put(uuid, time);
 		}

@@ -4,6 +4,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import amata1219.amalib.sound.SoundMetadata;
+import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.string.message.Message;
 import amata1219.amalib.string.message.Message.ClickAction;
@@ -20,7 +21,7 @@ public class Tweet {
 
 		SE.play(player);
 
-		Message.wrap(StringTemplate.capply("&b-# Share on Twitter &7-@ &f-$0", text)).displayAsClickableAndHoverable(player, ClickAction.OPEN_URL, tweet, HoverAction.SHOW_TEXT, "&7-: &b-Click to tweet!");
+		Message.wrap(StringTemplate.capply("&b-# Share on Twitter &7-@ &f-$0", text)).displayAsClickableAndHoverable(player, ClickAction.OPEN_URL, tweet, HoverAction.SHOW_TEXT, StringColor.color("&7-: &b-Click to tweet!"));
 	}
 
 }

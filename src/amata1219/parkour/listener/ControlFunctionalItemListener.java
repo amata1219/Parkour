@@ -37,6 +37,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.amalib.enchantment.GleamEnchantment;
+import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.listener.PlayerJoinListener;
 import amata1219.amalib.listener.PlayerQuitListener;
 import amata1219.amalib.location.ImmutableEntityLocation;
@@ -144,7 +145,22 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 			ParkourCategory category = parkour != null ? parkour.category : ParkourCategory.NORMAL;
 
 			//カテゴリーに対応したステージリストを開かせる
-			ParkourMenuUI.getInstance().getInventoryUI(category).openInventory(user.asBukkitPlayer());
+			InventoryUI inventoryUI = null;
+
+			//カテゴリーに対応したアスレリストを取得する
+			switch(category){
+			case UPDATE:
+				inventoryUI = user.inventoryUserInterfaces.updateParkourSelectionUI;
+				break;
+			case EXTEND:
+				inventoryUI = user.inventoryUserInterfaces.extendParkourSelectionUI;
+				break;
+			default:
+				inventoryUI = ParkourMenuUI.getInstance().getInventoryUI(category);
+				break;
+			}
+
+			inventoryUI.openInventory(user.asBukkitPlayer());
 
 		});
 

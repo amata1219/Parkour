@@ -11,8 +11,8 @@ import amata1219.parkour.user.User;
 
 public class PassCheckAreaListener extends PassRegionBoundaryAbstractListener {
 
-	private static final SoundMetadata IN_SE = new SoundMetadata(Sound.UI_BUTTON_CLICK, 2f, 2f);
-	private static final SoundMetadata OUT_SE = new SoundMetadata(Sound.UI_BUTTON_CLICK, 1.4f, 0.5f);
+	private static final SoundMetadata IN_SE = new SoundMetadata(Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 2f, 2f);
+	private static final SoundMetadata OUT_SE = new SoundMetadata(Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 2f, 0.5f);
 
 	private final ControlFunctionalItemListener controlFunctionalItemListener = ControlFunctionalItemListener.getInstance();
 
