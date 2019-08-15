@@ -1,6 +1,8 @@
 package amata1219.parkour.listener;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -20,6 +22,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import amata1219.parkour.function.HotbarFunctionalItem;
 import amata1219.parkour.function.ToggleHideMode;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
@@ -48,6 +51,17 @@ import amata1219.amalib.tuplet.Triple;
 import amata1219.amalib.tuplet.Tuple;
 
 public class ControlFunctionalItemListener implements PlayerJoinListener, PlayerQuitListener {
+
+	private static final Map<Integer, HotbarFunctionalItem> ITEMS = new HashMap<>(5);
+
+	static{
+		initialize(
+		);
+	}
+
+	private static void initialize(HotbarFunctionalItem... items){
+		for(int slotIndex = 0; slotIndex < 5; slotIndex++) ITEMS.put(0, items[slotIndex]);
+	}
 
 	private static ControlFunctionalItemListener instance;
 
