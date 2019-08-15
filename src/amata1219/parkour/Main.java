@@ -8,7 +8,7 @@ import org.bukkit.World;
 import amata1219.amalib.Plugin;
 import amata1219.parkour.command.CheckAreaCommand;
 import amata1219.parkour.command.CoinCommand;
-import amata1219.parkour.command.EditParkourCommand;
+import amata1219.parkour.command.ParkourEditCommand;
 import amata1219.parkour.command.ParkourCommand;
 import amata1219.parkour.command.RelayoutCommand;
 import amata1219.parkour.command.TweetCommand;
@@ -64,7 +64,7 @@ public class Main extends Plugin {
 			new ParkourCommand(),
 			new ParkourRegionCommand(),
 			new ParkourSettingCommand(),
-			new EditParkourCommand(),
+			new ParkourEditCommand(),
 			new CheckAreaCommand(),
 			new CoinCommand(),
 			new RelayoutCommand(),

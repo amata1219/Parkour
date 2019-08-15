@@ -1,9 +1,8 @@
 package amata1219.parkour.user;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.head.Head;
@@ -11,16 +10,15 @@ import amata1219.parkour.head.Head;
 public class PurchasedHeads {
 
 	private final User user;
-	private Set<UUID> heads = new HashSet<>();
+	private final Set<Integer> headIds;
 
 	public PurchasedHeads(User user, Yaml yaml){
 		this.user = user;
-
-		heads = yaml.getStringList("Purchased heads").stream().map(UUID::fromString).collect(Collectors.toSet());
+		this.headIds = new HashSet<>(yaml.getIntegerList("Purchased head ids"));
 	}
 
 	public boolean has(Head head){
-		return heads.contains(head.uuid);
+		return headIds.contains(head.id);
 	}
 
 	public boolean canBuy(Head head){
@@ -29,11 +27,11 @@ public class PurchasedHeads {
 
 	public void buy(Head head){
 		user.withdrawCoins(head.value);
-		heads.add(head.uuid);
+		headIds.add(head.id);
 	}
 
 	public void save(Yaml yaml){
-		yaml.set("Purchased heads", heads.stream().map(UUID::toString).collect(Collectors.toList()));
+		yaml.set("Purchased head ids", new ArrayList<>(headIds));
 	}
 
 }

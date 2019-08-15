@@ -8,7 +8,7 @@ commands:
   checkarea:
   coin:
   direction:
-  editparkour:
+  parkouredit:
   parkour:
   parkourregion:
   parkoursetting:

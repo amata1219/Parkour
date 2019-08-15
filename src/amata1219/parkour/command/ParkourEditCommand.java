@@ -14,7 +14,7 @@ import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
 import net.md_5.bungee.api.ChatColor;
 
-public class EditParkourCommand implements Command {
+public class ParkourEditCommand implements Command {
 
 	private final RegionSelections selections = RegionSelections.getInstance();
 

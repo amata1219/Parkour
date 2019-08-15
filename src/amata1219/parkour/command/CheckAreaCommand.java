@@ -114,6 +114,8 @@ public class CheckAreaCommand implements Command {
 
 			sender.warn("指定した番号のチェックエリアを書き換えました。");
 			break;
+		}case "insert":{
+
 		}case "remove":{
 			//メジャーチェックエリア番号が指定されていなければ戻る
 			if(!args.hasNextInt()){
