@@ -1,5 +1,6 @@
 package amata1219.parkour.listener;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,7 @@ import amata1219.amalib.listener.PlayerJoinListener;
 import amata1219.amalib.listener.PlayerQuitListener;
 import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.string.StringColor;
+import amata1219.amalib.string.StringLocalize;
 import amata1219.amalib.string.message.MessageColor;
 import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.amalib.tuplet.Triple;
@@ -53,16 +55,65 @@ import amata1219.amalib.tuplet.Tuple;
 
 public class ControlFunctionalItemListener implements PlayerJoinListener, PlayerQuitListener {
 
+	/*
+	 * Checkpoint, To Spawn, Teleporter, User Config Athletic Selector
+Return to Checkpoint, Invisible, Return to Spawn, Leaderborad, Profile
+Teleport to Last Checkpoint
+You reached Checkpoint #1 after 00:30.361
+Congratulations on completing the parkour!
+You finished int 01:0.4823!
+Try again to ge an even better record!
+You finished this part of the parkour in 00:09.603. //checkpoint
+click to open
+Kits & Perks
+Hats
+Click to browse! Click to select!
+My Profile
+Settings
+~ joined the lobby!
+Game Menu
+Lobby Selector
+説明は灰色、値に色を付ける
+Click here to view it!
+Return to your last checkpoint
+You have received 15 mana from console
+You have completed this course 1 times!
+	 */
+
 	private static final Map<Integer, HotbarItem> ITEMS = new HashMap<>(5);
 
 	static{
 		initialize(
-			new HotbarItem(Material.LIGHT_BLUE_DYE, StringColor.color("&b-ja | &b-en"), (user, clickType) -> {
+			new HotbarItem(Material.LIGHT_BLUE_DYE,
+				//アイテムのビルド設定をする
+				(item, user) -> {
+					ItemMeta meta = item.getItemMeta();
+
+					//プレイヤーを取得する
+					Player player = user.asBukkitPlayer();
+
+					meta.setDisplayName(StringLocalize.capply("&b-最新/最終チェックポイントにテレポートする | &b-Teleport to Latest/Last Checkpoint", player));
+					meta.setLore(Arrays.asList(
+						StringLocalize.capply("&7-左クリックすると最後に登録したチェックポイントにテレポートします。 | &7-Ri", player)
+					));
+				},
+
+				//クリック時の処理を定義する
+				(user, clickType) -> {
+
+				}
+			)
+		);
+
+
+		/*initialize(
+			new HotbarItem(Material.LIGHT_BLUE_DYE, StringColor.color("&b-最新/最終チェックポイントにテレポートする | &b-Teleport to Latest/Last Checkpoint"), (user, clickType) -> {
 				Player player = user.asBukkitPlayer();
 
 				//アスレをプレイ中でなければ戻る
 				if(!user.isPlayingWithParkour()){
-					MessageColor.color("&c-Operation blocked &7-@ &c-You are not playing with parkour").displayOnActionBar(player);
+					MessageColor.color("&c-アスレチックのプレイ中でないため実行出来ません | &c-Operation blocked &7-@ &c-You are not playing with parkour")
+					.localize().displayOnActionBar(player);
 					return;
 				}
 
@@ -71,8 +122,8 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 				Checkpoints checkpoints = user.checkpoints;
 
 				if(!checkpoints.containsParkour(parkour)){
-					//表示例: Operation blocked @ Missing last checkpoint
-					MessageColor.color("&c-Operation blocked &7-@ &c-Missing checkpoint").displayOnActionBar(player);
+					MessageColor.color("&c-チェックポイントが設定されていないため実行出来ません | &c-Operation blocked &7-@ &c-Missing checkpoint")
+					.localize().displayOnActionBar(player);
 					return;
 				}
 
@@ -81,8 +132,8 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 
 				//チェックポイントが無ければ戻る
 				if(checkpoint == null){
-					//表示例: Operation blocked @ Missing last checkpoint
-					MessageColor.color("&c-Operation blocked &7-@ &c-Missing checkpoint").displayOnActionBar(player);
+					MessageColor.color("&c-チェックポイントが設定されていないため実行出来ません | &c-Operation blocked &7-@ &c-Missing checkpoint")
+					.localize().displayOnActionBar(player);
 					return;
 				}
 
@@ -92,26 +143,60 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 				//チェックポイントにテレポートさせる
 				player.teleport(checkpoint.asBukkit());
 
-				//表示例: Teleported to checkpoint 1 @ Update1!
-				MessageTemplate.capply("&b-Teleported to checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkour.name).displayOnActionBar(player);
+				//表示例: Update7 の チェックポイント1 にテレポートしました | Teleported to checkpoint 1 @ Update7!
+				MessageTemplate.capply("$1-&b-の チェックポイント$0 にテレポートしました | &b-Teleported to checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkour.name)
+				.localize().displayOnActionBar(player);
+
 			}, StringColor.color("&7-: &b-"), ""),
 
 			new HotbarItem(Material.CYAN_DYE, StringColor.color("&b-Checkpoints in category"), (user, clickType) -> {
+				Player player = user.asBukkitPlayer();
 
+				//どこのアスレにもいなければ戻る
+				if(user.currentParkour == null){
+					MessageColor.color("&c-Operation blocked &7-@ &c-You are not on any parkour").displayOnActionBar(player);
+					return;
+				}
+
+				//右クリックしたのであれば最終、左クリックしたのであれば最新のチェックポイントリストを表示する
+				InventoryUI inventoryUI = clickType == ClickType.RIGHT ? user.inventoryUserInterfaces.lastCheckpointSelectionUI : user.inventoryUserInterfaces.latestCheckpointSelectionUI;
+				inventoryUI.openInventory(player);
 			}),
 
 			new HotbarItem(Material.HEART_OF_THE_SEA, StringColor.color("&b-Teleporter to checkpoint"), (user, clickType) -> {
+				//プレイヤーが今いるアスレを取得する
+				Parkour parkour = user.currentParkour;
 
+				//ステージのカテゴリーを取得する
+				ParkourCategory category = parkour != null ? parkour.category : ParkourCategory.NORMAL;
+
+				//カテゴリーに対応したステージリストを開かせる
+				InventoryUI inventoryUI = null;
+
+				//カテゴリーに対応したアスレリストを取得する
+				switch(category){
+				case UPDATE:
+					inventoryUI = user.inventoryUserInterfaces.updateParkourSelectionUI;
+					break;
+				case EXTEND:
+					inventoryUI = user.inventoryUserInterfaces.extendParkourSelectionUI;
+					break;
+				default:
+					inventoryUI = ParkourMenuUI.getInstance().getInventoryUI(category);
+					break;
+				}
+
+				inventoryUI.openInventory(user.asBukkitPlayer());
 			}),
 
 			new HotbarItem(Material.PRISMARINE_SHARD, StringColor.color("&b-Teleporter to checkpoint"), (user, clickType) -> {
-
+				ToggleHideMode.getInstance().change(user);
 			}),
 
 			new HotbarItem(Material.FEATHER, StringColor.color("&b-Teleporter to checkpoint"), (user, clickType) -> {
-
+				user.inventoryUserInterfaces.menuUI.openInventory(user.asBukkitPlayer());
 			})
-		);
+		);*/
 	}
 
 	private static void initialize(HotbarItem... items){
@@ -128,88 +213,9 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 		return instance;
 	}
 
-	private final Triple<ItemStack, ItemStack, BiConsumer<User, Boolean>> teleporterToLastOrLatestCheckpoint;
-	private final Tuple<ItemStack, BiConsumer<User, Boolean>> lastOrLatestCheckpointSelector;
-	private final Tuple<ItemStack, Consumer<User>> stageSelector;
-	private final Tuple<ItemStack, Consumer<User>> hideModeToggler;
-	private final Tuple<ItemStack, Consumer<User>> menuOpener;
-	private final ItemStack empty = new ItemStack(Material.AIR);
-
 	private final Users users = Users.getInstnace();
 
 	public ControlFunctionalItemListener(){
-		ItemStack itemOfCheckpointSelector = new ItemStack(Material.PRISMARINE_CRYSTALS);
-
-		applyMetaToItem(itemOfCheckpointSelector, StringColor.color("&b-Checkpoint selector"));
-
-		//ステージ内の最終チェックポイント一覧を開くアイテムの機能内容を定義する
-		lastOrLatestCheckpointSelector = new Tuple<>(itemOfCheckpointSelector, (user, clickRight) -> {
-			Player player = user.asBukkitPlayer();
-
-			//どこのアスレにもいなければ戻る
-			if(user.currentParkour == null){
-				MessageColor.color("&c-Operation blocked &7-@ &c-You are not on any parkour").displayOnActionBar(player);
-				return;
-			}
-
-			//右クリックしたのであれば最終、左クリックしたのであれば最新のチェックポイントリストを表示する
-			InventoryUI inventoryUI = clickRight ? user.inventoryUserInterfaces.lastCheckpointSelectionUI : user.inventoryUserInterfaces.latestCheckpointSelectionUI;
-			inventoryUI.openInventory(player);
-		});
-
-		ItemStack itemOfStageSelector = new ItemStack(Material.PRISMARINE_CRYSTALS);
-
-		applyMetaToItem(itemOfStageSelector, StringColor.color("&b-Parkour selector"));
-
-		//ステージ一覧を開くアイテムの機能内容を定義する
-		stageSelector = new Tuple<>(itemOfStageSelector, user -> {
-			//プレイヤーが今いるアスレを取得する
-			Parkour parkour = user.currentParkour;
-
-			//ステージのカテゴリーを取得する
-			ParkourCategory category = parkour != null ? parkour.category : ParkourCategory.NORMAL;
-
-			//カテゴリーに対応したステージリストを開かせる
-			InventoryUI inventoryUI = null;
-
-			//カテゴリーに対応したアスレリストを取得する
-			switch(category){
-			case UPDATE:
-				inventoryUI = user.inventoryUserInterfaces.updateParkourSelectionUI;
-				break;
-			case EXTEND:
-				inventoryUI = user.inventoryUserInterfaces.extendParkourSelectionUI;
-				break;
-			default:
-				inventoryUI = ParkourMenuUI.getInstance().getInventoryUI(category);
-				break;
-			}
-
-			inventoryUI.openInventory(user.asBukkitPlayer());
-
-		});
-
-		ItemStack itemOfHideModeToggler = new ItemStack(Material.PRISMARINE_CRYSTALS);
-
-		applyMetaToItem(itemOfHideModeToggler, StringColor.color("&b-Hide mode toggler"));
-
-		//非表示モードを切り替えるアイテムの機能内容を定義する
-		hideModeToggler = new Tuple<>(itemOfHideModeToggler, user -> {
-			ToggleHideMode.getInstance().change(user);
-		});
-
-		ItemStack itemOfMenuOpener = new ItemStack(Material.PRISMARINE_CRYSTALS);
-
-		applyMetaToItem(itemOfMenuOpener, StringColor.color("&b-Menu opener"));
-
-		//メニューを開くアイテムの機能内容を定義する
-		menuOpener = new Tuple<>(itemOfMenuOpener, user -> user.inventoryUserInterfaces.menuUI.openInventory(user.asBukkitPlayer()));
-	}
-
-	private void applyMetaToItem(ItemStack item, String displayName){
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(displayName);
-		item.setItemMeta(meta);
 	}
 
 	public void setNotifierGleam(Player player, boolean gleam){

@@ -20,8 +20,8 @@ import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.string.message.MessageColor;
 import amata1219.amalib.string.message.MessageTemplate;
-import amata1219.parkour.head.Head;
-import amata1219.parkour.head.Heads;
+import amata1219.parkour.hat.Hats;
+import amata1219.parkour.hat.Hat;
 import amata1219.parkour.user.PurchasedHeads;
 
 public class HeadMenuUI implements InventoryUI {
@@ -38,7 +38,7 @@ public class HeadMenuUI implements InventoryUI {
 	@Override
 	public Function<Player, InventoryLayout> layout() {
 		//ヘッドの数から必要な行数を計算する
-		InventoryLine line = InventoryLine.necessaryInventoryLine(Heads.HEADS.size());
+		InventoryLine line = InventoryLine.necessaryInventoryLine(Hats.HEADS.size());
 
 		return build(line, (l) -> {
 			//タイトルを設定する
@@ -46,7 +46,7 @@ public class HeadMenuUI implements InventoryUI {
 
 			AtomicInteger slotIndex = new AtomicInteger();
 
-			Heads.HEADS.forEach(head -> {
+			Hats.HEADS.forEach(head -> {
 
 				String headName = head.name;
 				int headValue = head.value;
@@ -139,7 +139,7 @@ public class HeadMenuUI implements InventoryUI {
 		});
 	}
 
-	private void setPurchasedHeadText(Icon icon, Head head){
+	private void setPurchasedHeadText(Icon icon, Hat head){
 		String headName = head.name;
 
 		//表示例: amata1219 @ 500000 coins!
@@ -149,7 +149,7 @@ public class HeadMenuUI implements InventoryUI {
 		icon.lore(StringTemplate.capply("&7-Click to put on $0's skull!", headName));
 	}
 
-	private void setHead(Inventory clickedInventory, Player player, Head head){
+	private void setHead(Inventory clickedInventory, Player player, Hat head){
 		//被らせる
 		player.getInventory().setHelmet(head.item);
 		player.updateInventory();

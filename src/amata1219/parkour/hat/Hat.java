@@ -1,15 +1,15 @@
-package amata1219.parkour.head;
+package amata1219.parkour.hat;
 
 import org.bukkit.inventory.ItemStack;
 
-public class Head {
+public class Hat {
 
 	public final int id;
 	public final int value;
 	public final String name;
 	public final ItemStack item;
 
-	public Head(int id, int value, String name, ItemStack item){
+	public Hat(int id, int value, String name, ItemStack item){
 		this.id = id;
 		this.value = value;
 		this.name = name;

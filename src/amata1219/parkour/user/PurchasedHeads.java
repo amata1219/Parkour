@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import amata1219.amalib.yaml.Yaml;
-import amata1219.parkour.head.Head;
+import amata1219.parkour.hat.Hat;
 
 public class PurchasedHeads {
 
@@ -17,15 +17,15 @@ public class PurchasedHeads {
 		this.headIds = new HashSet<>(yaml.getIntegerList("Purchased head ids"));
 	}
 
-	public boolean has(Head head){
+	public boolean has(Hat head){
 		return headIds.contains(head.id);
 	}
 
-	public boolean canBuy(Head head){
+	public boolean canBuy(Hat head){
 		return head.value <= user.getCoins();
 	}
 
-	public void buy(Head head){
+	public void buy(Hat head){
 		user.withdrawCoins(head.value);
 		headIds.add(head.id);
 	}

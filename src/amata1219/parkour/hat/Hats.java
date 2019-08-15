@@ -1,4 +1,4 @@
-package amata1219.parkour.head;
+package amata1219.parkour.hat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,9 +6,9 @@ import java.util.List;
 
 import amata1219.amalib.util.SkullMaker;
 
-public class Heads {
+public class Hats {
 
-	public final static List<Head> HEADS = new ArrayList<>(37);
+	public final static List<Hat> HEADS = new ArrayList<>(37);
 
 	static{
 		initialize(
@@ -55,7 +55,7 @@ public class Heads {
 	private static void initialize(String... texts){
 		Arrays.stream(texts)
 		.map(text -> text.split(","))
-		.map(data -> new Head(Integer.parseInt(data[0]), Integer.parseInt(data[1]), data[2], SkullMaker.fromBase64(data[3])))
+		.map(data -> new Hat(Integer.parseInt(data[0]), Integer.parseInt(data[1]), data[2], SkullMaker.fromBase64(data[3])))
 		.forEach(HEADS::add);
 	}
 
