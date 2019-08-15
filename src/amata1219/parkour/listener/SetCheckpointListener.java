@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 import amata1219.amalib.chunk.ChunksToObjectsMap;
-import amata1219.amalib.location.ImmutableEntityLocation;
+import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.Parkours;
@@ -71,7 +71,7 @@ public class SetCheckpointListener implements Listener {
 		if(majorCheckAreaNumber < 0) return;
 
 		//チェックポイントとして設定する
-		user.checkpoints.setCheckpoint(parkour, majorCheckAreaNumber, new ImmutableEntityLocation(location));
+		user.checkpoints.setCheckpoint(parkour, majorCheckAreaNumber, new ImmutableLocation(location));
 
 		MessageTemplate.capply("&b-Set checkpoint @ $0", majorCheckAreaNumber + 1).displayOnActionBar(player);
 	}

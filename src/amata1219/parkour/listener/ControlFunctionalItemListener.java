@@ -22,7 +22,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import amata1219.parkour.function.HotbarFunctionalItem;
+import amata1219.parkour.function.HotbarItem;
+import amata1219.parkour.function.HotbarItem.ClickType;
 import amata1219.parkour.function.ToggleHideMode;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
@@ -43,7 +44,7 @@ import amata1219.amalib.enchantment.GleamEnchantment;
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.listener.PlayerJoinListener;
 import amata1219.amalib.listener.PlayerQuitListener;
-import amata1219.amalib.location.ImmutableEntityLocation;
+import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.message.MessageColor;
 import amata1219.amalib.string.message.MessageTemplate;
@@ -52,15 +53,69 @@ import amata1219.amalib.tuplet.Tuple;
 
 public class ControlFunctionalItemListener implements PlayerJoinListener, PlayerQuitListener {
 
-	private static final Map<Integer, HotbarFunctionalItem> ITEMS = new HashMap<>(5);
+	private static final Map<Integer, HotbarItem> ITEMS = new HashMap<>(5);
 
 	static{
 		initialize(
+			new HotbarItem(Material.LIGHT_BLUE_DYE, StringColor.color("&b-ja | &b-en"), (user, clickType) -> {
+				Player player = user.asBukkitPlayer();
+
+				//アスレをプレイ中でなければ戻る
+				if(!user.isPlayingWithParkour()){
+					MessageColor.color("&c-Operation blocked &7-@ &c-You are not playing with parkour").displayOnActionBar(player);
+					return;
+				}
+
+				//プレイ中のアスレを取得する
+				Parkour parkour = user.parkourPlayingNow;
+				Checkpoints checkpoints = user.checkpoints;
+
+				if(!checkpoints.containsParkour(parkour)){
+					//表示例: Operation blocked @ Missing last checkpoint
+					MessageColor.color("&c-Operation blocked &7-@ &c-Missing checkpoint").displayOnActionBar(player);
+					return;
+				}
+
+				//右クリックしたのであれば最終チェックポイントを、左クリックしたのであれば最新チェックポイントを取得する
+				ImmutableLocation checkpoint = clickType == ClickType.RIGHT ? checkpoints.getLastCheckpoint(parkour) : checkpoints.getLatestCheckpoint(parkour);
+
+				//チェックポイントが無ければ戻る
+				if(checkpoint == null){
+					//表示例: Operation blocked @ Missing last checkpoint
+					MessageColor.color("&c-Operation blocked &7-@ &c-Missing checkpoint").displayOnActionBar(player);
+					return;
+				}
+
+				//チェックエリアの番号を取得し表示用に+1する
+				int displayCheckAreaNumber = (clickType == ClickType.RIGHT ? checkpoints.getLastCheckpointNumber(parkour) : checkpoints.getLatestCheckpointNumber(parkour)) + 1;
+
+				//チェックポイントにテレポートさせる
+				player.teleport(checkpoint.asBukkit());
+
+				//表示例: Teleported to checkpoint 1 @ Update1!
+				MessageTemplate.capply("&b-Teleported to checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkour.name).displayOnActionBar(player);
+			}, StringColor.color("&7-: &b-"), ""),
+
+			new HotbarItem(Material.CYAN_DYE, StringColor.color("&b-Checkpoints in category"), (user, clickType) -> {
+
+			}),
+
+			new HotbarItem(Material.HEART_OF_THE_SEA, StringColor.color("&b-Teleporter to checkpoint"), (user, clickType) -> {
+
+			}),
+
+			new HotbarItem(Material.PRISMARINE_SHARD, StringColor.color("&b-Teleporter to checkpoint"), (user, clickType) -> {
+
+			}),
+
+			new HotbarItem(Material.FEATHER, StringColor.color("&b-Teleporter to checkpoint"), (user, clickType) -> {
+
+			})
 		);
 	}
 
-	private static void initialize(HotbarFunctionalItem... items){
-		for(int slotIndex = 0; slotIndex < 5; slotIndex++) ITEMS.put(0, items[slotIndex]);
+	private static void initialize(HotbarItem... items){
+		for(int slotIndex = 0; slotIndex < 5; slotIndex++) ITEMS.put(slotIndex * 2, items[slotIndex]);
 	}
 
 	private static ControlFunctionalItemListener instance;
@@ -83,54 +138,6 @@ public class ControlFunctionalItemListener implements PlayerJoinListener, Player
 	private final Users users = Users.getInstnace();
 
 	public ControlFunctionalItemListener(){
-		ItemStack itemOfTeleporterToLastCheckpoint = new ItemStack(Material.PRISMARINE_CRYSTALS);
-
-		applyMetaToItem(itemOfTeleporterToLastCheckpoint, StringColor.color("&b-Teleporter to last or latest checkpoint"));
-
-		//同様のアイテムの発光バージョンも作成する
-		ItemStack gleamingItemOfTeleporterToLastCheckpoint = itemOfTeleporterToLastCheckpoint.clone();
-		GleamEnchantment.gleam(gleamingItemOfTeleporterToLastCheckpoint);
-
-		//最終チェックポイントにテレポートさせるアイテムの機能内容を定義する
-		teleporterToLastOrLatestCheckpoint = new Triple<>(itemOfTeleporterToLastCheckpoint, gleamingItemOfTeleporterToLastCheckpoint, (user, clickRight) -> {
-			Player player = user.asBukkitPlayer();
-
-			//アスレをプレイ中でなければ戻る
-			if(!user.isPlayingWithParkour()){
-				MessageColor.color("&c-Operation blocked &7-@ &c-You are not playing with parkour").displayOnActionBar(player);
-				return;
-			}
-
-			//プレイ中のアスレを取得する
-			Parkour parkour = user.parkourPlayingNow;
-			Checkpoints checkpoints = user.checkpoints;
-
-			if(!checkpoints.containsParkour(parkour)){
-				//表示例: Operation blocked @ Missing last checkpoint
-				MessageColor.color("&c-Operation blocked &7-@ &c-Missing checkpoint").displayOnActionBar(player);
-				return;
-			}
-
-			//右クリックしたのであれば最終チェックポイントを、左クリックしたんどえあれば最新チェックポイントを取得する
-			ImmutableEntityLocation checkpoint = clickRight ? checkpoints.getLastCheckpoint(parkour) : checkpoints.getLatestCheckpoint(parkour);
-
-			//チェックポイントが無ければ戻る
-			if(checkpoint == null){
-				//表示例: Operation blocked @ Missing last checkpoint
-				MessageColor.color("&c-Operation blocked &7-@ &c-Missing checkpoint").displayOnActionBar(player);
-				return;
-			}
-
-			//チェックエリアの番号を取得し表示用に+1する
-			int displayCheckAreaNumber = (clickRight ? checkpoints.getLastCheckpointNumber(parkour) : checkpoints.getLatestCheckpointNumber(parkour)) + 1;
-
-			//チェックポイントにテレポートさせる
-			player.teleport(checkpoint.asBukkitLocation());
-
-			//表示例: Teleported to checkpoint 1 @ Update1!
-			MessageTemplate.capply("&b-Teleported to checkpoint &0 &7-@ &b-$1-&r-&b-!", displayCheckAreaNumber, parkour.name).displayOnActionBar(player);
-		});
-
 		ItemStack itemOfCheckpointSelector = new ItemStack(Material.PRISMARINE_CRYSTALS);
 
 		applyMetaToItem(itemOfCheckpointSelector, StringColor.color("&b-Checkpoint selector"));

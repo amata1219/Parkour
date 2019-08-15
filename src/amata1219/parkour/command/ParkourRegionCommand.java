@@ -5,7 +5,7 @@ import java.util.UUID;
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
-import amata1219.amalib.location.ImmutableBlockLocation;
+import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.selection.RegionSelection;
 import amata1219.amalib.string.StringTemplate;
@@ -51,8 +51,8 @@ public class ParkourRegionCommand implements Command {
 
 		//セレクションを取得する
 		RegionSelection selection = selections.getSelection(uuid);
-		ImmutableBlockLocation lesserBoundaryCorner = selection.getLesserBoundaryCorner();
-		ImmutableBlockLocation greaterBoundaryCorner = selection.getGreaterBoundaryCorner();
+		ImmutableLocation lesserBoundaryCorner = selection.getLesserBoundaryCorner();
+		ImmutableLocation greaterBoundaryCorner = selection.getGreaterBoundaryCorner();
 
 		String regionName = null;
 

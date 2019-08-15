@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
-import amata1219.amalib.location.ImmutableEntityLocation;
+import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.string.message.MessageTemplate;
@@ -33,7 +33,7 @@ public class AllCheckpointSelectionUI implements InventoryUI {
 		Checkpoints checkpoints = user.checkpoints;
 
 		//アスレに対応したチェックポイントマップを取得する
-		Map<Integer, ImmutableEntityLocation> points = checkpoints.getMajorCheckAreaNumbersAndCheckpoints(parkour);
+		Map<Integer, ImmutableLocation> points = checkpoints.getMajorCheckAreaNumbersAndCheckpoints(parkour);
 
 		//メジャーチェックエリア番号を昇順にソートする
 		List<Integer> sortedMajorCheckAreaNumbers = points.keySet().stream().sorted((x, y) -> Integer.compare(x, y)).collect(Collectors.toList());
@@ -61,7 +61,7 @@ public class AllCheckpointSelectionUI implements InventoryUI {
 				int majorCheckAreaNumber = sortedMajorCheckAreaNumbers.get(slotIndex);
 
 				//対応した座標を取得する
-				ImmutableEntityLocation point = points.get(majorCheckAreaNumber);
+				ImmutableLocation point = points.get(majorCheckAreaNumber);
 
 				int majorCheckAreaNumberDisplayed = majorCheckAreaNumber + 1;
 
@@ -75,7 +75,7 @@ public class AllCheckpointSelectionUI implements InventoryUI {
 						if(parkour != user.currentParkour) parkour.entry(user);
 
 						//プレイヤーを最終チェックポイントにテレポートさせる
-						player.teleport(point.asBukkitLocation());
+						player.teleport(point.asBukkit());
 
 						//表示例: Teleported to checkpoint 1 @ Update1!
 						MessageTemplate.capply("&b-Teleported to checkpoint &0 &7-@ &b-$1-&r-&b-!", majorCheckAreaNumberDisplayed, parkourName).displayOnActionBar(player);

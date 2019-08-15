@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import amata1219.amalib.location.ImmutableBlockLocation;
+import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
@@ -23,7 +23,7 @@ public class CheckAreas {
 
 	private final Map<Integer, List<ParkourRegion>> checkAreas = new HashMap<>();
 
-	public CheckAreas(Parkours parkours, Yaml yaml, Parkour parkour, ImmutableBlockLocation origin){
+	public CheckAreas(Parkours parkours, Yaml yaml, Parkour parkour, ImmutableLocation origin){
 		this.parkours = parkours;
 
 		//チェックエリアのセクションが存在しなければ戻る
@@ -38,7 +38,7 @@ public class CheckAreas {
 
 			//メジャーチェックエリアの領域データをデシリアライズしてリストにする
 			List<ParkourRegion> areas = checkAreaSection.getStringList(majorCheckAreaNumberText).stream()
-										.map(text -> new ParkourRegion(parkour, origin.add(Region.deserialize(text))))
+										.map(text -> new ParkourRegion(parkour, Region.deserialize(text).sub(origin)))
 										.collect(Collectors.toList());
 
 			//メジャーチェックエリア番号とバインドする
@@ -270,12 +270,15 @@ public class CheckAreas {
 			for(ParkourRegion area : areas) applier.accept(area);
 	}
 
-	public void save(Yaml yaml, ImmutableBlockLocation origin){
+	public void save(Yaml yaml, ImmutableLocation origin){
 		for(Entry<Integer, List<ParkourRegion>> checkAreasEntry : checkAreas.entrySet()){
 			int majorCheckAreaNumber = checkAreasEntry.getKey();
 
 			//チェックエリアをテキストデータにシリアライズする
-			List<String> deserializedCheckAreas = checkAreasEntry.getValue().stream().map(origin::relative).map(Region::serialize).collect(Collectors.toList());
+			List<String> deserializedCheckAreas = checkAreasEntry.getValue().stream()
+			.map(checkArea -> checkArea.relative(origin))
+			.map(Region::serialize)
+			.collect(Collectors.toList());
 
 			//指定階層にセットする
 			yaml.set(StringTemplate.apply("Check areas.$0", majorCheckAreaNumber), deserializedCheckAreas);

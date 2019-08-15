@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
-import amata1219.amalib.location.ImmutableEntityLocation;
+import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.string.message.MessageTemplate;
@@ -23,10 +23,10 @@ public class AbstractCheckpointSelectionUI implements InventoryUI {
 
 	private final User user;
 	private final String checkpointType, lowerCaseCheckpointType;
-	private final BiFunction<Checkpoints, Parkour, ImmutableEntityLocation> getCheckpoint;
+	private final BiFunction<Checkpoints, Parkour, ImmutableLocation> getCheckpoint;
 	private final BiFunction<Checkpoints, Parkour, Integer> getCheckpointNumber;
 
-	protected AbstractCheckpointSelectionUI(User user, String checkpointType, BiFunction<Checkpoints, Parkour, ImmutableEntityLocation> getCheckpoint, BiFunction<Checkpoints, Parkour, Integer> getCheckpointNumber){
+	protected AbstractCheckpointSelectionUI(User user, String checkpointType, BiFunction<Checkpoints, Parkour, ImmutableLocation> getCheckpoint, BiFunction<Checkpoints, Parkour, Integer> getCheckpointNumber){
 		this.user = user;
 		this.checkpointType = checkpointType;
 		this.lowerCaseCheckpointType = checkpointType.toLowerCase();
@@ -72,7 +72,7 @@ public class AbstractCheckpointSelectionUI implements InventoryUI {
 				String parkourName = parkour.name;
 
 				//最終チェックポイントを取得する
-				ImmutableEntityLocation lastCheckpoint = getCheckpoint.apply(checkpoints, parkour);
+				ImmutableLocation lastCheckpoint = getCheckpoint.apply(checkpoints, parkour);
 
 				//メジャーチェックエリア番号を取得する
 				int majorCheckAreaNumberDisplayed = getCheckpointNumber.apply(checkpoints, parkour) + 1;
@@ -88,7 +88,7 @@ public class AbstractCheckpointSelectionUI implements InventoryUI {
 							if(parkour != user.currentParkour) parkour.entry(user);
 
 							//プレイヤーを最終チェックポイントにテレポートさせる
-							player.teleport(lastCheckpoint.asBukkitLocation());
+							player.teleport(lastCheckpoint.asBukkit());
 
 							//表示例: Teleported to checkpoint 1 @ Update1!
 							MessageTemplate.capply("&b-Teleported to a checkpoint &0 &7-@ &b-$1-&r-&b-!", majorCheckAreaNumberDisplayed, parkourName).displayOnActionBar(player);

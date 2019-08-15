@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.location.ImmutableEntityLocation;
+import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.listener.ControlFunctionalItemListener;
 import amata1219.parkour.parkour.Parkour;
@@ -47,7 +47,7 @@ public class User {
 	public final Set<String> clearedParkourNames;
 
 	//クリエイティブワールドでのチェックポイント
-	public ImmutableEntityLocation creativeWorldCheckpoint;
+	public ImmutableLocation creativeWorldCheckpoint;
 
 	//購入したヘッドのセット
 	public final PurchasedHeads heads;
@@ -91,7 +91,7 @@ public class User {
 		clearedParkourNames = new HashSet<>(yaml.getStringList("Cleared parkour names"));
 
 		//データを基に座標を作成する
-		creativeWorldCheckpoint = ImmutableEntityLocation.deserialize(yaml.getString("Creative world checkpoint"));
+		creativeWorldCheckpoint = ImmutableLocation.deserialize(yaml.getString("Creative world checkpoint"));
 
 		//購入済みのスカルのIDをUUIDに変換したリストを作成する
 		heads = new PurchasedHeads(this, yaml);

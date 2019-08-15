@@ -5,8 +5,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Consumer;
 
-import amata1219.amalib.location.ImmutableBlockLocation;
-import amata1219.amalib.location.ImmutableEntityLocation;
+import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.string.message.MessageTemplate;
@@ -23,7 +22,7 @@ public class Parkour {
 	public ParkourCategory category;
 	public Color borderColor;
 	public Region region;
-	public ImmutableEntityLocation spawnPoint;
+	public ImmutableLocation spawn;
 	public ParkourRegion startLine, finishLine;
 	public CheckAreas checkAreas;
 	public Rewards rewards;
@@ -39,17 +38,15 @@ public class Parkour {
 		category = ParkourCategory.valueOf(yaml.getString("Category"));
 
 		//アスレの領域の基準点を生成する
-		ImmutableBlockLocation origin = ImmutableBlockLocation.deserialize(yaml.getString("Origin"));
+		ImmutableLocation origin = ImmutableLocation.deserialize(yaml.getString("Origin"));
 
 		//スポーン地点を設定する
-		ImmutableEntityLocation relativeSpawnPoint = ImmutableEntityLocation.deserialize(yaml.getString("Spawn point"));
-		ImmutableEntityLocation absoluteSpawnPoint = (ImmutableEntityLocation) origin.add(relativeSpawnPoint);
-		spawnPoint = new ImmutableEntityLocation(origin.world, absoluteSpawnPoint.x, absoluteSpawnPoint.y, absoluteSpawnPoint.z, relativeSpawnPoint.yaw, relativeSpawnPoint.pitch);
+		spawn = origin.add(ImmutableLocation.deserialize(yaml.getString("Spawn")));
 
-		region = origin.add(Region.deserialize(yaml.getString("Region")));
+		region = Region.deserialize(yaml.getString("Region")).sub(origin);
 		borderColor = Color.deserialize(yaml.getString("Border color"));
-		startLine = new ParkourRegion(this, origin.add(Region.deserialize(yaml.getString("Start line"))));
-		finishLine =  new ParkourRegion(this, origin.add(Region.deserialize(yaml.getString("Finish line"))));
+		startLine = new ParkourRegion(this, Region.deserialize(yaml.getString("Start line")).sub(origin));
+		finishLine =  new ParkourRegion(this, Region.deserialize(yaml.getString("Finish line")).sub(origin));
 		checkAreas = new CheckAreas(parkours, yaml, this, origin);
 		enableTimeAttack = yaml.getBoolean("Enable time attack");
 		records = new Records(yaml);
@@ -60,7 +57,7 @@ public class Parkour {
 		return ChatColor.stripColor(name);
 	}
 
-	public ImmutableBlockLocation getOrigin(){
+	public ImmutableLocation getOrigin(){
 		return region.lesserBoundaryCorner;
 	}
 
@@ -69,7 +66,7 @@ public class Parkour {
 	}
 
 	public void teleportTo(Player player){
-		player.teleport(spawnPoint.asBukkitLocation());
+		player.teleport(spawn.asBukkit());
 	}
 
 	public void entry(User user){
@@ -125,20 +122,21 @@ public class Parkour {
 		yaml.set("Category", category.toString());
 
 		//アスレの領域の基準点を取得する
-		ImmutableBlockLocation origin = region.lesserBoundaryCorner;
+		ImmutableLocation origin = region.lesserBoundaryCorner;
 
 		yaml.set("Origin", origin.serialize());
-		yaml.set("Region", origin.relative(region).serialize());
+		yaml.set("Region", region.relative(origin).serialize());
 
-		ImmutableEntityLocation relativeSpawnPoint = (ImmutableEntityLocation) origin.relative(spawnPoint);
-		yaml.set("Spawn point", new ImmutableEntityLocation(origin.world, relativeSpawnPoint.x, relativeSpawnPoint.y, relativeSpawnPoint.z, spawnPoint.yaw, spawnPoint.pitch).serialize());
+		yaml.set("Spawn", origin.relative(spawn));
 
 		yaml.set("Border color", borderColor.serialize());
-		yaml.set("Start line", origin.relative(startLine).serialize());
-		yaml.set("Finish line", origin.relative(finishLine).serialize());
+		yaml.set("Start line", startLine.relative(origin).serialize());
+		yaml.set("Finish line", finishLine.relative(origin).serialize());
 		checkAreas.save(yaml, origin);
+
 		yaml.set("Rewards", rewards.serialize());
 		yaml.set("Enable time attack", enableTimeAttack);
+
 		records.save(yaml);
 
 		yaml.save();

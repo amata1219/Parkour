@@ -3,7 +3,7 @@
 'Origin': "world,0,0,0,0,0"
 'Border color': "0,0,0"
 'Region': "world,0,0,0,0,0,0"
-'Spawn point': "world,0,0,0,0,0"
+'Spawn': "world,0,0,0,0,0"
 'Start line': "world,0,0,0,0,0,0"
 'Finish line': "world,0,0,0,0,0,0"
 'Check areas': []

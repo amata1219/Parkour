@@ -3,16 +3,15 @@ package amata1219.parkour.parkour;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
-import amata1219.amalib.location.ImmutableBlockLocation;
-import amata1219.amalib.location.ImmutableEntityLocation;
+import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.region.LocationOnBorderCollector;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.schedule.Async;
 import amata1219.amalib.selection.RegionSelection;
 import amata1219.amalib.util.Color;
-import net.minecraft.server.v1_13_R2.EntityPlayer;
 import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_13_R2.ParticleParamRedstone;
 import net.minecraft.server.v1_13_R2.PlayerConnection;
@@ -23,7 +22,7 @@ public class ParkourRegion extends Region {
 	public final Parkour parkour;
 
 	//この領域の中央の座標
-	public final ImmutableBlockLocation center;
+	public final ImmutableLocation center;
 
 	//各地点のパーティクル
 	private List<PacketPlayOutWorldParticles> packets;
@@ -42,10 +41,10 @@ public class ParkourRegion extends Region {
 		this(parkour, region.lesserBoundaryCorner, region.greaterBoundaryCorner);
 	}
 
-	public ParkourRegion(Parkour parkour, ImmutableBlockLocation lesserBoundaryCorner, ImmutableBlockLocation greaterBoundaryCorner){
+	public ParkourRegion(Parkour parkour, ImmutableLocation lesserBoundaryCorner, ImmutableLocation greaterBoundaryCorner){
 		super(lesserBoundaryCorner, greaterBoundaryCorner);
 		this.parkour = parkour;
-		this.center = new ImmutableBlockLocation(lesserBoundaryCorner.world, (lesserBoundaryCorner.x + greaterBoundaryCorner.x) / 2, lesserBoundaryCorner.y, (lesserBoundaryCorner.z + greaterBoundaryCorner.z) / 2);
+		this.center = new ImmutableLocation(lesserBoundaryCorner.world, (lesserBoundaryCorner.x + greaterBoundaryCorner.x) / 2, lesserBoundaryCorner.y, (lesserBoundaryCorner.z + greaterBoundaryCorner.z) / 2);
 
 		recolorParticles();
 	}
@@ -55,7 +54,7 @@ public class ParkourRegion extends Region {
 
 		if(running) undisplayBorders();
 
-		List<ImmutableEntityLocation> locations = LocationOnBorderCollector.collect(this, 4);
+		List<ImmutableLocation> locations = LocationOnBorderCollector.collect(this, 4);
 
 		Color color = parkour.borderColor;
 
@@ -67,7 +66,7 @@ public class ParkourRegion extends Region {
 								float blue = color.adjustBlue(30) / 255f;
 
 								return new PacketPlayOutWorldParticles(new ParticleParamRedstone(red, green, blue, 1), true,
-										(float) location.getEntityX(), (float) location.getEntityY() + 0.15f, (float) location.getEntityZ(),
+										(float) location.x, (float) location.y + 0.15f, (float) location.z,
 										red, green, blue, 1, 0);
 								})
 							.collect(Collectors.toList());
@@ -101,16 +100,17 @@ public class ParkourRegion extends Region {
 			position++;
 
 			for(PlayerConnection connection : parkour.connections.getConnections()){
-				EntityPlayer player = connection.player;
+				Player player = connection.getPlayer();
 
 				//プレイヤーの描画距離を取得する
-				int viewDistance = player.clientViewDistance.intValue() * 16;
+				int viewChunks = player.getClientViewDistance();
 
-				//プレイヤーと領域の中央座標の二次元距離を取得する
-				double distance = center.distance2D(player.locX, player.locZ);
+				//プレイヤーとエリア中央のチャンク距離
+				double xDistance = (int) Math.abs(center.x - connection.player.locX) >> 4;
+				double zDistance = (int) Math.abs(center.z - connection.player.locZ) >> 4;
 
-				//描画距離より大きい距離であれば繰り返す
-				if(viewDistance  < distance) continue;
+				//描画範囲外であれば処理しない
+				if(xDistance > viewChunks || zDistance > viewChunks) continue;
 
 				connection.sendPacket(packet1);
 				connection.sendPacket(packet2);

@@ -9,7 +9,7 @@ import org.bukkit.Location;
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
-import amata1219.amalib.location.ImmutableEntityLocation;
+import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.string.StringSplit;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.util.Color;
@@ -56,7 +56,7 @@ public class ParkourSettingCommand implements Command {
 		case "info":{
 			sender.message(StringTemplate.capply("&7-: &b-Name &7-@ &f-$0", parkourName));
 			sender.message(StringTemplate.capply("&7-: &b-Category &7-@ &f-$0", parkour.category.name));
-			sender.message(StringTemplate.capply("&7-: &b-Spawn &7-@ &f-$0", parkour.spawnPoint.serialize().replace(",", "§7,§f")));
+			sender.message(StringTemplate.capply("&7-: &b-Spawn &7-@ &f-$0", parkour.spawn.serialize().replace(",", "§7,§f")));
 			sender.message(StringTemplate.capply("&7-: &b-Color &7-@ &f-$0", parkour.borderColor.serialize()));
 			sender.message(StringTemplate.capply("&7-: &b-Time attack &7-@ &f-$0", parkour.enableTimeAttack));
 			break;
@@ -84,7 +84,7 @@ public class ParkourSettingCommand implements Command {
 			Location location = sender.asPlayerCommandSender().getLocation();
 
 			//イミュータブルな座標にしブロックの中央に調整した上でセットする
-			parkour.apply(it -> it.spawnPoint = new ImmutableEntityLocation(location));
+			parkour.apply(it -> it.spawn = new ImmutableLocation(location));
 
 			sender.info(StringTemplate.capply("$0-&r-&b-のスポーン地点を現在地点に書き換えました。", parkourName));
 			break;

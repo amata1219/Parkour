@@ -10,8 +10,7 @@ import java.util.stream.Collectors;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import amata1219.amalib.location.ImmutableBlockLocation;
-import amata1219.amalib.location.ImmutableEntityLocation;
+import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.parkour.Parkour;
@@ -21,7 +20,7 @@ public class Checkpoints {
 
 	private final Parkours parkours = Parkours.getInstance();
 
-	private final Map<String, Map<Integer, ImmutableEntityLocation>> checkpoints = new HashMap<>();
+	private final Map<String, Map<Integer, ImmutableLocation>> checkpoints = new HashMap<>();
 	private final Map<String, Integer> latestCheckpoints = new HashMap<>();
 
 	public Checkpoints(Yaml yaml){
@@ -38,7 +37,7 @@ public class Checkpoints {
 
 			//アスレ名と対応したアスレを取得する
 			Parkour parkour = parkours.getParkour(parkourName);
-			ImmutableBlockLocation origin = parkour.getOrigin();
+			ImmutableLocation origin = parkour.getOrigin();
 
 			//このアスレのセクションを取得する
 			ConfigurationSection checkAreaSection = parkourSection.getConfigurationSection(parkourName);
@@ -51,7 +50,7 @@ public class Checkpoints {
 				int checkAreaNumber = Integer.parseInt(checkAreaNumberText);
 
 				//チェックポイントのデータをデシリアライズする
-				ImmutableEntityLocation point = (ImmutableEntityLocation) ImmutableEntityLocation.deserialize(checkAreaSection.getString(checkAreaNumberText)).add(origin);
+				ImmutableLocation point = origin.add(ImmutableLocation.deserialize(checkAreaSection.getString(checkAreaNumberText)));
 
 				//チェックポイントとして登録する
 				setCheckpoint(parkour, checkAreaNumber, point);
@@ -75,29 +74,29 @@ public class Checkpoints {
 		return checkpoints.containsKey(parkourName);
 	}
 
-	public Map<Integer, ImmutableEntityLocation> getMajorCheckAreaNumbersAndCheckpoints(Parkour parkour){
+	public Map<Integer, ImmutableLocation> getMajorCheckAreaNumbersAndCheckpoints(Parkour parkour){
 		return getMajorCheckAreaNumbersAndCheckpoints(parkour.name);
 	}
 
-	public Map<Integer, ImmutableEntityLocation> getMajorCheckAreaNumbersAndCheckpoints(String parkourName){
+	public Map<Integer, ImmutableLocation> getMajorCheckAreaNumbersAndCheckpoints(String parkourName){
 		return checkpoints.containsKey(parkourName) ? new HashMap<>(checkpoints.get(parkourName)) : Collections.emptyMap();
 	}
 
-	public List<ImmutableEntityLocation> getCheckpoints(Parkour parkour){
+	public List<ImmutableLocation> getCheckpoints(Parkour parkour){
 		return getCheckpoints(parkour.name);
 	}
 
-	public List<ImmutableEntityLocation> getCheckpoints(String parkourName){
+	public List<ImmutableLocation> getCheckpoints(String parkourName){
 		return checkpoints.containsKey(parkourName) ? new ArrayList<>(checkpoints.get(parkourName).values()) : Collections.emptyList();
 	}
 
-	public ImmutableEntityLocation getLastCheckpoint(Parkour parkour){
+	public ImmutableLocation getLastCheckpoint(Parkour parkour){
 		return getLastCheckpoint(parkour.name);
 	}
 
-	public ImmutableEntityLocation getLastCheckpoint(String parkourName){
+	public ImmutableLocation getLastCheckpoint(String parkourName){
 		//チェックポイントのリストを取得する
-		List<ImmutableEntityLocation> locations = getCheckpoints(parkourName);
+		List<ImmutableLocation> locations = getCheckpoints(parkourName);
 
 		//空であればnull、そうでなければ最後のチェックポイントを返す
 		return locations.isEmpty() ? null : locations.get(locations.size() - 1);
@@ -111,11 +110,11 @@ public class Checkpoints {
 		return getCheckpoints(parkourName).size() - 1;
 	}
 
-	public ImmutableEntityLocation getLatestCheckpoint(Parkour parkour){
+	public ImmutableLocation getLatestCheckpoint(Parkour parkour){
 		return getLatestCheckpoint(parkour.name);
 	}
 
-	public ImmutableEntityLocation getLatestCheckpoint(String parkourName){
+	public ImmutableLocation getLatestCheckpoint(String parkourName){
 		//最新のチェックポイントが存在しなければnullを返す
 		if(!latestCheckpoints.containsKey(parkourName)) return null;
 
@@ -126,7 +125,7 @@ public class Checkpoints {
 		if(!checkpoints.containsKey(parkourName)) return null;
 
 		//アスレ内のチェックポイントマップを取得する
-		Map<Integer, ImmutableEntityLocation> points = checkpoints.get(parkourName);
+		Map<Integer, ImmutableLocation> points = checkpoints.get(parkourName);
 
 		return points.get(latestCheckAreaNumber);
 	}
@@ -139,11 +138,11 @@ public class Checkpoints {
 		return latestCheckpoints.containsKey(parkourName) ? latestCheckpoints.get(parkourName) : -1;
 	}
 
-	public void setCheckpoint(Parkour parkour, int checkAreaNumber, ImmutableEntityLocation location){
+	public void setCheckpoint(Parkour parkour, int checkAreaNumber, ImmutableLocation location){
 		String parkourName = parkour.name;
 
 		//パルクールに対応したチェックポイントリストを取得、存在しなければ新規作成する
-		Map<Integer, ImmutableEntityLocation> points = checkpoints.get(parkourName);
+		Map<Integer, ImmutableLocation> points = checkpoints.get(parkourName);
 		if(points == null) checkpoints.put(parkourName, points = new HashMap<>());
 
 		//対応した番号にチェックポイントをセットする
@@ -155,21 +154,21 @@ public class Checkpoints {
 
 	public void save(Yaml yaml){
 		//各チェックポイントを記録する
-		for(Entry<String, Map<Integer, ImmutableEntityLocation>> eachParkourCheckpointsEntry : checkpoints.entrySet()){
+		for(Entry<String, Map<Integer, ImmutableLocation>> eachParkourCheckpointsEntry : checkpoints.entrySet()){
 			//アスレ名を取得する
 			String parkourName = eachParkourCheckpointsEntry.getKey();
 
 			//存在しないアスレであれば繰り返す
 			if(!parkours.containsParkour(parkourName)) continue;
 
-			ImmutableBlockLocation origin = parkours.getParkour(parkourName).getOrigin();
+			ImmutableLocation origin = parkours.getParkour(parkourName).getOrigin();
 
-			for(Entry<Integer, ImmutableEntityLocation> eachCheckpointEntry : eachParkourCheckpointsEntry.getValue().entrySet()){
+			for(Entry<Integer, ImmutableLocation> eachCheckpointEntry : eachParkourCheckpointsEntry.getValue().entrySet()){
 				//チェックエリア番号を取得する
 				String checkAreaNumber = eachCheckpointEntry.getKey().toString();
 
 				//チェックポイントを取得し相対座標化する
-				ImmutableEntityLocation point = (ImmutableEntityLocation) eachCheckpointEntry.getValue().relative(origin);
+				ImmutableLocation point = origin.relative(eachCheckpointEntry.getValue());
 
 				//対応したアスレ、チェックエリア番号にセットする
 				yaml.set(StringTemplate.apply("Check points.$0.$1", parkourName, checkAreaNumber), point.serialize());
