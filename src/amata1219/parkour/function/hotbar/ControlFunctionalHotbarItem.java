@@ -26,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import amata1219.amalib.listener.PlayerJoinListener;
 import amata1219.amalib.listener.PlayerQuitListener;
+import amata1219.amalib.schedule.Sync;
 
 public class ControlFunctionalHotbarItem implements PlayerJoinListener, PlayerQuitListener {
 
@@ -76,7 +77,7 @@ You have completed this course 1 times!
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event){
-		initializeSlots(event.getPlayer());
+		Sync.define(() -> initializeSlots(event.getPlayer())).executeLater(10);
 	}
 
 	@EventHandler

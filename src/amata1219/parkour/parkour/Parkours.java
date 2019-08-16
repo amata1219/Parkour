@@ -137,6 +137,7 @@ public class Parkours {
 	private List<RankedParkour> getRankedParkours(RankedParkourType type){
 		return parkours.values().stream()
 				.filter(parkour -> parkour instanceof RankedParkour)
+				.filter(parkour -> parkour.enable)
 				.map(parkour -> (RankedParkour) parkour)
 				.filter(parkour -> parkour.type == type)
 				.sorted((p1, p2) -> Integer.compare(p1.rank, p2.rank))

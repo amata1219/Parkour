@@ -98,15 +98,11 @@ public class ToggleHideMode {
 	//targetをplayerから非表示にする
 	private void show(Player player, Player target){
 		player.showPlayer(Main.getPlugin(), target);
-
-		MessageColor.color("&7-Disabled hide mode").displayOnActionBar(player);
 	}
 
 	//targetをplayerに表示する
 	private void hide(Player player, Player target){
 		player.hidePlayer(Main.getPlugin(), target);
-
-		MessageColor.color("&b-Enabled hide mode").displayOnActionBar(player);
 	}
 
 	private void applyShowMode(User user){
