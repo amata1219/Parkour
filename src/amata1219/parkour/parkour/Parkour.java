@@ -127,7 +127,7 @@ public class Parkour {
 		yaml.set("Origin", origin.serialize());
 		yaml.set("Region", region.relative(origin).serialize());
 
-		yaml.set("Spawn", origin.relative(spawn));
+		yaml.set("Spawn", origin.relative(spawn).serialize());
 
 		yaml.set("Border color", borderColor.serialize());
 		yaml.set("Start line", startLine.relative(origin).serialize());

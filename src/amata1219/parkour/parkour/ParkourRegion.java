@@ -3,7 +3,6 @@ package amata1219.parkour.parkour;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import amata1219.amalib.location.ImmutableLocation;
@@ -12,6 +11,7 @@ import amata1219.amalib.region.Region;
 import amata1219.amalib.schedule.Async;
 import amata1219.amalib.selection.RegionSelection;
 import amata1219.amalib.util.Color;
+import net.minecraft.server.v1_13_R2.EntityPlayer;
 import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_13_R2.ParticleParamRedstone;
 import net.minecraft.server.v1_13_R2.PlayerConnection;
@@ -100,14 +100,14 @@ public class ParkourRegion extends Region {
 			position++;
 
 			for(PlayerConnection connection : parkour.connections.getConnections()){
-				Player player = connection.getPlayer();
+				EntityPlayer player = connection.player;
 
 				//プレイヤーの描画距離を取得する
-				int viewChunks = player.getClientViewDistance();
+				int viewChunks = player.clientViewDistance.intValue();
 
 				//プレイヤーとエリア中央のチャンク距離
-				double xDistance = (int) Math.abs(center.x - connection.player.locX) >> 4;
-				double zDistance = (int) Math.abs(center.z - connection.player.locZ) >> 4;
+				double xDistance = (int) Math.abs(center.x - player.locX) >> 4;
+				double zDistance = (int) Math.abs(center.z - player.locZ) >> 4;
 
 				//描画範囲外であれば処理しない
 				if(xDistance > viewChunks || zDistance > viewChunks) continue;

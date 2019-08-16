@@ -16,6 +16,7 @@ public class HideModeToggler implements FunctionalHotbarItem {
 	@Override
 	public void onClick(User user, ClickType click) {
 		ToggleHideMode.getInstance().change(user);
+		ControlFunctionalHotbarItem.updateSlot(user.asBukkitPlayer(), 6);
 	}
 
 	@Override

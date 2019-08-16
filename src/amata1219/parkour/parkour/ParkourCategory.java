@@ -5,7 +5,7 @@ import org.bukkit.Material;
 public enum ParkourCategory {
 
 	NORMAL(Material.DIRT),
-	UPDATE(Material.DIAMOND),
+	UPDATE(Material.DIAMOND_BLOCK),
 	EXTEND(Material.STONE),
 	SEGMENT(Material.OBSIDIAN),
 	BIOME(Material.OAK_LOG);
