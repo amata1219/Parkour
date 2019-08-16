@@ -2,12 +2,14 @@ package amata1219.parkour.ui.parkour;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -17,6 +19,7 @@ import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.string.StringLocalize;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.string.message.MessageTemplate;
+import amata1219.amalib.tuplet.Tuple;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.user.User;
@@ -86,12 +89,30 @@ public class ParkourUI<T extends Parkour, N> implements InventoryUI {
 
 						lore.add(StringTemplate.clapply("&7-チェックエリア @ &b-$0箇所 | &7-Check Areas @ &b-$0", player, numberOfDisplayedCheckAreas));
 
-						boolean enableTimeAttack = parkour.timeAttackEnable;
+						boolean timeAttackEnable = parkour.timeAttackEnable;
 
 						//表示するテキストを決定する
-						String textOfTimeAttackEnable = StringLocalize.apply(enableTimeAttack ? "&b-有効 | &b-Enable" : "&7-無効 | &7-Disable", player);
+						String textOfTimeAttackEnable = StringLocalize.apply(timeAttackEnable ? "&b-有効 | &b-Enable" : "&7-無効 | &7-Disable", player);
 
-						lore.add(StringTemplate.clapply("", player, textOfTimeAttackEnable));
+						lore.add(StringTemplate.clapply("&7-タイムアタック @ $0 | &7-Time Attack @ $0", player, textOfTimeAttackEnable));
+
+						if(timeAttackEnable){
+							//上位の記録を取得する
+							List<Tuple<UUID, String>> records = parkour.records.topTenRecords;
+
+							//記録が存在する場合
+							if(!records.isEmpty()){
+								lore.add("");
+
+								lore.add(StringTemplate.clapply("&7-上位-&b-$0件-&7-の記録 | &7-Top &b-$0-&7 Records", player, records.size()));
+
+								AtomicInteger rank = new AtomicInteger(1);
+
+								records.stream()
+								.map(record -> StringTemplate.clapply("&b-$0-&7-位 &b-$1 &7-@ &b-$2 | &b-$0-&7-. &b-$1 &7-@ &b-$2", player, rank.getAndIncrement(), Bukkit.getOfflinePlayer(record.first).getName(), record.second))
+								.forEach(lore::add);
+							}
+						}
 					});
 
 				}, slotIndex.getAndIncrement());
@@ -102,9 +123,6 @@ public class ParkourUI<T extends Parkour, N> implements InventoryUI {
 	}
 
 	/*
-						//タイムアタックが有効かどうかを表示する
-						lore.add(StringTemplate.capply("&7-: &b-Enable time attack &7-@ &f-$0", parkour.enableTimeAttack));
-
 						//タイムアタックが有効の場合
 					if(parkour.enableTimeAttack){
 							//上位記録を取得する
