@@ -50,7 +50,7 @@ public class User {
 	public ImmutableLocation creativeWorldCheckpoint;
 
 	//購入したヘッドのセット
-	public final PurchasedHeads heads;
+	public final UserHats hats;
 
 	//スコアボードの管理インスタンス
 	public InformationBoard board;
@@ -94,7 +94,7 @@ public class User {
 		creativeWorldCheckpoint = ImmutableLocation.deserialize(yaml.getString("Creative world checkpoint"));
 
 		//購入済みのスカルのIDをUUIDに変換したリストを作成する
-		heads = new PurchasedHeads(this, yaml);
+		hats = new UserHats(this, yaml);
 	}
 
 	public Player asBukkitPlayer(){
@@ -172,7 +172,7 @@ public class User {
 		//クリエイティブワールドのチェックポイントを記録する
 		yaml.set("Creative world checkpoint", creativeWorldCheckpoint.serialize());
 
-		heads.save(yaml);
+		hats.save(yaml);
 
 		//全チェックポイントを記録する
 		checkpoints.save(yaml);

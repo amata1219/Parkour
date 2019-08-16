@@ -20,7 +20,7 @@ public class HideModeToggler implements FunctionalHotbarItem {
 	}
 
 	@Override
-	public ItemStack build(User user) {
+	public ItemStack build(User user, boolean flag) {
 		//ユーザーに対応したプレイヤーを取得する
 		Player player = user.asBukkitPlayer();
 

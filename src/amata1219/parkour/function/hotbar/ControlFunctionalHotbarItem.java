@@ -63,7 +63,7 @@ You have completed this course 1 times!
 
 	static{
 		initialize(
-			new QuickTeleporter(),
+			new CheckpointTeleporter(),
 			new CheckpointsMenuOpener(),
 			new ParkoursMenuOpener(),
 			new HideModeToggler(),
@@ -157,12 +157,17 @@ You have completed this course 1 times!
 
 	public static void initializeSlots(Player player){
 		//スロットにアイテムを配置する
-		ITEMS.forEach((slotIndex, item) -> player.getInventory().setItem(slotIndex, item.build(player)));
+		ITEMS.forEach((slotIndex, item) -> player.getInventory().setItem(slotIndex, item.build(toUser(player))));
 	}
 
 	public static void updateSlot(Player player, Integer slotIndex){
 		//対応したアイテムが存在すればそれを再配置する
-		if(ITEMS.containsKey(slotIndex)) player.getInventory().setItem(slotIndex, ITEMS.get(slotIndex).build(player));
+		if(ITEMS.containsKey(slotIndex)) player.getInventory().setItem(slotIndex, ITEMS.get(slotIndex).build(toUser(player)));
+	}
+
+	public static void updateSlot(Player player, Integer slotIndex, boolean flag){
+		//対応したアイテムが存在すればそれを再配置する
+		if(ITEMS.containsKey(slotIndex)) player.getInventory().setItem(slotIndex, ITEMS.get(slotIndex).build(toUser(player), flag));
 	}
 
 	public static void clearSlots(Player player){
@@ -170,6 +175,10 @@ You have completed this course 1 times!
 
 		//ホットバーの偶数スロットをクリアする
 		for(int slotIndex = 0; slotIndex <= 8; slotIndex += 2) inventory.setItem(slotIndex, AIR);
+	}
+
+	private static User toUser(Player player){
+		return Users.getInstnace().getUser(player);
 	}
 
 }

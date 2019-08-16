@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import amata1219.amalib.enchantment.GleamEnchantment;
 import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.string.StringLocalize;
 import amata1219.amalib.string.message.MessageColor;
@@ -15,7 +16,7 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
 
-public class QuickTeleporter implements FunctionalHotbarItem {
+public class CheckpointTeleporter implements FunctionalHotbarItem {
 
 	@Override
 	public void onClick(User user, ClickType click) {
@@ -60,7 +61,7 @@ public class QuickTeleporter implements FunctionalHotbarItem {
 	}
 
 	@Override
-	public ItemStack build(User user) {
+	public ItemStack build(User user, boolean flag) {
 		//ユーザーに対応したプレイヤーを取得する
 		Player player = user.asBukkitPlayer();
 
@@ -78,6 +79,9 @@ public class QuickTeleporter implements FunctionalHotbarItem {
 		));
 
 		item.setItemMeta(meta);
+
+		if(flag) GleamEnchantment.gleam(item);
+		else GleamEnchantment.tarnish(item);
 
 		return item;
 	}

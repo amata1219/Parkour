@@ -30,7 +30,7 @@ public class MyMenu implements InventoryUI {
 
 		components.addAll(Arrays.asList(
 			component(5, Material.SIGN, StringColor.color("&b-Open scoreboard options"), new InformationBoardOptionMenu(user)),
-			component(6, Material.PLAYER_HEAD, StringColor.color("&b-Open head menu"), new HatMenu(user.heads))
+			component(6, Material.PLAYER_HEAD, StringColor.color("&b-Open head menu"), new HatMenu(user.hats))
 		));
 	}
 

@@ -86,7 +86,7 @@ public class UpdateParkoursMenu implements InventoryUI {
 						int maxMajorCheckAreaNumber = parkour.checkAreas.getMaxMajorCheckAreaNumber();
 
 						//チェックエリア数を表示する
-						lore.add(StringTemplate.capply("&7-: &b-Check areas &7-@ $0", maxMajorCheckAreaNumber >= 0 ? StringTemplate.capply("&f-$0", maxMajorCheckAreaNumber) : "§7None"));
+						lore.add(StringTemplate.capply("&7-: &b-Check areas &7-@ $0", maxMajorCheckAreaNumber >= 0 ? StringTemplate.capply("&f-$0", maxMajorCheckAreaNumber + 1) : "§7None"));
 
 						//タイムアタックが有効かどうかを表示する
 						lore.add(StringTemplate.capply("&7-: &b-Time attack &7-@ $0", parkour.enableTimeAttack ? "§bEnable" : "§7Disable"));

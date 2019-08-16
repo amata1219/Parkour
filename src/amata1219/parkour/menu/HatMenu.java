@@ -22,16 +22,16 @@ import amata1219.amalib.string.message.MessageColor;
 import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.parkour.hat.Hats;
 import amata1219.parkour.hat.Hat;
-import amata1219.parkour.user.PurchasedHeads;
+import amata1219.parkour.user.UserHats;
 
 public class HatMenu implements InventoryUI {
 
 	private static final SoundMetadata BUY_SE = new SoundMetadata(Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.5f, 1);
 	private static final SoundMetadata PUT_ON_SE = new SoundMetadata(Sound.ITEM_ARMOR_EQUIP_CHAIN, 2f, 1f);
 
-	private final PurchasedHeads heads;
+	private final UserHats heads;
 
-	public HatMenu(PurchasedHeads heads){
+	public HatMenu(UserHats heads){
 		this.heads = heads;
 	}
 

@@ -7,14 +7,14 @@ import java.util.Set;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.hat.Hat;
 
-public class PurchasedHeads {
+public class UserHats {
 
 	private final User user;
 	private final Set<Integer> headIds;
 
-	public PurchasedHeads(User user, Yaml yaml){
+	public UserHats(User user, Yaml yaml){
 		this.user = user;
-		this.headIds = new HashSet<>(yaml.getIntegerList("Purchased head ids"));
+		this.headIds = new HashSet<>(yaml.getIntegerList("Purchased hat ids"));
 	}
 
 	public boolean has(Hat head){
@@ -31,7 +31,7 @@ public class PurchasedHeads {
 	}
 
 	public void save(Yaml yaml){
-		yaml.set("Purchased head ids", new ArrayList<>(headIds));
+		yaml.set("Purchased hat ids", new ArrayList<>(headIds));
 	}
 
 }

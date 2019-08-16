@@ -33,13 +33,13 @@ public class PassCheckAreaListener extends PassRegionBoundaryAbstractListener {
 			IN_SE.play(player);
 
 			//通知アイテムを発光させる
-			ControlFunctionalHotbarItem.updateSlot(player, 6);
+			ControlFunctionalHotbarItem.updateSlot(player, 0, true);
 		//チェックエリアから出た場合
 		}else if(existsFrom && !existsTo){
 			OUT_SE.play(player);
 
 			//通知アイテムを発光させる
-			ControlFunctionalHotbarItem.updateSlot(player, 0);
+			ControlFunctionalHotbarItem.updateSlot(player, 0, false);
 		}
 	}
 
