@@ -1,4 +1,4 @@
-package amata1219.parkour.ui;
+package amata1219.parkour.menu;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -95,12 +95,12 @@ public class AbstractCheckpointSelectionUI implements InventoryUI {
 
 						}else if(event.isLeftClick()){
 							//チェックポイントリストを開かせる
-							new AllCheckpointSelectionUI(user, parkour).openInventory(player);
+							new CheckpointsMenu(user, parkour).openInventory(player);
 						}
 
 					});
 
-					s.icon(Material.GLASS, i -> {
+					s.icon(Material.LIGHT_BLUE_DYE, i -> {
 						//表示例: 1 @ Update1
 						i.displayName = StringTemplate.capply("&7-$0 @ $1", majorCheckAreaNumberDisplayed, parkourName);
 
@@ -109,6 +109,8 @@ public class AbstractCheckpointSelectionUI implements InventoryUI {
 							StringTemplate.capply("&7-: &b-Right click &7-@ &b-Teleport to $0 checkpoint in this parkour", lowerCaseCheckpointType),
 							StringColor.color("&7-: &b-Left click &7-@ &b-Open list of checkpoints you have passed through in this parkour")
 						);
+
+						i.amount = majorCheckAreaNumberDisplayed;
 
 						//現在プレイ中のアスレであれば発光させる
 						if(parkour.equals(currentParkour)) i.gleam();

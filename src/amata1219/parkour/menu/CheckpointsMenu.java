@@ -1,4 +1,4 @@
-package amata1219.parkour.ui;
+package amata1219.parkour.menu;
 
 import java.util.List;
 import java.util.Map;
@@ -18,12 +18,12 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
 
-public class AllCheckpointSelectionUI implements InventoryUI {
+public class CheckpointsMenu implements InventoryUI {
 
 	private final User user;
 	private final Parkour parkour;
 
-	public AllCheckpointSelectionUI(User user, Parkour parkour){
+	public CheckpointsMenu(User user, Parkour parkour){
 		this.user = user;
 		this.parkour = parkour;
 	}
@@ -81,7 +81,7 @@ public class AllCheckpointSelectionUI implements InventoryUI {
 						MessageTemplate.capply("&b-Teleported to checkpoint &0 &7-@ &b-$1-&r-&b-!", majorCheckAreaNumberDisplayed, parkourName).displayOnActionBar(player);
 					});
 
-					s.icon(Material.GLASS, i -> {
+					s.icon(Material.LIGHT_BLUE_DYE, i -> {
 						//表示例: 1 @ Update1
 						i.displayName = StringTemplate.capply("&7-$0 @ $1", majorCheckAreaNumberDisplayed, parkourName);
 

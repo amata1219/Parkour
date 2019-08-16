@@ -1,4 +1,4 @@
-package amata1219.parkour.ui.parkour;
+package amata1219.parkour.menu.parkour;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,32 +24,32 @@ import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.parkour.RankedParkour;
 import amata1219.parkour.user.User;
 
-public class UpdateParkourSelectionUI implements InventoryUI {
+public class ExtendParkoursMenu implements InventoryUI {
 
 	private final User user;
 
-	public UpdateParkourSelectionUI(User user){
+	public ExtendParkoursMenu(User user){
 		this.user = user;
 	}
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
-		//全Updateアスレを取得する
-		List<RankedParkour> parkours = Parkours.getInstance().getUpdateParkours();
+		//全Extendアスレを取得する
+		List<RankedParkour> parkours = Parkours.getInstance().getExtendParkours();
 
-		//プレイヤーのUpdateランクを取得する
-		int rank = user.getUpdateRank();
+		//プレイヤーのExtendランクを取得する
+		int rank = user.getExtendRank();
 
 		InventoryLine line = InventoryLine.necessaryInventoryLine(rank + 19);
 
 		return build(line, l -> {
 			//タイトルを設定する
-			l.title = StringColor.color("&b-Update");
+			l.title = StringColor.color("&b-Extend");
 
 			//デフォルトスロットを設定する
 			l.defaultSlot((s) -> {
 
-				s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> {
+				s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, (i) -> {
 					i.displayName = " ";
 				});
 
@@ -83,13 +83,11 @@ public class UpdateParkourSelectionUI implements InventoryUI {
 
 						List<String> lore = new ArrayList<>();
 
-						int maxMajorCheckAreaNumber = parkour.checkAreas.getMaxMajorCheckAreaNumber();
-
 						//チェックエリア数を表示する
-						lore.add(StringTemplate.capply("&7-: &b-Check areas &7-@ $0", maxMajorCheckAreaNumber >= 0 ? StringTemplate.capply("&f-$0", maxMajorCheckAreaNumber) : "§7None"));
+						lore.add(StringTemplate.capply("&7-: &b-Check areas &7-@ &f-$0", parkour.checkAreas.getMaxMajorCheckAreaNumber()));
 
 						//タイムアタックが有効かどうかを表示する
-						lore.add(StringTemplate.capply("&7-: &b-Time attack &7-@ $0", parkour.enableTimeAttack ? "§bEnable" : "§7Disable"));
+						lore.add(StringTemplate.capply("&7-: &b-Enable time attack &7-@ &f-$0", parkour.enableTimeAttack));
 
 						//タイムアタックが有効の場合
 						if(parkour.enableTimeAttack){
@@ -110,8 +108,6 @@ public class UpdateParkourSelectionUI implements InventoryUI {
 							}
 						}
 
-						i.lore = lore;
-
 						//今いるアスレなら発光させる
 						if(user.isPlayingWithParkour() && parkour.equals(user.currentParkour)) i.gleam();
 					});
@@ -130,12 +126,14 @@ public class UpdateParkourSelectionUI implements InventoryUI {
 					//本番環境では変える
 					clicker.teleport(Bukkit.getWorld("world").getSpawnLocation());
 
+					user.exitParkour();
+
 					//表示例: Teleported to lobby!
-					MessageColor.color("&b-Teleported to Update lobby!").displayOnActionBar(clicker);
+					MessageColor.color("&b-Teleported to Extend lobby!").displayOnActionBar(clicker);
 				});
 
 				s.icon(Material.FEATHER, i -> {
-					i.displayName = StringColor.color("&b-Teleport to Update lobby");
+					i.displayName = StringColor.color("&b-Teleport to Extend lobby");
 					i.gleam();
 				});
 
@@ -165,19 +163,19 @@ public class UpdateParkourSelectionUI implements InventoryUI {
 							inventoryUI = user.inventoryUserInterfaces.extendParkourSelectionUI;
 							break;
 						default:
-							inventoryUI = ParkourMenuUI.getInstance().getInventoryUI(category);
+							inventoryUI = ParkoursMenus.getInstance().getInventoryUI(category);
 							break;
 						}
 
 						inventoryUI.openInventory(e.player);
 					});
 
-					s.icon(Material.FEATHER, i -> {
+					s.icon(category.icon, i -> {
 						//表示例: Update
 						i.displayName = StringTemplate.capply("&b-$0", category.name);
 
 						//今開いているステージリストのカテゴリと同じであれば発光させる
-						if(category == ParkourCategory.UPDATE) i.gleam();
+						if(category == ParkourCategory.EXTEND) i.gleam();
 
 					});
 

@@ -1,4 +1,4 @@
-package amata1219.parkour.ui;
+package amata1219.parkour.menu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,17 +20,17 @@ import amata1219.amalib.tuplet.Quadruple;
 import amata1219.amalib.util.SkullMaker;
 import amata1219.parkour.user.User;
 
-public class MenuUI implements InventoryUI {
+public class MyMenu implements InventoryUI {
 
 	private final User user;
 	private final ArrayList<Quadruple<Integer, Material, String, InventoryUI>> components = new ArrayList<>(3);
 
-	public MenuUI(User user){
+	public MyMenu(User user){
 		this.user = user;
 
 		components.addAll(Arrays.asList(
-			component(5, Material.FEATHER, StringColor.color("&b-Open scoreboard options"), new InformationBoardOptionUI(user)),
-			component(6, Material.FEATHER, StringColor.color("&b-Open head menu"), new HeadMenuUI(user.heads))
+			component(5, Material.SIGN, StringColor.color("&b-Open scoreboard options"), new InformationBoardOptionMenu(user)),
+			component(6, Material.PLAYER_HEAD, StringColor.color("&b-Open head menu"), new HatMenu(user.heads))
 		));
 	}
 
@@ -106,7 +106,7 @@ public class MenuUI implements InventoryUI {
 					MessageColor.color("&b-Teleported to lobby!").displayOnActionBar(player);
 				});
 
-				s.icon(Material.FEATHER, i -> {
+				s.icon(Material.GRASS_BLOCK, i -> {
 					i.displayName = StringColor.color("&b-Teleport to lobby");
 					i.gleam();
 				});

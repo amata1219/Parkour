@@ -1,10 +1,10 @@
-package amata1219.parkour.ui;
+package amata1219.parkour.menu;
 
 import amata1219.parkour.user.User;
 
-public class LastCheckpointSelectionUI extends AbstractCheckpointSelectionUI {
+public class LastCheckpointsMenu extends AbstractCheckpointSelectionUI {
 
-	public LastCheckpointSelectionUI(User user) {
+	public LastCheckpointsMenu(User user) {
 		super(user, "Last", (checkpoints, parkour) -> checkpoints.getLastCheckpoint(parkour), (checkpoints, parkour) -> checkpoints.getLastCheckpointNumber(parkour));
 	}
 

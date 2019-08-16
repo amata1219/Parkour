@@ -29,6 +29,7 @@ import amata1219.parkour.listener.PassStartLineListener;
 import amata1219.parkour.listener.SetCheckpointListener;
 import amata1219.parkour.listener.UnloadUserDataListener;
 import amata1219.parkour.listener.UpdateInformationBoardListener;
+import amata1219.parkour.menu.parkour.ParkoursMenus;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
 import amata1219.parkour.task.AsyncTask;
@@ -36,7 +37,6 @@ import amata1219.parkour.task.SaveParkourDataTask;
 import amata1219.parkour.task.SaveUserDataTask;
 import amata1219.parkour.task.UpdatePingTask;
 import amata1219.parkour.task.UpdateTimePlayedTask;
-import amata1219.parkour.ui.parkour.ParkourMenuUI;
 import amata1219.parkour.user.Users;
 
 public class Main extends Plugin {
@@ -57,7 +57,7 @@ public class Main extends Plugin {
 		Parkours.load();
 		Users.load();
 		RegionSelections.load();
-		ParkourMenuUI.load();
+		ParkoursMenus.load();
 
 		registerCommands(
 			new ParkourCommand(),
