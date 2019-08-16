@@ -7,6 +7,6 @@
 'Start line': "world,0,0,0,0,0,0"
 'Finish line': "world,0,0,0,0,0,0"
 'Check areas': []
-'Enable time attack': false
+'Time attack': false
 'Records': []
 'Rewards': "0,0"

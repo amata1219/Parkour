@@ -1,4 +1,4 @@
-package amata1219.parkour.menu;
+package amata1219.parkour.ui;
 
 import java.util.List;
 import java.util.Map;
@@ -18,12 +18,12 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
 
-public class CheckpointsMenu implements InventoryUI {
+public class CategorizedCheckpointSelectionUI implements InventoryUI {
 
 	private final User user;
 	private final Parkour parkour;
 
-	public CheckpointsMenu(User user, Parkour parkour){
+	public CategorizedCheckpointSelectionUI(User user, Parkour parkour){
 		this.user = user;
 		this.parkour = parkour;
 	}

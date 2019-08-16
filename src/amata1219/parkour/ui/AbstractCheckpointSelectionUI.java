@@ -1,4 +1,4 @@
-package amata1219.parkour.menu;
+package amata1219.parkour.ui;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -95,7 +95,7 @@ public class AbstractCheckpointSelectionUI implements InventoryUI {
 
 						}else if(event.isLeftClick()){
 							//チェックポイントリストを開かせる
-							new CheckpointsMenu(user, parkour).openInventory(player);
+							new CategorizedCheckpointSelectionUI(user, parkour).openInventory(player);
 						}
 
 					});

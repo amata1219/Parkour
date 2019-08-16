@@ -1,4 +1,4 @@
-package amata1219.parkour.menu;
+package amata1219.parkour.ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,17 +20,17 @@ import amata1219.amalib.tuplet.Quadruple;
 import amata1219.amalib.util.SkullMaker;
 import amata1219.parkour.user.User;
 
-public class MyMenu implements InventoryUI {
+public class MyMenuUI implements InventoryUI {
 
 	private final User user;
 	private final ArrayList<Quadruple<Integer, Material, String, InventoryUI>> components = new ArrayList<>(3);
 
-	public MyMenu(User user){
+	public MyMenuUI(User user){
 		this.user = user;
 
 		components.addAll(Arrays.asList(
-			component(5, Material.SIGN, StringColor.color("&b-Open scoreboard options"), new InformationBoardOptionMenu(user)),
-			component(6, Material.PLAYER_HEAD, StringColor.color("&b-Open head menu"), new HatMenu(user.hats))
+			component(5, Material.SIGN, StringColor.color("&b-Open scoreboard options"), new ScoreboardOptionSelectionUI(user)),
+			component(6, Material.PLAYER_HEAD, StringColor.color("&b-Open head menu"), new PurchaseAndWearHatUI(user.hats))
 		));
 	}
 

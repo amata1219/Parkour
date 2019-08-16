@@ -19,7 +19,7 @@ public class PassStartLineListener extends PassRegionBoundaryAbstractListener {
 		String parkourName = parkour.name;
 
 		//タイムアタックが有効かどうか
-		boolean enableTimeAttack = parkour.enableTimeAttack;
+		boolean enableTimeAttack = parkour.timeAttackEnable;
 
 		//アスレをプレイし始めたのでなければ戻る
 		if(from != null || to == null) return;

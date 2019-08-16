@@ -29,7 +29,6 @@ import amata1219.parkour.listener.PassStartLineListener;
 import amata1219.parkour.listener.SetCheckpointListener;
 import amata1219.parkour.listener.UnloadUserDataListener;
 import amata1219.parkour.listener.UpdateInformationBoardListener;
-import amata1219.parkour.menu.parkour.ParkoursMenus;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
 import amata1219.parkour.task.AsyncTask;
@@ -37,6 +36,7 @@ import amata1219.parkour.task.SaveParkourDataTask;
 import amata1219.parkour.task.SaveUserDataTask;
 import amata1219.parkour.task.UpdatePingTask;
 import amata1219.parkour.task.UpdateTimePlayedTask;
+import amata1219.parkour.ui.parkour.ParkoursMenus;
 import amata1219.parkour.user.Users;
 
 public class Main extends Plugin {
@@ -44,6 +44,16 @@ public class Main extends Plugin {
 	//https://twitter.com/intent/tweet?text=ツイート本文
 	//アスレクリア時やランクアップ時など
 	//各動作に音を付ける
+
+	/*
+	 * region info
+
+チェックエリア作成時にmajor/minor表示
+
+enabled parkour filter
+
+アスレ参加判定が無いバグ
+	 */
 
 	private static Main plugin;
 

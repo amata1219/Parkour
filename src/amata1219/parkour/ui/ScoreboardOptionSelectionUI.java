@@ -1,4 +1,4 @@
-package amata1219.parkour.menu;
+package amata1219.parkour.ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,14 +16,14 @@ import amata1219.amalib.tuplet.Quadruple;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSetting;
 
-public class InformationBoardOptionMenu implements InventoryUI {
+public class ScoreboardOptionSelectionUI implements InventoryUI {
 
 	private final User user;
 
 	//Function<値を反転させるかどうか, 値>
 	private final ArrayList<Quadruple<Integer, Material, String, Function<Boolean, Boolean>>> components = new ArrayList<>();
 
-	public InformationBoardOptionMenu(User user){
+	public ScoreboardOptionSelectionUI(User user){
 		this.user = user;
 
 		UserSetting setting = user.setting;

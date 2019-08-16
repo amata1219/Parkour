@@ -1,25 +1,25 @@
 package amata1219.parkour.user;
 
-import amata1219.parkour.menu.LastCheckpointsMenu;
-import amata1219.parkour.menu.LatestCheckpointsMenu;
-import amata1219.parkour.menu.MyMenu;
-import amata1219.parkour.menu.parkour.ExtendParkoursMenu;
-import amata1219.parkour.menu.parkour.UpdateParkoursMenu;
+import amata1219.parkour.ui.LastCheckpointSelectionUI;
+import amata1219.parkour.ui.LatestCheckpointSelectionUI;
+import amata1219.parkour.ui.MyMenuUI;
+import amata1219.parkour.ui.parkour.ExtendParkourSelectionUI;
+import amata1219.parkour.ui.parkour.UpdateParkoursMenu;
 
 public class InventoryUserInterfaces {
 
-	public final MyMenu menuUI;
+	public final MyMenuUI menuUI;
 	public final UpdateParkoursMenu updateParkourSelectionUI;
-	public final ExtendParkoursMenu extendParkourSelectionUI;
-	public final LastCheckpointsMenu lastCheckpointSelectionUI;
-	public final LatestCheckpointsMenu latestCheckpointSelectionUI;
+	public final ExtendParkourSelectionUI extendParkourSelectionUI;
+	public final LastCheckpointSelectionUI lastCheckpointSelectionUI;
+	public final LatestCheckpointSelectionUI latestCheckpointSelectionUI;
 
 	public InventoryUserInterfaces(User user){
-		menuUI = new MyMenu(user);
+		menuUI = new MyMenuUI(user);
 		updateParkourSelectionUI = new UpdateParkoursMenu(user);
-		extendParkourSelectionUI = new ExtendParkoursMenu(user);
-		lastCheckpointSelectionUI = new LastCheckpointsMenu(user);
-		latestCheckpointSelectionUI = new LatestCheckpointsMenu(user);
+		extendParkourSelectionUI = new ExtendParkourSelectionUI(user);
+		lastCheckpointSelectionUI = new LastCheckpointSelectionUI(user);
+		latestCheckpointSelectionUI = new LatestCheckpointSelectionUI(user);
 	}
 
 }

@@ -11,7 +11,6 @@ import amata1219.amalib.region.Region;
 import amata1219.amalib.schedule.Async;
 import amata1219.amalib.selection.RegionSelection;
 import amata1219.amalib.util.Color;
-import net.minecraft.server.v1_13_R2.EntityPlayer;
 import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_13_R2.ParticleParamRedstone;
 import net.minecraft.server.v1_13_R2.PlayerConnection;
@@ -100,7 +99,7 @@ public class ParkourRegion extends Region {
 			position++;
 
 			for(PlayerConnection connection : parkour.connections.getConnections()){
-				EntityPlayer player = connection.player;
+				/*EntityPlayer player = connection.player;
 
 				//プレイヤーの描画距離を取得する
 				int viewChunks = player.clientViewDistance.intValue();
@@ -110,7 +109,7 @@ public class ParkourRegion extends Region {
 				double zDistance = (int) Math.abs(center.z - player.locZ) >> 4;
 
 				//描画範囲外であれば処理しない
-				if(xDistance > viewChunks || zDistance > viewChunks) continue;
+				if(xDistance > viewChunks || zDistance > viewChunks) continue;*/
 
 				connection.sendPacket(packet1);
 				connection.sendPacket(packet2);

@@ -1,4 +1,4 @@
-package amata1219.parkour.menu.parkour;
+package amata1219.parkour.ui.parkour;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,10 +89,10 @@ public class UpdateParkoursMenu implements InventoryUI {
 						lore.add(StringTemplate.capply("&7-: &b-Check areas &7-@ $0", maxMajorCheckAreaNumber >= 0 ? StringTemplate.capply("&f-$0", maxMajorCheckAreaNumber + 1) : "§7None"));
 
 						//タイムアタックが有効かどうかを表示する
-						lore.add(StringTemplate.capply("&7-: &b-Time attack &7-@ $0", parkour.enableTimeAttack ? "§bEnable" : "§7Disable"));
+						lore.add(StringTemplate.capply("&7-: &b-Time attack &7-@ $0", parkour.timeAttackEnable ? "§bEnable" : "§7Disable"));
 
 						//タイムアタックが有効の場合
-						if(parkour.enableTimeAttack){
+						if(parkour.timeAttackEnable){
 							//上位記録を取得する
 							List<Tuple<UUID, String>> records = parkour.records.topTenRecords;
 

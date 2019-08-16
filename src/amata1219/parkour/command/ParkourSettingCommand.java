@@ -58,7 +58,7 @@ public class ParkourSettingCommand implements Command {
 			sender.message(StringTemplate.capply("&7-: &b-Category &7-@ &f-$0", parkour.category.name));
 			sender.message(StringTemplate.capply("&7-: &b-Spawn &7-@ &f-$0", parkour.spawn.serialize().replace(",", "§7,§f")));
 			sender.message(StringTemplate.capply("&7-: &b-Color &7-@ &f-$0", parkour.borderColor.serialize()));
-			sender.message(StringTemplate.capply("&7-: &b-Time attack &7-@ &f-$0", parkour.enableTimeAttack));
+			sender.message(StringTemplate.capply("&7-: &b-Time attack &7-@ &f-$0", parkour.timeAttackEnable));
 			break;
 		}case "category":{
 			try{
@@ -138,13 +138,13 @@ public class ParkourSettingCommand implements Command {
 			String stateName = enableTimeAttack ? "有効" : "無効";
 
 			//既に同じ設定であれば戻る
-			if(enableTimeAttack == parkour.enableTimeAttack){
+			if(enableTimeAttack == parkour.timeAttackEnable){
 				sender.warn(StringTemplate.apply("既にタイムアタックは$0化されています。", stateName));
 				return;
 			}
 
 			//更新する
-			parkour.apply(it -> it.enableTimeAttack = enableTimeAttack);
+			parkour.apply(it -> it.timeAttackEnable = enableTimeAttack);
 
 			sender.info(StringTemplate.capply("$0-&r-&b-でのタイムアタックを$1にしました。", parkourName, stateName));
 			break;

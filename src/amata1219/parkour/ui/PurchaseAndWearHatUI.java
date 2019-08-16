@@ -1,4 +1,4 @@
-package amata1219.parkour.menu;
+package amata1219.parkour.ui;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -24,14 +24,14 @@ import amata1219.parkour.hat.Hats;
 import amata1219.parkour.hat.Hat;
 import amata1219.parkour.user.UserHats;
 
-public class HatMenu implements InventoryUI {
+public class PurchaseAndWearHatUI implements InventoryUI {
 
 	private static final SoundMetadata BUY_SE = new SoundMetadata(Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.5f, 1);
 	private static final SoundMetadata PUT_ON_SE = new SoundMetadata(Sound.ITEM_ARMOR_EQUIP_CHAIN, 2f, 1f);
 
 	private final UserHats heads;
 
-	public HatMenu(UserHats heads){
+	public PurchaseAndWearHatUI(UserHats heads){
 		this.heads = heads;
 	}
 

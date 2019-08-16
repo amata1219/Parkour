@@ -32,7 +32,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		String parkourName = parkour.name;
 
 		//タイムアタックが有効かどうか
-		boolean enableTimeAttack = parkour.enableTimeAttack;
+		boolean enableTimeAttack = parkour.timeAttackEnable;
 
 		//クリア済みのアスレ名リストを取得する
 		Set<String> clearedParkourNames = user.clearedParkourNames;

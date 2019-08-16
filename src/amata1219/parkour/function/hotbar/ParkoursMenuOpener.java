@@ -9,9 +9,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.string.StringLocalize;
-import amata1219.parkour.menu.parkour.ParkoursMenus;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
+import amata1219.parkour.ui.parkour.ParkoursMenus;
 import amata1219.parkour.user.User;
 
 public class ParkoursMenuOpener implements FunctionalHotbarItem {

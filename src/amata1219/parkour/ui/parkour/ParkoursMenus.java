@@ -1,4 +1,4 @@
-package amata1219.parkour.menu.parkour;
+package amata1219.parkour.ui.parkour;
 
 import java.util.HashMap;
 
@@ -19,14 +19,14 @@ public class ParkoursMenus {
 		return instance;
 	}
 
-	private final HashMap<ParkourCategory, ParkoursMenu> parkourSelectionUIMap = new HashMap<>(CATEGORIES.length);
+	private final HashMap<ParkourCategory, ParkourSelectionUI> parkourSelectionUIMap = new HashMap<>(CATEGORIES.length);
 
 	private ParkoursMenus(){
-		for(ParkourCategory category : CATEGORIES) parkourSelectionUIMap.put(category, new ParkoursMenu(category));
+		for(ParkourCategory category : CATEGORIES) parkourSelectionUIMap.put(category, new ParkourSelectionUI(category));
 	}
 
 	//カテゴリーに対応したステージリストを取得する
-	public ParkoursMenu getInventoryUI(ParkourCategory category){
+	public ParkourSelectionUI getInventoryUI(ParkourCategory category){
 		return parkourSelectionUIMap.get(category);
 	}
 
