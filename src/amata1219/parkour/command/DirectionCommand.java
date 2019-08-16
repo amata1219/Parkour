@@ -2,6 +2,7 @@ package amata1219.parkour.command;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
@@ -68,7 +69,7 @@ public class DirectionCommand implements Command {
 		}
 
 		//yawとpitchを適用する
-		player.teleport(location);
+		player.teleport(location, TeleportCause.COMMAND);
 
 		//表示例: Set your direction @ 75.2 / 45.0
 		sender.info(StringTemplate.capply("Set your direction &7-@ &b-$0 &7-/ &b-$1", location.getYaw(), location.getPitch()));

@@ -1,5 +1,6 @@
 package amata1219.parkour.listener;
 
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -40,13 +41,14 @@ public class PassCheckAreaListener extends PassRegionBoundaryAbstractListener {
 			//通知アイテムを発光させる
 			ControlFunctionalHotbarItem.updateSlot(player, 0);
 		}
-
 	}
 
 	@EventHandler
 	public void onTeleport(PlayerTeleportEvent event){
+		Player player = event.getPlayer();
+
 		//プラグインによるテレポートであれば通知アイテムを更新する
-		if(event.getCause() == TeleportCause.PLUGIN) ControlFunctionalHotbarItem.updateSlot(event.getPlayer(), 0);
+		if(player.getGameMode() != GameMode.CREATIVE && event.getCause() == TeleportCause.PLUGIN) ControlFunctionalHotbarItem.updateSlot(player, 0);
 	}
 
 }
