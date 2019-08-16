@@ -58,7 +58,6 @@ public class Main extends Plugin {
 		Users.load();
 		RegionSelections.load();
 		ParkourMenuUI.load();
-		ControlFunctionalItemListener.load();
 
 		registerCommands(
 			new ParkourCommand(),
@@ -75,7 +74,7 @@ public class Main extends Plugin {
 		registerListeners(
 			Users.getInstnace(),
 			RegionSelections.getInstance(),
-			ControlFunctionalItemListener.getInstance(),
+			new ControlFunctionalItemListener(),
 			new DisablePlayerCollisionListener(),
 			new ControlRegionBorderDisplayerListener(),
 			new GiveVoteRewardCoinsListener(),
