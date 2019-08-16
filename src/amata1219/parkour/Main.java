@@ -12,10 +12,10 @@ import amata1219.parkour.command.ParkourEditCommand;
 import amata1219.parkour.command.ParkourCommand;
 import amata1219.parkour.command.RelayoutCommand;
 import amata1219.parkour.command.TweetCommand;
+import amata1219.parkour.function.hotbar.ControlFunctionalHotbarItem;
 import amata1219.parkour.command.DirectionCommand;
 import amata1219.parkour.command.ParkourRegionCommand;
 import amata1219.parkour.command.ParkourSettingCommand;
-import amata1219.parkour.listener.ControlFunctionalItemListener;
 import amata1219.parkour.listener.DisableDamageListener;
 import amata1219.parkour.listener.DisableFoodLevelChangeListener;
 import amata1219.parkour.listener.DisablePlayerCollisionListener;
@@ -74,7 +74,7 @@ public class Main extends Plugin {
 		registerListeners(
 			Users.getInstnace(),
 			RegionSelections.getInstance(),
-			new ControlFunctionalItemListener(),
+			new ControlFunctionalHotbarItem(),
 			new DisablePlayerCollisionListener(),
 			new ControlRegionBorderDisplayerListener(),
 			new GiveVoteRewardCoinsListener(),

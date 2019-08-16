@@ -3,7 +3,7 @@ package amata1219.parkour.command;
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
-import amata1219.parkour.listener.ControlFunctionalItemListener;
+import amata1219.parkour.function.hotbar.ControlFunctionalHotbarItem;
 
 public class RelayoutCommand implements Command {
 
@@ -13,7 +13,7 @@ public class RelayoutCommand implements Command {
 		if(blockNonPlayer(sender)) return;
 
 		//ホットバーのアイテムを再配置する
-		ControlFunctionalItemListener.getInstance().initializeSlots(sender.asPlayerCommandSender());
+		ControlFunctionalHotbarItem.initializeSlots(sender.asPlayerCommandSender());
 
 		sender.displayMessageToActionbar = true;
 		sender.info("Relayout items on the hotbar");

@@ -1,4 +1,4 @@
-package amata1219.parkour.listener;
+package amata1219.parkour.function.hotbar;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,13 +17,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import amata1219.parkour.function.hotbar.CheckpointsMenuOpener;
-import amata1219.parkour.function.hotbar.ClickType;
-import amata1219.parkour.function.hotbar.FunctionalHotbarItem;
-import amata1219.parkour.function.hotbar.HideModeToggler;
-import amata1219.parkour.function.hotbar.MyMenuOpener;
-import amata1219.parkour.function.hotbar.ParkoursMenuOpener;
-import amata1219.parkour.function.hotbar.QuickTeleporter;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
@@ -34,7 +27,7 @@ import org.bukkit.inventory.PlayerInventory;
 import amata1219.amalib.listener.PlayerJoinListener;
 import amata1219.amalib.listener.PlayerQuitListener;
 
-public class ControlFunctionalItemListener implements PlayerJoinListener, PlayerQuitListener {
+public class ControlFunctionalHotbarItem implements PlayerJoinListener, PlayerQuitListener {
 
 	/*
 	 * Checkpoint, To Spawn, Teleporter, User Config Athletic Selector

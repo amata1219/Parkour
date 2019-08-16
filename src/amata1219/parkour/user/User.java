@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.yaml.Yaml;
-import amata1219.parkour.listener.ControlFunctionalItemListener;
+import amata1219.parkour.function.hotbar.ControlFunctionalHotbarItem;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.Parkours;
 
@@ -142,7 +142,7 @@ public class User {
 
 		currentParkour.exit(this);
 
-		ControlFunctionalItemListener.getInstance().setNotifierGleam(asBukkitPlayer(), false);
+		ControlFunctionalHotbarItem.updateSlot(asBukkitPlayer(), 6);
 	}
 
 	public void save(){
