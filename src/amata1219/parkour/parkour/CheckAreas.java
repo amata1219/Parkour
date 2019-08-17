@@ -15,6 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.string.StringTemplate;
+import amata1219.amalib.tuplet.Tuple;
 import amata1219.amalib.yaml.Yaml;
 
 public class CheckAreas {
@@ -91,7 +92,7 @@ public class CheckAreas {
 	}
 
 	//チェックエリアをメジャーチェックエリア番号にバインドする
-	public void bindCheckArea(int majorCheckAreaNumber, ParkourRegion checkArea){
+	public Tuple<Integer, Integer> bindCheckArea(int majorCheckAreaNumber, ParkourRegion checkArea){
 		//チェックエリアリストを取得する
 		List<ParkourRegion> areas = checkAreas.get(majorCheckAreaNumber);
 
@@ -102,6 +103,8 @@ public class CheckAreas {
 		areas.add(checkArea);
 
 		parkours.registerCheckArea(checkArea);
+
+		return new Tuple<>(majorCheckAreaNumber, areas.size() - 1);
 	}
 
 	//指定されたチェックエリア番号のチェックエリアを書き換える
