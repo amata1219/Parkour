@@ -3,16 +3,14 @@ package amata1219.parkour.parkour;
 import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import amata1219.amalib.chunk.ChunksToObjectsMap;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
-import amata1219.parkour.parkour.RankedParkour.RankedParkourType;
 import net.md_5.bungee.api.ChatColor;
 
 public class Parkours {
@@ -120,28 +118,10 @@ public class Parkours {
 		return parkours.values();
 	}
 
-	public List<Parkour> getParkours(ParkourCategory category){
+	public Stream<Parkour> getEnabledParkours(ParkourCategory category){
 		return parkours.values().stream()
 				.filter(parkour -> parkour.category == category)
-				.collect(Collectors.toList());
-	}
-
-	public List<RankedParkour> getUpdateParkours(){
-		return getRankedParkours(RankedParkourType.UPDATE);
-	}
-
-	public List<RankedParkour> getExtendParkours(){
-		return getRankedParkours(RankedParkourType.EXTEND);
-	}
-
-	private List<RankedParkour> getRankedParkours(RankedParkourType type){
-		return parkours.values().stream()
-				.filter(parkour -> parkour instanceof RankedParkour)
-				.filter(parkour -> parkour.enable)
-				.map(parkour -> (RankedParkour) parkour)
-				.filter(parkour -> parkour.type == type)
-				.sorted((p1, p2) -> Integer.compare(p1.rank, p2.rank))
-				.collect(Collectors.toList());
+				.filter(parkour -> parkour.enable);
 	}
 
 	public Parkour getParkour(String parkourName){

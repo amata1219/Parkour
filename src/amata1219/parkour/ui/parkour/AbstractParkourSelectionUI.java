@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -26,7 +25,7 @@ import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
-public class ParkourUI<T extends Parkour, N> implements InventoryUI {
+public abstract class AbstractParkourSelectionUI<T extends Parkour> implements InventoryUI {
 
 	private static final ParkourCategory[] CATEGORIES = ParkourCategory.values();
 
@@ -35,10 +34,10 @@ public class ParkourUI<T extends Parkour, N> implements InventoryUI {
 	private final User user;
 	private final ParkourCategory category;
 	private final Supplier<List<T>> parkours;
-	private final BiFunction<User, List<T>, InventoryLine> line;
+	private final Function<List<T>, InventoryLine> line;
 	private final Consumer<InventoryLayout> raw;
 
-	public ParkourUI(User user, ParkourCategory category, Supplier<List<T>> parkours, BiFunction<User, List<T>, InventoryLine> line, Consumer<InventoryLayout> raw){
+	public AbstractParkourSelectionUI(User user, ParkourCategory category, Supplier<List<T>> parkours, Function<List<T>, InventoryLine> line, Consumer<InventoryLayout> raw){
 		this.user = user;
 		this.category = category;
 		this.parkours = parkours;
@@ -54,7 +53,7 @@ public class ParkourUI<T extends Parkour, N> implements InventoryUI {
 		//UI上に表示可能なアスレリストを取得する
 		List<T> parkours = this.parkours.get();
 
-		InventoryLine line = this.line.apply(user, parkours);
+		InventoryLine line = this.line.apply(parkours);
 
 		return build(line, l -> {
 			l.title = StringTemplate.capply("&b-$0", categoryName);
@@ -77,7 +76,7 @@ public class ParkourUI<T extends Parkour, N> implements InventoryUI {
 						//アスレに参加させる
 						parkour.entry(users.getUser(player));
 
-						MessageTemplate.capply("&7-「&r-$0-&r-&7-」&f-にテレポートしました | &7-?", parkourName).localize().displayOnActionBar(player);
+						MessageTemplate.clapply("&7-「&r-$0-&r-&7-」&f-にテレポートしました | &7-?", player, parkourName).displayOnActionBar(player);
 					});
 
 					//アスレのアイコンを設定する

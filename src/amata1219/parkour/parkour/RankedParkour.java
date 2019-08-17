@@ -13,7 +13,6 @@ public class RankedParkour extends Parkour {
 		return parkourName.startsWith("Update") || parkourName.startsWith("Extend");
 	}
 
-	public final RankedParkourType type;
 	public final int rank;
 
 	public RankedParkour(Parkours parkours, Yaml yaml) {
@@ -28,21 +27,11 @@ public class RankedParkour extends Parkour {
 		//接頭辞を取得する
 		String prefix = parkourName.substring(0, 6);
 
-		//アスレ名からタイプを取得する
-		type = RankedParkourType.valueOf(prefix.toUpperCase());
+		//カテゴリーを設定する
+		category = ParkourCategory.valueOf(prefix.toUpperCase());
 
 		//アスレ名からランクを取得する
 		rank = Integer.parseInt(parkourName.replace(prefix, ""));
-
-		//カテゴリーを設定する
-		category = ParkourCategory.valueOf(type.toString());
-	}
-
-	public static enum RankedParkourType {
-
-		UPDATE,
-		EXTEND;
-
 	}
 
 }

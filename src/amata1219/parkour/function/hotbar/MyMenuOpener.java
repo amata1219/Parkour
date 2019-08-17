@@ -15,7 +15,7 @@ public class MyMenuOpener implements FunctionalHotbarItem {
 
 	@Override
 	public void onClick(User user, ClickType click) {
-		user.inventoryUserInterfaces.menuUI.openInventory(user.asBukkitPlayer());
+		user.inventoryUserInterfaces.myMenuUI.openInventory(user.asBukkitPlayer());
 	}
 
 	@Override

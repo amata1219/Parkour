@@ -3,6 +3,7 @@ package amata1219.parkour.ui;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -42,8 +43,8 @@ public class AbstractCheckpointSelectionUI implements InventoryUI {
 		//カテゴリーを取得する
 		ParkourCategory category = currentParkour.category;
 
-		//カテゴリー内の全アスレを取得する
-		List<Parkour> parkours = Parkours.getInstance().getParkours(category);
+		//カテゴリー内の有効な全アスレを取得する
+		List<Parkour> parkours = Parkours.getInstance().getEnabledParkours(category).collect(Collectors.toList());
 
 		return build(parkours.size(), l -> {
 			//表示例: Last checkpoints @ The Earth of Marmalade
