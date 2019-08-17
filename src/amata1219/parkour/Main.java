@@ -11,6 +11,7 @@ import amata1219.parkour.command.CoinCommand;
 import amata1219.parkour.command.ParkourEditCommand;
 import amata1219.parkour.command.ParkourCommand;
 import amata1219.parkour.command.RelayoutCommand;
+import amata1219.parkour.command.TestCommand;
 import amata1219.parkour.command.TweetCommand;
 import amata1219.parkour.function.hotbar.ControlFunctionalHotbarItem;
 import amata1219.parkour.command.DirectionCommand;
@@ -76,7 +77,9 @@ enabled parkour filter
 			new CoinCommand(),
 			new RelayoutCommand(),
 			new DirectionCommand(),
-			new TweetCommand()
+			new TweetCommand(),
+
+			new TestCommand()
 		);
 
 		registerListeners(

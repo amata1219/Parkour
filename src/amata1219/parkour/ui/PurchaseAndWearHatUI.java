@@ -38,7 +38,7 @@ public class PurchaseAndWearHatUI implements InventoryUI {
 	@Override
 	public Function<Player, InventoryLayout> layout() {
 		//ヘッドの数から必要な行数を計算する
-		InventoryLine line = InventoryLine.necessaryInventoryLine(Hats.HEADS.size());
+		InventoryLine line = InventoryLine.necessaryInventoryLine(Hats.HATS.size());
 
 		return build(line, (l) -> {
 			//タイトルを設定する
@@ -46,7 +46,7 @@ public class PurchaseAndWearHatUI implements InventoryUI {
 
 			AtomicInteger slotIndex = new AtomicInteger();
 
-			Hats.HEADS.forEach(head -> {
+			Hats.HATS.forEach(head -> {
 
 				String headName = head.name;
 				int headValue = head.value;
