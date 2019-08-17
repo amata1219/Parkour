@@ -20,12 +20,12 @@ import amata1219.amalib.tuplet.Quadruple;
 import amata1219.amalib.util.SkullMaker;
 import amata1219.parkour.user.User;
 
-public class MyMenuUI implements InventoryUI {
+public class MyProfileUI implements InventoryUI {
 
 	private final User user;
 	private final ArrayList<Quadruple<Integer, Material, String, InventoryUI>> components = new ArrayList<>(3);
 
-	public MyMenuUI(User user){
+	public MyProfileUI(User user){
 		this.user = user;
 
 		components.addAll(Arrays.asList(

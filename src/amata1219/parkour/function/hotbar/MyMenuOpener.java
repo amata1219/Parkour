@@ -1,7 +1,5 @@
 package amata1219.parkour.function.hotbar;
 
-import java.util.Arrays;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,7 +13,7 @@ public class MyMenuOpener implements FunctionalHotbarItem {
 
 	@Override
 	public void onClick(User user, ClickType click) {
-		user.inventoryUIs.myMenuUI.openInventory(user.asBukkitPlayer());
+		user.inventoryUIs.openMyProfileUI();
 	}
 
 	@Override
@@ -29,12 +27,7 @@ public class MyMenuOpener implements FunctionalHotbarItem {
 		ItemMeta meta = item.getItemMeta();
 
 		//使用言語に対応したテキストを表示名に設定する
-		meta.setDisplayName(StringColor.lcolor("&b-メニューを開く | &b-?", player));
-
-		//使用言語に対応したテキストを説明文に設定する
-		meta.setLore(Arrays.asList(
-			StringColor.lcolor("&7-説明文いらない | &7-?", player)
-		));
+		meta.setDisplayName(StringColor.lcolor("&b-プロフィールを開く | &b-Open My Profile", player));
 
 		item.setItemMeta(meta);
 

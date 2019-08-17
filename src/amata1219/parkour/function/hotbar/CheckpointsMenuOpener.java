@@ -7,9 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.message.MessageColor;
+import amata1219.parkour.user.InventoryUIs;
 import amata1219.parkour.user.User;
 
 public class CheckpointsMenuOpener implements FunctionalHotbarItem {
@@ -20,13 +20,15 @@ public class CheckpointsMenuOpener implements FunctionalHotbarItem {
 
 		//どこのアスレにもいなければ戻る
 		if(user.currentParkour == null){
-			MessageColor.color("&c-Operation blocked &7-@ &c-You are not on any parkour").displayOnActionBar(player);
+			MessageColor.color("アスレチックのプレイ中でないため開けません").displayOnActionBar(player);
 			return;
 		}
 
+		InventoryUIs inventoryUIs = user.inventoryUIs;
+
 		//右クリックしたのであれば最終、左クリックしたのであれば最新のチェックポイントリストを表示する
-		InventoryUI inventoryUI = click == ClickType.RIGHT ? user.inventoryUIs.lastCheckpointSelectionUI : user.inventoryUIs.latestCheckpointSelectionUI;
-		inventoryUI.openInventory(player);
+		if(click == ClickType.RIGHT) inventoryUIs.openLastCheckpointSelectionUI();
+		else if(click == ClickType.LEFT) inventoryUIs.openLatestCheckpointSelectionUI();
 	}
 
 	@Override
@@ -38,13 +40,13 @@ public class CheckpointsMenuOpener implements FunctionalHotbarItem {
 
 		ItemMeta meta = item.getItemMeta();
 
+		//
 		//使用言語に対応したテキストを表示名に設定する
 		meta.setDisplayName(StringColor.lcolor("&b-最新/最終チェックポイント一覧を開く | &b-Open Latest/Last Checkpoints Menu", player));
 
 		//使用言語に対応したテキストを説明文に設定する
 		meta.setLore(Arrays.asList(
-			StringColor.lcolor("&7-左クリックすると最新チェックポイント一覧を開きます。 | &7-?", player),
-			StringColor.lcolor("&7-右クリックすると最終チェックポイント一覧を開きます。 | &7-?", player)
+			StringColor.lcolor("&7-左クリックで最新、右クリックで最終チェックポイントの一覧を開きます。 | &7-?", player)
 		));
 
 		item.setItemMeta(meta);

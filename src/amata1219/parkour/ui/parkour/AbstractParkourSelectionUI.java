@@ -137,7 +137,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 
 				l.put(s -> {
 
-					s.onClick(e -> user.inventoryUIs.getParkourSelectionUI(category).openInventory(player));
+					s.onClick(e -> user.inventoryUIs.openParkourSelectionUI(category));
 
 					s.icon(category.icon, i -> {
 						i.displayName = StringTemplate.capply("&b-$0", categoryName);
