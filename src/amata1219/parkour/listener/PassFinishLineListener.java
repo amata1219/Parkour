@@ -9,11 +9,11 @@ import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.parkour.Tweet;
 import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.parkour.Parkour;
+import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.parkour.RankedParkour;
 import amata1219.parkour.parkour.Records;
-import amata1219.parkour.parkour.RankedParkour.RankedParkourType;
 import amata1219.parkour.user.User;
 import amata1219.parkour.util.TimeFormat;
 
@@ -81,12 +81,13 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 
 		//ランクアップアスレの場合
 		if(parkour instanceof RankedParkour){
-			RankedParkour rankedParkour = (RankedParkour) parkour;
-			RankedParkourType type = rankedParkour.type;
-			int rank = rankedParkour.rank;
+			ParkourCategory category = parkour.category;
+
+			//アスレのランクを取得する
+			int rank = ((RankedParkour) parkour).rank;
 
 			//各タイプで分岐する
-			switch(type){
+			switch(category){
 			case UPDATE:
 				//プレイヤーのランクの方が高ければ戻る
 				if(user.getUpdateRank() >= rank) return;
@@ -109,7 +110,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			}
 
 			//表示例: Rank up @ amata1219's update rank is 7!
-			MessageTemplate.capply("&b-&l-Rank up &7-@ &b-$0's $1 rank is $2!", playerName, type.toString().toLowerCase(), rank).broadcast();
+			MessageTemplate.capply("&b-&l-Rank up &7-@ &b-$0's $1 rank is $2!", playerName, category.name, rank).broadcast();
 
 			//ツイートリンクを表示する
 			Tweet.display(player, StringTemplate.apply("$0を初クリアしました！", parkour.getColorlessName()));

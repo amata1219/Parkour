@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import amata1219.amalib.string.StringLocalize;
+import amata1219.amalib.string.StringColor;
 import amata1219.parkour.function.ToggleHideMode;
 import amata1219.parkour.user.User;
 
@@ -32,11 +32,11 @@ public class HideModeToggler implements FunctionalHotbarItem {
 		ItemMeta meta = item.getItemMeta();
 
 		//使用言語に対応したテキストを表示名に設定する
-		meta.setDisplayName(StringLocalize.capply(hideMode ? "&b-プレイヤーを表示する | &b-?" : "&b-プレイヤーを非表示にする | &b-?", player));
+		meta.setDisplayName(StringColor.lcolor(hideMode ? "&b-プレイヤーを表示する | &b-?" : "&b-プレイヤーを非表示にする | &b-?", player));
 
 		//使用言語に対応したテキストを説明文に設定する
 		meta.setLore(Arrays.asList(
-			StringLocalize.capply("&7-説明文いらない。 | &7-?", player)
+			StringColor.lcolor("&7-説明文いらない。 | &7-?", player)
 		));
 
 		item.setItemMeta(meta);

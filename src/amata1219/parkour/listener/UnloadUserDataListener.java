@@ -11,7 +11,7 @@ public class UnloadUserDataListener implements PlayerQuitListener {
 	@Override
 	public void onQuit(PlayerQuitEvent event) {
 		User user = Users.getInstnace().getUser(event.getPlayer());
-		user.inventoryUserInterfaces = null;
+		user.inventoryUIs = null;
 	}
 
 }

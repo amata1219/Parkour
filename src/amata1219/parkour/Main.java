@@ -36,7 +36,6 @@ import amata1219.parkour.task.SaveParkourDataTask;
 import amata1219.parkour.task.SaveUserDataTask;
 import amata1219.parkour.task.UpdatePingTask;
 import amata1219.parkour.task.UpdateTimePlayedTask;
-import amata1219.parkour.ui.parkour.ParkoursMenus;
 import amata1219.parkour.user.Users;
 
 public class Main extends Plugin {
@@ -67,7 +66,6 @@ enabled parkour filter
 		Parkours.load();
 		Users.load();
 		RegionSelections.load();
-		ParkoursMenus.load();
 
 		registerCommands(
 			new ParkourCommand(),

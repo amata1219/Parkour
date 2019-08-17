@@ -7,11 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import amata1219.amalib.inventory.ui.dsl.InventoryUI;
-import amata1219.amalib.string.StringLocalize;
+import amata1219.amalib.string.StringColor;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
-import amata1219.parkour.ui.parkour.ParkoursMenus;
 import amata1219.parkour.user.User;
 
 public class ParkoursMenuOpener implements FunctionalHotbarItem {
@@ -24,23 +22,7 @@ public class ParkoursMenuOpener implements FunctionalHotbarItem {
 		//ステージのカテゴリーを取得する
 		ParkourCategory category = parkour != null ? parkour.category : ParkourCategory.NORMAL;
 
-		//カテゴリーに対応したステージリストを開かせる
-		InventoryUI inventoryUI = null;
-
-		//カテゴリーに対応したアスレリストを取得する
-		switch(category){
-		case UPDATE:
-			inventoryUI = user.inventoryUserInterfaces.updateParkourSelectionUI;
-			break;
-		case EXTEND:
-			inventoryUI = user.inventoryUserInterfaces.extendParkourSelectionUI;
-			break;
-		default:
-			inventoryUI = ParkoursMenus.getInstance().getInventoryUI(category);
-			break;
-		}
-
-		inventoryUI.openInventory(user.asBukkitPlayer());
+		user.inventoryUIs.getParkourSelectionUI(category).openInventory(user.asBukkitPlayer());
 	}
 
 	@Override
@@ -53,11 +35,11 @@ public class ParkoursMenuOpener implements FunctionalHotbarItem {
 		ItemMeta meta = item.getItemMeta();
 
 		//使用言語に対応したテキストを表示名に設定する
-		meta.setDisplayName(StringLocalize.capply("&b-アスレチック一覧を開く | &b-Open Parkours Menu", player));
+		meta.setDisplayName(StringColor.lcolor("&b-アスレチック一覧を開く | &b-Open Parkours Menu", player));
 
 		//使用言語に対応したテキストを説明文に設定する
 		meta.setLore(Arrays.asList(
-			StringLocalize.capply("&7-クリックするとアスレチック一覧を開きます。 | &7-?", player)
+			StringColor.lcolor("&7-クリックするとアスレチック一覧を開きます。 | &7-?", player)
 		));
 
 		item.setItemMeta(meta);

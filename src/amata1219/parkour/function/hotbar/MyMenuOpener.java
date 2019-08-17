@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import amata1219.amalib.string.StringLocalize;
+import amata1219.amalib.string.StringColor;
 import amata1219.amalib.util.SkullMaker;
 import amata1219.parkour.user.User;
 
@@ -15,7 +15,7 @@ public class MyMenuOpener implements FunctionalHotbarItem {
 
 	@Override
 	public void onClick(User user, ClickType click) {
-		user.inventoryUserInterfaces.myMenuUI.openInventory(user.asBukkitPlayer());
+		user.inventoryUIs.myMenuUI.openInventory(user.asBukkitPlayer());
 	}
 
 	@Override
@@ -29,11 +29,11 @@ public class MyMenuOpener implements FunctionalHotbarItem {
 		ItemMeta meta = item.getItemMeta();
 
 		//使用言語に対応したテキストを表示名に設定する
-		meta.setDisplayName(StringLocalize.capply("&b-メニューを開く | &b-?", player));
+		meta.setDisplayName(StringColor.lcolor("&b-メニューを開く | &b-?", player));
 
 		//使用言語に対応したテキストを説明文に設定する
 		meta.setLore(Arrays.asList(
-			StringLocalize.capply("&7-説明文いらない | &7-?", player)
+			StringColor.lcolor("&7-説明文いらない | &7-?", player)
 		));
 
 		item.setItemMeta(meta);

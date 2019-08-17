@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.amalib.enchantment.GleamEnchantment;
 import amata1219.amalib.location.ImmutableLocation;
-import amata1219.amalib.string.StringLocalize;
+import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.message.MessageColor;
 import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.parkour.parkour.Parkour;
@@ -24,8 +24,7 @@ public class CheckpointTeleporter implements FunctionalHotbarItem {
 
 		//アスレをプレイ中でなければ戻る
 		if(!user.isPlayingWithParkour()){
-			MessageColor.color("&c-アスレチックのプレイ中でないため実行出来ません | &c-?")
-			.localize().displayOnActionBar(player);
+			MessageColor.lcolor("&c-アスレチックのプレイ中でないため実行出来ません | &c-?", player).displayOnActionBar(player);
 			return;
 		}
 
@@ -34,8 +33,7 @@ public class CheckpointTeleporter implements FunctionalHotbarItem {
 		Checkpoints checkpoints = user.checkpoints;
 
 		if(!checkpoints.containsParkour(parkour)){
-			MessageColor.color("&c-チェックポイントが設定されていないため実行出来ません | &c-?t")
-			.localize().displayOnActionBar(player);
+			MessageColor.lcolor("&c-チェックポイントが設定されていないため実行出来ません | &c-?t", player).displayOnActionBar(player);
 			return;
 		}
 
@@ -44,8 +42,7 @@ public class CheckpointTeleporter implements FunctionalHotbarItem {
 
 		//チェックポイントが無ければ戻る
 		if(checkpoint == null){
-			MessageColor.color("&c-チェックポイントが設定されていないため実行出来ません | &c-?")
-			.localize().displayOnActionBar(player);
+			MessageColor.lcolor("&c-チェックポイントが設定されていないため実行出来ません | &c-?", player).displayOnActionBar(player);
 			return;
 		}
 
@@ -56,8 +53,7 @@ public class CheckpointTeleporter implements FunctionalHotbarItem {
 		player.teleport(checkpoint.asBukkit());
 
 		//表示例: Update7 の チェックポイント1 にテレポートしました
-		MessageTemplate.capply("$1-&b-の チェックポイント$0 にテレポートしました | &b-?", displayCheckAreaNumber, parkour.name)
-		.localize().displayOnActionBar(player);
+		MessageTemplate.clapply("$1-&b-の チェックポイント$0 にテレポートしました | &b-?", player, displayCheckAreaNumber, parkour.name).displayOnActionBar(player);
 	}
 
 	@Override
@@ -70,12 +66,12 @@ public class CheckpointTeleporter implements FunctionalHotbarItem {
 		ItemMeta meta = item.getItemMeta();
 
 		//使用言語に対応したテキストを表示名に設定する
-		meta.setDisplayName(StringLocalize.capply("&b-最新/最終チェックポイントにテレポートする | &b-?", player));
+		meta.setDisplayName(StringColor.lcolor("&b-最新/最終チェックポイントにテレポートする | &b-?", player));
 
 		//使用言語に対応したテキストを説明文に設定する
 		meta.setLore(Arrays.asList(
-			StringLocalize.capply("&7-左クリックすると最新チェックポイントにテレポートします。 | &7-?", player),
-			StringLocalize.capply("&7-右クリックすると最終チェックポイントにテレポートします。 | &7-?", player)
+			StringColor.lcolor("&7-左クリックすると最新チェックポイントにテレポートします。 | &7-?", player),
+			StringColor.lcolor("&7-右クリックすると最終チェックポイントにテレポートします。 | &7-?", player)
 		));
 
 		item.setItemMeta(meta);

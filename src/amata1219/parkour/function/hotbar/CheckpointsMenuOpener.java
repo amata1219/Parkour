@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
-import amata1219.amalib.string.StringLocalize;
+import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.message.MessageColor;
 import amata1219.parkour.user.User;
 
@@ -25,7 +25,7 @@ public class CheckpointsMenuOpener implements FunctionalHotbarItem {
 		}
 
 		//右クリックしたのであれば最終、左クリックしたのであれば最新のチェックポイントリストを表示する
-		InventoryUI inventoryUI = click == ClickType.RIGHT ? user.inventoryUserInterfaces.lastCheckpointSelectionUI : user.inventoryUserInterfaces.latestCheckpointSelectionUI;
+		InventoryUI inventoryUI = click == ClickType.RIGHT ? user.inventoryUIs.lastCheckpointSelectionUI : user.inventoryUIs.latestCheckpointSelectionUI;
 		inventoryUI.openInventory(player);
 	}
 
@@ -39,12 +39,12 @@ public class CheckpointsMenuOpener implements FunctionalHotbarItem {
 		ItemMeta meta = item.getItemMeta();
 
 		//使用言語に対応したテキストを表示名に設定する
-		meta.setDisplayName(StringLocalize.capply("&b-最新/最終チェックポイント一覧を開く | &b-Open Latest/Last Checkpoints Menu", player));
+		meta.setDisplayName(StringColor.lcolor("&b-最新/最終チェックポイント一覧を開く | &b-Open Latest/Last Checkpoints Menu", player));
 
 		//使用言語に対応したテキストを説明文に設定する
 		meta.setLore(Arrays.asList(
-			StringLocalize.capply("&7-左クリックすると最新チェックポイント一覧を開きます。 | &7-?", player),
-			StringLocalize.capply("&7-右クリックすると最終チェックポイント一覧を開きます。 | &7-?", player)
+			StringColor.lcolor("&7-左クリックすると最新チェックポイント一覧を開きます。 | &7-?", player),
+			StringColor.lcolor("&7-右クリックすると最終チェックポイント一覧を開きます。 | &7-?", player)
 		));
 
 		item.setItemMeta(meta);

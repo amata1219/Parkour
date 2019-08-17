@@ -15,7 +15,7 @@ public class LoadUserDataListener implements PlayerJoinListener {
 		User user = Users.getInstnace().getUser(event.getPlayer());
 
 		ApplyRankToDisplayName.apply(user);
-		user.inventoryUserInterfaces = new InventoryUIs(user);
+		user.inventoryUIs = new InventoryUIs(user);
 	}
 
 }
