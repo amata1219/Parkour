@@ -8,6 +8,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -26,6 +27,8 @@ import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
 public class ParkourUI<T extends Parkour, N> implements InventoryUI {
+
+	private static final ParkourCategory[] CATEGORIES = ParkourCategory.values();
 
 	private final Users users = Users.getInstnace();
 
@@ -51,7 +54,9 @@ public class ParkourUI<T extends Parkour, N> implements InventoryUI {
 		//UI上に表示可能なアスレリストを取得する
 		List<T> parkours = this.parkours.get();
 
-		return build(line.apply(user, parkours), l -> {
+		InventoryLine line = this.line.apply(user, parkours);
+
+		return build(line, l -> {
 			l.title = StringTemplate.capply("&b-$0", categoryName);
 
 			//デフォルトスロットを設定する
@@ -113,96 +118,42 @@ public class ParkourUI<T extends Parkour, N> implements InventoryUI {
 								.forEach(lore::add);
 							}
 						}
+
+						//クリア済みのアスレであれば輝かせる
+						if(user.clearedParkourNames.contains(parkourName)) i.gleam();
 					});
 
 				}, slotIndex.getAndIncrement());
+			});
+
+			int inventorySize = line.inventorySize();
+			AtomicInteger counter = new AtomicInteger();
+
+			IntStream.range(0, 5)
+			.map(i -> inventorySize - i * 2 - 1)
+			.sorted()
+			.forEach(index -> {
+				//対応したカテゴリーを取得する
+				ParkourCategory category = CATEGORIES[counter.getAndIncrement()];
+
+				l.put(s -> {
+
+					s.onClick(e -> {
+						//他のカテゴリーのリストを開いた時
+					});
+
+					s.icon(category.icon, i -> {
+						i.displayName = StringTemplate.capply("&b-$0", categoryName);
+
+						//今開いているカテゴリーと同じであれば輝かせる
+						if(category == this.category) i.gleam();
+					});
+
+				}, index);
 			});
 
 			raw.accept(l);
 		});
 	}
-
-	/*
-						//タイムアタックが有効の場合
-					if(parkour.enableTimeAttack){
-							//上位記録を取得する
-							List<Tuple<UUID, String>> records = parkour.records.topTenRecords;
-
-							//記録が1つでもある場合
-							if(!records.isEmpty()){
-								lore.add("");
-
-								//表示例: Top 10 records
-								lore.add(StringTemplate.capply("&7-: &b-Top $0 records", records.size()));
-
-								//最大で上位10名の記録を表示する
-								records.stream()
-								.map(record -> StringTemplate.capply("&7 - &b-$0 &7-@ &f-$1", Bukkit.getOfflinePlayer(record.first).getName(), record.second))
-								.forEach(lore::add);
-							}
-						}
-
-						//ユーザーを取得する
-						User user = users.getUser(l.player);
-
-						//今いるアスレなら発光させる
-						if(user.isPlayingWithParkour() && parkour.equals(user.currentParkour)) i.gleam();
-					});
-
-				}, slotIndex.getAndIncrement());
-
-			});
-
-			AtomicInteger counter = new AtomicInteger();
-
-			IntStream.range(0, 5)
-			.map(i -> i * 2)
-			.map(i -> line.inventorySize() - 1 - i)
-			.sorted()
-			.forEach(index -> {
-				//対応したカテゴリーを取得する
-				ParkourCategory category = ParkourCategory.values()[counter.getAndIncrement()];
-
-				l.put(s -> {
-
-					s.onClick(e -> {
-						Player clicker = e.player;
-
-						InventoryUI inventoryUI = null;
-
-						//ユーザーを取得する
-						User user = users.getUser(clicker);
-
-						//カテゴリーに対応したアスレリストを取得する
-						switch(category){
-						case UPDATE:
-							inventoryUI = user.inventoryUserInterfaces.updateParkourSelectionUI;
-							break;
-						case EXTEND:
-							inventoryUI = user.inventoryUserInterfaces.extendParkourSelectionUI;
-							break;
-						default:
-							inventoryUI = ParkoursMenus.getInstance().getInventoryUI(category);
-							break;
-						}
-
-						inventoryUI.openInventory(clicker);
-					});
-
-					s.icon(category.icon, i -> {
-						//表示例: Update
-						i.displayName = StringTemplate.capply("&b-$0", category.name);
-
-						//今開いているステージリストのカテゴリと同じであれば発光させる
-						if(category == this.category) i.gleam();
-
-					});
-
-				}, index);
-
-			});
-
-		});
-	 */
 
 }
