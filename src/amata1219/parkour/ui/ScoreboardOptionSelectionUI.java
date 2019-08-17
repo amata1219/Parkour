@@ -49,14 +49,9 @@ public class ScoreboardOptionSelectionUI implements InventoryUI {
 	@Override
 	public Function<Player, InventoryLayout> layout() {
 		return build(InventoryLine.x3, (l) -> {
-			//デフォルトスロットを設定する
-			l.defaultSlot((s) -> {
+			l.title = "Scoreboard option";
 
-				s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, (i) -> {
-					i.displayName = " ";
-				});
-
-			});
+			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
 			l.onClose(e -> user.board.loadScoreboard());
 

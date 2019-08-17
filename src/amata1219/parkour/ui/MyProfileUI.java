@@ -45,17 +45,9 @@ public class MyProfileUI implements InventoryUI {
 		String playerName = player.getName();
 
 		return build(InventoryLine.x1, l -> {
-			//表示例: amata1219's menu
 			l.title = StringTemplate.capply("&b-$0's menu", playerName);
 
-			//デフォルトスロットを設定する
-			l.defaultSlot((s) -> {
-
-				s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> {
-					i.displayName = " ";
-				});
-
-			});
+			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
 			//自分のステータス表示
 			l.put((s) -> {

@@ -47,17 +47,9 @@ public class AbstractCheckpointSelectionUI implements InventoryUI {
 		List<Parkour> parkours = Parkours.getInstance().getEnabledParkours(category).collect(Collectors.toList());
 
 		return build(parkours.size(), l -> {
-			//表示例: Last checkpoints @ The Earth of Marmalade
 			l.title = StringTemplate.capply("&b-$0 checkpoints &7-@ &b-$1", checkpointType, category.name);
 
-			//デフォルトスロットを設定する
-			l.defaultSlot(s -> {
-
-				s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, (i) -> {
-					i.displayName = " ";
-				});
-
-			});
+			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
 			Checkpoints checkpoints = user.checkpoints;
 

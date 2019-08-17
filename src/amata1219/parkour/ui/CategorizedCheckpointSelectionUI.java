@@ -44,17 +44,9 @@ public class CategorizedCheckpointSelectionUI implements InventoryUI {
 		String parkourName = parkour.name;
 
 		return build(checkpointSize, l -> {
-			//タイトルを設定する
 			l.title = StringTemplate.capply("&b-$0 &r-checkpoints", parkourName);
 
-			//デフォルトスロットを設定する
-			l.defaultSlot((s) -> {
-
-				s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, (i) -> {
-					i.displayName = " ";
-				});
-
-			});
+			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
 			//各座標毎に処理をする
 			for(int slotIndex = 0; slotIndex < checkpointSize; slotIndex++){

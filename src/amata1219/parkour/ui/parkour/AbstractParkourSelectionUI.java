@@ -58,7 +58,6 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 		return build(line, l -> {
 			l.title = StringTemplate.capply("&b-$0", categoryName);
 
-			//デフォルトスロットを設定する
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
 			Player player = l.player;
