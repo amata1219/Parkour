@@ -1,11 +1,16 @@
 package amata1219.parkour.command;
 
-import org.bukkit.Bukkit;
+import java.util.function.Function;
+
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import amata1219.amalib.command.Arguments;
 import amata1219.amalib.command.Command;
 import amata1219.amalib.command.Sender;
-import amata1219.amalib.inventory.ui.InventoryLine;
+import amata1219.amalib.inventory.ui.dsl.InventoryUI;
+import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 
 public class TestCommand implements Command {
 
@@ -20,7 +25,41 @@ public class TestCommand implements Command {
 
 		int line = args.nextInt();
 
-		sender.asPlayerCommandSender().openInventory(Bukkit.createInventory(null, InventoryLine.necessaryInventoryLine(line * 9).inventorySize()));
+		if(line < 1 || 6 < line){
+			sender.warn("インベントリの段数は1～6");
+			return;
+		}
+
+		new TestUI(line).openInventory(sender.asPlayerCommandSender());
+	}
+
+	class TestUI implements InventoryUI {
+
+		private final int size;
+
+		public TestUI(int line){
+			this.size = line * 9;
+		}
+
+		@Override
+		public Function<Player, InventoryLayout> layout() {
+			return build(size, l -> {
+				l.defaultSlot(s -> {
+					s.editable = true;
+					s.icon(Material.AIR, i -> {});
+				});
+
+				l.onClose(e -> {
+					for(int index = 0; index < size; index++){
+						ItemStack item = l.getSlotAt(index).buildIcon().toItemStack();
+						if(item != null && item.getType() != Material.AIR)
+							l.player.getInventory().addItem(item);
+					}
+				});
+
+			});
+		}
+
 	}
 
 }
