@@ -10,6 +10,7 @@ import amata1219.parkour.ui.BuyHatUI;
 import amata1219.parkour.ui.LastCheckpointSelectionUI;
 import amata1219.parkour.ui.LatestCheckpointSelectionUI;
 import amata1219.parkour.ui.MyProfileUI;
+import amata1219.parkour.ui.ScoreboardOptionSelectionUI;
 import amata1219.parkour.ui.WearHatUI;
 import amata1219.parkour.ui.parkour.CommonParkourSelectionUI;
 import amata1219.parkour.ui.parkour.RankUpParkourSelectionUI;
@@ -22,6 +23,7 @@ public class InventoryUIs {
 	private final InventoryUI myProfileUI;
 	private final InventoryUI lastCheckpointSelectionUI;
 	private final InventoryUI latestCheckpointSelectionUI;
+	private final ScoreboardOptionSelectionUI scoreboardOptionSelectionUI;
 	private final InventoryUI buyHatUI;
 	private final InventoryUI wearHatUI;
 	private final HashMap<ParkourCategory, InventoryUI> parkourSelectionUIs = new HashMap<>(5);
@@ -29,12 +31,13 @@ public class InventoryUIs {
 	public InventoryUIs(User user){
 		player = user.asBukkitPlayer();
 
-		myProfileUI = new MyProfileUI(user);
 		lastCheckpointSelectionUI = new LastCheckpointSelectionUI(user);
 		latestCheckpointSelectionUI = new LatestCheckpointSelectionUI(user);
 
+		scoreboardOptionSelectionUI = new ScoreboardOptionSelectionUI(user);
 		buyHatUI = new BuyHatUI(user);
 		wearHatUI = new WearHatUI(user);
+		myProfileUI = new MyProfileUI(user, this);
 
 		for(ParkourCategory category : COMMON_CATEGORIES) parkourSelectionUIs.put(category, new CommonParkourSelectionUI(user, category));
 
@@ -52,6 +55,10 @@ public class InventoryUIs {
 
 	public void openLatestCheckpointSelectionUI(){
 		open(latestCheckpointSelectionUI);
+	}
+
+	public void openScoreboardOptionSelectionUI(){
+		open(scoreboardOptionSelectionUI);
 	}
 
 	public void openBuyHatUI(){
