@@ -3,11 +3,10 @@ package amata1219.parkour.function.hotbar;
 import java.util.Arrays;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import amata1219.amalib.string.StringColor;
+import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.user.User;
@@ -27,20 +26,14 @@ public class ParkoursMenuOpener implements FunctionalHotbarItem {
 
 	@Override
 	public ItemStack build(User user, boolean flag) {
-		//ユーザーに対応したプレイヤーを取得する
-		Player player = user.asBukkitPlayer();
-
 		ItemStack item = new ItemStack(Material.HEART_OF_THE_SEA);
 
 		ItemMeta meta = item.getItemMeta();
 
-		//使用言語に対応したテキストを表示名に設定する
-		meta.setDisplayName(StringColor.lcolor("&b-アスレチック一覧を開く | &b-Open Parkours Menu", player));
+		Localizer localizer = user.localizer;
 
-		//使用言語に対応したテキストを説明文に設定する
-		meta.setLore(Arrays.asList(
-			StringColor.lcolor("&7-クリックするとアスレチック一覧を開きます。 | &7-?", player)
-		));
+		meta.setDisplayName(localizer.color("&b-アスレチック一覧を開く | &b-Open Parkours Menu"));
+		meta.setLore(Arrays.asList(localizer.color("&7-クリックするとアスレチック一覧を開きます。 | &7-?")));
 
 		item.setItemMeta(meta);
 

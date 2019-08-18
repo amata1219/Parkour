@@ -3,11 +3,10 @@ package amata1219.parkour.function.hotbar;
 import java.util.Arrays;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import amata1219.amalib.string.StringColor;
+import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.function.ToggleHideMode;
 import amata1219.parkour.user.User;
 
@@ -21,23 +20,16 @@ public class HideModeToggler implements FunctionalHotbarItem {
 
 	@Override
 	public ItemStack build(User user, boolean flag) {
-		//ユーザーに対応したプレイヤーを取得する
-		Player player = user.asBukkitPlayer();
+		Localizer localizer = user.localizer;
 
 		//非表示モードかどうか
-		boolean hideMode = user.setting.hideMode;
+				boolean hideMode = user.setting.hideMode;
 
 		ItemStack item = new ItemStack(hideMode ? Material.GLASS : Material.BEACON);
-
 		ItemMeta meta = item.getItemMeta();
 
-		//使用言語に対応したテキストを表示名に設定する
-		meta.setDisplayName(StringColor.lcolor(hideMode ? "&b-プレイヤーを表示する | &b-?" : "&b-プレイヤーを非表示にする | &b-?", player));
-
-		//使用言語に対応したテキストを説明文に設定する
-		meta.setLore(Arrays.asList(
-			StringColor.lcolor("&7-説明文いらない。 | &7-?", player)
-		));
+		meta.setDisplayName(localizer.color(hideMode ? "&b-プレイヤーを表示する | &b-?" : "&b-プレイヤーを非表示にする | &b-?"));
+		meta.setLore(Arrays.asList(localizer.color("&7-説明文いらない。 | &7-?")));
 
 		item.setItemMeta(meta);
 

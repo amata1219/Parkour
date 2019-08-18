@@ -9,9 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.amalib.enchantment.GleamEnchantment;
 import amata1219.amalib.location.ImmutableLocation;
-import amata1219.amalib.string.StringColor;
-import amata1219.amalib.string.message.MessageColor;
-import amata1219.amalib.string.message.MessageTemplate;
+import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
@@ -20,11 +18,12 @@ public class CheckpointTeleporter implements FunctionalHotbarItem {
 
 	@Override
 	public void onClick(User user, ClickType click) {
+		Localizer localizer = user.localizer;
 		Player player = user.asBukkitPlayer();
 
 		//アスレをプレイ中でなければ戻る
 		if(!user.isPlayingWithParkour()){
-			MessageColor.lcolor("&c-アスレチックのプレイ中でないため実行出来ません | &c-?", player).displayOnActionBar(player);
+			localizer.mcolor("&c-アスレチックのプレイ中でないため実行出来ません | &c-?").displayOnActionBar(player);
 			return;
 		}
 
@@ -33,7 +32,7 @@ public class CheckpointTeleporter implements FunctionalHotbarItem {
 		Checkpoints checkpoints = user.checkpoints;
 
 		if(!checkpoints.containsParkour(parkour)){
-			MessageColor.lcolor("&c-チェックポイントが設定されていないため実行出来ません | &c-?t", player).displayOnActionBar(player);
+			localizer.mcolor("&c-チェックポイントが設定されていないため実行出来ません | &c-?t").displayOnActionBar(player);
 			return;
 		}
 
@@ -42,7 +41,7 @@ public class CheckpointTeleporter implements FunctionalHotbarItem {
 
 		//チェックポイントが無ければ戻る
 		if(checkpoint == null){
-			MessageColor.lcolor("&c-チェックポイントが設定されていないため実行出来ません | &c-?", player).displayOnActionBar(player);
+			localizer.mcolor("&c-チェックポイントが設定されていないため実行出来ません | &c-?").displayOnActionBar(player);
 			return;
 		}
 
@@ -52,27 +51,19 @@ public class CheckpointTeleporter implements FunctionalHotbarItem {
 		//チェックポイントにテレポートさせる
 		player.teleport(checkpoint.asBukkit());
 
-		//表示例: Update7 の チェックポイント1 にテレポートしました
-		MessageTemplate.clapply("$1-&b-の チェックポイント$0 にテレポートしました | &b-?", player, displayCheckAreaNumber, parkour.name).displayOnActionBar(player);
+		//表示例: チェックポイント1 @ Update12 にテレポートしました
+		localizer.mapplyAll("チェックポイント$0 @ $1 にテレポートしました", displayCheckAreaNumber, parkour.name).displayOnActionBar(player);
 	}
 
 	@Override
 	public ItemStack build(User user, boolean flag) {
-		//ユーザーに対応したプレイヤーを取得する
-		Player player = user.asBukkitPlayer();
+		Localizer localizer = user.localizer;
 
 		ItemStack item = new ItemStack(Material.LIGHT_BLUE_DYE);
-
 		ItemMeta meta = item.getItemMeta();
 
-		//使用言語に対応したテキストを表示名に設定する
-		meta.setDisplayName(StringColor.lcolor("&b-最新/最終チェックポイントにテレポートする | &b-?", player));
-
-		//使用言語に対応したテキストを説明文に設定する
-		meta.setLore(Arrays.asList(
-			StringColor.lcolor("&7-左クリックすると最新チェックポイントにテレポートします。 | &7-?", player),
-			StringColor.lcolor("&7-右クリックすると最終チェックポイントにテレポートします。 | &7-?", player)
-		));
+		meta.setDisplayName(localizer.color("&b-最新/最終チェックポイントにテレポートする | &b-?"));
+		meta.setLore(Arrays.asList(localizer.color("&7-左クリックすると最新、右クリックすると最終チェックポイントにテレポートします。 | &7-?")));
 
 		item.setItemMeta(meta);
 

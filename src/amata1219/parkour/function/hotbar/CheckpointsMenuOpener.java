@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import amata1219.amalib.string.StringColor;
+import amata1219.amalib.string.message.Localizer;
 import amata1219.amalib.string.message.MessageColor;
 import amata1219.parkour.user.InventoryUIs;
 import amata1219.parkour.user.User;
@@ -33,21 +33,13 @@ public class CheckpointsMenuOpener implements FunctionalHotbarItem {
 
 	@Override
 	public ItemStack build(User user, boolean flag) {
-		//ユーザーに対応したプレイヤーを取得する
-		Player player = user.asBukkitPlayer();
+		Localizer localizer = user.localizer;
 
 		ItemStack item = new ItemStack(Material.CYAN_DYE);
-
 		ItemMeta meta = item.getItemMeta();
 
-		//
-		//使用言語に対応したテキストを表示名に設定する
-		meta.setDisplayName(StringColor.lcolor("&b-最新/最終チェックポイント一覧を開く | &b-Open Latest/Last Checkpoints Menu", player));
-
-		//使用言語に対応したテキストを説明文に設定する
-		meta.setLore(Arrays.asList(
-			StringColor.lcolor("&7-左クリックで最新、右クリックで最終チェックポイントの一覧を開きます。 | &7-?", player)
-		));
+		meta.setDisplayName(localizer.color("&b-最新/最終チェックポイント一覧を開く | &b-?"));
+		meta.setLore(Arrays.asList(localizer.color("&7-左クリックで最新、右クリックで最終チェックポイントの一覧を開きます。 | &7-?")));
 
 		item.setItemMeta(meta);
 

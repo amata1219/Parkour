@@ -30,34 +30,6 @@ import amata1219.amalib.schedule.Sync;
 
 public class ControlFunctionalHotbarItem implements PlayerJoinListener, PlayerQuitListener {
 
-	/*
-	 * Checkpoint, To Spawn, Teleporter, User Config Athletic Selector
-Return to Checkpoint, Invisible, Return to Spawn, Leaderborad, Profile
-Teleport to Last Checkpoint
-You reached Checkpoint #1 after 00:30.361
-Congratulations on completing the parkour!
-You finished int 01:0.4823!
-Try again to ge an even better record!
-You finished this part of the parkour in 00:09.603. //checkpoint
-click to open
-Kits & Perks
-Hats
-Click to browse! Click to select!
-My Profile
-Settings
-~ joined the lobby!
-Game Menu
-Lobby Selector
-説明は灰色、値に色を付ける
-Click here to view it!
-Return to your last checkpoint
-You have received 15 mana from console
-You have completed this course 1 times!
-
-	last latest / all in category / parkours / hider / menu
-
-	 */
-
 	private static final Map<Integer, FunctionalHotbarItem> ITEMS = new HashMap<>(5);
 	private static final ItemStack AIR = new ItemStack(Material.AIR);
 
