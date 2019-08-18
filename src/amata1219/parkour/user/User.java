@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import amata1219.amalib.location.ImmutableLocation;
+import amata1219.amalib.string.message.Localizer;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.function.hotbar.ControlFunctionalHotbarItem;
 import amata1219.parkour.parkour.Parkour;
@@ -57,6 +58,8 @@ public class User {
 
 	//InventoryUIの管理インスタンス
 	public InventoryUIs inventoryUIs;
+
+	public Localizer localizer;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する

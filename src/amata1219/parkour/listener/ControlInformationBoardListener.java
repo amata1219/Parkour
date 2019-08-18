@@ -13,7 +13,7 @@ import amata1219.parkour.user.InformationBoard;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
-public class UpdateInformationBoardListener implements PlayerJoinListener, PlayerQuitListener {
+public class ControlInformationBoardListener implements PlayerJoinListener, PlayerQuitListener {
 
 	private final Users users = Users.getInstnace();
 

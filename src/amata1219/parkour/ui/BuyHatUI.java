@@ -13,6 +13,7 @@ import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.sound.SoundMetadata;
 import amata1219.amalib.string.StringLocalize;
+import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.hat.Hat;
 import amata1219.parkour.hat.Hats;
 import amata1219.parkour.user.User;
@@ -25,10 +26,12 @@ public class BuyHatUI implements InventoryUI {
 
 	private final User user;
 	private final UserHats hats;
+	private final Localizer localizer;
 
 	public BuyHatUI(User user){
 		this.user = user;
 		this.hats = user.hats;
+		this.localizer = user.localizer;
 	}
 
 	@Override
@@ -63,16 +66,16 @@ public class BuyHatUI implements InventoryUI {
 
 						s.icon(i -> {
 							i.basedItemStack = clonedItem;
-							i.displayName = StringLocalize.ctemplate("&b-$0 &7-@ &6-$1-&7-コイン | ?", player, hatName, value);
-							i.lore(StringLocalize.color("&7-クリックすると購入出来ます。 | ?", player));
+							i.displayName = localizer.applyAll("&b-$0 &7-@ &6-$1-&7-コイン | ?", hatName, value);
+							i.lore(localizer.color("&7-クリックすると購入出来ます。 | ?"));
 						});
 					}else{
 						s.onClick(e -> ERROR_SE.play(player));
 
 						s.icon(i -> {
 							i.basedItemStack = clonedItem;
-							i.displayName = StringLocalize.ctemplate("&c-$0 &7-@ &6-$1-&7-コイン | ?", player, hatName, value);
-							i.lore(StringLocalize.color("&c-所持コイン数が足りないため購入出来ません。 | ?", player));
+							i.displayName = localizer.applyAll("&c-$0 &7-@ &6-$1-&7-コイン | ?", hatName, value);
+							i.lore(localizer.color("&c-所持コイン数が足りないため購入出来ません。 | ?"));
 						});
 					}
 
