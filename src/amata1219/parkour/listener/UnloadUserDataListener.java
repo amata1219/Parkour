@@ -15,7 +15,7 @@ public class UnloadUserDataListener implements PlayerQuitListener {
 	public void onQuit(PlayerQuitEvent event) {
 		User user = Users.getInstnace().getUser(event.getPlayer());
 
-		//アスレのプレイ中でそのアスレのタイムアタックが有効の場合
+		//タイムアタックの途中であれば経過時間を記録する
 		if(user.isPlayingWithParkour() && user.parkourPlayingNow.timeAttackEnable) user.elapsedTime = System.currentTimeMillis() - user.timeToStartPlaying;
 
 		user.inventoryUIs = null;

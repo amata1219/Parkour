@@ -20,6 +20,12 @@ public class LoadUserDataListener implements PlayerJoinListener {
 		user.localizer = new Localizer(player);
 		user.inventoryUIs = new InventoryUIs(user);
 		ApplyRankToDisplayName.apply(user);
+
+		//タイムアタックの途中であれば
+		if(user.isPlayingWithParkour() && user.elapsedTime > 0){
+			user.timeToStartPlaying = System.currentTimeMillis() - user.elapsedTime;
+			user.elapsedTime = 0;
+		}
 	}
 
 }

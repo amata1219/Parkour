@@ -86,8 +86,8 @@ public class User {
 		//最後に遊んでいたアスレを取得する
 		parkourPlayingNow = parkours.getParkour("Currently playing parkour");
 
-		//最後にアスレをプレイし始めた時間を取得する
-		timeToStartPlaying = yaml.getLong("Time to start playing");
+		//タイムアタックを始めてからの経過時間を取得する
+		elapsedTime = yaml.getLong("Elapsed time");
 
 		checkpoints = new Checkpoints(yaml);
 
@@ -170,8 +170,8 @@ public class User {
 		//最後にプレイしていたアスレの名前を記録する
 		yaml.set("Last played parkour", parkourPlayingNow != null ? parkourPlayingNow.name : null);
 
-		//必要であれば経過時間を記録する
-		if(elapsedTime > 0) yaml.set("Elapsed time", elapsedTime);
+		//タイムアタック中であれば経過時間を記録し、そうでなければ削除する
+		yaml.set("Elapsed time", elapsedTime > 0 ? elapsedTime : null);
 
 		//クリア済みのアスレの名前リストを記録する
 		yaml.set("Cleared parkour names", clearedParkourNames.stream().collect(Collectors.toList()));
