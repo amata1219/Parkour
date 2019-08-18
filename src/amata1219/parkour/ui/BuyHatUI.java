@@ -12,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.sound.SoundMetadata;
-import amata1219.amalib.string.StringLocalize;
 import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.hat.Hat;
 import amata1219.parkour.hat.Hats;
@@ -44,7 +43,7 @@ public class BuyHatUI implements InventoryUI {
 		return build(hats.size(), l -> {
 			Player player = l.player;
 
-			l.title = StringLocalize.color("ハットの購入 | Buy Hats", player);
+			l.title = localizer.color("ハットの購入 | Buy Hats");
 
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
@@ -79,7 +78,7 @@ public class BuyHatUI implements InventoryUI {
 						s.icon(i -> {
 							i.basedItemStack = clonedHatItem;
 							i.displayName = localizer.applyAll("&c-$0 &7-@ &6-$1-&7-コイン | &c-?", hatName, value);
-							i.lore(localizer.color("&f-所持コイン数が足りないため購入出来ません。 | &f-?"));
+							i.lore(localizer.color("&7-所持コイン数が足りないため購入出来ません。 | &f-?"));
 						});
 					}
 

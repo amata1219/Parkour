@@ -50,11 +50,9 @@ public class TestCommand implements Command {
 				});
 
 				l.onClose(e -> {
-					for(int index = 0; index < size; index++){
-						ItemStack item = l.getSlotAt(index).buildIcon().toItemStack();
+					for(ItemStack item : e.inventory.getContents())
 						if(item != null && item.getType() != Material.AIR)
 							l.player.getInventory().addItem(item);
-					}
 				});
 
 			});
