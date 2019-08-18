@@ -52,12 +52,13 @@ public class BuyHatUI implements InventoryUI {
 				Hat hat = hats.get(index);
 				int value = hat.value;
 				String hatName = hat.name;
-				ItemStack clonedItem = hat.item.clone();
+				ItemStack clonedHatItem = hat.item.clone();
 
 				l.put(s -> {
-					//ハットを購入出来るだけのコインを持っている場合
-					if(value <= user.getCoins()){
+					if(this.hats.canBuy(hat)){
 						s.onClick(e -> {
+							this.hats.buy(hat);
+							localizer.mapplyAll("&b-$0の帽子を購入しました。 | &b-?", hatName).displayOnActionBar(player);
 							BUY_SE.play(player);
 
 							//表示を更新する
@@ -65,17 +66,20 @@ public class BuyHatUI implements InventoryUI {
 						});
 
 						s.icon(i -> {
-							i.basedItemStack = clonedItem;
-							i.displayName = localizer.applyAll("&b-$0 &7-@ &6-$1-&7-コイン | ?", hatName, value);
-							i.lore(localizer.color("&7-クリックすると購入出来ます。 | ?"));
+							i.basedItemStack = clonedHatItem;
+							i.displayName = localizer.applyAll("&b-$0 &7-@ &6-$1-&7-コイン | &b-?", hatName, value);
+							i.lore(localizer.color("&7-クリックすると購入出来ます。 | &7-?"));
 						});
 					}else{
-						s.onClick(e -> ERROR_SE.play(player));
+						s.onClick(e -> {
+							localizer.mcolor("&c-所持コイン数が足りないため購入出来ません。 | &c-?");
+							ERROR_SE.play(player);
+						});
 
 						s.icon(i -> {
-							i.basedItemStack = clonedItem;
-							i.displayName = localizer.applyAll("&c-$0 &7-@ &6-$1-&7-コイン | ?", hatName, value);
-							i.lore(localizer.color("&c-所持コイン数が足りないため購入出来ません。 | ?"));
+							i.basedItemStack = clonedHatItem;
+							i.displayName = localizer.applyAll("&c-$0 &7-@ &6-$1-&7-コイン | &c-?", hatName, value);
+							i.lore(localizer.color("&c-所持コイン数が足りないため購入出来ません。 | &c-?"));
 						});
 					}
 
