@@ -6,9 +6,11 @@ import org.bukkit.entity.Player;
 
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.parkour.parkour.ParkourCategory;
+import amata1219.parkour.ui.BuyHatUI;
 import amata1219.parkour.ui.LastCheckpointSelectionUI;
 import amata1219.parkour.ui.LatestCheckpointSelectionUI;
 import amata1219.parkour.ui.MyProfileUI;
+import amata1219.parkour.ui.WearHatUI;
 import amata1219.parkour.ui.parkour.CommonParkourSelectionUI;
 import amata1219.parkour.ui.parkour.RankedParkourSelectionUI;
 
@@ -20,6 +22,8 @@ public class InventoryUIs {
 	private final InventoryUI myProfileUI;
 	private final InventoryUI lastCheckpointSelectionUI;
 	private final InventoryUI latestCheckpointSelectionUI;
+	private final InventoryUI buyHatUI;
+	private final InventoryUI wearHatUI;
 	private final HashMap<ParkourCategory, InventoryUI> parkourSelectionUIs = new HashMap<>(5);
 
 	public InventoryUIs(User user){
@@ -29,6 +33,9 @@ public class InventoryUIs {
 		lastCheckpointSelectionUI = new LastCheckpointSelectionUI(user);
 		latestCheckpointSelectionUI = new LatestCheckpointSelectionUI(user);
 
+		buyHatUI = new BuyHatUI(user);
+		wearHatUI = new WearHatUI(user);
+
 		for(ParkourCategory category : COMMON_CATEGORIES) parkourSelectionUIs.put(category, new CommonParkourSelectionUI(user, category));
 
 		parkourSelectionUIs.put(ParkourCategory.UPDATE, new RankedParkourSelectionUI(user, ParkourCategory.UPDATE, () -> user.getUpdateRank()));
@@ -36,19 +43,31 @@ public class InventoryUIs {
 	}
 
 	public void openMyProfileUI(){
-		myProfileUI.openInventory(player);
+		open(myProfileUI);
 	}
 
 	public void openLastCheckpointSelectionUI(){
-		lastCheckpointSelectionUI.openInventory(player);
+		open(lastCheckpointSelectionUI);
 	}
 
 	public void openLatestCheckpointSelectionUI(){
-		latestCheckpointSelectionUI.openInventory(player);
+		open(latestCheckpointSelectionUI);
+	}
+
+	public void openBuyHatUI(){
+		open(buyHatUI);
+	}
+
+	public void openWearHatUI(){
+		open(wearHatUI);
 	}
 
 	public void openParkourSelectionUI(ParkourCategory category){
-		parkourSelectionUIs.get(category).openInventory(player);
+		open(parkourSelectionUIs.get(category));
+	}
+
+	private void open(InventoryUI ui){
+		ui.openInventory(player);
 	}
 
 }

@@ -8,8 +8,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import amata1219.amalib.inventory.ui.InventoryLine;
-import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.string.message.MessageTemplate;
+import amata1219.amalib.string.StringLocalize;
+import amata1219.amalib.string.message.MessageLocalize;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.parkour.RankedParkour;
@@ -43,10 +43,10 @@ public class RankedParkourSelectionUI extends AbstractParkourSelectionUI<RankedP
 
 						user.exitParkour();
 
-						MessageTemplate.clapply("&b-$0ロビーにテレポートしました | &b-Teleported to $0 lobby", player, category.name).displayOnActionBar(player);
+						MessageLocalize.ctemplate("&b-$0ロビーにテレポートしました | &b-Teleported to $0 lobby", player, category.name).displayOnActionBar(player);
 					});
 
-					s.icon(Material.NETHER_STAR, i -> i.displayName = StringTemplate.clapply("&b-$0ロビーにテレポートする", player, category.name));
+					s.icon(Material.NETHER_STAR, i -> i.displayName = StringLocalize.ctemplate("&b-$0ロビーにテレポートする", player, category.name));
 
 				}, layout.option.size - 10);
 

@@ -18,7 +18,7 @@ import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.string.StringLocalize;
 import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.string.message.MessageTemplate;
+import amata1219.amalib.string.message.MessageLocalize;
 import amata1219.amalib.tuplet.Tuple;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
@@ -61,9 +61,9 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
 			Player player = l.player;
-			AtomicInteger slotIndex = new AtomicInteger();
 
-			parkours.forEach(parkour -> {
+			for(int index = 0; index < parkours.size(); index++){
+				Parkour parkour = parkours.get(index);
 				String parkourName = parkour.name;
 
 				l.put(s -> {
@@ -75,7 +75,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 						//アスレに参加させる
 						parkour.entry(users.getUser(player));
 
-						MessageTemplate.clapply("&7-「&r-$0-&r-&7-」&f-にテレポートしました | &7-?", player, parkourName).displayOnActionBar(player);
+						MessageLocalize.ctemplate("&7-「&r-$0-&r-&7-」&f-にテレポートしました | &7-?", player, parkourName).displayOnActionBar(player);
 					});
 
 					//アスレのアイコンを設定する
@@ -90,14 +90,14 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 						//表示するテキストを決定する
 						String numberOfDisplayedCheckAreas = maxMajorCheckAreaNumber >= 0 ? String.valueOf(maxMajorCheckAreaNumber + 1) : "None";
 
-						lore.add(StringTemplate.clapply("&7-チェックエリア @ &b-$0箇所 | &7-Check Areas @ &b-$0", player, numberOfDisplayedCheckAreas));
+						lore.add(StringLocalize.ctemplate("&7-チェックエリア @ &b-$0箇所 | &7-Check Areas @ &b-$0", player, numberOfDisplayedCheckAreas));
 
 						boolean timeAttackEnable = parkour.timeAttackEnable;
 
 						//表示するテキストを決定する
-						String textOfTimeAttackEnable = StringLocalize.apply(timeAttackEnable ? "&b-有効 | &b-Enable" : "&7-無効 | &7-Disable", player);
+						String textOfTimeAttackEnable = StringLocalize.localize(timeAttackEnable ? "&b-有効 | &b-Enable" : "&7-無効 | &7-Disable", player);
 
-						lore.add(StringTemplate.clapply("&7-タイムアタック @ $0 | &7-Time Attack @ $0", player, textOfTimeAttackEnable));
+						lore.add(StringLocalize.ctemplate("&7-タイムアタック @ $0 | &7-Time Attack @ $0", player, textOfTimeAttackEnable));
 
 						if(timeAttackEnable){
 							//上位の記録を取得する
@@ -107,12 +107,12 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 							if(!records.isEmpty()){
 								lore.add("");
 
-								lore.add(StringTemplate.clapply("&7-上位-&b-$0件-&7-の記録 | &7-Top &b-$0-&7 Records", player, records.size()));
+								lore.add(StringLocalize.ctemplate("&7-上位-&b-$0件-&7-の記録 | &7-Top &b-$0-&7 Records", player, records.size()));
 
 								AtomicInteger rank = new AtomicInteger(1);
 
 								records.stream()
-								.map(record -> StringTemplate.clapply("&b-$0-&7-位 &b-$1 &7-@ &b-$2 | &b-$0-&7-. &b-$1 &7-@ &b-$2", player, rank.getAndIncrement(), Bukkit.getOfflinePlayer(record.first).getName(), record.second))
+								.map(record -> StringLocalize.ctemplate("&b-$0-&7-位 &b-$1 &7-@ &b-$2 | &b-$0-&7-. &b-$1 &7-@ &b-$2", player, rank.getAndIncrement(), Bukkit.getOfflinePlayer(record.first).getName(), record.second))
 								.forEach(lore::add);
 							}
 						}
@@ -121,8 +121,8 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 						if(user.clearedParkourNames.contains(parkourName)) i.gleam();
 					});
 
-				}, slotIndex.getAndIncrement());
-			});
+				}, index);
+			}
 
 			int inventorySize = line.inventorySize();
 			AtomicInteger counter = new AtomicInteger();
