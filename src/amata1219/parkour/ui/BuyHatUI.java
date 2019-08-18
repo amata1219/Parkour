@@ -79,7 +79,7 @@ public class BuyHatUI implements InventoryUI {
 						s.icon(i -> {
 							i.basedItemStack = clonedHatItem;
 							i.displayName = localizer.applyAll("&c-$0 &7-@ &6-$1-&7-コイン | &c-?", hatName, value);
-							i.lore(localizer.color("&c-所持コイン数が足りないため購入出来ません。 | &c-?"));
+							i.lore(localizer.color("&f-所持コイン数が足りないため購入出来ません。 | &f-?"));
 						});
 					}
 
