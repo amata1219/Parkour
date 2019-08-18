@@ -21,7 +21,7 @@ import amata1219.parkour.user.UserHats;
 public class BuyHatUI implements InventoryUI {
 
 	private static final SoundMetadata BUY_SE = new SoundMetadata(Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.75f);
-	private static final SoundMetadata ERROR_SE = new SoundMetadata(Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.75f);
+	private static final SoundMetadata ERROR_SE = new SoundMetadata(Sound.BLOCK_ANVIL_PLACE, 1f, 1.75f);
 
 	private final User user;
 	private final UserHats hats;
@@ -63,14 +63,16 @@ public class BuyHatUI implements InventoryUI {
 
 						s.icon(i -> {
 							i.basedItemStack = clonedItem;
-							i.displayName = StringLocalize.ctemplate("&b-$0 &7-@ &6-$1-&7-コイン (購入可能) | ?", player, hatName, value);
+							i.displayName = StringLocalize.ctemplate("&b-$0 &7-@ &6-$1-&7-コイン | ?", player, hatName, value);
+							i.lore(StringLocalize.color("&7-クリックすると購入出来ます。 | ?", player));
 						});
 					}else{
 						s.onClick(e -> ERROR_SE.play(player));
 
 						s.icon(i -> {
 							i.basedItemStack = clonedItem;
-							i.displayName = StringLocalize.ctemplate("&c-$0 &7-@ &6-$1-&7-コイン (購入不可能) | ?", player, hatName, value);
+							i.displayName = StringLocalize.ctemplate("&c-$0 &7-@ &6-$1-&7-コイン | ?", player, hatName, value);
+							i.lore(StringLocalize.color("&c-所持コイン数が足りないため購入出来ません。 | ?", player));
 						});
 					}
 
