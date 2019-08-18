@@ -38,6 +38,9 @@ public class User {
 	//プレイし始めた時間(ミリ秒)
 	public long timeToStartPlaying;
 
+	//アスレのプレイ開始からログアウトまでの経過時間(ミリ秒)
+	public long elapsedTime;
+
 	//各アスレのチェックポイント
 	public final Checkpoints checkpoints;
 
@@ -59,6 +62,7 @@ public class User {
 	//InventoryUIの管理インスタンス
 	public InventoryUIs inventoryUIs;
 
+	//プレイヤーの言語設定に対応したテキストを選び加工するインスタンス
 	public Localizer localizer;
 
 	public User(Yaml yaml){
@@ -166,8 +170,8 @@ public class User {
 		//最後にプレイしていたアスレの名前を記録する
 		yaml.set("Last played parkour", parkourPlayingNow != null ? parkourPlayingNow.name : null);
 
-		//最後にアスレをプレイし始めた時間を記録する
-		yaml.set("Time to start playing", timeToStartPlaying);
+		//必要であれば経過時間を記録する
+		if(elapsedTime > 0) yaml.set("Elapsed time", elapsedTime);
 
 		//クリア済みのアスレの名前リストを記録する
 		yaml.set("Cleared parkour names", clearedParkourNames.stream().collect(Collectors.toList()));

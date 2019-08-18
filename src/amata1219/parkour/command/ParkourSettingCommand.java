@@ -58,7 +58,7 @@ public class ParkourSettingCommand implements Command {
 			sender.message(StringTemplate.capply("&7-: &b-Category &7-@ &f-$0", parkour.category.name));
 			sender.message(StringTemplate.capply("&7-: &b-Spawn &7-@ &f-$0", parkour.spawn.serialize().replace(",", "§7,§f")));
 			sender.message(StringTemplate.capply("&7-: &b-Color &7-@ &f-$0", parkour.borderColor.serialize()));
-			sender.message(StringTemplate.capply("&7-: &b-Time attack &7-@ &f-$0", parkour.timeAttackEnable));
+			sender.message(StringTemplate.capply("&7-: &b-Time Attack &7-@ &f-$0", parkour.timeAttackEnable));
 			break;
 		}case "category":{
 			try{

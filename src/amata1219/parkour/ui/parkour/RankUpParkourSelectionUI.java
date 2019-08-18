@@ -12,19 +12,19 @@ import amata1219.amalib.string.StringLocalize;
 import amata1219.amalib.string.message.MessageLocalize;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.Parkours;
-import amata1219.parkour.parkour.RankedParkour;
+import amata1219.parkour.parkour.RankUpParkour;
 import amata1219.parkour.user.User;
 
-public class RankedParkourSelectionUI extends AbstractParkourSelectionUI<RankedParkour> {
+public class RankUpParkourSelectionUI extends AbstractParkourSelectionUI<RankUpParkour> {
 
-	public RankedParkourSelectionUI(User user, ParkourCategory category,  Supplier<Integer> rank) {
+	public RankUpParkourSelectionUI(User user, ParkourCategory category,  Supplier<Integer> rank) {
 		super(
 			user,
 			category,
 
 			//カテゴリーに対応したアスレリストを返す関数を作成する
 			() -> Parkours.getInstance().getEnabledParkours(category)
-			.map(parkour -> (RankedParkour) parkour)
+			.map(parkour -> (RankUpParkour) parkour)
 			.sorted((parkour1, parkour2) -> Integer.compare(parkour1.rank, parkour2.rank))
 			.collect(Collectors.toList()),
 

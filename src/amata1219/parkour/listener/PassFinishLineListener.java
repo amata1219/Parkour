@@ -12,7 +12,7 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
-import amata1219.parkour.parkour.RankedParkour;
+import amata1219.parkour.parkour.RankUpParkour;
 import amata1219.parkour.parkour.Records;
 import amata1219.parkour.user.User;
 import amata1219.parkour.util.TimeFormat;
@@ -80,11 +80,11 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		MessageTemplate.capply("&b-Gave $0 $1 coins as a reward!", playerName, coins).display(player);
 
 		//ランクアップアスレの場合
-		if(parkour instanceof RankedParkour){
+		if(parkour instanceof RankUpParkour){
 			ParkourCategory category = parkour.category;
 
 			//アスレのランクを取得する
-			int rank = ((RankedParkour) parkour).rank;
+			int rank = ((RankUpParkour) parkour).rank;
 
 			//各タイプで分岐する
 			switch(category){

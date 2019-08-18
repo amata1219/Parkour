@@ -8,7 +8,6 @@ import org.bukkit.util.Consumer;
 import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.region.Region;
 import amata1219.amalib.string.StringSplit;
-import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.amalib.util.Color;
 import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.user.User;
@@ -46,7 +45,7 @@ public class Parkour {
 
 		//領域を設定する
 		Region relativeRegion = Region.deserialize(yaml.getString("Region"));
-		region = relativeRegion.sub(origin);
+		region = relativeRegion.add(origin);
 
 		//スポーン地点を設定する
 		ImmutableLocation relativeSpawn =ImmutableLocation.deserialize(yaml.getString("Spawn"));
@@ -54,11 +53,11 @@ public class Parkour {
 
 		//スタートラインを設定する
 		Region relativeStartLine = Region.deserialize(yaml.getString("Start line"));
-		startLine = new ParkourRegion(this, relativeStartLine.sub(origin));
+		startLine = new ParkourRegion(this, relativeStartLine.add(origin));
 
 		//フィニッシュラインを設定する
 		Region relativeFinishLine = Region.deserialize(yaml.getString("Finish line"));
-		finishLine =  new ParkourRegion(this, relativeFinishLine.sub(origin));
+		finishLine =  new ParkourRegion(this, relativeFinishLine.add(origin));
 
 		//チェックエリアを設定する
 		checkAreas = new CheckAreas(parkours, yaml, this, origin);
@@ -99,8 +98,6 @@ public class Parkour {
 		startLine.displayBorders();
 		finishLine.displayBorders();
 		checkAreas.displayAll();
-
-		MessageTemplate.clapply("$0-&f-にテレポートしました | You teleported to $0", player, name).displayOnActionBar(player);
 	}
 
 	public void exit(User user){

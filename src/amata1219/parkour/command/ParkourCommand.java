@@ -122,6 +122,17 @@ public class ParkourCommand implements Command {
 
 			sender.info(StringTemplate.capply("$0-&r-&b-を無効化しました。", parkourName));
 			break;
+		}case "info":{
+			//指定されたアスレが存在しなければ戻る
+			if(blockNotExistParkour(sender, parkourName)) return;
+
+			Parkour parkour = getParkour(parkourName);
+
+			sender.info(StringTemplate.capply("&7-: &b-State &7-@ &f-$0", parkour.enable ? "有効" : "無効"));
+			sender.info(StringTemplate.capply("&7-: &b-Region &7-@ &f-$0", parkour.region.serialize()));
+			sender.info(StringTemplate.capply("&7-: &b-Start Line &7-@ &f-$0", parkour.startLine.serialize()));
+			sender.info(StringTemplate.capply("&7-: &b-FinishLine &7-@ &f-$0", parkour.finishLine.serialize()));
+			break;
 		}default:
 			displayCommandUsage(sender);
 			break;

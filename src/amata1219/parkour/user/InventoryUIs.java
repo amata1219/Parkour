@@ -12,7 +12,7 @@ import amata1219.parkour.ui.LatestCheckpointSelectionUI;
 import amata1219.parkour.ui.MyProfileUI;
 import amata1219.parkour.ui.WearHatUI;
 import amata1219.parkour.ui.parkour.CommonParkourSelectionUI;
-import amata1219.parkour.ui.parkour.RankedParkourSelectionUI;
+import amata1219.parkour.ui.parkour.RankUpParkourSelectionUI;
 
 public class InventoryUIs {
 
@@ -38,8 +38,8 @@ public class InventoryUIs {
 
 		for(ParkourCategory category : COMMON_CATEGORIES) parkourSelectionUIs.put(category, new CommonParkourSelectionUI(user, category));
 
-		parkourSelectionUIs.put(ParkourCategory.UPDATE, new RankedParkourSelectionUI(user, ParkourCategory.UPDATE, () -> user.getUpdateRank()));
-		parkourSelectionUIs.put(ParkourCategory.EXTEND, new RankedParkourSelectionUI(user, ParkourCategory.EXTEND, () -> user.getExtendRank()));
+		parkourSelectionUIs.put(ParkourCategory.UPDATE, new RankUpParkourSelectionUI(user, ParkourCategory.UPDATE, () -> user.getUpdateRank()));
+		parkourSelectionUIs.put(ParkourCategory.EXTEND, new RankUpParkourSelectionUI(user, ParkourCategory.EXTEND, () -> user.getExtendRank()));
 	}
 
 	public void openMyProfileUI(){

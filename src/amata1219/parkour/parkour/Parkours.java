@@ -92,7 +92,7 @@ public class Parkours {
 		Yaml yaml = makeYaml(parkourName);
 
 		//コンフィグに基づきアスレを生成する
-		Parkour parkour = RankedParkour.isRankedParkour(ChatColor.stripColor(yaml.name)) ? new RankedParkour(this, yaml) : new Parkour(this, yaml);
+		Parkour parkour = RankUpParkour.isRankedParkour(ChatColor.stripColor(yaml.name)) ? new RankUpParkour(this, yaml) : new Parkour(this, yaml);
 
 		registerParkour(parkour);
 	}

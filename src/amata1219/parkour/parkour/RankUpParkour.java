@@ -2,11 +2,11 @@ package amata1219.parkour.parkour;
 
 import amata1219.amalib.yaml.Yaml;
 
-public class RankedParkour extends Parkour {
+public class RankUpParkour extends Parkour {
 
 	//指定されたアスレ名がランクアップアスレであるかどうか
 	public static boolean isRankedParkour(Parkour parkour){
-		return parkour instanceof RankedParkour;
+		return parkour instanceof RankUpParkour;
 	}
 
 	public static boolean isRankedParkour(String parkourName){
@@ -15,7 +15,7 @@ public class RankedParkour extends Parkour {
 
 	public final int rank;
 
-	public RankedParkour(Parkours parkours, Yaml yaml) {
+	public RankUpParkour(Parkours parkours, Yaml yaml) {
 		super(parkours, yaml);
 
 		//装飾コードを除いたアスレ名を取得する
