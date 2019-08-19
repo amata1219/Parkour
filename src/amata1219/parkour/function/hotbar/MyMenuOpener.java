@@ -12,7 +12,7 @@ public class MyMenuOpener implements FunctionalHotbarItem {
 
 	@Override
 	public void onClick(User user, ClickType click) {
-		user.inventoryUIs.openMyProfileUI();
+		user.inventoryUserInterfaces.openMyProfileUI();
 	}
 
 	@Override

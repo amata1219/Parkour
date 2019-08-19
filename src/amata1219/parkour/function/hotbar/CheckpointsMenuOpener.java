@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.amalib.string.message.Localizer;
 import amata1219.amalib.string.message.MessageColor;
-import amata1219.parkour.user.InventoryUIs;
+import amata1219.parkour.user.InventoryUserInterfaces;
 import amata1219.parkour.user.User;
 
 public class CheckpointsMenuOpener implements FunctionalHotbarItem {
@@ -24,7 +24,7 @@ public class CheckpointsMenuOpener implements FunctionalHotbarItem {
 			return;
 		}
 
-		InventoryUIs inventoryUIs = user.inventoryUIs;
+		InventoryUserInterfaces inventoryUIs = user.inventoryUserInterfaces;
 
 		//右クリックしたのであれば最終、左クリックしたのであれば最新のチェックポイントリストを表示する
 		if(click == ClickType.RIGHT) inventoryUIs.openLastCheckpointSelectionUI();

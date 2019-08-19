@@ -15,7 +15,7 @@ import amata1219.parkour.ui.WearHatUI;
 import amata1219.parkour.ui.parkour.CommonParkourSelectionUI;
 import amata1219.parkour.ui.parkour.RankUpParkourSelectionUI;
 
-public class InventoryUIs {
+public class InventoryUserInterfaces {
 
 	private static final ParkourCategory[] COMMON_CATEGORIES = new ParkourCategory[]{ParkourCategory.NORMAL, ParkourCategory.SEGMENT, ParkourCategory.BIOME};
 
@@ -28,7 +28,7 @@ public class InventoryUIs {
 	private final InventoryUI wearHatUI;
 	private final HashMap<ParkourCategory, InventoryUI> parkourSelectionUIs = new HashMap<>(5);
 
-	public InventoryUIs(User user){
+	public InventoryUserInterfaces(User user){
 		player = user.asBukkitPlayer();
 
 		lastCheckpointSelectionUI = new LastCheckpointSelectionUI(user);
@@ -37,8 +37,7 @@ public class InventoryUIs {
 		scoreboardOptionSelectionUI = new ScoreboardOptionSelectionUI(user);
 		buyHatUI = new BuyHatUI(user);
 		wearHatUI = new WearHatUI(user);
-		myProfileUI = new MyProfileUI(user, this);
-
+		myProfileUI = new MyProfileUI(user);
 		for(ParkourCategory category : COMMON_CATEGORIES) parkourSelectionUIs.put(category, new CommonParkourSelectionUI(user, category));
 
 		parkourSelectionUIs.put(ParkourCategory.UPDATE, new RankUpParkourSelectionUI(user, ParkourCategory.UPDATE, () -> user.getUpdateRank()));

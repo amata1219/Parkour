@@ -2,7 +2,6 @@ package amata1219.parkour.user;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 
 import org.bukkit.Bukkit;
@@ -15,7 +14,12 @@ import amata1219.amalib.tuplet.Quadruple;
 
 public class InformationBoard {
 
-	private static final List<Quadruple<Function<UserSetting, Boolean>, Integer, String, Function<User, Object>>> LINES = new ArrayList<>(12);
+	private static final ArrayList<Quadruple<Function<UserSetting, Boolean>, Integer, String, Function<User, Object>>> LINES = new ArrayList<>(12);
+
+	@SafeVarargs
+	private static void initialize(Quadruple<Function<UserSetting, Boolean>, Integer, String, Function<User, Object>>... components){
+		Arrays.stream(components).forEach(LINES::add);
+	}
 
 	static{
 		initialize(
@@ -30,14 +34,8 @@ public class InformationBoard {
 			new Quadruple<>(s -> s.displayOnlinePlayers, 3, "&b-接続プレイヤー数 &7-@ &f-$0 | &b-Online Players &7-@ &f-$0", u -> Bukkit.getOnlinePlayers().size()),
 			new Quadruple<>(s -> s.displayPing, 2, "&b-ピン &7-@ &f-$0 | &b-Ping &7-@ &f-$0ms", u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
 			new Quadruple<>(s -> true, 1, " | ", u -> ""),
-			//日英で空白調整
 			new Quadruple<>(s -> s.displayServerAddress, 0, "&b-$0 | &b-$0", u -> "   azisaba.net")
 		);
-	}
-
-	@SafeVarargs
-	private static void initialize(Quadruple<Function<UserSetting, Boolean>, Integer, String, Function<User, Object>>... components){
-		Arrays.stream(components).forEach(LINES::add);
 	}
 
 	private final User user;

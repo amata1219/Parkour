@@ -18,7 +18,7 @@ public class UserQuitListener implements PlayerQuitListener {
 		//タイムアタックの途中であれば経過時間を記録する
 		if(user.isPlayingWithParkour() && user.parkourPlayingNow.timeAttackEnable) user.elapsedTime = System.currentTimeMillis() - user.timeToStartPlaying;
 
-		user.inventoryUIs = null;
+		user.inventoryUserInterfaces = null;
 		user.localizer = null;
 
 		user.board.clearScoreboard();

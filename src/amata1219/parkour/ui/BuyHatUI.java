@@ -61,7 +61,7 @@ public class BuyHatUI implements InventoryUI {
 							BUY_SE.play(player);
 
 							//表示を更新する
-							user.inventoryUIs.openBuyHatUI();
+							user.inventoryUserInterfaces.openBuyHatUI();
 						});
 
 						s.icon(i -> {

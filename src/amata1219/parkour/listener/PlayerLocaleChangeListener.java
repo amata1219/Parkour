@@ -10,13 +10,15 @@ import amata1219.parkour.user.Users;
 
 public class PlayerLocaleChangeListener implements Listener {
 
-	@EventHandler
-	public void onChange(PlayerLocaleChangeEvent event){
-		Player player = event.getPlayer();
-
+	public static void apply(Player player){
 		for(int slotIndex = 0; slotIndex < 10; slotIndex++) ControlFunctionalHotbarItem.updateSlot(player, slotIndex);
 
 		Users.getInstnace().getUser(player).board.updateAll();
+	}
+
+	@EventHandler
+	public void onChange(PlayerLocaleChangeEvent event){
+		apply(event.getPlayer());
 	}
 
 }

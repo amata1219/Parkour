@@ -2,6 +2,7 @@ package amata1219.parkour.ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.bukkit.Bukkit;
@@ -13,39 +14,52 @@ import org.bukkit.inventory.ItemStack;
 import amata1219.amalib.inventory.ui.InventoryLine;
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
+import amata1219.amalib.inventory.ui.listener.ClickEvent;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.string.message.Localizer;
 import amata1219.amalib.tuplet.Quadruple;
 import amata1219.amalib.util.SkullMaker;
-import amata1219.parkour.user.InventoryUIs;
+import amata1219.parkour.user.InventoryUserInterfaces;
 import amata1219.parkour.user.User;
 
 public class MyProfileUI implements InventoryUI {
 
-	private final User user;
-	private final Localizer localizer;
-	private final ArrayList<Quadruple<Integer, Material, String, Runnable>> components = new ArrayList<>(3);
+	private static final ArrayList<Quadruple<Integer, Material, String, Consumer<User>>> ICONS = new ArrayList<>();
 
-	public MyProfileUI(User user, InventoryUIs inventoryUIs){
-		this.user = user;
-		this.localizer = user.localizer;
-
-		components.addAll(Arrays.asList(
-			component(4, Material.SIGN, localizer.color("&b-スコアボードオプション | &b-?"), () -> inventoryUIs.openScoreboardOptionSelectionUI()),
-			component(5, Material.GOLD_INGOT, localizer.color("&b-帽子を購入する | &b-?"), () -> inventoryUIs.openBuyHatUI()),
-			component(6, Material.ARMOR_STAND, "&b-帽子を被る | &b-?", () -> inventoryUIs.openWearHatUI())
-		));
+	@SafeVarargs
+	private static void initialize(Quadruple<Integer, Material, String, Consumer<User>>... icons){
+		Arrays.stream(icons).forEach(ICONS::add);
 	}
 
-	private Quadruple<Integer, Material, String, Runnable> component(int slotIndex, Material material, String displayName, Runnable run){
-		return new Quadruple<>(slotIndex, material, displayName, run);
+	static{
+		initialize(
+			new Quadruple<>(4, Material.PRISMARINE_SLAB, "&b-スコアボードオプション | &b-Scoreboard Options", u -> u.inventoryUserInterfaces.openScoreboardOptionSelectionUI()),
+			new Quadruple<>(5, Material.PRISMARINE_BRICK_SLAB, "&b-帽子を購入する | &b-Buy Hats", u -> u.inventoryUserInterfaces.openBuyHatUI()),
+			new Quadruple<>(6, Material.DARK_PRISMARINE_SLAB, "&b-帽子を被る | &b-?", u -> u.inventoryUserInterfaces.openWearHatUI()),
+			new Quadruple<>(7, Material.QUARTZ_SLAB, "&bロビーにテレポートする | &b-Teleport to Lobby", u -> {
+				//アスレから退出させる
+				u.exitParkour();
+
+				Player player = u.asBukkitPlayer();
+
+				//このテレポート処理は本番環境では変更する
+				player.teleport(Bukkit.getWorld("world").getSpawnLocation());
+
+				u.localizer.mcolor("&b-ロビーにテレポートしました | &b-Teleported to Lobby").displayOnActionBar(player);
+			})
+		);
+	}
+
+	private final User user;
+
+	public MyProfileUI(User user){
+		this.user = user;
 	}
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
+		Localizer localizer = user.localizer;
 		Player player = user.asBukkitPlayer();
-
-		String playerName = player.getName();
 
 		return build(InventoryLine.x1, l -> {
 			l.title = localizer.localize("プロフィール | My Profile");
@@ -61,6 +75,7 @@ public class MyProfileUI implements InventoryUI {
 					i.displayName = StringTemplate.capply("&b-$0", playerName);
 
 					i.lore(
+						localizer.applyAll("&7-: &b-Updateランク ", objects)
 						StringTemplate.capply("&7-: &b-Update rank &7-@ &b-$0", user.getUpdateRank()),
 						StringTemplate.capply("&7-: &b-Extend rank &7-@ &b-$0", user.getExtendRank()),
 						"",

@@ -63,7 +63,7 @@ public class User {
 	public InformationBoard board;
 
 	//InventoryUIの管理インスタンス
-	public InventoryUIs inventoryUIs;
+	public InventoryUserInterfaces inventoryUserInterfaces;
 
 	//プレイヤーの言語設定に対応したテキストを選び加工するインスタンス
 	public Localizer localizer;

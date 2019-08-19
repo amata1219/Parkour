@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import amata1219.parkour.listener.PlayerLocaleChangeListener;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
@@ -49,7 +50,17 @@ public class ControlFunctionalHotbarItem implements PlayerJoinListener, PlayerQu
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event){
-		Sync.define(() -> initializeSlots(event.getPlayer())).executeLater(20);
+		Player player = event.getPlayer();
+		String locale = player.getLocale();
+
+		initializeSlots(player);
+
+		Sync.define(() -> {
+			//プレイヤーがオフライン又は言語設定に変更が無ければ戻る
+			if(!player.isOnline() || player.getLocale().equals(locale)) return;
+
+			PlayerLocaleChangeListener.apply(player);
+		}).executeLater(100);
 	}
 
 	@EventHandler
@@ -68,7 +79,7 @@ public class ControlFunctionalHotbarItem implements PlayerJoinListener, PlayerQu
 		Player player = event.getPlayer();
 
 		//ユーザーを取得する
-		User user = Users.getInstnace().getUser(player);
+		User user = toUser(player);
 
 		//クリックされたスロットの番号を取得する
 		Integer clickedSlotIndex = player.getInventory().getHeldItemSlot();

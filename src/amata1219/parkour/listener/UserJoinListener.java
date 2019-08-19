@@ -8,7 +8,7 @@ import amata1219.amalib.listener.PlayerJoinListener;
 import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.user.InformationBoard;
-import amata1219.parkour.user.InventoryUIs;
+import amata1219.parkour.user.InventoryUserInterfaces;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
@@ -23,7 +23,7 @@ public class UserJoinListener implements PlayerJoinListener {
 		User user = users.getUser(player);
 
 		user.localizer = new Localizer(player);
-		user.inventoryUIs = new InventoryUIs(user);
+		user.inventoryUserInterfaces = new InventoryUserInterfaces(user);
 
 		user.board = new InformationBoard(user);
 		user.board.loadScoreboard();

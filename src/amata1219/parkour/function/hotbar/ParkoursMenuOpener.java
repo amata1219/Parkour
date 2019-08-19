@@ -21,7 +21,7 @@ public class ParkoursMenuOpener implements FunctionalHotbarItem {
 		//ステージのカテゴリーを取得する
 		ParkourCategory category = parkour != null ? parkour.category : ParkourCategory.NORMAL;
 
-		user.inventoryUIs.openParkourSelectionUI(category);
+		user.inventoryUserInterfaces.openParkourSelectionUI(category);
 	}
 
 	@Override
