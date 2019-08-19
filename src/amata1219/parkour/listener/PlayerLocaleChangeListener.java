@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLocaleChangeEvent;
 
 import amata1219.parkour.function.hotbar.ControlFunctionalHotbarItem;
+import amata1219.parkour.user.Users;
 
 public class PlayerLocaleChangeListener implements Listener {
 
@@ -13,8 +14,9 @@ public class PlayerLocaleChangeListener implements Listener {
 	public void onChange(PlayerLocaleChangeEvent event){
 		Player player = event.getPlayer();
 
-		//各アイテムのテキストを使用言語に対応させる
 		for(int slotIndex = 0; slotIndex < 10; slotIndex++) ControlFunctionalHotbarItem.updateSlot(player, slotIndex);
+
+		Users.getInstnace().getUser(player).board.updateAll();
 	}
 
 }

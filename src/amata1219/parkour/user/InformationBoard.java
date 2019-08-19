@@ -84,6 +84,10 @@ public class InformationBoard {
 		board = null;
 	}
 
+	public void updateAll(){
+		for(int score = 0; score < LINES.size(); score++) updateValue(score);
+	}
+
 	public void updateUpdateRank(){
 		updateValue(3);
 	}
