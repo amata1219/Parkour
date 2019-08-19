@@ -23,14 +23,14 @@ public class InformationBoard {
 		initialize(
 			new Quadruple<>(s -> true, 11, l -> "", u -> ""),
 			new Quadruple<>(s -> true, 10, l -> "", u -> ""),
-			new Quadruple<>(s -> s.displayTraceur, 9, l -> l.color("&b-Traceur &7-@ &f-$0"), u -> u.asBukkitPlayer().getName()),
-			new Quadruple<>(s -> s.displayUpdateRank, 8, l -> l.color("&b-Update Rank &7-@ &f-$0"), u -> u.getUpdateRank()),
-			new Quadruple<>(s -> s.displayExtendRank, 7, l -> l.color("&b-Extend Rank &7-@ &f-$0"), u -> u.getExtendRank()),
-			new Quadruple<>(s -> s.displayJumps, 6, l -> l.color("&b-Jumps &7-@ &f-$0"), u -> u.asBukkitPlayer().getStatistic(Statistic.JUMP)),
-			new Quadruple<>(s -> s.displayCoins, 5, l -> l.color("&b-Coins &7-@ &f-$0"), u -> u.getCoins()),
-			new Quadruple<>(s -> s.displayTimePlayed, 4, l -> l.color("&b-Time Played &7-@ &f-$0h"), u -> u.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
-			new Quadruple<>(s -> s.displayOnlinePlayers, 3, l -> l.color("&b-Online Players &7-@ &f-$0"), u -> Bukkit.getOnlinePlayers().size()),
-			new Quadruple<>(s -> s.displayPing, 2, l -> l.color("&b-Ping &7-@ &f-$0ms"), u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
+			new Quadruple<>(s -> s.displayTraceur, 9, l -> l.color("&b-Traceur &7-@ &f-$0 | &b-トレイサー &7-@ &f-$0"), u -> u.asBukkitPlayer().getName()),
+			new Quadruple<>(s -> s.displayUpdateRank, 8, l -> l.color("&b-Update Rank &7-@ &f-$0 | &b-Updateランク &7-@ &f-$0"), u -> u.getUpdateRank()),
+			new Quadruple<>(s -> s.displayExtendRank, 7, l -> l.color("&b-Extend Rank &7-@ &f-$0 | &b-Extendランク &7-@ &f-$0"), u -> u.getExtendRank()),
+			new Quadruple<>(s -> s.displayJumps, 6, l -> l.color("&b-Jumps &7-@ &f-$0 | &b-ジャンプ回数 &7-@ &f-$0"), u -> u.asBukkitPlayer().getStatistic(Statistic.JUMP)),
+			new Quadruple<>(s -> s.displayCoins, 5, l -> l.color("&b-Coins &7-@ &f-$0 | &b-所持コイン数 &7-@ &f-$0"), u -> u.getCoins()),
+			new Quadruple<>(s -> s.displayTimePlayed, 4, l -> l.color("&b-Time Played &7-@ &f-$0h | &b-総プレイ時間 &7-@ &f-$0"), u -> u.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
+			new Quadruple<>(s -> s.displayOnlinePlayers, 3, l -> l.color("&b-Online Players &7-@ &f-$0 | &b-オンラインプレイヤー数 &7-@ &f-$0"), u -> Bukkit.getOnlinePlayers().size()),
+			new Quadruple<>(s -> s.displayPing, 2, l -> l.color("&b-Ping &7-@ &f-$0ms | &b-ピン &7-@ &f-$0"), u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
 			new Quadruple<>(s -> true, 1, l -> "", u -> ""),
 			new Quadruple<>(s -> s.displayServerAddress, 0, l -> l.color("&b-$0"), u -> "   azisaba.net")
 		);
