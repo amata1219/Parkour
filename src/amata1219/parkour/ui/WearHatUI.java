@@ -24,7 +24,6 @@ import amata1219.parkour.user.UserHats;
 public class WearHatUI implements InventoryUI {
 
 	private static final SoundMetadata WEAR_SE = new SoundMetadata(Sound.ITEM_ARMOR_EQUIP_CHAIN, 5f, 0.25f);
-	private static final SoundMetadata ERROR_SE = new SoundMetadata(Sound.BLOCK_ANVIL_PLACE, 1f, 1.75f);
 	private static final SoundMetadata PUT_ON_SE = new SoundMetadata(Sound.ENTITY_CHICKEN_EGG, 1.5f, 1f);
 	private static final ItemStack AIR = new ItemStack(Material.AIR);
 
@@ -57,29 +56,30 @@ public class WearHatUI implements InventoryUI {
 				String hatName = hat.name;
 				ItemStack hatItem = hat.item;
 
+				PlayerInventory playerInventory = player.getInventory();
+				ItemStack helmet = playerInventory.getHelmet();
+
+				//同じ帽子であればセットしない
+				if(helmet != null && helmet.getType() == Material.PLAYER_HEAD && helmet.hasItemMeta() && hatName.endsWith(helmet.getItemMeta().getDisplayName())){
+					index--;
+					continue;
+				}
+
 				l.put(s -> {
 
 					s.onClick(e -> {
 						PlayerInventory inventory = player.getInventory();
-						ItemStack helmet = inventory.getHelmet();
-
-						//既に同じ帽子を被っている場合
-						if(helmet != null && helmet.getType() == Material.PLAYER_HEAD && helmet.hasItemMeta() && hatName.endsWith(helmet.getItemMeta().getDisplayName())){
-							localizer.mcolor("&c-既に同じ帽子を被っています | &c-?").displayOnActionBar(player);
-							ERROR_SE.play(player);
-							return;
-						}
 
 						//帽子を被らせる
 						inventory.setHelmet(hatItem);
 
 						//被った帽子はNMS側でclone()されているので取得した物を書き換える
-						helmet = inventory.getHelmet();
+						ItemStack equippedHelmet = inventory.getHelmet();
 
 						//表示名を帽子のプレイヤー名にする
-						ItemMeta meta = helmet.getItemMeta();
+						ItemMeta meta = equippedHelmet.getItemMeta();
 						meta.setDisplayName(StringTemplate.capply("&f-$0", hatName));
-						helmet.setItemMeta(meta);
+						equippedHelmet.setItemMeta(meta);
 
 						ItemStack putOnButton = new ItemStack(Material.CHEST);
 						ItemMeta putOnMeta = putOnButton.getItemMeta();

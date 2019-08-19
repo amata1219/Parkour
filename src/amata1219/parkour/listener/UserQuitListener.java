@@ -20,6 +20,9 @@ public class UserQuitListener implements PlayerQuitListener {
 
 		user.inventoryUIs = null;
 		user.localizer = null;
+
+		user.board.clearScoreboard();
+		user.board = null;
 	}
 
 }

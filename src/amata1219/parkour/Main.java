@@ -29,7 +29,7 @@ import amata1219.parkour.listener.PassFinishLineListener;
 import amata1219.parkour.listener.PassStartLineListener;
 import amata1219.parkour.listener.SetCheckpointListener;
 import amata1219.parkour.listener.UserQuitListener;
-import amata1219.parkour.listener.ControlInformationBoardListener;
+import amata1219.parkour.listener.IncrementJumpsListener;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
 import amata1219.parkour.task.AsyncTask;
@@ -98,7 +98,7 @@ enabled parkour filter
 			new DisableDamageListener(),
 			new DisableFoodLevelChangeListener(),
 			new UserQuitListener(),
-			new ControlInformationBoardListener()
+			new IncrementJumpsListener()
 		);
 
 		startTasks(
