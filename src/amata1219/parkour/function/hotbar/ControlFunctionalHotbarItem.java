@@ -49,7 +49,7 @@ public class ControlFunctionalHotbarItem implements PlayerJoinListener, PlayerQu
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event){
-		Sync.define(() -> initializeSlots(event.getPlayer())).executeLater(10);
+		Sync.define(() -> initializeSlots(event.getPlayer())).executeLater(20);
 	}
 
 	@EventHandler
@@ -135,11 +135,6 @@ public class ControlFunctionalHotbarItem implements PlayerJoinListener, PlayerQu
 	public static void updateSlot(Player player, Integer slotIndex){
 		//対応したアイテムが存在すればそれを再配置する
 		if(ITEMS.containsKey(slotIndex)) player.getInventory().setItem(slotIndex, ITEMS.get(slotIndex).build(toUser(player)));
-	}
-
-	public static void updateSlot(Player player, Integer slotIndex, boolean flag){
-		//対応したアイテムが存在すればそれを再配置する
-		if(ITEMS.containsKey(slotIndex)) player.getInventory().setItem(slotIndex, ITEMS.get(slotIndex).build(toUser(player), flag));
 	}
 
 	public static void clearSlots(Player player){

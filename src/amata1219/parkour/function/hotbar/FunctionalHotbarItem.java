@@ -8,11 +8,7 @@ public interface FunctionalHotbarItem {
 
 	void onClick(User user, ClickType click);
 
-	ItemStack build(User user, boolean flag);
-
-	default ItemStack build(User user){
-		return build(user, false);
-	}
+	ItemStack build(User user);
 
 	boolean isSimilar(ItemStack item);
 

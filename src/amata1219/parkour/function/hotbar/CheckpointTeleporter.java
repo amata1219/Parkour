@@ -56,7 +56,7 @@ public class CheckpointTeleporter implements FunctionalHotbarItem {
 	}
 
 	@Override
-	public ItemStack build(User user, boolean flag) {
+	public ItemStack build(User user) {
 		Localizer localizer = user.localizer;
 
 		ItemStack item = new ItemStack(Material.LIGHT_BLUE_DYE);
@@ -67,8 +67,8 @@ public class CheckpointTeleporter implements FunctionalHotbarItem {
 
 		item.setItemMeta(meta);
 
-		if(flag) GleamEnchantment.gleam(item);
-		else GleamEnchantment.tarnish(item);
+		//プレイヤーがチェックエリア内にいれば輝かせる
+		if(user.onCheckArea) GleamEnchantment.gleam(item);
 
 		return item;
 	}

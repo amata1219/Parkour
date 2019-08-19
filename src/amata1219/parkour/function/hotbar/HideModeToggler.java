@@ -19,7 +19,7 @@ public class HideModeToggler implements FunctionalHotbarItem {
 	}
 
 	@Override
-	public ItemStack build(User user, boolean flag) {
+	public ItemStack build(User user) {
 		Localizer localizer = user.localizer;
 
 		//非表示モードかどうか

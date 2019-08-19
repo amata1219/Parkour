@@ -25,7 +25,7 @@ public class ParkoursMenuOpener implements FunctionalHotbarItem {
 	}
 
 	@Override
-	public ItemStack build(User user, boolean flag) {
+	public ItemStack build(User user) {
 		ItemStack item = new ItemStack(Material.HEART_OF_THE_SEA);
 
 		ItemMeta meta = item.getItemMeta();

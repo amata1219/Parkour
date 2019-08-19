@@ -16,7 +16,7 @@ public class MyMenuOpener implements FunctionalHotbarItem {
 	}
 
 	@Override
-	public ItemStack build(User user, boolean flag) {
+	public ItemStack build(User user) {
 		Localizer localizer = user.localizer;
 
 		//ユーザーのUUIDに基づきスカルヘッドを作成する

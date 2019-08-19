@@ -3,59 +3,56 @@ package amata1219.parkour.user;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import org.bukkit.entity.Player;
 
 import amata1219.amalib.scoreboard.Scoreboard;
 import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
+import amata1219.amalib.string.message.Localizer;
 import amata1219.amalib.tuplet.Quadruple;
 
 public class InformationBoard {
 
+	private static final List<Quadruple<Function<UserSetting, Boolean>, Integer, Function<Localizer, String>, Function<User, Object>>> LINES = new ArrayList<>(12);
+
+	static{
+		initialize(
+			new Quadruple<>(s -> true, 11, l -> "", u -> ""),
+			new Quadruple<>(s -> true, 10, l -> "", u -> ""),
+			new Quadruple<>(s -> s.displayTraceur, 9, l -> l.color("&b-Traceur &7-@ &f-$0"), u -> u.asBukkitPlayer().getName()),
+			new Quadruple<>(s -> s.displayUpdateRank, 8, l -> l.color("&b-Update Rank &7-@ &f-$0"), u -> u.getUpdateRank()),
+			new Quadruple<>(s -> s.displayExtendRank, 7, l -> l.color("&b-Extend Rank &7-@ &f-$0"), u -> u.getExtendRank()),
+			new Quadruple<>(s -> s.displayJumps, 6, l -> l.color("&b-Jumps &7-@ &f-$0"), u -> u.asBukkitPlayer().getStatistic(Statistic.JUMP)),
+			new Quadruple<>(s -> s.displayCoins, 5, l -> l.color("&b-Coins &7-@ &f-$0"), u -> u.getCoins()),
+			new Quadruple<>(s -> s.displayTimePlayed, 4, l -> l.color("&b-Time Played &7-@ &f-$0h"), u -> u.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
+			new Quadruple<>(s -> s.displayOnlinePlayers, 3, l -> l.color("&b-Online Players &7-@ &f-$0"), u -> Bukkit.getOnlinePlayers().size()),
+			new Quadruple<>(s -> s.displayPing, 2, l -> l.color("&b-Ping &7-@ &f-$0ms"), u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
+			new Quadruple<>(s -> true, 1, l -> "", u -> ""),
+			new Quadruple<>(s -> s.displayServerAddress, 0, l -> l.color("&b-$0"), u -> "   azisaba.net")
+		);
+	}
+
+	@SafeVarargs
+	private static void initialize(Quadruple<Function<UserSetting, Boolean>, Integer, Function<Localizer, String>, Function<User, Object>>... components){
+		Arrays.stream(components).forEach(LINES::add);
+	}
+
 	private final User user;
 	private Scoreboard board;
 
-	//スコアボード用の情報群
-	private final List<Quadruple<Supplier<Boolean>, Integer, String, Supplier<Object>>> components = new ArrayList<>(9);
-
 	public InformationBoard(User user){
 		this.user = user;
-
-		UserSetting setting = user.setting;
-
-		//スコアボード用の情報群を詰め込む
-		components.addAll(Arrays.asList(
-			//何故か一番上の行が表示されない問題
-			makeComponent(() -> true, 11, " ", () -> ""),
-			makeComponent(() -> true, 10, " ", () -> ""),
-			makeComponent(() -> setting.displayTraceur, 9, "&b-Traceur &7-@ &f-$0", () -> user.asBukkitPlayer().getName()),
-			makeComponent(() -> setting.displayUpdateRank, 8, "&b-Update Rank &7-@ &f-$0", () -> user.getUpdateRank()),
-			makeComponent(() -> setting.displayExtendRank, 7, "&b-Extend Rank &7-@ &f-$0", () -> user.getExtendRank()),
-			makeComponent(() -> setting.displayJumps, 6, "&b-Jumps &7-@ &f-$0", () -> user.asBukkitPlayer().getStatistic(Statistic.JUMP)),
-			makeComponent(() -> setting.displayCoins, 5, "&b-Coins &7-@ &f-$0", () -> user.getCoins()),
-			makeComponent(() -> setting.displayTimePlayed, 4, "&b-Time Played &7-@ &f-$0h", () -> user.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
-			makeComponent(() -> setting.displayOnlinePlayers, 3, "&b-Online Players &7-@ &f-$0", () -> Bukkit.getOnlinePlayers().size()),
-			makeComponent(() -> setting.displayPing, 2, "&b-Ping &7-@ &f-$0ms", () -> ((CraftPlayer) user.asBukkitPlayer()).getHandle().ping),
-			makeComponent(() -> true, 1, "", () -> ""),
-			makeComponent(() -> setting.displayServerAddress, 0, "&b-$0", () -> "   azisaba.net")
-		));
-	}
-
-	private Quadruple<Supplier<Boolean>, Integer, String, Supplier<Object>> makeComponent(Supplier<Boolean> display, int score, String template, Supplier<Object> value){
-		return new Quadruple<>(display, score, template, value);
 	}
 
 	public void loadScoreboard(){
-		//プレイヤーを取得する
-		Player player = user.asBukkitPlayer();
+		UserSetting setting = user.setting;
 
 		//スコアボードを表示しない設定であれば戻る
-		if(!user.setting.displayScoreboard){
+		if(!setting.displayScoreboard){
 			//スコアボードが表示されていれば非表示にする
 			if(board != null && board.isDisplay()) board.setDisplay(false);
 
@@ -63,18 +60,17 @@ public class InformationBoard {
 		}
 
 		//スコアボードを新しく作成する
-		board = new Scoreboard(player, StringColor.color("&9-&l-A-&r-&b-zisaba &9-&l-N-&r-&b-etwork"));
+		board = new Scoreboard(user.asBukkitPlayer(), StringColor.color("&9-&l-A-&r-&b-zisaba &9-&l-N-&r-&b-etwork"));
 
-		for(Quadruple<Supplier<Boolean>, Integer, String, Supplier<Object>> component : components){
-			//表示しなければ繰り返す
-			if(!component.first.get())
-				continue;
+		for(Quadruple<Function<UserSetting, Boolean>, Integer, Function<Localizer, String>, Function<User, Object>> line : LINES){
+			//表示しない設定であれば処理しない
+			if(!line.first.apply(setting)) continue;
 
-			//テキストを作成する
-			String text = StringTemplate.capply(component.third, component.fourth.get());
+			//表示するテキストを作成する
+			String text = StringTemplate.apply(line.third.apply(user.localizer), line.fourth.apply(user));
 
-			//指定されたスコアにテキストをセットする
-			board.setScore(component.second, text);
+			//対応したスコアにテキストをセットする
+			board.setScore(line.second.intValue(), text);
 		}
 
 		board.setDisplay(true);
@@ -116,20 +112,19 @@ public class InformationBoard {
 		updateValue(9);
 	}
 
-	private void updateValue(int componentIndex){
+	private void updateValue(int score){
 		if(board == null) return;
 
-		Quadruple<Supplier<Boolean>, Integer, String, Supplier<Object>> component = components.get(componentIndex);
+		Quadruple<Function<UserSetting, Boolean>, Integer, Function<Localizer, String>, Function<User, Object>> line = LINES.get(score);
 
-		//表示しなければ戻る
-		if(!component.first.get())
-			return;
+		//表示しない設定であれば戻る
+		if(!line.first.apply(user.setting)) return;
 
-		//テキストを作成する
-		String text = StringTemplate.capply(component.third, component.fourth.get());
+		//表示するテキストを作成する
+		String text = StringTemplate.apply(line.third.apply(user.localizer), line.fourth.apply(user));
 
 		//指定されたスコアをアップデートする
-		board.updateScore(component.second, text);
+		board.updateScore(line.second, text);
 	}
 
 }

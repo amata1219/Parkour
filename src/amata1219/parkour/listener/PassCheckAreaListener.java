@@ -30,16 +30,20 @@ public class PassCheckAreaListener extends PassRegionBoundaryAbstractListener {
 
 		//チェックエリアに入った場合
 		if(!existsFrom && existsTo){
+			user.onCheckArea = true;
+
 			IN_SE.play(player);
 
-			//通知アイテムを発光させる
-			ControlFunctionalHotbarItem.updateSlot(player, 0, true);
+			//通知アイテムを輝かせる
+			ControlFunctionalHotbarItem.updateSlot(player, 0);
 		//チェックエリアから出た場合
 		}else if(existsFrom && !existsTo){
+			user.onCheckArea = false;
+
 			OUT_SE.play(player);
 
-			//通知アイテムを発光させる
-			ControlFunctionalHotbarItem.updateSlot(player, 0, false);
+			//通知アイテムの輝きを失わせる
+			ControlFunctionalHotbarItem.updateSlot(player, 0);
 		}
 	}
 

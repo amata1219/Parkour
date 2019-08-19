@@ -32,7 +32,7 @@ public class CheckpointsMenuOpener implements FunctionalHotbarItem {
 	}
 
 	@Override
-	public ItemStack build(User user, boolean flag) {
+	public ItemStack build(User user) {
 		Localizer localizer = user.localizer;
 
 		ItemStack item = new ItemStack(Material.CYAN_DYE);

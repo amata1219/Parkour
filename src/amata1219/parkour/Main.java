@@ -23,12 +23,12 @@ import amata1219.parkour.listener.DisablePlayerCollisionListener;
 import amata1219.parkour.listener.ControlRegionBorderDisplayerListener;
 import amata1219.parkour.listener.GiveVoteRewardCoinsListener;
 import amata1219.parkour.listener.HideNewPlayerListener;
-import amata1219.parkour.listener.LoadUserDataListener;
+import amata1219.parkour.listener.UserJoinListener;
 import amata1219.parkour.listener.PassCheckAreaListener;
 import amata1219.parkour.listener.PassFinishLineListener;
 import amata1219.parkour.listener.PassStartLineListener;
 import amata1219.parkour.listener.SetCheckpointListener;
-import amata1219.parkour.listener.UnloadUserDataListener;
+import amata1219.parkour.listener.UserQuitListener;
 import amata1219.parkour.listener.ControlInformationBoardListener;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
@@ -90,14 +90,14 @@ enabled parkour filter
 			new ControlRegionBorderDisplayerListener(),
 			new GiveVoteRewardCoinsListener(),
 			new HideNewPlayerListener(),
-			new LoadUserDataListener(),
+			new UserJoinListener(),
 			new PassFinishLineListener(),
 			new PassStartLineListener(),
 			new PassCheckAreaListener(),
 			new SetCheckpointListener(),
 			new DisableDamageListener(),
 			new DisableFoodLevelChangeListener(),
-			new UnloadUserDataListener(),
+			new UserQuitListener(),
 			new ControlInformationBoardListener()
 		);
 

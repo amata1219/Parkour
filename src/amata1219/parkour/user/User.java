@@ -35,6 +35,9 @@ public class User {
 	//現在プレイ中のアスレ
 	public Parkour parkourPlayingNow;
 
+	//今チェックエリア内にいるかどうか
+	public boolean onCheckArea;
+
 	//プレイし始めた時間(ミリ秒)
 	public long timeToStartPlaying;
 
@@ -85,6 +88,9 @@ public class User {
 
 		//最後に遊んでいたアスレを取得する
 		parkourPlayingNow = parkours.getParkour("Currently playing parkour");
+
+		//今チェックエリア内にいるかどうか取得する
+		onCheckArea = yaml.getBoolean("On check area");
 
 		//タイムアタックを始めてからの経過時間を取得する
 		elapsedTime = yaml.getLong("Elapsed time");
@@ -169,6 +175,9 @@ public class User {
 
 		//最後にプレイしていたアスレの名前を記録する
 		yaml.set("Last played parkour", parkourPlayingNow != null ? parkourPlayingNow.name : null);
+
+		//チェックエリア内にいたかどうか記録する
+		yaml.set("On check area", onCheckArea);
 
 		//タイムアタック中であれば経過時間を記録し、そうでなければ削除する
 		yaml.set("Elapsed time", elapsedTime > 0 ? elapsedTime : null);

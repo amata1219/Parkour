@@ -8,10 +8,10 @@ import amata1219.amalib.listener.PlayerQuitListener;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
-public class UnloadUserDataListener implements PlayerQuitListener {
+public class UserQuitListener implements PlayerQuitListener {
 
 	@Override
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onQuit(PlayerQuitEvent event) {
 		User user = Users.getInstnace().getUser(event.getPlayer());
 
