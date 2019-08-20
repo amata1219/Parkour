@@ -14,12 +14,10 @@ import org.bukkit.inventory.ItemStack;
 import amata1219.amalib.inventory.ui.InventoryLine;
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
-import amata1219.amalib.inventory.ui.listener.ClickEvent;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.string.message.Localizer;
 import amata1219.amalib.tuplet.Quadruple;
 import amata1219.amalib.util.SkullMaker;
-import amata1219.parkour.user.InventoryUserInterfaces;
 import amata1219.parkour.user.User;
 
 public class MyProfileUI implements InventoryUI {
@@ -72,55 +70,30 @@ public class MyProfileUI implements InventoryUI {
 				ItemStack skull = SkullMaker.fromPlayerUniqueId(user.uuid);
 
 				s.icon(skull, i -> {
-					i.displayName = StringTemplate.capply("&b-$0", playerName);
+					i.displayName = StringTemplate.capply("&b-$0", player.getName());
 
 					i.lore(
-						localizer.applyAll("&7-: &b-Updateランク ", objects)
-						StringTemplate.capply("&7-: &b-Update rank &7-@ &b-$0", user.getUpdateRank()),
-						StringTemplate.capply("&7-: &b-Extend rank &7-@ &b-$0", user.getExtendRank()),
+						localizer.applyAll("&7-: &b-Updateランク &7-@ &b-$0 | &7-: &b-Update Rank &7-@ &b-$0", user.getUpdateRank()),
+						localizer.applyAll("&7-: &b-Extendランク &7-@ &b-$0 | &7-: &b-Extend Rank &7-@ &b-$0", user.getExtendRank()),
 						"",
-						StringTemplate.capply("&7-: &b-Jumps &7-@ &b-$0", player.getStatistic(Statistic.JUMP)),
-						StringTemplate.capply("&7-: &b-Coins &7-@ &b-$0", user.getCoins()),
-						StringTemplate.capply("&7-: &b-Time played &7-@ &b-$0h", player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000)
+						localizer.applyAll("&7-: &b-ジャンプ数 &7-@ &b-$0 | &7-: &b-Jumps &7-@ &b-$0", player.getStatistic(Statistic.JUMP)),
+						localizer.applyAll("&7-: &b-所持コイン数 &7-@ &b-$0 | &7-: &b-Coins &7-@ &b-$0", user.getCoins()),
+						localizer.applyAll("&7-: &b-総プレイ時間 &7-@ &b-$0h | &7-: &b-Time Played &7-@ &b-$0h", player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000)
 					);
 
 				});
 
 			}, 1);
 
-			for(Quadruple<Integer, Material, String, Runnable> component : components){
-				l.put((s) -> {
-
-					s.onClick(event -> component.fourth.run());
-
-					s.icon(component.second, i -> {
-						i.displayName = component.third;
+			for(Quadruple<Integer, Material, String, Consumer<User>> icon : ICONS){
+				l.put(s -> {
+					s.onClick(e -> icon.fourth.accept(user));
+					s.icon(icon.second, i -> {
+						i.displayName = icon.third;
 						i.gleam();
 					});
-
-				}, component.first);
+				}, icon.first);
 			}
-
-			l.put((s) -> {
-
-				s.onClick((event) -> {
-					Player clicker = event.player;
-
-					//今いるアスレから退出する
-					user.exitParkour();
-
-					//本番環境では変える
-					clicker.teleport(Bukkit.getWorld("world").getSpawnLocation());
-
-					localizer.mcolor("&b-ロビーにテレポートしました | &b-Teleported to lobby").displayOnActionBar(player);
-				});
-
-				s.icon(Material.GRASS_BLOCK, i -> {
-					i.displayName = localizer.color("&b-ロビーにテレポートする | &b-Teleport to lobby");
-					i.gleam();
-				});
-
-			}, 7);
 
 		});
 	}

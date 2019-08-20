@@ -28,7 +28,7 @@ public class InformationBoard {
 			new Quadruple<>(s -> s.displayTraceur, 9, "&b-トレイサー &7-@ &f-$0 | &b-Traceur &7-@ &f-$0", u -> u.asBukkitPlayer().getName()),
 			new Quadruple<>(s -> s.displayUpdateRank, 8, "&b-Updateランク &7-@ &f-$0 | &b-Update Rank &7-@ &f-$0", u -> u.getUpdateRank()),
 			new Quadruple<>(s -> s.displayExtendRank, 7, "&b-Extendランク &7-@ &f-$0 | &b-Extend Rank &7-@ &f-$0", u -> u.getExtendRank()),
-			new Quadruple<>(s -> s.displayJumps, 6, "&b-ジャンプ回数 &7-@ &f-$0 | &b-Jumps &7-@ &f-$0", u -> u.asBukkitPlayer().getStatistic(Statistic.JUMP)),
+			new Quadruple<>(s -> s.displayJumps, 6, "&b-ジャンプ数 &7-@ &f-$0 | &b-Jumps &7-@ &f-$0", u -> u.asBukkitPlayer().getStatistic(Statistic.JUMP)),
 			new Quadruple<>(s -> s.displayCoins, 5, "&b-所持コイン数 &7-@ &f-$0 | &b-Coins &7-@ &f-$0", u -> u.getCoins()),
 			new Quadruple<>(s -> s.displayTimePlayed, 4, "&b-総プレイ時間 &7-@ &f-$0 | &b-Time Played &7-@ &f-$0h", u -> u.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
 			new Quadruple<>(s -> s.displayOnlinePlayers, 3, "&b-接続プレイヤー数 &7-@ &f-$0 | &b-Online Players &7-@ &f-$0", u -> Bukkit.getOnlinePlayers().size()),
