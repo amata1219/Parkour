@@ -46,7 +46,7 @@ public class RankUpParkourSelectionUI extends AbstractParkourSelectionUI<RankUpP
 						MessageLocalize.applyAll("&b-$0ロビーにテレポートしました | &b-Teleported to $0 lobby", player, category.name).displayOnActionBar(player);
 					});
 
-					s.icon(Material.NETHER_STAR, i -> i.displayName = StringLocalize.applyAll("&b-$0ロビーにテレポートする", player, category.name));
+					s.icon(Material.NETHER_STAR, i -> i.displayName = StringLocalize.applyAll("&b-$0ロビーにテレポートする | &b-Teleport to $0 Lobby", player, category.name));
 
 				}, layout.option.size - 10);
 

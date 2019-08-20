@@ -56,7 +56,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 		InventoryLine line = this.line.apply(parkours);
 
 		return build(line, l -> {
-			l.title = StringTemplate.capply("&b-$0", categoryName);
+			l.title = categoryName;
 
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
@@ -75,7 +75,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 						//アスレに参加させる
 						parkour.entry(users.getUser(player));
 
-						MessageLocalize.applyAll("&7-「&r-$0-&r-&7-」&f-にテレポートしました | &7-?", player, parkourName).displayOnActionBar(player);
+						MessageLocalize.applyAll("$0-&r-にテレポートしました | &7-?", player, parkourName).displayOnActionBar(player);
 					});
 
 					//アスレのアイコンを設定する
@@ -139,7 +139,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 					s.onClick(e -> user.inventoryUserInterfaces.openParkourSelectionUI(category));
 
 					s.icon(category.icon, i -> {
-						i.displayName = StringTemplate.capply("&b-$0", categoryName);
+						i.displayName = StringTemplate.capply("&b-$0", category.name);
 
 						//今開いているカテゴリーと同じであれば輝かせる
 						if(category == this.category) i.gleam();

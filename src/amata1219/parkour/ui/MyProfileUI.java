@@ -89,7 +89,7 @@ public class MyProfileUI implements InventoryUI {
 				l.put(s -> {
 					s.onClick(e -> icon.fourth.accept(user));
 					s.icon(icon.second, i -> {
-						i.displayName = icon.third;
+						i.displayName = localizer.color(icon.third);
 						i.gleam();
 					});
 				}, icon.first);

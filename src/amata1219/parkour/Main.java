@@ -27,6 +27,7 @@ import amata1219.parkour.listener.UserJoinListener;
 import amata1219.parkour.listener.PassCheckAreaListener;
 import amata1219.parkour.listener.PassFinishLineListener;
 import amata1219.parkour.listener.PassStartLineListener;
+import amata1219.parkour.listener.PlayerLocaleChangeListener;
 import amata1219.parkour.listener.SetCheckpointListener;
 import amata1219.parkour.listener.UserQuitListener;
 import amata1219.parkour.listener.IncrementJumpsListener;
@@ -85,20 +86,21 @@ enabled parkour filter
 		registerListeners(
 			Users.getInstnace(),
 			RegionSelections.getInstance(),
+			new UserJoinListener(),
 			new ControlFunctionalHotbarItem(),
 			new DisablePlayerCollisionListener(),
 			new ControlRegionBorderDisplayerListener(),
 			new GiveVoteRewardCoinsListener(),
 			new HideNewPlayerListener(),
-			new UserJoinListener(),
 			new PassFinishLineListener(),
 			new PassStartLineListener(),
 			new PassCheckAreaListener(),
 			new SetCheckpointListener(),
 			new DisableDamageListener(),
 			new DisableFoodLevelChangeListener(),
-			new UserQuitListener(),
-			new IncrementJumpsListener()
+			new IncrementJumpsListener(),
+			new PlayerLocaleChangeListener(),
+			new UserQuitListener()
 		);
 
 		startTasks(

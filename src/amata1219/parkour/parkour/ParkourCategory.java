@@ -4,11 +4,11 @@ import org.bukkit.Material;
 
 public enum ParkourCategory {
 
-	NORMAL(Material.GRASS),
-	SEGMENT(Material.OBSIDIAN),
-	BIOME(Material.OAK_LEAVES),
-	UPDATE(Material.DIAMOND_BLOCK),
-	EXTEND(Material.STONE);
+	NORMAL(Material.WHITE_GLAZED_TERRACOTTA),
+	SEGMENT(Material.LIGHT_BLUE_GLAZED_TERRACOTTA),
+	BIOME(Material.GREEN_GLAZED_TERRACOTTA),
+	UPDATE(Material.BLACK_GLAZED_TERRACOTTA),
+	EXTEND(Material.BLUE_GLAZED_TERRACOTTA);
 
 	public final String name;
 	public final Material icon;

@@ -43,7 +43,7 @@ public class BuyHatUI implements InventoryUI {
 		return build(hats.size(), l -> {
 			Player player = l.player;
 
-			l.title = localizer.color("ハットの購入 | Buy Hats");
+			l.title = localizer.color("帽子の購入 | Buy Hats");
 
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
@@ -66,7 +66,7 @@ public class BuyHatUI implements InventoryUI {
 
 						s.icon(i -> {
 							i.basedItemStack = clonedHatItem;
-							i.displayName = localizer.applyAll("&b-$0 &7-@ &6-$1-&7-コイン | &b-?", hatName, value);
+							i.displayName = localizer.applyAll("&b-$0 &7-@ &b-$1コイン | &b-?", hatName, value);
 							i.lore(localizer.color("&7-クリックすると購入出来ます。 | &7-?"));
 						});
 					}else{
@@ -77,7 +77,7 @@ public class BuyHatUI implements InventoryUI {
 
 						s.icon(i -> {
 							i.basedItemStack = clonedHatItem;
-							i.displayName = localizer.applyAll("&c-$0 &7-@ &6-$1-&7-コイン | &c-?", hatName, value);
+							i.displayName = localizer.applyAll("&c-$0 &7-@ &c-$1コイン | &c-?", hatName, value);
 							i.lore(localizer.color("&7-所持コイン数が足りないため購入出来ません。 | &f-?"));
 						});
 					}

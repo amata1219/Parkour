@@ -19,10 +19,11 @@ public class UserQuitListener implements PlayerQuitListener {
 		if(user.isPlayingWithParkour() && user.parkourPlayingNow.timeAttackEnable) user.elapsedTime = System.currentTimeMillis() - user.timeToStartPlaying;
 
 		user.inventoryUserInterfaces = null;
-		user.localizer = null;
 
 		user.board.clearScoreboard();
 		user.board = null;
+
+		user.localizer = null;
 	}
 
 }
