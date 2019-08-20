@@ -51,6 +51,9 @@ public class Parkour {
 		ImmutableLocation relativeSpawn =ImmutableLocation.deserialize(yaml.getString("Spawn"));
 		spawn = origin.add(relativeSpawn);
 
+		//ボーダーカラーはParkourRegionより先に読み込む
+		borderColor = Color.deserialize(yaml.getString("Border color"));
+
 		//スタートラインを設定する
 		Region relativeStartLine = Region.deserialize(yaml.getString("Start line"));
 		startLine = new ParkourRegion(this, relativeStartLine.add(origin));
@@ -62,7 +65,6 @@ public class Parkour {
 		//チェックエリアを設定する
 		checkAreas = new CheckAreas(parkours, yaml, this, origin);
 
-		borderColor = Color.deserialize(yaml.getString("Border color"));
 		timeAttackEnable = yaml.getBoolean("Time attack");
 		records = new Records(yaml);
 		rewards = new Rewards(StringSplit.splitToIntArguments(yaml.getString("Rewards")));

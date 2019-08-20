@@ -71,7 +71,7 @@ public class ParkourRegionCommand implements Command {
 			break;
 		}default:
 			displayCommandUsage(sender);
-			break;
+			return;
 		}
 
 		//表示例: Update1のスタートラインを設定しました(world,0,0,0,20,1,2)。
@@ -79,9 +79,9 @@ public class ParkourRegionCommand implements Command {
 	}
 
 	private void displayCommandUsage(Sender sender){
-		sender.warn("/setparkourregion region @ アスレの領域を設定する");
-		sender.warn("/setparkourregion startline @ アスレのスタートラインを設定する");
-		sender.warn("/setparkourregion finishline @ アスレのフィニッシュラインを設定する");
+		sender.warn("/parkourregion region @ アスレの領域を設定する");
+		sender.warn("/parkourregion startline @ アスレのスタートラインを設定する");
+		sender.warn("/parkourregion finishline @ アスレのフィニッシュラインを設定する");
 	}
 
 }

@@ -135,7 +135,7 @@ public class ParkourCommand implements Command {
 			break;
 		}default:
 			displayCommandUsage(sender);
-			break;
+			return;
 		}
 	}
 
@@ -144,6 +144,7 @@ public class ParkourCommand implements Command {
 		sender.warn("/parkour [parkour] delete @ アスレを削除します。");
 		sender.warn("/parkour [parkour] enable @ 有効化し選択画面に表示します。");
 		sender.warn("/parkour [parkour] disable @ 無効化し選択画面から非表示にします。");
+		sender.warn("/parkour [parkour] info @ アスレの情報を表示します。");
 		sender.warn("アスレ名の装飾コードはアンパサンドを使用して下さい。");
 	}
 
