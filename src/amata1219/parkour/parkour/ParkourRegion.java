@@ -88,14 +88,9 @@ public class ParkourRegion extends Region {
 		final int halfSize = size / 2;
 		final int lastIndex = size - 1;
 
-		System.out.println("Packet size: " + packets.size());
-
 		//非同期で実行する
 		task = Async.define(() -> {
-			if(position >= size){
-				position = 0;
-				System.out.println("Connection size" + parkour.connections.getConnections().size());
-			}
+			if(position >= size) position = 0;
 
 			//各ポジションに対応したパケットを取得する
 			PacketPlayOutWorldParticles packet1 = packets.get(position);

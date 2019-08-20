@@ -212,8 +212,8 @@ public class CheckAreas {
 		//マイナーチェックエリア番号が0未満又は大きすぎれば戻る
 		if(minorCheckAreaNumber < 0 || minorCheckAreaNumber >= areas.size()) return;
 
-		//チェックエリアを削除する
-		ParkourRegion targetedCheckArea = areas.remove(minorCheckAreaNumber);
+		//対象となるチェックエリアを取得する
+		ParkourRegion targetedCheckArea = areas.get(minorCheckAreaNumber);
 
 		//残りの処理は他のメソッドに任せる
 		unbindCheckArea(targetedCheckArea);
