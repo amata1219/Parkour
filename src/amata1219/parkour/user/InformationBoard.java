@@ -21,6 +21,10 @@ public class InformationBoard {
 		Arrays.stream(components).forEach(LINES::add);
 	}
 
+	private static String getSpaces(int length){
+
+	}
+
 	static{
 		initialize(
 			new Quadruple<>(s -> true, 11, "  |  ", u -> ""),
@@ -34,7 +38,16 @@ public class InformationBoard {
 			new Quadruple<>(s -> s.displayOnlinePlayers, 3, "&b-接続プレイヤー数 &7-@ &f-$0 | &b-Online Players &7-@ &f-$0", u -> Bukkit.getOnlinePlayers().size()),
 			new Quadruple<>(s -> s.displayPing, 2, "&b-遅延 &7-@ &f-$0ms | &b-Ping &7-@ &f-$0ms", u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
 			new Quadruple<>(s -> true, 1, " | ", u -> ""),
-			new Quadruple<>(s -> s.displayServerAddress, 0, "&b-$0 | &b-$0", u -> "   azisaba.net")
+			new Quadruple<>(s -> s.displayServerAddress, 0, "&b-$0 | &b-$0", u -> {
+				Scoreboard board = u.board.board;
+				int maxLength = 0;
+				for(int score = 0; score < 15; score++) if(board.hasScore(score))
+					maxLength = board.getScore(score).length();
+
+				int halfMaxLength = maxLength / 2;
+
+				return maxLength % 2 == 0 ?
+			})
 		);
 	}
 

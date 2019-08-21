@@ -14,6 +14,11 @@ import amata1219.parkour.user.User;
 
 public class Parkour {
 
+	/*
+	 * アイコンに説明文と報酬を表示する
+	 *
+	 */
+
 	private final Parkours parkours;
 
 	public final String name;

@@ -22,6 +22,7 @@ import amata1219.amalib.string.message.MessageLocalize;
 import amata1219.amalib.tuplet.Tuple;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
+import amata1219.parkour.parkour.Rewards;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
@@ -91,6 +92,9 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 						String numberOfDisplayedCheckAreas = maxMajorCheckAreaNumber >= 0 ? String.valueOf(maxMajorCheckAreaNumber + 1) : "None";
 
 						lore.add(StringLocalize.applyAll("&7-チェックエリア @ &b-$0箇所 | &7-Check Areas @ &b-$0", player, numberOfDisplayedCheckAreas));
+
+						Rewards rewards = parkour.rewards;
+						lore.add(StringLocalize.applyAll("&7-初回/通常報酬 @ &b-$0-&7-/-&b-$1-&7-コイン | &7-First/Normal Reward @ &b-$0-&7-/-&b-$1 &7-Coins", player, rewards.getReward(0), rewards.getReward(1)));
 
 						boolean timeAttackEnable = parkour.timeAttackEnable;
 
