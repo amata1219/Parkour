@@ -56,11 +56,11 @@ public class Parkour {
 
 		//スタートラインを設定する
 		Region relativeStartLine = Region.deserialize(yaml.getString("Start line"));
-		startLine = new ParkourRegion(this, relativeStartLine.sub(origin));
+		startLine = new ParkourRegion(this, relativeStartLine.add(origin));
 
 		//フィニッシュラインを設定する
 		Region relativeFinishLine = Region.deserialize(yaml.getString("Finish line"));
-		finishLine =  new ParkourRegion(this, relativeFinishLine.sub(origin));
+		finishLine =  new ParkourRegion(this, relativeFinishLine.add(origin));
 
 		//チェックエリアを設定する
 		checkAreas = new CheckAreas(parkours, yaml, this, origin);

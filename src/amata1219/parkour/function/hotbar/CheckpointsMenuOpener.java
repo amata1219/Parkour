@@ -8,7 +8,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.amalib.string.message.Localizer;
-import amata1219.amalib.string.message.MessageColor;
 import amata1219.parkour.user.InventoryUserInterfaces;
 import amata1219.parkour.user.User;
 
@@ -20,15 +19,15 @@ public class CheckpointsMenuOpener implements FunctionalHotbarItem {
 
 		//どこのアスレにもいなければ戻る
 		if(user.currentParkour == null){
-			MessageColor.color("アスレチックのプレイ中でないため開けません").displayOnActionBar(player);
+			user.localizer.mcolor("&c-アスレチックのプレイ中でないため開けません | &c-?").displayOnActionBar(player);
 			return;
 		}
 
-		InventoryUserInterfaces inventoryUIs = user.inventoryUserInterfaces;
+		InventoryUserInterfaces inventoryUserInterfaces = user.inventoryUserInterfaces;
 
 		//右クリックしたのであれば最終、左クリックしたのであれば最新のチェックポイントリストを表示する
-		if(click == ClickType.RIGHT) inventoryUIs.openLastCheckpointSelectionUI();
-		else if(click == ClickType.LEFT) inventoryUIs.openLatestCheckpointSelectionUI();
+		if(click == ClickType.RIGHT) inventoryUserInterfaces.openLastCheckpointSelectionUI();
+		else if(click == ClickType.LEFT) inventoryUserInterfaces.openLatestCheckpointSelectionUI();
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package amata1219.parkour.listener;
 
-import static amata1219.amalib.reflection.Reflection.*;
+import static amata1219.amalib.util.Reflection.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

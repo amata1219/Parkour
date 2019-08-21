@@ -52,7 +52,7 @@ public class CheckpointTeleporter implements FunctionalHotbarItem {
 		player.teleport(checkpoint.asBukkit());
 
 		//表示例: チェックポイント1 @ Update12 にテレポートしました
-		localizer.mapplyAll("チェックポイント$0 @ $1 にテレポートしました", displayCheckAreaNumber, parkour.name).displayOnActionBar(player);
+		localizer.mapplyAll("チェックポイント$0 @ $1 にテレポートしました | Teleported to Checkpoint$0 @ $1", displayCheckAreaNumber, parkour.name).displayOnActionBar(player);
 	}
 
 	@Override

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import amata1219.amalib.util.SkullMaker;
+import amata1219.amalib.item.SkullMaker;
 
 public class Hats {
 

@@ -39,7 +39,7 @@ public class CheckAreas {
 
 			//メジャーチェックエリアの領域データをデシリアライズしてリストにする
 			List<ParkourRegion> areas = checkAreaSection.getStringList(majorCheckAreaNumberText).stream()
-										.map(text -> new ParkourRegion(parkour, Region.deserialize(text).sub(origin)))
+										.map(text -> new ParkourRegion(parkour, Region.deserialize(text).add(origin)))
 										.collect(Collectors.toList());
 
 			//メジャーチェックエリア番号とバインドする
