@@ -5,7 +5,7 @@ import amata1219.parkour.user.User;
 public class LastCheckpointSelectionUI extends AbstractCheckpointSelectionUI {
 
 	public LastCheckpointSelectionUI(User user) {
-		super(user, "Last", (checkpoints, parkour) -> checkpoints.getLastCheckpoint(parkour), (checkpoints, parkour) -> checkpoints.getLastCheckpointNumber(parkour));
+		super(user, "最終 | Last", (checkpoints, parkour) -> checkpoints.getLastCheckpoint(parkour), (checkpoints, parkour) -> checkpoints.getLastCheckpointNumber(parkour));
 	}
 
 }

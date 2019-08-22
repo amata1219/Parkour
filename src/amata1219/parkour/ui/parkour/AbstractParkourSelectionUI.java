@@ -129,6 +129,8 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 							}
 						}
 
+						i.lore = lore;
+
 						//クリア済みのアスレであれば輝かせる
 						if(user.clearedParkourNames.contains(parkourName)) i.gleam();
 					});

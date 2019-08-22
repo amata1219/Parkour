@@ -11,23 +11,22 @@ import org.bukkit.entity.Player;
 import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.location.ImmutableLocation;
-import amata1219.amalib.string.StringColor;
 import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.string.message.MessageTemplate;
+import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
 
-public class AbstractCheckpointSelectionUI implements InventoryUI {
+public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 
 	private final User user;
 	private final String checkpointType, lowerCaseCheckpointType;
 	private final BiFunction<Checkpoints, Parkour, ImmutableLocation> getCheckpoint;
 	private final BiFunction<Checkpoints, Parkour, Integer> getCheckpointNumber;
 
-	protected AbstractCheckpointSelectionUI(User user, String checkpointType, BiFunction<Checkpoints, Parkour, ImmutableLocation> getCheckpoint, BiFunction<Checkpoints, Parkour, Integer> getCheckpointNumber){
+	public AbstractCheckpointSelectionUI(User user, String checkpointType, BiFunction<Checkpoints, Parkour, ImmutableLocation> getCheckpoint, BiFunction<Checkpoints, Parkour, Integer> getCheckpointNumber){
 		this.user = user;
 		this.checkpointType = checkpointType;
 		this.lowerCaseCheckpointType = checkpointType.toLowerCase();
@@ -37,6 +36,8 @@ public class AbstractCheckpointSelectionUI implements InventoryUI {
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
+		Localizer localizer = user.localizer;
+
 		//現在プレイ中のアスレを取得する
 		Parkour currentParkour = user.currentParkour;
 
@@ -47,7 +48,7 @@ public class AbstractCheckpointSelectionUI implements InventoryUI {
 		List<Parkour> parkours = Parkours.getInstance().getEnabledParkours(category).collect(Collectors.toList());
 
 		return build(parkours.size(), l -> {
-			l.title = StringTemplate.capply("&b-$0 checkpoints &7-@ &b-$1", checkpointType, category.name);
+			l.title = localizer.applyAll("$0カテゴリーの$1チェックポイント一覧 | List of $1 Checkpoints in $0 Category", category.name, localizer.localize(checkpointType));
 
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
@@ -83,9 +84,7 @@ public class AbstractCheckpointSelectionUI implements InventoryUI {
 							//プレイヤーを最終チェックポイントにテレポートさせる
 							player.teleport(lastCheckpoint.asBukkit());
 
-							//表示例: Teleported to checkpoint 1 @ Update1!
-							MessageTemplate.capply("&b-Teleported to a checkpoint &0 &7-@ &b-$1-&r-&b-!", majorCheckAreaNumberDisplayed, parkourName).displayOnActionBar(player);
-
+							localizer.mapplyAll("&b-チェックポイント$0 &7-@ &b-$1 にテレポートしました | &b-Teleported to checkpoint$0 &7-@ &b-$1", majorCheckAreaNumberDisplayed, parkour.getColorlessName()).displayOnActionBar(player);
 						}else if(event.isLeftClick()){
 							//チェックポイントリストを開かせる
 							new CategorizedCheckpointSelectionUI(user, parkour).openInventory(player);
@@ -97,10 +96,12 @@ public class AbstractCheckpointSelectionUI implements InventoryUI {
 						//表示例: 1 @ Update1
 						i.displayName = StringTemplate.capply("&7-$0 @ $1", majorCheckAreaNumberDisplayed, parkourName);
 
+						String colorlessParkourName = parkour.getColorlessName();
+
 						//説明文を設定する
 						i.lore(
-							StringTemplate.capply("&7-: &b-Right click &7-@ &b-Teleport to $0 checkpoint in this parkour", lowerCaseCheckpointType),
-							StringColor.color("&7-: &b-Left click &7-@ &b-Open list of checkpoints you have passed through in this parkour")
+							localizer.applyAll("&7-: &b-右クリック &7-@ チェックポイント$0 @ $1 にテレポートします。 | &7-: &b-Right click &7-@ Teleport to a $0 checkpoint in $1.", localizer.localize(lowerCaseCheckpointType), colorlessParkourName),
+							localizer.applyAll("&7-: &b-左クリック &7-@ $0で設定したチェックポイント一覧を開きます。| &7-: &b-Left click &7-@ Opens a list of checkpoints you have set in $0.", colorlessParkourName)
 						);
 
 						i.amount = majorCheckAreaNumberDisplayed;

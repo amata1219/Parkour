@@ -95,11 +95,9 @@ public class Checkpoints {
 	}
 
 	public ImmutableLocation getLastCheckpoint(String parkourName){
-		//チェックポイントのリストを取得する
-		List<ImmutableLocation> locations = getCheckpoints(parkourName);
+		int lastCheckpointNumber = getLastCheckpointNumber(parkourName);
 
-		//空であればnull、そうでなければ最後のチェックポイントを返す
-		return locations.isEmpty() ? null : locations.get(locations.size() - 1);
+		return lastCheckpointNumber != -1 ? checkpoints.get(parkourName).get(lastCheckpointNumber) : null;
 	}
 
 	public int getLastCheckpointNumber(Parkour parkour){
@@ -107,7 +105,7 @@ public class Checkpoints {
 	}
 
 	public int getLastCheckpointNumber(String parkourName){
-		return getCheckpoints(parkourName).size() - 1;
+		return checkpoints.containsKey(parkourName) ? checkpoints.get(parkourName).keySet().stream().mapToInt(Integer::intValue).max().orElse(-1) : -1;
 	}
 
 	public ImmutableLocation getLatestCheckpoint(Parkour parkour){
