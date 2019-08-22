@@ -32,6 +32,7 @@ public class Parkour {
 	public Rewards rewards;
 	public boolean timeAttackEnable;
 	public Records records;
+	public String description;
 	public PlayerConnections connections = new PlayerConnections();
 
 	public Parkour(Parkours parkours, Yaml yaml){
@@ -71,8 +72,9 @@ public class Parkour {
 		checkAreas = new CheckAreas(parkours, yaml, this, origin);
 
 		timeAttackEnable = yaml.getBoolean("Time attack");
-		records = new Records(yaml);
 		rewards = new Rewards(StringSplit.splitToIntArguments(yaml.getString("Rewards")));
+		description = yaml.getString("Description");
+		records = new Records(yaml);
 	}
 
 	public String getColorlessName(){
@@ -154,6 +156,7 @@ public class Parkour {
 
 		yaml.set("Rewards", rewards.serialize());
 		yaml.set("Time attack", timeAttackEnable);
+		yaml.set("Description", description);
 
 		records.save(yaml);
 

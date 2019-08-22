@@ -103,6 +103,14 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 
 						lore.add(StringLocalize.applyAll("&7-タイムアタック @ $0 | &7-Time Attack @ $0", player, textOfTimeAttackEnable));
 
+						String description = parkour.description;
+
+						//説明文が存在すれば行を1つ空けてから追加する
+						if(description != null && !description.isEmpty()){
+							lore.add("");
+							lore.add(description);
+						}
+
 						if(timeAttackEnable){
 							//上位の記録を取得する
 							List<Tuple<UUID, String>> records = parkour.records.topTenRecords;

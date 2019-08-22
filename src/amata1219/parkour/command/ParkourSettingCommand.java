@@ -54,8 +54,9 @@ public class ParkourSettingCommand implements Command {
 
 		switch(args.next()){
 		case "info":{
-			sender.message(StringTemplate.capply("&7-: &b-Name &7-@ &f-$0", parkourName));
 			sender.message(StringTemplate.capply("&7-: &b-Category &7-@ &f-$0", parkour.category.name));
+			sender.message(StringTemplate.capply("&7-: &b-Name &7-@ &f-$0", parkourName));
+			sender.message(StringTemplate.capply("&7-: &b-Description &7-@ &f-$0", parkour.description));
 			sender.message(StringTemplate.capply("&7-: &b-Spawn &7-@ &f-$0", parkour.spawn.serialize().replace(",", "§7,§f")));
 			sender.message(StringTemplate.capply("&7-: &b-Color &7-@ &f-$0", parkour.borderColor.serialize()));
 			sender.message(StringTemplate.capply("&7-: &b-Time Attack &7-@ &f-$0", parkour.timeAttackEnable));
@@ -66,7 +67,7 @@ public class ParkourSettingCommand implements Command {
 
 				//同じカテゴリーであれば戻る
 				if(category == parkour.category){
-					sender.warn("このアスレは既に同じカテゴリーに設定されています。");
+					sender.warn("既に同じカテゴリーに設定されています。");
 					return;
 				}
 
@@ -79,6 +80,19 @@ public class ParkourSettingCommand implements Command {
 
 			sender.info("カテゴリーを設定しました。");
 			break;
+		}case "description":{
+			//説明文が入力されていなければ戻る
+			if(!args.hasNext()){
+				sender.warn("説明文を入力して下さい。");
+				return;
+			}
+
+			String description = ChatColor.translateAlternateColorCodes('&', args.getRange(args.getIndex(), args.getLength()));
+
+			parkour.apply(it -> it.description = description);
+
+			sender.info(StringTemplate.capply("$0-&r-の説明文を書き換えました。", parkourName));
+			break;
 		}case "spawn": {
 			//プレイヤーの座標を取得する
 			Location location = sender.asPlayerCommandSender().getLocation();
@@ -86,7 +100,7 @@ public class ParkourSettingCommand implements Command {
 			//イミュータブルな座標にしブロックの中央に調整した上でセットする
 			parkour.apply(it -> it.spawn = new ImmutableLocation(location));
 
-			sender.info(StringTemplate.capply("$0-&r-&b-のスポーン地点を現在地点に書き換えました。", parkourName));
+			sender.info(StringTemplate.capply("$0-&r-のスポーン地点を現在地点に書き換えました。", parkourName));
 			break;
 		}case "color":{
 			String text = args.next();
@@ -108,7 +122,7 @@ public class ParkourSettingCommand implements Command {
 				it.checkAreas.recolorAll();
 			});
 
-			sender.info(StringTemplate.capply("$0-&r-&b-のパーティクル色を書き換えました。", parkourName));
+			sender.info(StringTemplate.capply("$0-&r-のパーティクル色を書き換えました。", parkourName));
 			break;
 		}case "rewards":{
 			String text = args.next();
@@ -124,7 +138,7 @@ public class ParkourSettingCommand implements Command {
 			//報酬を更新する
 			parkour.apply(it -> it.rewards = new Rewards(coins));
 
-			sender.info(StringTemplate.capply("$0-&r-&b-の報酬を書き換えました。", parkourName));
+			sender.info(StringTemplate.capply("$0-&r-の報酬を書き換えました。", parkourName));
 			return;
 		}case "timeattack":{
 			if(!args.hasNextBoolean()){
@@ -146,7 +160,7 @@ public class ParkourSettingCommand implements Command {
 			//更新する
 			parkour.apply(it -> it.timeAttackEnable = enableTimeAttack);
 
-			sender.info(StringTemplate.capply("$0-&r-&b-でのタイムアタックを$1にしました。", parkourName, stateName));
+			sender.info(StringTemplate.capply("$0-&r-でのタイムアタックを$1にしました。", parkourName, stateName));
 			break;
 		}default:
 			displayCommandUsage(sender);
