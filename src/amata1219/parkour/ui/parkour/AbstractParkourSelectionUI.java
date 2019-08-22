@@ -91,7 +91,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 						//表示するテキストを決定する
 						String numberOfDisplayedCheckAreas = maxMajorCheckAreaNumber >= 0 ? String.valueOf(maxMajorCheckAreaNumber + 1) : "None";
 
-						lore.add(StringLocalize.applyAll("&7-チェックエリア @ &b-$0箇所 | &7-Check Areas @ &b-$0", player, numberOfDisplayedCheckAreas));
+						lore.add(StringLocalize.applyAll("&7-チェックエリア @ &b-$0-&7-箇所 | &7-Check Areas @ &b-$0", player, numberOfDisplayedCheckAreas));
 
 						Rewards rewards = parkour.rewards;
 						lore.add(StringLocalize.applyAll("&7-初回/通常報酬 @ &b-$0-&7-/-&b-$1-&7-コイン | &7-First/Normal Reward @ &b-$0-&7-/-&b-$1 &7-Coins", player, rewards.getReward(0), rewards.getReward(1)));
@@ -119,7 +119,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 							if(!records.isEmpty()){
 								lore.add("");
 
-								lore.add(StringLocalize.applyAll("&7-上位-&b-$0件-&7-の記録 | &7-Top &b-$0-&7 Records", player, records.size()));
+								lore.add(StringLocalize.applyAll("&7-上位-&b-$0-&7-件の記録 | &7-Top &b-$0-&7 Records", player, records.size()));
 
 								AtomicInteger rank = new AtomicInteger(1);
 

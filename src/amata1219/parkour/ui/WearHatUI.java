@@ -61,7 +61,7 @@ public class WearHatUI implements InventoryUI {
 
 				//同じ帽子であればセットしない
 				if(helmet != null && helmet.getType() == Material.PLAYER_HEAD && helmet.hasItemMeta() && hatName.endsWith(helmet.getItemMeta().getDisplayName())){
-					index--;
+					index++;
 					continue;
 				}
 

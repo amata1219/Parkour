@@ -8,6 +8,7 @@ import amata1219.amalib.listener.PlayerJoinListener;
 import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.function.PlayerLocaleChange;
+import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.InformationBoard;
 import amata1219.parkour.user.InventoryUserInterfaces;
 import amata1219.parkour.user.User;
@@ -40,6 +41,16 @@ public class UserJoinListener implements PlayerJoinListener {
 
 		//プレイヤー名にランクを表示させる
 		ApplyRankToDisplayName.apply(user);
+
+		//最終ログアウト時にいたアスレを取得する
+		Parkour lastParkour = user.currentParkour;
+
+		//最終ログアウト時にどこかのアスレにいればそのアスレに参加させる
+		if(lastParkour != null){
+			lastParkour.entry(user);
+
+			//Challend restarted!
+		}
 
 		//タイムアタックの途中であれば経過時間からスタート時のタイムを設定する
 		if(user.isPlayingWithParkour() && user.elapsedTime > 0){

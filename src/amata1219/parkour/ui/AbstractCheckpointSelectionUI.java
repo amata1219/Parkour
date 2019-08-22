@@ -22,14 +22,13 @@ import amata1219.parkour.user.User;
 public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 
 	private final User user;
-	private final String checkpointType, lowerCaseCheckpointType;
+	private final String checkpointType;
 	private final BiFunction<Checkpoints, Parkour, ImmutableLocation> getCheckpoint;
 	private final BiFunction<Checkpoints, Parkour, Integer> getCheckpointNumber;
 
 	public AbstractCheckpointSelectionUI(User user, String checkpointType, BiFunction<Checkpoints, Parkour, ImmutableLocation> getCheckpoint, BiFunction<Checkpoints, Parkour, Integer> getCheckpointNumber){
 		this.user = user;
 		this.checkpointType = checkpointType;
-		this.lowerCaseCheckpointType = checkpointType.toLowerCase();
 		this.getCheckpoint = getCheckpoint;
 		this.getCheckpointNumber = getCheckpointNumber;
 	}
@@ -48,7 +47,7 @@ public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 		List<Parkour> parkours = Parkours.getInstance().getEnabledParkours(category).collect(Collectors.toList());
 
 		return build(parkours.size(), l -> {
-			l.title = localizer.applyAll("$0カテゴリーの$1チェックポイント一覧 | List of $1 Checkpoints in $0 Category", category.name, localizer.localize(checkpointType));
+			l.title = localizer.applyAll("$0の$1チェックポイント一覧 | List of $1 Checkpoints in $0", category.name, localizer.localize(checkpointType));
 
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
@@ -100,8 +99,8 @@ public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 
 						//説明文を設定する
 						i.lore(
-							localizer.applyAll("&7-: &b-右クリック &7-@ チェックポイント$0 @ $1 にテレポートします。 | &7-: &b-Right click &7-@ Teleport to a $0 checkpoint in $1.", localizer.localize(lowerCaseCheckpointType), colorlessParkourName),
-							localizer.applyAll("&7-: &b-左クリック &7-@ $0で設定したチェックポイント一覧を開きます。| &7-: &b-Left click &7-@ Opens a list of checkpoints you have set in $0.", colorlessParkourName)
+							localizer.color("&7-: &b-右クリック &7-@ このチェックポイントにテレポートします。 | &7-: &b-Right click &7-@ Teleport to this checkpoint."),
+							localizer.applyAll("&7-: &b-左クリック &7-@ $0で設定したチェックポイント一覧を開きます。 | &7-: &b-Left click &7-@ Opens a list of checkpoints you have set in $0.", colorlessParkourName)
 						);
 
 						i.amount = majorCheckAreaNumberDisplayed;

@@ -14,10 +14,16 @@ import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.parkour.RankUpParkour;
 import amata1219.parkour.parkour.Records;
+import amata1219.parkour.user.InformationBoard;
 import amata1219.parkour.user.User;
 import amata1219.parkour.util.TimeFormat;
 
 public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
+
+	/*
+	 * 前回の記録より良い記録であれば新記録として表示する
+	 * That's a new records of 00:00.000!
+	 */
 
 	public PassFinishLineListener() {
 		super(Parkours.getInstance().chunksToFinishLinesMap);
@@ -86,6 +92,8 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			//アスレのランクを取得する
 			int rank = ((RankUpParkour) parkour).rank;
 
+			InformationBoard board = user.board;
+
 			//各タイプで分岐する
 			switch(category){
 			case UPDATE:
@@ -97,6 +105,8 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 
 				//表示名を更新する
 				ApplyRankToDisplayName.apply(user);
+
+				board.updateUpdateRank();
 				break;
 			case EXTEND:
 				//プレイヤーのランクの方が高ければ戻る
@@ -104,6 +114,8 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 
 				//ランクを更新する
 				user.incrementExtendRank();
+
+				board.updateExtendRank();
 				break;
 			default:
 				throw new NullPointerException("Ranked parkour type can not be null");

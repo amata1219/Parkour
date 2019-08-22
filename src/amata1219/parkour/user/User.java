@@ -84,10 +84,10 @@ public class User {
 		Parkours parkours = Parkours.getInstance();
 
 		//最後にいたアスレを取得する
-		currentParkour = parkours.getParkour("Current parkour");
+		currentParkour = parkours.getParkour("Last parkour");
 
 		//最後に遊んでいたアスレを取得する
-		parkourPlayingNow = parkours.getParkour("Currently playing parkour");
+		parkourPlayingNow = parkours.getParkour("Last played parkour");
 
 		//今チェックエリア内にいるかどうか取得する
 		onCheckArea = yaml.getBoolean("On check area");
@@ -171,7 +171,7 @@ public class User {
 		yaml.set("Coins", coins);
 
 		//最後にいたアスレの名前を記録する
-		yaml.set("Current parkour", currentParkour != null ? currentParkour.name : null);
+		yaml.set("Last parkour", currentParkour != null ? currentParkour.name : null);
 
 		//最後にプレイしていたアスレの名前を記録する
 		yaml.set("Last played parkour", parkourPlayingNow != null ? parkourPlayingNow.name : null);
