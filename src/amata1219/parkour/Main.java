@@ -13,6 +13,7 @@ import amata1219.parkour.command.ParkourCommand;
 import amata1219.parkour.command.RelayoutCommand;
 import amata1219.parkour.command.TestCommand;
 import amata1219.parkour.command.TweetCommand;
+import amata1219.parkour.function.PlayerLocaleChange;
 import amata1219.parkour.function.hotbar.ControlFunctionalHotbarItem;
 import amata1219.parkour.command.DirectionCommand;
 import amata1219.parkour.command.ParkourRegionCommand;
@@ -27,7 +28,6 @@ import amata1219.parkour.listener.UserJoinListener;
 import amata1219.parkour.listener.PassCheckAreaListener;
 import amata1219.parkour.listener.PassFinishLineListener;
 import amata1219.parkour.listener.PassStartLineListener;
-import amata1219.parkour.listener.PlayerLocaleChangeListener;
 import amata1219.parkour.listener.SetCheckpointListener;
 import amata1219.parkour.listener.UserQuitListener;
 import amata1219.parkour.listener.IncrementJumpsListener;
@@ -99,7 +99,7 @@ enabled parkour filter
 			new DisableDamageListener(),
 			new DisableFoodLevelChangeListener(),
 			new IncrementJumpsListener(),
-			new PlayerLocaleChangeListener(),
+			new PlayerLocaleChange(),
 			new UserQuitListener()
 		);
 

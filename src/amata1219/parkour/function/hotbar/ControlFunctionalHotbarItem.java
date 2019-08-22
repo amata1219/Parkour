@@ -2,6 +2,8 @@ package amata1219.parkour.function.hotbar;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
+
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -17,7 +19,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import amata1219.parkour.listener.PlayerLocaleChangeListener;
+import amata1219.parkour.function.PlayerLocaleChange;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
@@ -27,7 +29,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import amata1219.amalib.listener.PlayerJoinListener;
 import amata1219.amalib.listener.PlayerQuitListener;
-import amata1219.amalib.schedule.Sync;
 
 public class ControlFunctionalHotbarItem implements PlayerJoinListener, PlayerQuitListener {
 
@@ -51,16 +52,10 @@ public class ControlFunctionalHotbarItem implements PlayerJoinListener, PlayerQu
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event){
 		Player player = event.getPlayer();
-		String locale = player.getLocale();
 
 		initializeSlots(player);
 
-		Sync.define(() -> {
-			//プレイヤーがオフライン又は言語設定に変更が無ければ戻る
-			if(!player.isOnline() || player.getLocale().equals(locale)) return;
-
-			PlayerLocaleChangeListener.apply(player);
-		}).executeLater(100);
+		PlayerLocaleChange.applyIfLocaleChanged(player, 100, p -> ControlFunctionalHotbarItem.updateAllSlots(p));
 	}
 
 	@EventHandler
@@ -143,16 +138,21 @@ public class ControlFunctionalHotbarItem implements PlayerJoinListener, PlayerQu
 		ITEMS.forEach((slotIndex, item) -> player.getInventory().setItem(slotIndex, item.build(toUser(player))));
 	}
 
+	public static void updateAllSlots(Player player){
+		applyToAllSlots(slotIndex -> updateSlot(player, slotIndex));
+	}
+
 	public static void updateSlot(Player player, Integer slotIndex){
 		//対応したアイテムが存在すればそれを再配置する
 		if(ITEMS.containsKey(slotIndex)) player.getInventory().setItem(slotIndex, ITEMS.get(slotIndex).build(toUser(player)));
 	}
 
 	public static void clearSlots(Player player){
-		Inventory inventory = player.getInventory();
+		applyToAllSlots(slotIndex -> player.getInventory().setItem(slotIndex, AIR));
+	}
 
-		//ホットバーの偶数スロットをクリアする
-		for(int slotIndex = 0; slotIndex <= 8; slotIndex += 2) inventory.setItem(slotIndex, AIR);
+	private static void applyToAllSlots(Consumer<Integer> apply){
+		for(int slotIndex = 0; slotIndex <= 8; slotIndex += 2) apply.accept(slotIndex);
 	}
 
 	private static User toUser(Player player){

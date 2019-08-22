@@ -34,17 +34,20 @@ public class InformationBoard {
 			new Quadruple<>(s -> s.displayCoins, 5, "&b-所持コイン数 &7-@ &f-$0 | &b-Coins &7-@ &f-$0", u -> u.getCoins()),
 			new Quadruple<>(s -> s.displayTimePlayed, 4, "&b-総プレイ時間 &7-@ &f-$0h | &b-Time Played &7-@ &f-$0h", u -> u.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
 			new Quadruple<>(s -> s.displayOnlinePlayers, 3, "&b-接続プレイヤー数 &7-@ &f-$0 | &b-Online Players &7-@ &f-$0", u -> Bukkit.getOnlinePlayers().size()),
-			new Quadruple<>(s -> s.displayPing, 2, "&b-遅延 &7-@ &f-$0ms | &b-Ping &7-@ &f-$0ms", u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
+			new Quadruple<>(s -> s.displayPing, 2, "&b-遅延 &7-@ &f-$0ms | &b-Ping &7-@ &f-$0ms", u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping / 1.5),
 			new Quadruple<>(s -> true, 1, " | ", u -> ""),
 			new Quadruple<>(s -> s.displayServerAddress, 0, "$0 | $0", u -> {
 				Scoreboard board = u.board.board;
 
-				//全行の中で最大の文字列長
+				//全行の中で最大のバイト配列長
 				int maxLength = 0;
 
-				//最大の文字列長を探す
-				for(int score = 0; score < 15; score++) if(board.hasScore(score))
-					maxLength = board.getScore(score).length();
+				//最大のバイト配列長を探す
+				for(int score = 2; score <= 9; score++) if(board.hasScore(score))
+					maxLength = board.getScore(score).getBytes().length;
+
+				//スコアとスペース分の3文字を追加
+				maxLength += 3;
 
 				int halfMaxLength = maxLength / 2;
 
@@ -102,7 +105,7 @@ public class InformationBoard {
 	}
 
 	public void updateAll(){
-		for(int score = 0; score < LINES.size(); score++) updateValue(score);
+		for(int score = 0; score < LINES.size() - 2; score++) updateValue(score);
 	}
 
 	public void updateUpdateRank(){

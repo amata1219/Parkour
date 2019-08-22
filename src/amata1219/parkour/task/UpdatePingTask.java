@@ -5,7 +5,7 @@ import amata1219.parkour.user.Users;
 public class UpdatePingTask extends AsyncTask {
 
 	public UpdatePingTask() {
-		super(3000);
+		super(1200);
 	}
 
 	@Override
