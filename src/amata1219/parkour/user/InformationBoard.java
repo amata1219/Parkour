@@ -10,6 +10,8 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 
 import amata1219.amalib.scoreboard.Scoreboard;
 import amata1219.amalib.string.StringColor;
+import amata1219.amalib.string.StringTemplate;
+import amata1219.amalib.string.message.Localizer;
 import amata1219.amalib.tuplet.Quadruple;
 
 public class InformationBoard {
@@ -19,10 +21,6 @@ public class InformationBoard {
 	@SafeVarargs
 	private static void initialize(Quadruple<Function<UserSetting, Boolean>, Integer, String, Function<User, Object>>... components){
 		Arrays.stream(components).forEach(LINES::add);
-	}
-
-	private static String getSpaces(int length){
-
 	}
 
 	static{
@@ -38,15 +36,22 @@ public class InformationBoard {
 			new Quadruple<>(s -> s.displayOnlinePlayers, 3, "&b-接続プレイヤー数 &7-@ &f-$0 | &b-Online Players &7-@ &f-$0", u -> Bukkit.getOnlinePlayers().size()),
 			new Quadruple<>(s -> s.displayPing, 2, "&b-遅延 &7-@ &f-$0ms | &b-Ping &7-@ &f-$0ms", u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
 			new Quadruple<>(s -> true, 1, " | ", u -> ""),
-			new Quadruple<>(s -> s.displayServerAddress, 0, "&b-$0 | &b-$0", u -> {
+			new Quadruple<>(s -> s.displayServerAddress, 0, "$0 | $0", u -> {
 				Scoreboard board = u.board.board;
+
+				//全行の中で最大の文字列長
 				int maxLength = 0;
+
+				//最大の文字列長を探す
 				for(int score = 0; score < 15; score++) if(board.hasScore(score))
 					maxLength = board.getScore(score).length();
 
 				int halfMaxLength = maxLength / 2;
 
-				return maxLength % 2 == 0 ?
+				String spaces = "";
+				for(int i = 0; i < halfMaxLength; i++) spaces += " ";
+
+				return StringTemplate.capply("$0-&b-azisaba.net$1", spaces, maxLength % 2 == 0 ? spaces : spaces + " ");
 			})
 		);
 	}
@@ -133,14 +138,31 @@ public class InformationBoard {
 
 		Quadruple<Function<UserSetting, Boolean>, Integer, String, Function<User, Object>> line = LINES.get(score);
 
-		//表示しない設定であれば戻る
-		if(!line.first.apply(user.setting)) return;
+		UserSetting setting = user.setting;
 
-		//表示するテキストを作成する
-		String text = user.localizer.applyAll(line.third, line.fourth.apply(user));
+		//表示しない設定であれば戻る
+		if(!line.first.apply(setting)) return;
+
+		//現在表示されている文字列を取得する
+		String before = board.getScore(score);
+
+		Localizer localizer = user.localizer;
+
+		//表示する文字列を作成する
+		String after = localizer.applyAll(line.third, line.fourth.apply(user));
 
 		//指定されたスコアをアップデートする
-		board.updateScore(line.second, text);
+		board.updateScore(line.second, after);
+
+		//サーバーアドレス行のコンポーネントを取得する
+		Quadruple<Function<UserSetting, Boolean>, Integer, String, Function<User, Object>> serverAddress = LINES.get(11);
+
+		//サーバーアドレスを表示しない又は文字列長に差が無い場合は戻る
+		if(!serverAddress.first.apply(setting) || before.length() == after.length()) return;
+
+		String serverAddressDisplayed = localizer.applyAll(serverAddress.third, serverAddress.fourth.apply(user));
+
+		board.updateScore(serverAddress.second, serverAddressDisplayed);
 	}
 
 }
