@@ -3,7 +3,6 @@ package amata1219.parkour.listener;
 import org.bukkit.entity.Player;
 
 import amata1219.parkour.parkour.ParkourRegion;
-import amata1219.amalib.string.message.MessageTemplate;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.user.User;
@@ -30,8 +29,7 @@ public class PassStartLineListener extends PassRegionBoundaryAbstractListener {
 		//タイムアタックが有効であればプレイし始めた時間を記録する
 		if(enableTimeAttack) user.timeToStartPlaying = System.currentTimeMillis();
 
-		//表示例: Challenge started @ Update10
-		MessageTemplate.capply("&b-&l-Challenge started &7-@ &f-$0", parkourName).displayOnActionBar(player);
+		user.localizer.mapplyAll("$0-&r-&b-への挑戦を始めました！ | $0 &r-&b-Challenge Started!", parkourName).displayOnActionBar(player);
 	}
 
 }

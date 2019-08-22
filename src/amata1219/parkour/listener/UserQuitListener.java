@@ -16,7 +16,7 @@ public class UserQuitListener implements PlayerQuitListener {
 		User user = Users.getInstnace().getUser(event.getPlayer());
 
 		//タイムアタックの途中であれば経過時間を記録する
-		if(user.isPlayingWithParkour() && user.parkourPlayingNow.timeAttackEnable) user.elapsedTime = System.currentTimeMillis() - user.timeToStartPlaying;
+		if(user.isPlayingWithParkour() && user.parkourPlayingNow.timeAttackEnable) user.timeElapsed = System.currentTimeMillis() - user.timeToStartPlaying;
 
 		user.inventoryUserInterfaces = null;
 

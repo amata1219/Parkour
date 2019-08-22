@@ -32,8 +32,8 @@ public class UserJoinListener implements PlayerJoinListener {
 
 		//オンラインプレイヤーの数を更新する
 		users.getOnlineUsers().stream()
-		.filter(ur -> ur.board != null)
 		.map(ur -> ur.board)
+		.filter(board -> board != null)
 		.forEach(InformationBoard::updateOnlinePlayers);
 
 		//もし5秒以内に言語設定に変更があればスコアボードの表示を更新する
@@ -45,17 +45,18 @@ public class UserJoinListener implements PlayerJoinListener {
 		//最終ログアウト時にいたアスレを取得する
 		Parkour lastParkour = user.currentParkour;
 
-		//最終ログアウト時にどこかのアスレにいればそのアスレに参加させる
+		//最終ログアウト時にどこかのアスレにいる場合
 		if(lastParkour != null){
+			//再参加させる
 			lastParkour.entry(user);
 
-			//Challend restarted!
-		}
+			user.localizer.mapplyAll("$0-&r-&b-への挑戦を再開しました！ | $0 &r-&b-Challenge Restarted!", lastParkour.name).displayOnActionBar(player);
 
-		//タイムアタックの途中であれば経過時間からスタート時のタイムを設定する
-		if(user.isPlayingWithParkour() && user.elapsedTime > 0){
-			user.timeToStartPlaying = System.currentTimeMillis() - user.elapsedTime;
-			user.elapsedTime = 0;
+			//タイムアタックの途中であれば経過時間からスタート時のタイムを設定する
+			if(user.isPlayingWithParkour() && user.timeElapsed > 0){
+				user.timeToStartPlaying = System.currentTimeMillis() - user.timeElapsed;
+				user.timeElapsed = 0;
+			}
 		}
 	}
 

@@ -42,7 +42,7 @@ public class User {
 	public long timeToStartPlaying;
 
 	//アスレのプレイ開始からログアウトまでの経過時間(ミリ秒)
-	public long elapsedTime;
+	public long timeElapsed;
 
 	//各アスレのチェックポイント
 	public final Checkpoints checkpoints;
@@ -93,7 +93,7 @@ public class User {
 		onCheckArea = yaml.getBoolean("On check area");
 
 		//タイムアタックを始めてからの経過時間を取得する
-		elapsedTime = yaml.getLong("Elapsed time");
+		timeElapsed = yaml.getLong("Elapsed time");
 
 		checkpoints = new Checkpoints(yaml);
 
@@ -180,7 +180,7 @@ public class User {
 		yaml.set("On check area", onCheckArea);
 
 		//タイムアタック中であれば経過時間を記録し、そうでなければ削除する
-		yaml.set("Elapsed time", elapsedTime > 0 ? elapsedTime : null);
+		yaml.set("Elapsed time", timeElapsed > 0 ? timeElapsed : null);
 
 		//クリア済みのアスレの名前リストを記録する
 		yaml.set("Cleared parkour names", clearedParkourNames.stream().collect(Collectors.toList()));

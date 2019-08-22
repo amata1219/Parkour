@@ -5,6 +5,11 @@ import amata1219.parkour.user.Users;
 
 public class SaveUserDataTask extends AsyncTask {
 
+	/*
+	 * 処理見直し必要あり
+	 * User#changedを作る？
+	 */
+
 	private final Users users = Users.getInstnace();
 	private int count;
 

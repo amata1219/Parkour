@@ -49,6 +49,7 @@ public class WearHatUI implements InventoryUI {
 
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
+			int slotIndex = 0;
 			int lastSlotIndex = l.option.size - 1;
 
 			for(int index = 0; index < hats.size(); index++){
@@ -56,14 +57,8 @@ public class WearHatUI implements InventoryUI {
 				String hatName = hat.name;
 				ItemStack hatItem = hat.item;
 
-				PlayerInventory playerInventory = player.getInventory();
-				ItemStack helmet = playerInventory.getHelmet();
-
-				//同じ帽子であればセットしない
-				if(helmet != null && helmet.getType() == Material.PLAYER_HEAD && helmet.hasItemMeta() && hatName.endsWith(helmet.getItemMeta().getDisplayName())){
-					index++;
-					continue;
-				}
+				//同じ帽子であれば処理しない
+				if(isSameHat(hatName, player.getInventory().getHelmet())) continue;
 
 				l.put(s -> {
 
@@ -89,7 +84,10 @@ public class WearHatUI implements InventoryUI {
 						e.clickedInventory.setItem(lastSlotIndex, putOnButton);
 
 						localizer.mapplyAll("&b-$0の帽子を被りました | &b-?", hatName).displayOnActionBar(player);
+
 						WEAR_SE.play(player);
+
+						openInventory(player);
 					});
 
 					s.icon(i -> {
@@ -98,7 +96,7 @@ public class WearHatUI implements InventoryUI {
 						i.lore(localizer.color("&7-クリックすると被ります。 | &7-?"));
 					});
 
-				}, index);
+				}, slotIndex++);
 			}
 
 			l.put(s -> {
@@ -113,7 +111,10 @@ public class WearHatUI implements InventoryUI {
 					inventory.setHelmet(AIR);
 					e.clickedInventory.setItem(lastSlotIndex, AIR);
 					localizer.mcolor("&b-帽子を仕舞いました | &b-?").displayOnActionBar(player);
+
 					PUT_ON_SE.play(player);
+
+					openInventory(player);
 				});
 
 				//帽子を被っていればそれを脱ぐ為のボタンをセットする
@@ -121,6 +122,10 @@ public class WearHatUI implements InventoryUI {
 
 			}, lastSlotIndex);
 		});
+	}
+
+	private boolean isSameHat(String hatName, ItemStack helmet){
+		return helmet != null && helmet.getType() == Material.PLAYER_HEAD && helmet.hasItemMeta() && hatName.endsWith(helmet.getItemMeta().getDisplayName());
 	}
 
 }
