@@ -5,6 +5,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import amata1219.amalib.listener.PlayerQuitListener;
+import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
@@ -17,6 +18,12 @@ public class UserQuitListener implements PlayerQuitListener {
 
 		//タイムアタックの途中であれば経過時間を記録する
 		if(user.isPlayingWithParkour() && user.parkourPlayingNow.timeAttackEnable) user.timeElapsed = System.currentTimeMillis() - user.timeToStartPlaying;
+
+		//今いるアスレを取得する
+		Parkour currentParkour = user.currentParkour;
+
+		//どこかのアスレにいるのであればそこから退出させる
+		if(currentParkour != null) currentParkour.exit(user);
 
 		user.inventoryUserInterfaces = null;
 

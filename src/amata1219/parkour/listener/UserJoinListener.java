@@ -1,5 +1,7 @@
 package amata1219.parkour.listener;
 
+import java.util.Objects;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -32,8 +34,8 @@ public class UserJoinListener implements PlayerJoinListener {
 
 		//オンラインプレイヤーの数を更新する
 		users.getOnlineUsers().stream()
-		.map(ur -> ur.board)
-		.filter(board -> board != null)
+		.map(User::getBoard)
+		.filter(Objects::nonNull)
 		.forEach(InformationBoard::updateOnlinePlayers);
 
 		//もし5秒以内に言語設定に変更があればスコアボードの表示を更新する

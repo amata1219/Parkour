@@ -146,6 +146,10 @@ public class User {
 		if(board != null) board.updateCoins();
 	}
 
+	public Optional<Parkour> getCurrentParkour(){
+
+	}
+
 	public boolean isPlayingWithParkour(){
 		return parkourPlayingNow != null;
 	}
@@ -156,6 +160,10 @@ public class User {
 		currentParkour.exit(this);
 
 		ControlFunctionalHotbarItem.updateSlot(asBukkitPlayer(), 6);
+	}
+
+	public InformationBoard getBoard(){
+		return board;
 	}
 
 	public void save(){
