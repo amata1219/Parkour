@@ -22,7 +22,7 @@ public class CheckpointTeleporter implements FunctionalHotbarItem {
 		Player player = user.asBukkitPlayer();
 
 		//アスレをプレイ中でなければ戻る
-		if(!user.isPlayingWithParkour()){
+		if(!user.isPlayingInParkour()){
 			localizer.mcolor("&c-アスレチックのプレイ中でないため実行出来ません | &c-?").displayOnActionBar(player);
 			return;
 		}

@@ -23,7 +23,7 @@ public class ControlRegionBorderDisplayerListener implements PlayerJoinListener,
 		User user = users.getUser(player);
 
 		//最後にいたアスレを取得する
-		Parkour lastParkour = user.currentParkour;
+		Parkour lastParkour = user.parkourWithNow;
 
 		Parkour lastPlayedParkour = user.parkourPlayingNow;
 
@@ -39,7 +39,7 @@ public class ControlRegionBorderDisplayerListener implements PlayerJoinListener,
 		User user = users.getUser(player);
 
 		//今いるアスレを取得する
-		Parkour currentParkour = user.currentParkour;
+		Parkour currentParkour = user.parkourWithNow;
 
 		//あれば退出させる
 		if(currentParkour != null) currentParkour.exit(user);

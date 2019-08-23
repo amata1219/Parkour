@@ -16,7 +16,7 @@ public class ParkoursMenuOpener implements FunctionalHotbarItem {
 	@Override
 	public void onClick(User user, ClickType click) {
 		//プレイヤーが今いるアスレを取得する
-		Parkour parkour = user.currentParkour;
+		Parkour parkour = user.parkourWithNow;
 
 		//ステージのカテゴリーを取得する
 		ParkourCategory category = parkour != null ? parkour.category : ParkourCategory.NORMAL;

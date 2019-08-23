@@ -45,7 +45,7 @@ public class UserJoinListener implements PlayerJoinListener {
 		ApplyRankToDisplayName.apply(user);
 
 		//最終ログアウト時にいたアスレを取得する
-		Parkour lastParkour = user.currentParkour;
+		Parkour lastParkour = user.parkourWithNow;
 
 		//最終ログアウト時にどこかのアスレにいる場合
 		if(lastParkour != null){
@@ -55,7 +55,7 @@ public class UserJoinListener implements PlayerJoinListener {
 			user.localizer.mapplyAll("$0-&r-&b-への挑戦を再開しました！ | $0 &r-&b-Challenge Restarted!", lastParkour.name).displayOnActionBar(player);
 
 			//タイムアタックの途中であれば経過時間からスタート時のタイムを設定する
-			if(user.isPlayingWithParkour() && user.timeElapsed > 0){
+			if(user.isPlayingInParkour() && user.timeElapsed > 0){
 				user.timeToStartPlaying = System.currentTimeMillis() - user.timeElapsed;
 				user.timeElapsed = 0;
 			}

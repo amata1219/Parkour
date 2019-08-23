@@ -97,7 +97,7 @@ public class Parkour {
 		//このアスレ以外のアスレに参加していれば退出させる
 		if(!equals(user.parkourPlayingNow)) user.parkourPlayingNow.exit(user);
 
-		user.currentParkour = this;
+		user.parkourWithNow = this;
 
 		Player player = user.asBukkitPlayer();
 
@@ -111,7 +111,7 @@ public class Parkour {
 	}
 
 	public void exit(User user){
-		user.currentParkour = user.parkourPlayingNow = null;
+		user.parkourWithNow = user.parkourPlayingNow = null;
 
 		Player player = user.asBukkitPlayer();
 

@@ -18,7 +18,7 @@ public class CheckpointsMenuOpener implements FunctionalHotbarItem {
 		Player player = user.asBukkitPlayer();
 
 		//どこのアスレにもいなければ戻る
-		if(user.currentParkour == null){
+		if(user.parkourWithNow == null){
 			user.localizer.mcolor("&c-アスレチックのプレイ中でないため開けません | &c-?").displayOnActionBar(player);
 			return;
 		}

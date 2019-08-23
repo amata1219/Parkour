@@ -1,6 +1,7 @@
 package amata1219.parkour.user;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class User {
 	private int coins;
 
 	//現在いるアスレ
-	public Parkour currentParkour;
+	public Parkour parkourWithNow;
 
 	//現在プレイ中のアスレ
 	public Parkour parkourPlayingNow;
@@ -84,11 +85,12 @@ public class User {
 		Parkours parkours = Parkours.getInstance();
 
 		//最後にいたアスレを取得する
-		currentParkour = parkours.getParkour("Last parkour");
+		parkourWithNow = parkours.getParkour("Last parkour");
 
 		//最後に遊んでいたアスレを取得する
 		parkourPlayingNow = parkours.getParkour("Last played parkour");
 
+		//このフラグどうにかしたい
 		//今チェックエリア内にいるかどうか取得する
 		onCheckArea = yaml.getBoolean("On check area");
 
@@ -110,6 +112,7 @@ public class User {
 		hats = new UserHats(this, yaml);
 	}
 
+	//このユーザーに対応したプレイヤーを取得する
 	public Player asBukkitPlayer(){
 		return Bukkit.getPlayer(uuid);
 	}
@@ -130,38 +133,65 @@ public class User {
 		extendRank++;
 	}
 
+	//所持コイン数を取得する
 	public int getCoins(){
 		return coins;
 	}
 
+	//指定数だけ所持コイン数を増やす
 	public void depositCoins(int coins){
 		this.coins += coins;
 
 		if(board != null) board.updateCoins();
 	}
 
+	//指定数だけ所持コイン数を減らす
 	public void withdrawCoins(int coins){
 		this.coins = Math.max(this.coins - coins, 0);
 
 		if(board != null) board.updateCoins();
 	}
 
-	public Optional<Parkour> getCurrentParkour(){
-
+	//今いるアスレがあるかどうか
+	public boolean isInParkour(){
+		return parkourWithNow != null;
 	}
 
-	public boolean isPlayingWithParkour(){
+	//今いるアスレを取得する
+	public Optional<Parkour> getParkourWithNow(){
+		return Optional.ofNullable(parkourWithNow);
+	}
+
+	//今いるアスレをセットする
+	public void setParkourWithNow(Parkour parkour){
+		this.parkourWithNow = parkour;
+	}
+
+	//今プレイ中のアスレがあるかどうか
+	public boolean isPlayingInParkour(){
 		return parkourPlayingNow != null;
 	}
 
-	public void exitParkour(){
-		if(currentParkour == null) return;
+	//今プレイ中のアスレを取得する
+	public Optional<Parkour> getParkourPlayingNow(){
+		return Optional.ofNullable(parkourPlayingNow);
+	}
 
-		currentParkour.exit(this);
+	//今プレイ中のアスレをセットする
+	public void setParkourPlayingNow(Parkour parkour){
+		this.parkourPlayingNow = parkour;
+	}
+
+	//ここにあるべき処理でないので解体或いは移行する
+	public void exitParkour(){
+		if(parkourWithNow == null) return;
+
+		parkourWithNow.exit(this);
 
 		ControlFunctionalHotbarItem.updateSlot(asBukkitPlayer(), 6);
 	}
 
+	//命名どうにかしろ
 	public InformationBoard getBoard(){
 		return board;
 	}
@@ -179,7 +209,7 @@ public class User {
 		yaml.set("Coins", coins);
 
 		//最後にいたアスレの名前を記録する
-		yaml.set("Last parkour", currentParkour != null ? currentParkour.name : null);
+		yaml.set("Last parkour", parkourWithNow != null ? parkourWithNow.name : null);
 
 		//最後にプレイしていたアスレの名前を記録する
 		yaml.set("Last played parkour", parkourPlayingNow != null ? parkourPlayingNow.name : null);

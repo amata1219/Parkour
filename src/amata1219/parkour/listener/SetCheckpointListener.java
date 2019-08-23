@@ -36,7 +36,7 @@ public class SetCheckpointListener implements Listener {
 		if(!player.isOnGround()) return;
 
 		//アスレにいなければ戻る
-		if(user.currentParkour == null) return;
+		if(user.parkourWithNow == null) return;
 
 		Location location = player.getLocation();
 
@@ -62,7 +62,7 @@ public class SetCheckpointListener implements Listener {
 		Parkour parkour = checkArea.parkour;
 
 		//プレイヤーが今いるアスレでなければ戻る
-		if(!user.currentParkour.equals(parkour)) return;
+		if(!user.parkourWithNow.equals(parkour)) return;
 
 		//メジャーチェックエリア番号を取得する
 		int majorCheckAreaNumber = parkour.checkAreas.getMajorCheckAreaNumber(checkArea);
