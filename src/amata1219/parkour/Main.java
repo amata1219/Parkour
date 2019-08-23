@@ -14,14 +14,13 @@ import amata1219.parkour.command.RelayoutCommand;
 import amata1219.parkour.command.TestCommand;
 import amata1219.parkour.command.TweetCommand;
 import amata1219.parkour.function.PlayerLocaleChange;
-import amata1219.parkour.function.hotbar.ControlFunctionalHotbarItem;
+import amata1219.parkour.function.hotbar.ControlFunctionalItem;
 import amata1219.parkour.command.DirectionCommand;
 import amata1219.parkour.command.ParkourRegionCommand;
 import amata1219.parkour.command.ParkourSettingCommand;
 import amata1219.parkour.listener.DisableDamageListener;
 import amata1219.parkour.listener.DisableFoodLevelChangeListener;
 import amata1219.parkour.listener.DisablePlayerCollisionListener;
-import amata1219.parkour.listener.ControlRegionBorderDisplayerListener;
 import amata1219.parkour.listener.GiveVoteRewardCoinsListener;
 import amata1219.parkour.listener.HideNewPlayerListener;
 import amata1219.parkour.listener.UserJoinListener;
@@ -46,19 +45,9 @@ public class Main extends Plugin {
 	//アスレクリア時やランクアップ時など
 	//各動作に音を付ける
 
-	/*
-	 * region info
-
-チェックエリア作成時にmajor/minor表示
-
-enabled parkour filter
-
-アスレ参加判定が無いバグ
-	 */
-
 	private static Main plugin;
 
-	private final ArrayList<AsyncTask> activeTasks = new ArrayList<>(5);
+	private final ArrayList<AsyncTask> activeTasks = new ArrayList<>(4);
 
 	@Override
 	public void onEnable(){
@@ -87,9 +76,8 @@ enabled parkour filter
 			Users.getInstnace(),
 			RegionSelections.getInstance(),
 			new UserJoinListener(),
-			new ControlFunctionalHotbarItem(),
+			new ControlFunctionalItem(),
 			new DisablePlayerCollisionListener(),
-			new ControlRegionBorderDisplayerListener(),
 			new GiveVoteRewardCoinsListener(),
 			new HideNewPlayerListener(),
 			new PassFinishLineListener(),

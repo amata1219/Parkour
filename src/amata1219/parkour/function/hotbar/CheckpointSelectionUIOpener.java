@@ -11,14 +11,14 @@ import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.user.InventoryUserInterfaces;
 import amata1219.parkour.user.User;
 
-public class CheckpointsMenuOpener implements FunctionalHotbarItem {
+public class CheckpointSelectionUIOpener implements FunctionalItem {
 
 	@Override
 	public void onClick(User user, ClickType click) {
 		Player player = user.asBukkitPlayer();
 
 		//どこのアスレにもいなければ戻る
-		if(user.parkourWithNow == null){
+		if(!user.getParkourWithNow().isPresent()){
 			user.localizer.mcolor("&c-アスレチックのプレイ中でないため開けません | &c-?").displayOnActionBar(player);
 			return;
 		}

@@ -1,6 +1,7 @@
 package amata1219.parkour.function.hotbar;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -11,15 +12,15 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.user.User;
 
-public class ParkoursMenuOpener implements FunctionalHotbarItem {
+public class ParkourSelectionUIOpener implements FunctionalItem {
 
 	@Override
 	public void onClick(User user, ClickType click) {
-		//プレイヤーが今いるアスレを取得する
-		Parkour parkour = user.parkourWithNow;
+		//今いるアスレを取得する
+		Optional<Parkour> parkour = user.getParkourWithNow();
 
 		//ステージのカテゴリーを取得する
-		ParkourCategory category = parkour != null ? parkour.category : ParkourCategory.NORMAL;
+		ParkourCategory category = parkour.isPresent() ? parkour.get().category : ParkourCategory.NORMAL;
 
 		user.inventoryUserInterfaces.openParkourSelectionUI(category);
 	}

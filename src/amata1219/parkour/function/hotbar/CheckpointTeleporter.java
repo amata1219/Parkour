@@ -14,7 +14,7 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
 
-public class CheckpointTeleporter implements FunctionalHotbarItem {
+public class CheckpointTeleporter implements FunctionalItem {
 
 	@Override
 	public void onClick(User user, ClickType click) {

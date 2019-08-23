@@ -1,7 +1,5 @@
 package amata1219.parkour.function.hotbar;
 
-import java.util.Arrays;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -10,12 +8,12 @@ import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.function.ToggleHideMode;
 import amata1219.parkour.user.User;
 
-public class HideModeToggler implements FunctionalHotbarItem {
+public class HideModeToggler implements FunctionalItem {
 
 	@Override
 	public void onClick(User user, ClickType click) {
 		ToggleHideMode.getInstance().change(user);
-		ControlFunctionalHotbarItem.updateSlot(user.asBukkitPlayer(), 6);
+		ControlFunctionalItem.updateSlot(user.asBukkitPlayer(), ItemType.HIDE_MODE_TOGGLER);
 	}
 
 	@Override
@@ -29,7 +27,6 @@ public class HideModeToggler implements FunctionalHotbarItem {
 		ItemMeta meta = item.getItemMeta();
 
 		meta.setDisplayName(localizer.color(hideMode ? "&b-プレイヤーを表示する | &b-?" : "&b-プレイヤーを非表示にする | &b-?"));
-		meta.setLore(Arrays.asList(localizer.color("&7-説明文いらない。 | &7-?")));
 
 		item.setItemMeta(meta);
 

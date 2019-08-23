@@ -87,11 +87,14 @@ public class MyProfileUI implements InventoryUI {
 
 			for(Quadruple<Integer, Material, String, Consumer<User>> icon : ICONS){
 				l.put(s -> {
+
 					s.onClick(e -> icon.fourth.accept(user));
+
 					s.icon(icon.second, i -> {
 						i.displayName = localizer.color(icon.third);
 						i.gleam();
 					});
+
 				}, icon.first);
 			}
 

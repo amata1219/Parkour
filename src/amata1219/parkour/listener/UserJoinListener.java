@@ -10,7 +10,6 @@ import amata1219.amalib.listener.PlayerJoinListener;
 import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.function.PlayerLocaleChange;
-import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.InformationBoard;
 import amata1219.parkour.user.InventoryUserInterfaces;
 import amata1219.parkour.user.User;
@@ -26,7 +25,7 @@ public class UserJoinListener implements PlayerJoinListener {
 		Player player = event.getPlayer();
 		User user = users.getUser(player);
 
-		user.localizer = new Localizer(player);
+		Localizer localizer = user.localizer = new Localizer(player);
 		user.inventoryUserInterfaces = new InventoryUserInterfaces(user);
 
 		user.board = new InformationBoard(user);
@@ -44,22 +43,19 @@ public class UserJoinListener implements PlayerJoinListener {
 		//プレイヤー名にランクを表示させる
 		ApplyRankToDisplayName.apply(user);
 
-		//最終ログアウト時にいたアスレを取得する
-		Parkour lastParkour = user.parkourWithNow;
-
-		//最終ログアウト時にどこかのアスレにいる場合
-		if(lastParkour != null){
+		//最終ログアウト時にどこかのアスレにいた場合
+		user.getParkourWithNow().ifPresent(parkour -> {
 			//再参加させる
-			lastParkour.entry(user);
+			parkour.entry(user);
 
-			user.localizer.mapplyAll("$0-&r-&b-への挑戦を再開しました！ | $0 &r-&b-Challenge Restarted!", lastParkour.name).displayOnActionBar(player);
+			localizer.mapplyAll("$0-&r-&b-への挑戦を再開しました！ | $0 &r-&b-Challenge Restarted!", parkour.name).displayOnActionBar(player);
 
-			//タイムアタックの途中であれば経過時間からスタート時のタイムを設定する
+			//タイムアタックの途中であれば経過時間からスタート時のタイムを再計算しセットする
 			if(user.isPlayingInParkour() && user.timeElapsed > 0){
 				user.timeToStartPlaying = System.currentTimeMillis() - user.timeElapsed;
 				user.timeElapsed = 0;
 			}
-		}
+		});
 	}
 
 }

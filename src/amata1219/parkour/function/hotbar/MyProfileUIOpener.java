@@ -8,7 +8,7 @@ import amata1219.amalib.item.SkullMaker;
 import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.user.User;
 
-public class MyMenuOpener implements FunctionalHotbarItem {
+public class MyProfileUIOpener implements FunctionalItem {
 
 	@Override
 	public void onClick(User user, ClickType click) {

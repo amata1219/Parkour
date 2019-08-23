@@ -37,11 +37,11 @@ public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 	public Function<Player, InventoryLayout> layout() {
 		Localizer localizer = user.localizer;
 
-		//現在プレイ中のアスレを取得する
-		Parkour currentParkour = user.parkourWithNow;
+		//今いるアスレを取得する
+		Parkour parkourWithNow = user.getParkourWithNow().get();
 
 		//カテゴリーを取得する
-		ParkourCategory category = currentParkour.category;
+		ParkourCategory category = parkourWithNow.category;
 
 		//カテゴリー内の有効な全アスレを取得する
 		List<Parkour> parkours = Parkours.getInstance().getEnabledParkours(category).collect(Collectors.toList());
@@ -77,8 +77,11 @@ public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 						Player player = event.player;
 
 						if(event.isRightClick()){
+							//今いるアスレを取得する
+							Parkour withNow = user.getParkourWithNow().get();
+
 							//別のアスレに移動するのであれば参加処理をする
-							if(parkour != user.parkourWithNow) parkour.entry(user);
+							if(!parkour.equals(withNow)) parkour.entry(user);
 
 							//プレイヤーを最終チェックポイントにテレポートさせる
 							player.teleport(lastCheckpoint.asBukkit());
@@ -106,7 +109,7 @@ public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 						i.amount = majorCheckAreaNumberDisplayed;
 
 						//現在プレイ中のアスレであれば発光させる
-						if(parkour.equals(currentParkour)) i.gleam();
+						if(parkour.equals(parkourWithNow)) i.gleam();
 
 					});
 

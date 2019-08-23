@@ -4,7 +4,7 @@ import org.bukkit.inventory.ItemStack;
 
 import amata1219.parkour.user.User;
 
-public interface FunctionalHotbarItem {
+public interface FunctionalItem {
 
 	void onClick(User user, ClickType click);
 

@@ -30,22 +30,22 @@ import org.bukkit.inventory.PlayerInventory;
 import amata1219.amalib.listener.PlayerJoinListener;
 import amata1219.amalib.listener.PlayerQuitListener;
 
-public class ControlFunctionalHotbarItem implements PlayerJoinListener, PlayerQuitListener {
+public class ControlFunctionalItem implements PlayerJoinListener, PlayerQuitListener {
 
-	private static final Map<Integer, FunctionalHotbarItem> ITEMS = new HashMap<>(5);
+	private static final Map<Integer, FunctionalItem> ITEMS = new HashMap<>(5);
 	private static final ItemStack AIR = new ItemStack(Material.AIR);
 
 	static{
 		initialize(
 			new CheckpointTeleporter(),
-			new CheckpointsMenuOpener(),
-			new ParkoursMenuOpener(),
+			new CheckpointSelectionUIOpener(),
+			new ParkourSelectionUIOpener(),
 			new HideModeToggler(),
-			new MyMenuOpener()
+			new MyProfileUIOpener()
 		);
 	}
 
-	private static void initialize(FunctionalHotbarItem... items){
+	private static void initialize(FunctionalItem... items){
 		for(int slotIndex = 0; slotIndex < 5; slotIndex++) ITEMS.put(slotIndex * 2, items[slotIndex]);
 	}
 
@@ -55,7 +55,7 @@ public class ControlFunctionalHotbarItem implements PlayerJoinListener, PlayerQu
 
 		initializeSlots(player);
 
-		PlayerLocaleChange.applyIfLocaleChanged(player, 100, p -> ControlFunctionalHotbarItem.updateAllSlots(p));
+		PlayerLocaleChange.applyIfLocaleChanged(player, 100, p -> ControlFunctionalItem.updateAllSlots(p));
 	}
 
 	@EventHandler
@@ -82,7 +82,7 @@ public class ControlFunctionalHotbarItem implements PlayerJoinListener, PlayerQu
 		//対応したアイテムが存在しなければ戻る
 		if(!ITEMS.containsKey(clickedSlotIndex)) return;
 
-		FunctionalHotbarItem item = ITEMS.get(clickedSlotIndex);
+		FunctionalItem item = ITEMS.get(clickedSlotIndex);
 
 		//対応したアイテムでなければ戻る
 		if(!item.isSimilar(event.getItem())) return;
@@ -142,17 +142,19 @@ public class ControlFunctionalHotbarItem implements PlayerJoinListener, PlayerQu
 		applyToAllSlots(slotIndex -> updateSlot(player, slotIndex));
 	}
 
-	public static void updateSlot(Player player, Integer slotIndex){
+	public static void updateSlot(Player player, ItemType type){
+		int slotIndex = type.slotIndex;
+
 		//対応したアイテムが存在すればそれを再配置する
 		if(ITEMS.containsKey(slotIndex)) player.getInventory().setItem(slotIndex, ITEMS.get(slotIndex).build(toUser(player)));
 	}
 
 	public static void clearSlots(Player player){
-		applyToAllSlots(slotIndex -> player.getInventory().setItem(slotIndex, AIR));
+		applyToAllSlots(type -> player.getInventory().setItem(type.slotIndex, AIR));
 	}
 
-	private static void applyToAllSlots(Consumer<Integer> apply){
-		for(int slotIndex = 0; slotIndex <= 8; slotIndex += 2) apply.accept(slotIndex);
+	private static void applyToAllSlots(Consumer<ItemType> apply){
+		for(ItemType type : ItemType.values()) apply.accept(type);
 	}
 
 	private static User toUser(Player player){

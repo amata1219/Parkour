@@ -12,7 +12,8 @@ import org.bukkit.entity.Player;
 import amata1219.amalib.location.ImmutableLocation;
 import amata1219.amalib.string.message.Localizer;
 import amata1219.amalib.yaml.Yaml;
-import amata1219.parkour.function.hotbar.ControlFunctionalHotbarItem;
+import amata1219.parkour.function.hotbar.ControlFunctionalItem;
+import amata1219.parkour.function.hotbar.ItemType;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.Parkours;
 
@@ -31,11 +32,12 @@ public class User {
 	private int coins;
 
 	//現在いるアスレ
-	public Parkour parkourWithNow;
+	private Parkour parkourWithNow;
 
 	//現在プレイ中のアスレ
 	public Parkour parkourPlayingNow;
 
+	//これやるぐらいならSetCheckpointListenerの為にも今いるエリアを保持した方が良い
 	//今チェックエリア内にいるかどうか
 	public boolean onCheckArea;
 
@@ -182,13 +184,17 @@ public class User {
 		this.parkourPlayingNow = parkour;
 	}
 
-	//ここにあるべき処理でないので解体或いは移行する
+	//アスレから退出する
 	public void exitParkour(){
-		if(parkourWithNow == null) return;
+		getParkourWithNow().ifPresent(parkour -> {
+			//今いるアスレから退出する
+			parkour.exit(this);
 
-		parkourWithNow.exit(this);
+			parkourWithNow = parkourPlayingNow = null;
 
-		ControlFunctionalHotbarItem.updateSlot(asBukkitPlayer(), 6);
+			//通知アイテムを更新する
+			ControlFunctionalItem.updateSlot(asBukkitPlayer(), ItemType.CHERCKPOINT_TELEPORTER);
+		});
 	}
 
 	//命名どうにかしろ

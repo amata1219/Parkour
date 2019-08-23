@@ -8,7 +8,8 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import amata1219.amalib.sound.SoundMetadata;
-import amata1219.parkour.function.hotbar.ControlFunctionalHotbarItem;
+import amata1219.parkour.function.hotbar.ControlFunctionalItem;
+import amata1219.parkour.function.hotbar.ItemType;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
@@ -35,7 +36,7 @@ public class PassCheckAreaListener extends PassRegionBoundaryAbstractListener {
 			IN_SE.play(player);
 
 			//通知アイテムを輝かせる
-			ControlFunctionalHotbarItem.updateSlot(player, 0);
+			ControlFunctionalItem.updateSlot(player, ItemType.CHERCKPOINT_TELEPORTER);
 		//チェックエリアから出た場合
 		}else if(existsFrom && !existsTo){
 			user.onCheckArea = false;
@@ -43,7 +44,7 @@ public class PassCheckAreaListener extends PassRegionBoundaryAbstractListener {
 			OUT_SE.play(player);
 
 			//通知アイテムの輝きを失わせる
-			ControlFunctionalHotbarItem.updateSlot(player, 0);
+			ControlFunctionalItem.updateSlot(player, ItemType.CHERCKPOINT_TELEPORTER);
 		}
 	}
 
@@ -52,7 +53,7 @@ public class PassCheckAreaListener extends PassRegionBoundaryAbstractListener {
 		Player player = event.getPlayer();
 
 		//プラグインによるテレポートであれば通知アイテムを更新する
-		if(player.getGameMode() != GameMode.CREATIVE && event.getCause() == TeleportCause.PLUGIN) ControlFunctionalHotbarItem.updateSlot(player, 0);
+		if(player.getGameMode() != GameMode.CREATIVE && event.getCause() == TeleportCause.PLUGIN) ControlFunctionalItem.updateSlot(player, ItemType.CHERCKPOINT_TELEPORTER);
 	}
 
 }
