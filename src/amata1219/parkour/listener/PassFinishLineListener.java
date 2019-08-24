@@ -62,7 +62,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			Records records = parkour.records;
 
 			//ゴールタイムを記録する
-			records.record(user.uuid, time);
+			records.mightRecord(user.uuid, time);
 
 			//記録をソートする
 			records.sort();

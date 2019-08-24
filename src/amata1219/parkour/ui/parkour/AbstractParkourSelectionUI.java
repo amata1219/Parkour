@@ -19,7 +19,6 @@ import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.string.StringLocalize;
 import amata1219.amalib.string.StringTemplate;
 import amata1219.amalib.string.message.Localizer;
-import amata1219.amalib.string.message.MessageLocalize;
 import amata1219.amalib.tuplet.Tuple;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
@@ -27,6 +26,7 @@ import amata1219.parkour.parkour.Records;
 import amata1219.parkour.parkour.Rewards;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
+import amata1219.parkour.util.TimeFormat;
 
 public abstract class AbstractParkourSelectionUI<T extends Parkour> implements InventoryUI {
 
@@ -121,7 +121,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 
 						if(timeAttackEnable){
 							Records records = parkour.records;
-							
+
 							//上位の記録を取得する
 							List<Tuple<UUID, String>> topTenRecords = records.topTenRecords;
 
@@ -137,11 +137,16 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 								.map(record -> localizer.applyAll("&b-$0-&7-位 &b-$1 &7-@ &b-$2 | &b-$0-&7-. &b-$1 &7-@ &b-$2", rank.getAndIncrement(), Bukkit.getOfflinePlayer(record.first).getName(), record.second))
 								.forEach(lore::add);
 
-								lore.add("");
+								UUID uuid = user.uuid;
 
-								records.
-								
-								lore.add("&7-自己最高記録 @ $0 | &7-Personal Best @ $0");
+								//記録を保有しているのであれば自己最高記録を表示する
+								if(records.containsRecord(uuid)){
+									lore.add("");
+
+									String time = TimeFormat.format(records.getRecord(uuid));
+
+									lore.add(localizer.applyAll("&7-自己最高記録 @ $0 | &7-Personal Best @ $0", time));
+								}
 							}
 						}
 

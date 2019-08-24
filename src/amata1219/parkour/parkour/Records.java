@@ -26,8 +26,8 @@ public class Records {
 	//上位10件の記録(非同期でリストを操作する為スレッドセーフなリストにしている)
 	public final List<Tuple<UUID, String>> topTenRecords = new CopyOnWriteArrayList<>();
 
-	//無効な記録の保有者リスト
-	private final List<UUID> holdersOfInvalidRecords = new ArrayList<>();
+	//撤回された記録の保有者リスト
+	private final List<UUID> holdersOfWithdrawnRecords = new ArrayList<>();
 
 	public Records(Yaml yaml){
 		if(!yaml.isConfigurationSection("Records")){
@@ -35,17 +35,17 @@ public class Records {
 			return;
 		}
 
-		ConfigurationSection recorderSection = yaml.getConfigurationSection("Records");
+		ConfigurationSection recordsSection = yaml.getConfigurationSection("Records");
 
-		Set<String> recorders = recorderSection.getKeys(false);
-		records = new HashMap<>(recorders.size());
+		Set<String> holdersOfRecords = recordsSection.getKeys(false);
+		records = new HashMap<>(holdersOfRecords.size());
 
-		for(String recorder : recorders){
+		for(String holder : holdersOfRecords){
 			//UUIDに変換する
-			UUID uuid = UUID.fromString(recorder);
+			UUID uuid = UUID.fromString(holder);
 
 			//タイムに変換する
-			long time = recorderSection.getLong(recorder);
+			long time = recordsSection.getLong(holder);
 
 			records.put(uuid, time);
 		}
@@ -53,16 +53,25 @@ public class Records {
 		sort();
 	}
 
-	public boolean record(UUID uuid, long time){
+	//必要であれば記録する
+	public boolean mightRecord(UUID uuid, long time){
 		if(records.getOrDefault(uuid, Long.MAX_VALUE) <= time) return false;
 
 		records.put(uuid, time);
 		return true;
 	}
 
-	public void removeRecord(UUID uuid){
+	public boolean containsRecord(UUID uuid){
+		return records.containsKey(uuid);
+	}
+
+	public long getRecord(UUID uuid){
+		return records.getOrDefault(uuid, 0L);
+	}
+
+	public void withdrawRecord(UUID uuid){
 		records.remove(uuid);
-		removedRecorders.add(uuid);
+		holdersOfWithdrawnRecords.add(uuid);
 		sort();
 	}
 
@@ -93,8 +102,8 @@ public class Records {
 		//レコードを記録する
 		for(Entry<UUID, Long> recordEntry : records.entrySet()) yaml.set(StringTemplate.apply("Records.$0", recordEntry.getKey()) , recordEntry.getValue());
 
-		//不正なレコードを削除する
-		for(UUID removedRecorder : removedRecorders) yaml.set(StringTemplate.apply("Records.$0", removedRecorder), null);
+		//撤回された記録を削除する
+		for(UUID holder : holdersOfWithdrawnRecords) yaml.set(StringTemplate.apply("Records.$0", holder), null);
 	}
 
 }
