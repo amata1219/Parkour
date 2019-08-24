@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import amata1219.amalib.schedule.Sync;
-import amata1219.amalib.string.message.MessageColor;
 import amata1219.parkour.Main;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
@@ -68,7 +67,7 @@ public class ToggleHideMode {
 
 		//クールダウン中なら戻る
 		if(cooldownUsers.contains(user)){
-			MessageColor.color("&c-Operation blocked-&7 @ &c-Input is too fast").displayOnActionBar(player);
+			user.localizer.mcolor("&c-入力が速過ぎます | &c-Input too fast").displayOnActionBar(player);
 			return;
 		}
 

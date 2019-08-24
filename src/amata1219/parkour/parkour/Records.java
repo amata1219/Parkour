@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -22,10 +23,11 @@ public class Records {
 	//全記録
 	private final Map<UUID, Long> records;
 
-	//上位10件の記録
-	public final List<Tuple<UUID, String>> topTenRecords = new ArrayList<>(10);
+	//上位10件の記録(非同期でリストを操作する為スレッドセーフなリストにしている)
+	public final List<Tuple<UUID, String>> topTenRecords = new CopyOnWriteArrayList<>();
 
-	private final List<UUID> removedRecorders = new ArrayList<>();
+	//無効な記録の保有者リスト
+	private final List<UUID> holdersOfInvalidRecords = new ArrayList<>();
 
 	public Records(Yaml yaml){
 		if(!yaml.isConfigurationSection("Records")){

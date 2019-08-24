@@ -170,7 +170,7 @@ public class User {
 	}
 
 	//今プレイ中のアスレがあるかどうか
-	public boolean isPlayingInParkour(){
+	public boolean isPlayingParkour(){
 		return parkourPlayingNow != null;
 	}
 

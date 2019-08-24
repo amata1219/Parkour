@@ -17,10 +17,6 @@ public class UserHats {
 		this.hatIds = new HashSet<>(yaml.getIntegerList("Purchased hat ids"));
 	}
 
-	public boolean has(Hat hat){
-		return hatIds.contains(hat.id);
-	}
-
 	public boolean canBuy(Hat hat){
 		return hat.value <= user.getCoins();
 	}
@@ -28,6 +24,10 @@ public class UserHats {
 	public void buy(Hat hat){
 		user.withdrawCoins(hat.value);
 		hatIds.add(hat.id);
+	}
+
+	public boolean has(Hat hat){
+		return hatIds.contains(hat.id);
 	}
 
 	public void save(Yaml yaml){

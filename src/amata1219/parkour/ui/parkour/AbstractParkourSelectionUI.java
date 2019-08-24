@@ -18,10 +18,12 @@ import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.string.StringLocalize;
 import amata1219.amalib.string.StringTemplate;
+import amata1219.amalib.string.message.Localizer;
 import amata1219.amalib.string.message.MessageLocalize;
 import amata1219.amalib.tuplet.Tuple;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
+import amata1219.parkour.parkour.Records;
 import amata1219.parkour.parkour.Rewards;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
@@ -33,6 +35,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 	private final Users users = Users.getInstnace();
 
 	private final User user;
+	private final Localizer localizer;
 	private final ParkourCategory category;
 	private final Supplier<List<T>> parkours;
 	private final Function<List<T>, InventoryLine> line;
@@ -40,6 +43,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 
 	public AbstractParkourSelectionUI(User user, ParkourCategory category, Supplier<List<T>> parkours, Function<List<T>, InventoryLine> line, Consumer<InventoryLayout> raw){
 		this.user = user;
+		this.localizer = user.localizer;
 		this.category = category;
 		this.parkours = parkours;
 		this.line = line;
@@ -65,7 +69,11 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 
 			for(int index = 0; index < parkours.size(); index++){
 				Parkour parkour = parkours.get(index);
+
 				String parkourName = parkour.name;
+
+				//装飾コードを除去したアスレ名を取得する
+				String colorlessParkourName = parkour.getColorlessName();
 
 				l.put(s -> {
 
@@ -76,7 +84,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 						//アスレに参加させる
 						parkour.entry(users.getUser(player));
 
-						MessageLocalize.applyAll("$0-&r-にテレポートしました | &7-?", player, parkourName).displayOnActionBar(player);
+						localizer.mapplyAll("&b-$0にテレポートしました | &b-Teleported to $0").displayOnActionBar(player);
 					});
 
 					//アスレのアイコンを設定する
@@ -91,17 +99,17 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 						//表示するテキストを決定する
 						String numberOfDisplayedCheckAreas = maxMajorCheckAreaNumber >= 0 ? String.valueOf(maxMajorCheckAreaNumber + 1) : "None";
 
-						lore.add(StringLocalize.applyAll("&7-チェックエリア @ &b-$0-&7-箇所 | &7-Check Areas @ &b-$0", player, numberOfDisplayedCheckAreas));
+						lore.add(localizer.applyAll("&7-チェックエリア @ &b-$0-&7-箇所 | &7-Check Areas @ &b-$0", numberOfDisplayedCheckAreas));
 
 						Rewards rewards = parkour.rewards;
-						lore.add(StringLocalize.applyAll("&7-初回/通常報酬 @ &b-$0-&7-/-&b-$1-&7-コイン | &7-First/Normal Reward @ &b-$0-&7-/-&b-$1 &7-Coins", player, rewards.getReward(0), rewards.getReward(1)));
+						lore.add(localizer.applyAll("&7-初回/通常報酬 @ &b-$0-&7-/-&b-$1-&7-コイン | &7-First/Normal Reward @ &b-$0-&7-/-&b-$1 &7-Coins", rewards.getReward(0), rewards.getReward(1)));
 
 						boolean timeAttackEnable = parkour.timeAttackEnable;
 
 						//表示するテキストを決定する
 						String textOfTimeAttackEnable = StringLocalize.localize(timeAttackEnable ? "&b-有効 | &b-Enable" : "&7-無効 | &7-Disable", player);
 
-						lore.add(StringLocalize.applyAll("&7-タイムアタック @ $0 | &7-Time Attack @ $0", player, textOfTimeAttackEnable));
+						lore.add(localizer.applyAll("&7-タイムアタック @ $0 | &7-Time Attack @ $0", textOfTimeAttackEnable));
 
 						String description = parkour.description;
 
@@ -112,20 +120,28 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 						}
 
 						if(timeAttackEnable){
+							Records records = parkour.records;
+							
 							//上位の記録を取得する
-							List<Tuple<UUID, String>> records = parkour.records.topTenRecords;
+							List<Tuple<UUID, String>> topTenRecords = records.topTenRecords;
 
 							//記録が存在する場合
-							if(!records.isEmpty()){
+							if(!topTenRecords.isEmpty()){
 								lore.add("");
 
-								lore.add(StringLocalize.applyAll("&7-上位-&b-$0-&7-件の記録 | &7-Top &b-$0-&7 Records", player, records.size()));
+								lore.add(localizer.applyAll("&7-上位-&b-$0-&7-件の記録 | &7-Top &b-$0-&7 Records", topTenRecords.size()));
 
 								AtomicInteger rank = new AtomicInteger(1);
 
-								records.stream()
-								.map(record -> StringLocalize.applyAll("&b-$0-&7-位 &b-$1 &7-@ &b-$2 | &b-$0-&7-. &b-$1 &7-@ &b-$2", player, rank.getAndIncrement(), Bukkit.getOfflinePlayer(record.first).getName(), record.second))
+								topTenRecords.stream()
+								.map(record -> localizer.applyAll("&b-$0-&7-位 &b-$1 &7-@ &b-$2 | &b-$0-&7-. &b-$1 &7-@ &b-$2", rank.getAndIncrement(), Bukkit.getOfflinePlayer(record.first).getName(), record.second))
 								.forEach(lore::add);
+
+								lore.add("");
+
+								records.
+								
+								lore.add("&7-自己最高記録 @ $0 | &7-Personal Best @ $0");
 							}
 						}
 

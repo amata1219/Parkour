@@ -51,7 +51,7 @@ public class UserJoinListener implements PlayerJoinListener {
 			localizer.mapplyAll("$0-&r-&b-への挑戦を再開しました！ | $0 &r-&b-Challenge Restarted!", parkour.name).displayOnActionBar(player);
 
 			//タイムアタックの途中であれば経過時間からスタート時のタイムを再計算しセットする
-			if(user.isPlayingInParkour() && user.timeElapsed > 0){
+			if(user.isPlayingParkour() && user.timeElapsed > 0){
 				user.timeToStartPlaying = System.currentTimeMillis() - user.timeElapsed;
 				user.timeElapsed = 0;
 			}

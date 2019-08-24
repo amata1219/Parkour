@@ -27,9 +27,8 @@ public class InformationBoard {
 	}
 
 	static{
-		//Name
 		initialize(
-			new Quadruple<>(s -> true, 11, "   |  ", u -> ""),
+			/*new Quadruple<>(s -> true, 11, "   |  ", u -> ""),
 			new Quadruple<>(s -> true, 10, "   |  ", u -> ""),
 			new Quadruple<>(s -> s.displayTraceur, 9, "&b-トレイサー &7-@ &f-$0 | &b-Traceur &7-@ &f-$0", u -> u.asBukkitPlayer().getName()),
 			new Quadruple<>(s -> s.displayUpdateRank, 8, "&b-Updateランク &7-@ &f-$0 | &b-Update Rank &7-@ &f-$0", u -> u.getUpdateRank()),
@@ -42,7 +41,7 @@ public class InformationBoard {
 			new Quadruple<>(s -> true, 1, "  |  ", u -> ""),
 			new Quadruple<>(s -> s.displayServerAddress, 0, "$0 | $0", u -> {
 
-			/*new Quadruple<>(s -> true, 11, "   |  ", u -> ""),
+			new Quadruple<>(s -> true, 11, "   |  ", u -> ""),
 			new Quadruple<>(s -> true, 10, "   |  ", u -> ""),
 			new Quadruple<>(s -> s.displayTraceur, 9, "&b-トレイサー&7-::-&7-<-&f-$0-&7-> | &b-Traceur&7-::-&7-<-&f-$0-&7->", u -> u.asBukkitPlayer().getName()),
 			new Quadruple<>(s -> s.displayUpdateRank, 8, "&b-Updateランク&7-::-&7-<-&f-$0-&7-> | &b-Update Rank&7-::-&7-<-&f-$0-&7->", u -> u.getUpdateRank()),
@@ -92,7 +91,7 @@ public class InformationBoard {
             new Quadruple<>(s -> s.displayOnlinePlayers, 3, "&b-接続プレイヤー数 &7-@ &f-$0 | &b-Online Players &7-@ &f-$0", u -> Bukkit.getOnlinePlayers().size()),
             new Quadruple<>(s -> s.displayPing, 2, "&b-遅延 &7-@ &f-$0ms | &b-Ping &7-@ &f-$0ms", u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
             new Quadruple<>(s -> true, 1, "  |  ", u -> ""),
-            new Quadruple<>(s -> s.displayServerAddress, 0, "$0 | $0", u -> {
+            new Quadruple<>(s -> s.displayServerAddress, 0, "$0 | $0", u -> {*/
 
 			new Quadruple<>(s -> true, 11, "   |  ", u -> ""),
 			new Quadruple<>(s -> true, 10, "   |  ", u -> ""),
@@ -105,7 +104,7 @@ public class InformationBoard {
 			new Quadruple<>(s -> s.displayOnlinePlayers, 3, "&b-接続プレイヤー数&7-: &f-$0 | &b-Online Players&7-: &f-$0", u -> Bukkit.getOnlinePlayers().size()),
 			new Quadruple<>(s -> s.displayPing, 2, "&b-遅延&7-: &f-$0ms | &b-Ping&7-: &f-$0ms", u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
 			new Quadruple<>(s -> true, 1, "  |  ", u -> ""),
-			new Quadruple<>(s -> s.displayServerAddress, 0, "$0 | $0", u -> {*/
+			new Quadruple<>(s -> s.displayServerAddress, 0, "$0 | $0", u -> {
 				Scoreboard board = u.board.board;
 
 				int maxLength = 0;

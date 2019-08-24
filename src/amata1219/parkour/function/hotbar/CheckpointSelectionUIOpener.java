@@ -19,7 +19,7 @@ public class CheckpointSelectionUIOpener implements FunctionalItem {
 
 		//どこのアスレにもいなければ戻る
 		if(!user.getParkourWithNow().isPresent()){
-			user.localizer.mcolor("&c-アスレチックのプレイ中でないため開けません | &c-?").displayOnActionBar(player);
+			user.localizer.mcolor("&c-パルクール中でないためチェックポイントの選択画面を開けません | &c-You can't open checkpoint selection UI because you aren't playing parkour now").displayOnActionBar(player);
 			return;
 		}
 
@@ -37,8 +37,8 @@ public class CheckpointSelectionUIOpener implements FunctionalItem {
 		ItemStack item = new ItemStack(Material.CYAN_DYE);
 		ItemMeta meta = item.getItemMeta();
 
-		meta.setDisplayName(localizer.color("&b-最新/最終チェックポイント一覧を開く | &b-?"));
-		meta.setLore(Arrays.asList(localizer.color("&7-左クリックで最新、右クリックで最終チェックポイントの一覧を開きます。 | &7-?")));
+		meta.setDisplayName(localizer.color("&b-最新/最終チェックポイント一覧を開く | &b-Open Latest/Last Checkpoint List"));
+		meta.setLore(Arrays.asList(localizer.color("&7-左クリックで最新、右クリックで最終チェックポイントの一覧を開きます。 | &7-Left-click to open the latest checkpoint and right-click to open the last checkpoint list.")));
 
 		item.setItemMeta(meta);
 
