@@ -10,7 +10,7 @@ import amata1219.parkour.ui.BuyHatUI;
 import amata1219.parkour.ui.LastCheckpointSelectionUI;
 import amata1219.parkour.ui.LatestCheckpointSelectionUI;
 import amata1219.parkour.ui.MyProfileUI;
-import amata1219.parkour.ui.ScoreboardOptionSelectionUI;
+import amata1219.parkour.ui.ScoreboardDisplaySettingsUI;
 import amata1219.parkour.ui.WearHatUI;
 import amata1219.parkour.ui.parkour.CommonParkourSelectionUI;
 import amata1219.parkour.ui.parkour.RankUpParkourSelectionUI;
@@ -23,7 +23,7 @@ public class InventoryUserInterfaces {
 	private final InventoryUI myProfileUI;
 	private final InventoryUI lastCheckpointSelectionUI;
 	private final InventoryUI latestCheckpointSelectionUI;
-	private final ScoreboardOptionSelectionUI scoreboardOptionSelectionUI;
+	private final ScoreboardDisplaySettingsUI scoreboardOptionSelectionUI;
 	private final InventoryUI buyHatUI;
 	private final InventoryUI wearHatUI;
 	private final HashMap<ParkourCategory, InventoryUI> parkourSelectionUIs = new HashMap<>(5);
@@ -34,7 +34,7 @@ public class InventoryUserInterfaces {
 		lastCheckpointSelectionUI = new LastCheckpointSelectionUI(user);
 		latestCheckpointSelectionUI = new LatestCheckpointSelectionUI(user);
 
-		scoreboardOptionSelectionUI = new ScoreboardOptionSelectionUI(user);
+		scoreboardOptionSelectionUI = new ScoreboardDisplaySettingsUI(user);
 		buyHatUI = new BuyHatUI(user);
 		wearHatUI = new WearHatUI(user);
 		myProfileUI = new MyProfileUI(user);
