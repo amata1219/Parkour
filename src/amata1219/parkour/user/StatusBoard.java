@@ -93,8 +93,7 @@ public class StatusBoard {
             new Quadruple<>(s -> true, 1, "  |  ", u -> ""),
             new Quadruple<>(s -> s.displayServerAddress, 0, "$0 | $0", u -> {*/
 
-			new Quadruple<>(s -> true, 11, "   |  ", u -> ""),
-			new Quadruple<>(s -> true, 10, "   |  ", u -> ""),
+			new Quadruple<>(s -> true, 10, "  |  ", u -> ""),
 			new Quadruple<>(s -> s.displayTraceur, 9, "&b-トレイサー&7-: &f-$0 | &b-Traceur&7-: &f-$0", u -> u.asBukkitPlayer().getName()),
 			new Quadruple<>(s -> s.displayUpdateRank, 8, "&b-Updateランク&7-: &f-$0 | &b-Update Rank&7-: &f-$0", u -> u.updateRank()),
 			new Quadruple<>(s -> s.displayExtendRank, 7, "&b-Extendランク&7-: &f-$0 | &b-Extend Rank&7-: &f-$0", u -> u.extendRank()),
@@ -103,7 +102,7 @@ public class StatusBoard {
 			new Quadruple<>(s -> s.displayTimePlayed, 4, "&b-総プレイ時間&7-: &f-$0h | &b-Time Played&7-: &f-$0h", u -> u.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
 			new Quadruple<>(s -> s.displayOnlinePlayers, 3, "&b-接続プレイヤー数&7-: &f-$0 | &b-Online Players&7-: &f-$0", u -> Bukkit.getOnlinePlayers().size()),
 			new Quadruple<>(s -> s.displayPing, 2, "&b-遅延&7-: &f-$0ms | &b-Ping&7-: &f-$0ms", u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
-			new Quadruple<>(s -> true, 1, "  |  ", u -> ""),
+			new Quadruple<>(s -> true, 1, " | ", u -> ""),
 			new Quadruple<>(s -> s.displayServerAddress, 0, "$0 | $0", u -> {
 				Scoreboard board = u.statusBoard.board;
 
@@ -177,7 +176,7 @@ public class StatusBoard {
 	}
 
 	public void updateAll(){
-		for(int score = 0; score < LINES.size() - 1; score++) updateValue(score);
+		for(int score = 0; score < LINES.size() - 1; score++) updateValue(score, false);
 	}
 
 	public void updateUpdateRank(){
@@ -209,6 +208,10 @@ public class StatusBoard {
 	}
 
 	private void updateValue(int score){
+		updateValue(score, false);
+	}
+
+	private void updateValue(int score, boolean shouldUpdateServerAddress){
 		if(board == null) return;
 
 		Quadruple<Function<UserSetting, Boolean>, Integer, String, Function<User, Object>> line = LINES.get(score);
@@ -228,6 +231,9 @@ public class StatusBoard {
 
 		//指定されたスコアをアップデートする
 		board.updateScore(line.second, after);
+
+		//サーバーアドレスの表示を更新しないのであれば戻る
+		if(!shouldUpdateServerAddress) return;
 
 		//サーバーアドレス行のコンポーネントを取得する
 		Quadruple<Function<UserSetting, Boolean>, Integer, String, Function<User, Object>> serverAddress = LINES.get(11);

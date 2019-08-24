@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import amata1219.amalib.listener.PlayerJoinListener;
+import amata1219.amalib.schedule.Sync;
 import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.function.PlayerLocaleChange;
@@ -28,8 +29,8 @@ public class UserJoinListener implements PlayerJoinListener {
 		Localizer localizer = user.localizer = new Localizer(player);
 		user.inventoryUserInterfaces = new InventoryUserInterfaces(user);
 
-		user.statusBoard = new StatusBoard(user);
-		user.statusBoard.loadScoreboard();
+		StatusBoard statusBoard = user.statusBoard = new StatusBoard(user);
+		statusBoard.loadScoreboard();
 
 		//オンラインプレイヤーの数を更新する
 		users.getOnlineUsers().stream()
@@ -39,6 +40,9 @@ public class UserJoinListener implements PlayerJoinListener {
 
 		//もし5秒以内に言語設定に変更があればスコアボードの表示を更新する
 		PlayerLocaleChange.applyIfLocaleChanged(user, 100, u -> u.statusBoard.updateAll());
+
+		//5秒後にPingの表示を更新する
+		Sync.define(() -> statusBoard.updatePing()).executeLater(100);
 
 		//プレイヤー名にランクを表示させる
 		ApplyRankToDisplayName.apply(user);

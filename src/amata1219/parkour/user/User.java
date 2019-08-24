@@ -15,6 +15,7 @@ import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.function.hotbar.ControlFunctionalItem;
 import amata1219.parkour.function.hotbar.ItemType;
 import amata1219.parkour.parkour.Parkour;
+import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
 
 public class User {
@@ -31,15 +32,18 @@ public class User {
 	//コイン
 	private int coins;
 
-	//現在いるアスレ
+	//今いるアスレ
 	private Parkour parkourWithNow;
 
-	//現在プレイ中のアスレ
+	//今プレイ中のアスレ
 	public Parkour parkourPlayingNow;
 
 	//これやるぐらいならSetCheckpointListenerの為にも今いるエリアを保持した方が良い
 	//今チェックエリア内にいるかどうか
 	public boolean onCheckArea;
+
+	//今いるチェックエリア
+	private ParkourRegion checkAreaWithNow;
 
 	//プレイし始めた時間(ミリ秒)
 	public long timeToStartPlaying;
@@ -97,7 +101,7 @@ public class User {
 		onCheckArea = yaml.getBoolean("On check area");
 
 		//タイムアタックを始めてからの経過時間を取得する
-		timeElapsed = yaml.getLong("Elapsed time");
+		timeElapsed = yaml.getLong("Time elapsed");
 
 		checkpoints = new Checkpoints(yaml);
 
@@ -135,7 +139,6 @@ public class User {
 		extendRank++;
 	}
 
-	//所持コイン数を取得する
 	public int coins(){
 		return coins;
 	}
@@ -154,12 +157,12 @@ public class User {
 		if(statusBoard != null) statusBoard.updateCoins();
 	}
 
-	//今いるアスレがあるかどうか
+	//今アスレ内にいるかどうか
 	public boolean isInParkour(){
 		return parkourWithNow != null;
 	}
 
-	//今いるアスレを取得する
+	//今いるアスレを返す
 	public Optional<Parkour> parkourWithNow(){
 		return Optional.ofNullable(parkourWithNow);
 	}
@@ -169,12 +172,12 @@ public class User {
 		this.parkourWithNow = parkour;
 	}
 
-	//今プレイ中のアスレがあるかどうか
+	//今アスレをプレイ中かどうか
 	public boolean isPlayingParkour(){
 		return parkourPlayingNow != null;
 	}
 
-	//今プレイ中のアスレを取得する
+	//今プレイ中のアスレを返す
 	public Optional<Parkour> parkourPlayingNow(){
 		return Optional.ofNullable(parkourPlayingNow);
 	}
@@ -195,6 +198,16 @@ public class User {
 			//通知アイテムを更新する
 			ControlFunctionalItem.updateSlot(asBukkitPlayer(), ItemType.CHERCKPOINT_TELEPORTER);
 		});
+	}
+
+	//今チェックエリア内にいるかどうか
+	public boolean isInCheckArea(){
+		return checkAreaWithNow != null;
+	}
+
+	//今いるアスレを返す
+	public Optional<ParkourRegion> checkAreaWithNow(){
+		return Optional.ofNullable(checkAreaWithNow);
 	}
 
 	public StatusBoard statusBoard(){
@@ -223,7 +236,7 @@ public class User {
 		yaml.set("On check area", onCheckArea);
 
 		//タイムアタック中であれば経過時間を記録し、そうでなければ削除する
-		yaml.set("Elapsed time", timeElapsed > 0 ? timeElapsed : null);
+		yaml.set("Time elapsed", timeElapsed > 0 ? timeElapsed : null);
 
 		//クリア済みのアスレの名前リストを記録する
 		yaml.set("Cleared parkour names", clearedParkourNames.stream().collect(Collectors.toList()));
