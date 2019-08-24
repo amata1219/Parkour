@@ -17,7 +17,7 @@ public class ParkourSelectionUIOpener implements FunctionalItem {
 	@Override
 	public void onClick(User user, ClickType click) {
 		//今いるアスレを取得する
-		Optional<Parkour> parkour = user.getParkourWithNow();
+		Optional<Parkour> parkour = user.parkourWithNow();
 
 		//ステージのカテゴリーを取得する
 		ParkourCategory category = parkour.isPresent() ? parkour.get().category : ParkourCategory.NORMAL;

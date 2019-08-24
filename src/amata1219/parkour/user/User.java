@@ -63,7 +63,7 @@ public class User {
 	public final UserHats hats;
 
 	//スコアボードの管理インスタンス
-	public InformationBoard board;
+	public StatusBoard statusBoard;
 
 	//InventoryUIの管理インスタンス
 	public InventoryUserInterfaces inventoryUserInterfaces;
@@ -119,7 +119,7 @@ public class User {
 		return Bukkit.getPlayer(uuid);
 	}
 
-	public int getUpdateRank(){
+	public int updateRank(){
 		return updateRank;
 	}
 
@@ -127,7 +127,7 @@ public class User {
 		updateRank++;
 	}
 
-	public int getExtendRank(){
+	public int extendRank(){
 		return extendRank;
 	}
 
@@ -136,7 +136,7 @@ public class User {
 	}
 
 	//所持コイン数を取得する
-	public int getCoins(){
+	public int coins(){
 		return coins;
 	}
 
@@ -144,14 +144,14 @@ public class User {
 	public void depositCoins(int coins){
 		this.coins += coins;
 
-		if(board != null) board.updateCoins();
+		if(statusBoard != null) statusBoard.updateCoins();
 	}
 
 	//指定数だけ所持コイン数を減らす
 	public void withdrawCoins(int coins){
 		this.coins = Math.max(this.coins - coins, 0);
 
-		if(board != null) board.updateCoins();
+		if(statusBoard != null) statusBoard.updateCoins();
 	}
 
 	//今いるアスレがあるかどうか
@@ -160,7 +160,7 @@ public class User {
 	}
 
 	//今いるアスレを取得する
-	public Optional<Parkour> getParkourWithNow(){
+	public Optional<Parkour> parkourWithNow(){
 		return Optional.ofNullable(parkourWithNow);
 	}
 
@@ -175,7 +175,7 @@ public class User {
 	}
 
 	//今プレイ中のアスレを取得する
-	public Optional<Parkour> getParkourPlayingNow(){
+	public Optional<Parkour> parkourPlayingNow(){
 		return Optional.ofNullable(parkourPlayingNow);
 	}
 
@@ -186,7 +186,7 @@ public class User {
 
 	//アスレから退出する
 	public void exitParkour(){
-		getParkourWithNow().ifPresent(parkour -> {
+		parkourWithNow().ifPresent(parkour -> {
 			//今いるアスレから退出する
 			parkour.exit(this);
 
@@ -197,9 +197,8 @@ public class User {
 		});
 	}
 
-	//命名どうにかしろ
-	public InformationBoard getBoard(){
-		return board;
+	public StatusBoard statusBoard(){
+		return statusBoard;
 	}
 
 	public void save(){

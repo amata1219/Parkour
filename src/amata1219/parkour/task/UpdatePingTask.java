@@ -10,7 +10,7 @@ public class UpdatePingTask extends AsyncTask {
 
 	@Override
 	public void run() {
-		Users.getInstnace().getOnlineUsers().forEach(user -> user.board.updatePing());
+		Users.getInstnace().getOnlineUsers().forEach(user -> user.statusBoard.updatePing());
 	}
 
 }

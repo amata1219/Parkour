@@ -10,7 +10,7 @@ import amata1219.parkour.user.User;
 public class ApplyRankToDisplayName {
 
 	public static void apply(User user){
-		int rank = user.getUpdateRank();
+		int rank = user.updateRank();
 
 		//プレイヤーを取得する
 		Player player = user.asBukkitPlayer();

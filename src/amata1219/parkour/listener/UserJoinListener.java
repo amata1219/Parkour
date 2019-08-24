@@ -10,7 +10,7 @@ import amata1219.amalib.listener.PlayerJoinListener;
 import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.function.PlayerLocaleChange;
-import amata1219.parkour.user.InformationBoard;
+import amata1219.parkour.user.StatusBoard;
 import amata1219.parkour.user.InventoryUserInterfaces;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
@@ -28,23 +28,23 @@ public class UserJoinListener implements PlayerJoinListener {
 		Localizer localizer = user.localizer = new Localizer(player);
 		user.inventoryUserInterfaces = new InventoryUserInterfaces(user);
 
-		user.board = new InformationBoard(user);
-		user.board.loadScoreboard();
+		user.statusBoard = new StatusBoard(user);
+		user.statusBoard.loadScoreboard();
 
 		//オンラインプレイヤーの数を更新する
 		users.getOnlineUsers().stream()
-		.map(User::getBoard)
+		.map(User::statusBoard)
 		.filter(Objects::nonNull)
-		.forEach(InformationBoard::updateOnlinePlayers);
+		.forEach(StatusBoard::updateOnlinePlayers);
 
 		//もし5秒以内に言語設定に変更があればスコアボードの表示を更新する
-		PlayerLocaleChange.applyIfLocaleChanged(user, 100, u -> u.board.updateAll());
+		PlayerLocaleChange.applyIfLocaleChanged(user, 100, u -> u.statusBoard.updateAll());
 
 		//プレイヤー名にランクを表示させる
 		ApplyRankToDisplayName.apply(user);
 
 		//最終ログアウト時にどこかのアスレにいた場合
-		user.getParkourWithNow().ifPresent(parkour -> {
+		user.parkourWithNow().ifPresent(parkour -> {
 			//再参加させる
 			parkour.entry(user);
 

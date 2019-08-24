@@ -18,7 +18,7 @@ public class UserHats {
 	}
 
 	public boolean canBuy(Hat hat){
-		return hat.value <= user.getCoins();
+		return hat.value <= user.coins();
 	}
 
 	public void buy(Hat hat){

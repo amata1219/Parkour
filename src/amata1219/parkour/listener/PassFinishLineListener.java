@@ -14,7 +14,7 @@ import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.parkour.RankUpParkour;
 import amata1219.parkour.parkour.Records;
-import amata1219.parkour.user.InformationBoard;
+import amata1219.parkour.user.StatusBoard;
 import amata1219.parkour.user.User;
 import amata1219.parkour.util.TimeFormat;
 
@@ -65,7 +65,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			records.mightRecord(user.uuid, time);
 
 			//記録をソートする
-			records.sort();
+			records.sortAsync();
 
 			//表示例: amata1219 cleared Update11 @ 00:01:23.231!
 			MessageTemplate.capply("&b-$0 cleared $1 @ $2!", playerName, parkourName, TimeFormat.format(time)).broadcast();
@@ -92,13 +92,13 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			//アスレのランクを取得する
 			int rank = ((RankUpParkour) parkour).rank;
 
-			InformationBoard board = user.board;
+			StatusBoard board = user.statusBoard;
 
 			//各タイプで分岐する
 			switch(category){
 			case UPDATE:
 				//プレイヤーのランクの方が高ければ戻る
-				if(user.getUpdateRank() >= rank) return;
+				if(user.updateRank() >= rank) return;
 
 				//ランクを更新する
 				user.incrementUpdateRank();
@@ -110,7 +110,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 				break;
 			case EXTEND:
 				//プレイヤーのランクの方が高ければ戻る
-				if(user.getExtendRank() >= rank) return;
+				if(user.extendRank() >= rank) return;
 
 				//ランクを更新する
 				user.incrementExtendRank();

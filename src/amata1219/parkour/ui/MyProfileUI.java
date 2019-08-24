@@ -73,11 +73,11 @@ public class MyProfileUI implements InventoryUI {
 					i.displayName = StringTemplate.capply("&b-$0", player.getName());
 
 					i.lore(
-						localizer.applyAll("&7-: &b-Updateランク &7-@ &b-$0 | &7-: &b-Update Rank &7-@ &b-$0", user.getUpdateRank()),
-						localizer.applyAll("&7-: &b-Extendランク &7-@ &b-$0 | &7-: &b-Extend Rank &7-@ &b-$0", user.getExtendRank()),
+						localizer.applyAll("&7-: &b-Updateランク &7-@ &b-$0 | &7-: &b-Update Rank &7-@ &b-$0", user.updateRank()),
+						localizer.applyAll("&7-: &b-Extendランク &7-@ &b-$0 | &7-: &b-Extend Rank &7-@ &b-$0", user.extendRank()),
 						"",
 						localizer.applyAll("&7-: &b-ジャンプ数 &7-@ &b-$0 | &7-: &b-Jumps &7-@ &b-$0", player.getStatistic(Statistic.JUMP)),
-						localizer.applyAll("&7-: &b-所持コイン数 &7-@ &b-$0 | &7-: &b-Coins &7-@ &b-$0", user.getCoins()),
+						localizer.applyAll("&7-: &b-所持コイン数 &7-@ &b-$0 | &7-: &b-Coins &7-@ &b-$0", user.coins()),
 						localizer.applyAll("&7-: &b-総プレイ時間 &7-@ &b-$0h | &7-: &b-Time Played &7-@ &b-$0h", player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000)
 					);
 

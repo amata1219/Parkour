@@ -72,7 +72,7 @@ public class CoinCommand implements Command {
 			sender.info(StringTemplate.apply("$0から$1コイン奪いました。", playerName, coins));
 			return;
 		}case "see":{
-			sender.info(StringTemplate.apply("$0は$1コイン持っています。", playerName, user.getCoins()));
+			sender.info(StringTemplate.apply("$0は$1コイン持っています。", playerName, user.coins()));
 			return;
 		}default:
 			displayCommandUsage(sender);

@@ -72,9 +72,6 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 
 				String parkourName = parkour.name;
 
-				//装飾コードを除去したアスレ名を取得する
-				String colorlessParkourName = parkour.getColorlessName();
-
 				l.put(s -> {
 
 					s.onClick(e -> {
@@ -84,7 +81,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 						//アスレに参加させる
 						parkour.entry(users.getUser(player));
 
-						localizer.mapplyAll("&b-$0にテレポートしました | &b-Teleported to $0").displayOnActionBar(player);
+						localizer.mapplyAll("&b-$0にテレポートしました | &b-Teleported to $0", parkour.getColorlessName()).displayOnActionBar(player);
 					});
 
 					//アスレのアイコンを設定する

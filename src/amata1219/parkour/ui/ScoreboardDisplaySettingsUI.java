@@ -66,7 +66,7 @@ public class ScoreboardDisplaySettingsUI implements InventoryUI {
 
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
-			l.onClose(e -> user.board.loadScoreboard());
+			l.onClose(e -> user.statusBoard.loadScoreboard());
 
 			for(Quintuple<Integer, Material, String, Function<UserSetting, Boolean>, Consumer<UserSetting>> icon : ICONS){
 				String iconName = icon.third;

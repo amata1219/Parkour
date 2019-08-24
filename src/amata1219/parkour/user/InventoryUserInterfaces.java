@@ -40,8 +40,8 @@ public class InventoryUserInterfaces {
 		myProfileUI = new MyProfileUI(user);
 		for(ParkourCategory category : COMMON_CATEGORIES) parkourSelectionUIs.put(category, new CommonParkourSelectionUI(user, category));
 
-		parkourSelectionUIs.put(ParkourCategory.UPDATE, new RankUpParkourSelectionUI(user, ParkourCategory.UPDATE, () -> user.getUpdateRank()));
-		parkourSelectionUIs.put(ParkourCategory.EXTEND, new RankUpParkourSelectionUI(user, ParkourCategory.EXTEND, () -> user.getExtendRank()));
+		parkourSelectionUIs.put(ParkourCategory.UPDATE, new RankUpParkourSelectionUI(user, ParkourCategory.UPDATE, () -> user.updateRank()));
+		parkourSelectionUIs.put(ParkourCategory.EXTEND, new RankUpParkourSelectionUI(user, ParkourCategory.EXTEND, () -> user.extendRank()));
 	}
 
 	public void openMyProfileUI(){

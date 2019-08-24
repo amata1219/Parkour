@@ -95,7 +95,7 @@ public class Parkour {
 
 	public void entry(User user){
 		//このアスレ以外のアスレに参加していれば退出させる
-		user.getParkourWithNow().ifPresent(parkour -> parkour.exit(user));
+		user.parkourWithNow().ifPresent(parkour -> parkour.exit(user));
 
 		user.setParkourWithNow(this);
 

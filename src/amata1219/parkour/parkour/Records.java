@@ -50,7 +50,7 @@ public class Records {
 			records.put(uuid, time);
 		}
 
-		sort();
+		sortAsync();
 	}
 
 	//必要であれば記録する
@@ -72,11 +72,10 @@ public class Records {
 	public void withdrawRecord(UUID uuid){
 		records.remove(uuid);
 		holdersOfWithdrawnRecords.add(uuid);
-		sort();
+		sortAsync();
 	}
 
-	public void sort(){
-		//非同期で実行する
+	public void sortAsync(){
 		Async.define(() -> {
 			List<Entry<UUID, Long>> list = new ArrayList<>(records.entrySet());
 

@@ -64,7 +64,7 @@ public class CategorizedCheckpointSelectionUI implements InventoryUI {
 						Player player = e.player;
 
 						//今いるアスレを取得する
-						Parkour parkourWithNow = user.getParkourWithNow().get();
+						Parkour parkourWithNow = user.parkourWithNow().get();
 
 						//別のアスレに移動するのであれば参加処理をする
 						if(!parkour.equals(parkourWithNow)) parkour.entry(user);

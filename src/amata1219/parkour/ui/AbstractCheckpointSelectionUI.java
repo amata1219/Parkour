@@ -38,7 +38,7 @@ public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 		Localizer localizer = user.localizer;
 
 		//今いるアスレを取得する
-		Parkour parkourWithNow = user.getParkourWithNow().get();
+		Parkour parkourWithNow = user.parkourWithNow().get();
 
 		//カテゴリーを取得する
 		ParkourCategory category = parkourWithNow.category;
@@ -78,7 +78,7 @@ public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 
 						if(event.isRightClick()){
 							//今いるアスレを取得する
-							Parkour withNow = user.getParkourWithNow().get();
+							Parkour withNow = user.parkourWithNow().get();
 
 							//別のアスレに移動するのであれば参加処理をする
 							if(!parkour.equals(withNow)) parkour.entry(user);

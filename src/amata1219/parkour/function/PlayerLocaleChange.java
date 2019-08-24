@@ -40,7 +40,7 @@ public class PlayerLocaleChange implements Listener {
 			ControlFunctionalItem.updateAllSlots(player);
 
 			//スコアボードの言語表記を更新する
-			Users.getInstnace().getUser(player).board.updateAll();
+			Users.getInstnace().getUser(player).statusBoard.updateAll();
 		});
 	}
 
