@@ -43,8 +43,11 @@ public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 		//カテゴリーを取得する
 		ParkourCategory category = parkourWithNow.category;
 
-		//カテゴリー内の有効な全アスレを取得する
-		List<Parkour> parkours = Parkours.getInstance().getEnabledParkours(category).collect(Collectors.toList());
+		//カテゴリー内の有効なアスレを辞書順にソートして取得する
+		List<Parkour> parkours = Parkours.getInstance()
+		.getEnabledParkours(category)
+		.sorted((p1, p2) -> p1.getColorlessName().compareTo(p2.getColorlessName()))
+		.collect(Collectors.toList());
 
 		return build(parkours.size(), l -> {
 			l.title = localizer.applyAll("$0の$1チェックポイント一覧 | List of $1 Checkpoints in $0", category.name, localizer.localize(checkpointType));

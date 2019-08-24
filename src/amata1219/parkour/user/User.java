@@ -210,8 +210,8 @@ public class User {
 		return Optional.ofNullable(checkAreaWithNow);
 	}
 
-	public StatusBoard statusBoard(){
-		return statusBoard;
+	public Optional<StatusBoard> statusBoard(){
+		return Optional.ofNullable(statusBoard);
 	}
 
 	public void save(){

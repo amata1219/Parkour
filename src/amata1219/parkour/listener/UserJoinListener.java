@@ -1,6 +1,6 @@
 package amata1219.parkour.listener;
 
-import java.util.Objects;
+import java.util.Optional;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,17 +32,18 @@ public class UserJoinListener implements PlayerJoinListener {
 		StatusBoard statusBoard = user.statusBoard = new StatusBoard(user);
 		statusBoard.loadScoreboard();
 
-		//オンラインプレイヤーの数を更新する
+		//スコアボード上の接続プレイヤー数を更新する
 		users.getOnlineUsers().stream()
 		.map(User::statusBoard)
-		.filter(Objects::nonNull)
+		.filter(Optional::isPresent)
+		.map(Optional::get)
 		.forEach(StatusBoard::updateOnlinePlayers);
 
 		//もし5秒以内に言語設定に変更があればスコアボードの表示を更新する
-		PlayerLocaleChange.applyIfLocaleChanged(user, 100, u -> u.statusBoard.updateAll());
+		PlayerLocaleChange.applyIfLocaleChanged(user, 100, u -> u.statusBoard().ifPresent(it -> it.updateAll()));
 
-		//5秒後にPingの表示を更新する
-		Sync.define(() -> statusBoard.updatePing()).executeLater(100);
+		//30秒後にPingの表示を更新する
+		Sync.define(() -> user.statusBoard().ifPresent(it -> it.updatePing())).executeLater(6000);
 
 		//プレイヤー名にランクを表示させる
 		ApplyRankToDisplayName.apply(user);
@@ -52,7 +53,7 @@ public class UserJoinListener implements PlayerJoinListener {
 			//再参加させる
 			parkour.entry(user);
 
-			localizer.mapplyAll("$0-&r-&b-への挑戦を再開しました！ | $0 &r-&b-Challenge Restarted!", parkour.name).displayOnActionBar(player);
+			localizer.mapplyAll("$0-&r-への挑戦を再開しました！ | $0 &r-Challenge Restarted!", parkour.name).displayOnActionBar(player);
 
 			//タイムアタックの途中であれば経過時間からスタート時のタイムを再計算しセットする
 			if(user.isPlayingParkour() && user.timeElapsed > 0){
