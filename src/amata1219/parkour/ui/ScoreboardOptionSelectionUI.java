@@ -2,6 +2,7 @@ package amata1219.parkour.ui;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.bukkit.Material;
@@ -12,11 +13,26 @@ import amata1219.amalib.inventory.ui.dsl.InventoryUI;
 import amata1219.amalib.inventory.ui.dsl.component.Icon;
 import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.amalib.string.StringTemplate;
+import amata1219.amalib.string.message.Localizer;
 import amata1219.amalib.tuplet.Quadruple;
+import amata1219.amalib.tuplet.Quintuple;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSetting;
 
 public class ScoreboardOptionSelectionUI implements InventoryUI {
+
+	private static final ArrayList<Quintuple<Integer, Material, String, Function<UserSetting, Boolean>, Consumer<UserSetting>>> ICONS = new ArrayList<>(10);
+
+	@SafeVarargs
+	private static void initialize(Quintuple<Integer, Material, String, Function<UserSetting, Boolean>, Consumer<UserSetting>>... components){
+		Arrays.stream(components).forEach(ICONS::add);
+	}
+
+	static{
+		initialize(
+			new Quintuple<>(0, Material.SIGN, "スコアボード | Scoreboard", s -> s.displayScoreboard, s -> s.displayScoreboard = !s.displayScoreboard)
+		);
+	}
 
 	private final User user;
 
@@ -48,8 +64,10 @@ public class ScoreboardOptionSelectionUI implements InventoryUI {
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
+		Localizer localizer = user.localizer;
+
 		return build(InventoryLine.x3, (l) -> {
-			l.title = "Scoreboard option";
+			l.title = localizer.localize("スコアボードの表示設定 | Scoreboard display settings");
 
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
