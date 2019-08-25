@@ -6,7 +6,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import amata1219.parkour.function.ToggleHideMode;
 
-public class HideNewPlayerListener implements PlayerJoinListener, PlayerQuitListener {
+public class ControlPlayerHideMode implements PlayerJoinListener, PlayerQuitListener {
 
 	private final ToggleHideMode function = ToggleHideMode.getInstance();
 

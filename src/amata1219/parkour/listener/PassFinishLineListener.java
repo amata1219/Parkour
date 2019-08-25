@@ -4,7 +4,7 @@ import java.util.Set;
 
 import org.bukkit.entity.Player;
 
-import amata1219.parkour.function.ApplyRankToDisplayName;
+import amata1219.parkour.function.ImprintRank;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourRegion;
@@ -104,7 +104,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 				user.incrementUpdateRank();
 
 				//表示名を更新する
-				ApplyRankToDisplayName.apply(user);
+				ImprintRank.imprint(user);
 
 				board.updateUpdateRank();
 				break;

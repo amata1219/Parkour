@@ -24,18 +24,18 @@ import amata1219.parkour.inventory.ui.listener.UIListener;
 import amata1219.parkour.command.DirectionCommand;
 import amata1219.parkour.command.ParkourRegionCommand;
 import amata1219.parkour.command.ParkourSettingCommand;
-import amata1219.parkour.listener.DisableDamageListener;
-import amata1219.parkour.listener.DisableFoodLevelChangeListener;
-import amata1219.parkour.listener.DisablePlayerCollisionListener;
-import amata1219.parkour.listener.GiveVoteRewardCoinsListener;
-import amata1219.parkour.listener.HideNewPlayerListener;
+import amata1219.parkour.listener.DisableAnyDamageToPlayer;
+import amata1219.parkour.listener.CancelFoodLevelChange;
+import amata1219.parkour.listener.DisablePlayerCollision;
+import amata1219.parkour.listener.RewardPlayerByVoting;
+import amata1219.parkour.listener.ControlPlayerHideMode;
 import amata1219.parkour.listener.LoadUserDataListener;
-import amata1219.parkour.listener.PassCheckAreaListener;
+import amata1219.parkour.listener.NotifyPlayerHasPassedBorderOfCheckArea;
 import amata1219.parkour.listener.PassFinishLineListener;
 import amata1219.parkour.listener.PassStartLineListener;
 import amata1219.parkour.listener.SetCheckpointListener;
 import amata1219.parkour.listener.UnloadUserDataListener;
-import amata1219.parkour.listener.IncrementJumpsListener;
+import amata1219.parkour.listener.IncrementJumps;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
 import amata1219.parkour.task.AsyncTask;
@@ -80,16 +80,16 @@ public class Main extends Plugin {
 			RegionSelections.getInstance(),
 			new LoadUserDataListener(),
 			new ControlFunctionalItem(),
-			new DisablePlayerCollisionListener(),
-			new GiveVoteRewardCoinsListener(),
-			new HideNewPlayerListener(),
+			new DisablePlayerCollision(),
+			new RewardPlayerByVoting(),
+			new ControlPlayerHideMode(),
 			new PassFinishLineListener(),
 			new PassStartLineListener(),
-			new PassCheckAreaListener(),
+			new NotifyPlayerHasPassedBorderOfCheckArea(),
 			new SetCheckpointListener(),
-			new DisableDamageListener(),
-			new DisableFoodLevelChangeListener(),
-			new IncrementJumpsListener(),
+			new DisableAnyDamageToPlayer(),
+			new CancelFoodLevelChange(),
+			new IncrementJumps(),
 			new PlayerLocaleChange(),
 			new UnloadUserDataListener()
 		);

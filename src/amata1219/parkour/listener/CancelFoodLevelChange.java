@@ -4,10 +4,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
-public class DisableFoodLevelChangeListener implements Listener {
+public class CancelFoodLevelChange implements Listener {
 
 	@EventHandler
-	public void disableFoodLevelChange(FoodLevelChangeEvent event){
+	public void onFoodLevelChange(FoodLevelChangeEvent event){
 		event.setCancelled(true);
 	}
 

@@ -7,9 +7,9 @@ import amata1219.parkour.parkour.RankColor;
 import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.user.User;
 
-public class ApplyRankToDisplayName {
+public class ImprintRank {
 
-	public static void apply(User user){
+	public static void imprint(User user){
 		int rank = user.updateRank();
 
 		//プレイヤーを取得する

@@ -15,12 +15,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import net.minecraft.server.v1_13_R2.Packet;
 
-public class DisablePlayerCollisionListener implements PlayerJoinListener {
+public class DisablePlayerCollision implements PlayerJoinListener {
 
 	private static final Field collisionRule, playerNames, teamAction, teamName;
 	private static final Constructor<?> newPacketPlayOutScoreboardTeam;
 
 	static{
+		//プライベートなフィールドを書き換える為にリフレクションを用いる
+
 		Class<?> PacketPlayOutScoreboardTeam = getNMSClass("PacketPlayOutScoreboardTeam");
 
 		newPacketPlayOutScoreboardTeam = getConstructor(PacketPlayOutScoreboardTeam);
@@ -37,16 +39,24 @@ public class DisablePlayerCollisionListener implements PlayerJoinListener {
 	}
 
 	@EventHandler
-	public void onChangeWorld(PlayerChangedWorldEvent event){
+	public void onChangedWorld(PlayerChangedWorldEvent event){
 		disableCollision(event.getPlayer());
 	}
 
 	public void disableCollision(Player player){
+		//新しくパケットを作成する
 		Object packet = newInstance(newPacketPlayOutScoreboardTeam);
 
+		//対象となるプレイヤーを書き込む
 		setFieldValue(playerNames, packet, Arrays.asList(player.getName()));
+
+		//衝突はしない設定にする
 		setFieldValue(collisionRule, packet, "never");
+
+		//チームに参加するアクションとする
 		setFieldValue(teamAction, packet, 0);
+
+		//適当にチーム名を決める
 		setFieldValue(teamName, packet, UUID.randomUUID().toString().substring(0, 15));
 
 		((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet<?>) packet);

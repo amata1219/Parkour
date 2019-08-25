@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
-import amata1219.parkour.function.ApplyRankToDisplayName;
+import amata1219.parkour.function.ImprintRank;
 import amata1219.parkour.function.PlayerLocaleChange;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.schedule.Sync;
@@ -46,7 +46,7 @@ public class LoadUserDataListener implements PlayerJoinListener {
 		Sync.define(() -> user.statusBoard().ifPresent(it -> it.updatePing())).executeLater(6000);
 
 		//プレイヤー名にランクを表示させる
-		ApplyRankToDisplayName.apply(user);
+		ImprintRank.imprint(user);
 
 		//最終ログアウト時にどこかのアスレにいた場合
 		if(user.isOnCurrentParkour()){

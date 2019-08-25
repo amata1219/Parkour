@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import amata1219.parkour.event.PlayerJumpEvent;
 import amata1219.parkour.user.UserSet;
 
-public class IncrementJumpsListener implements Listener {
+public class IncrementJumps implements Listener {
 
 	@EventHandler
 	public void incrementJumps(PlayerJumpEvent event){
