@@ -1,7 +1,5 @@
 package amata1219.parkour.function.hotbar;
 
-import java.util.Arrays;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -37,8 +35,7 @@ public class CheckpointSelectionUIOpener implements FunctionalItem {
 		ItemStack item = new ItemStack(Material.CYAN_DYE);
 		ItemMeta meta = item.getItemMeta();
 
-		meta.setDisplayName(localizer.color("&b-最新/最終チェックポイント一覧を開く | &b-Open Latest/Last Checkpoint List"));
-		meta.setLore(Arrays.asList(localizer.color("&7-左クリックで最新、右クリックで最終チェックポイントの一覧を開きます。 | &7-Left-click to open the latest checkpoint and right-click to open the last checkpoint list.")));
+		meta.setDisplayName(localizer.color("&b-最新チェックポイント一覧を開く &7-@ 左クリック &8-/ &b-最終チェックポイント一覧を開く &7-@ 右クリック"));
 
 		item.setItemMeta(meta);
 

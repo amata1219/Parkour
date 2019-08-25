@@ -24,7 +24,7 @@ public class MyProfileUIOpener implements FunctionalItem {
 		ItemMeta meta = item.getItemMeta();
 
 		//使用言語に対応したテキストを表示名に設定する
-		meta.setDisplayName(localizer.color("&b-プロフィールを開く | &b-Open My Profile"));
+		meta.setDisplayName(localizer.color("&b-プロフィールを開く &7-@ クリック | &b-Open My Profile &7-@ Click"));
 
 		item.setItemMeta(meta);
 
