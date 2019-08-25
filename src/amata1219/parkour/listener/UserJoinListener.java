@@ -11,6 +11,7 @@ import amata1219.amalib.schedule.Sync;
 import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.function.PlayerLocaleChange;
+import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.StatusBoard;
 import amata1219.parkour.user.InventoryUserInterfaces;
 import amata1219.parkour.user.User;
@@ -49,7 +50,9 @@ public class UserJoinListener implements PlayerJoinListener {
 		ApplyRankToDisplayName.apply(user);
 
 		//最終ログアウト時にどこかのアスレにいた場合
-		user.parkourWithNow().ifPresent(parkour -> {
+		if(user.isOnCurrentParkour()){
+			Parkour parkour = user.currentParkour;
+
 			//再参加させる
 			parkour.entry(user);
 
@@ -57,10 +60,10 @@ public class UserJoinListener implements PlayerJoinListener {
 
 			//タイムアタックの途中であれば経過時間からスタート時のタイムを再計算しセットする
 			if(user.isPlayingParkour() && user.timeElapsed > 0){
-				user.timeToStartPlaying = System.currentTimeMillis() - user.timeElapsed;
+				user.startTime = System.currentTimeMillis() - user.timeElapsed;
 				user.timeElapsed = 0;
 			}
-		});
+		}
 	}
 
 }

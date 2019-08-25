@@ -27,7 +27,7 @@ public abstract class PassRegionBoundaryAbstractListener implements Listener {
 		User user = users.getUser(player);
 
 		//今いるアスレが無ければ戻る
-		if(!user.isInParkour()) return;
+		if(!user.isOnCurrentParkour()) return;
 
 		Location from = event.getFrom();
 

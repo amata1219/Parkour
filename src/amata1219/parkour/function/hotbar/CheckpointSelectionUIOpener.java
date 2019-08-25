@@ -18,7 +18,7 @@ public class CheckpointSelectionUIOpener implements FunctionalItem {
 		Player player = user.asBukkitPlayer();
 
 		//どこのアスレにもいなければ戻る
-		if(!user.parkourWithNow().isPresent()){
+		if(!user.isOnCurrentParkour()){
 			user.localizer.mcolor("&c-パルクール中でないためチェックポイントの選択画面を開けません | &c-You can't open checkpoint selection UI because you aren't playing parkour now").displayOnActionBar(player);
 			return;
 		}

@@ -36,7 +36,7 @@ public class MyProfileUI implements InventoryUI {
 			new Quadruple<>(6, Material.DARK_PRISMARINE_SLAB, "&b-帽子を被る | &b-?", u -> u.inventoryUserInterfaces.openWearHatUI()),
 			new Quadruple<>(7, Material.QUARTZ_SLAB, "&bロビーにテレポートする | &b-Teleport to Lobby", u -> {
 				//アスレから退出させる
-				u.exitParkour();
+				u.exitCurrentParkour();
 
 				Player player = u.asBukkitPlayer();
 

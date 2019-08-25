@@ -54,10 +54,10 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		//タイムアタックが有効の場合
 		if(enableTimeAttack){
 			//ゴールタイムを計算する
-			long time = System.currentTimeMillis() - user.timeToStartPlaying;
+			long time = System.currentTimeMillis() - user.startTime;
 
 			//タイムを削除する
-			user.timeToStartPlaying = 0;
+			user.startTime = 0;
 
 			Records records = parkour.records;
 
@@ -74,7 +74,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			MessageTemplate.capply("&b-$0 cleared $1!", playerName, parkourName).broadcast();
 		}
 
-		user.exitParkour();
+		user.exitCurrentParkour();
 
 		//クリア回数に基づき報酬を取得する
 		int coins = parkour.rewards.getReward(haveCleared ? 1 : 0);

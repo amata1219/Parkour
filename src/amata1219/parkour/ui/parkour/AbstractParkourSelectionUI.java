@@ -147,6 +147,9 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 							}
 						}
 
+						lore.add("");
+						lore.add(localizer.color("&b-クリックするとテレポートします | &b-Click to teleport"));
+
 						i.lore = lore;
 
 						//クリア済みのアスレであれば輝かせる

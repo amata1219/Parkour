@@ -1,14 +1,12 @@
 package amata1219.parkour.function.hotbar;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.amalib.string.message.Localizer;
-import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.user.User;
 
@@ -16,11 +14,8 @@ public class ParkourSelectionUIOpener implements FunctionalItem {
 
 	@Override
 	public void onClick(User user, ClickType click) {
-		//今いるアスレを取得する
-		Optional<Parkour> parkour = user.parkourWithNow();
-
 		//ステージのカテゴリーを取得する
-		ParkourCategory category = parkour.isPresent() ? parkour.get().category : ParkourCategory.NORMAL;
+		ParkourCategory category = user.isOnCurrentParkour() ? user.currentParkour.category : ParkourCategory.NORMAL;
 
 		user.inventoryUserInterfaces.openParkourSelectionUI(category);
 	}
@@ -34,7 +29,7 @@ public class ParkourSelectionUIOpener implements FunctionalItem {
 		Localizer localizer = user.localizer;
 
 		meta.setDisplayName(localizer.color("&b-アスレチック一覧を開く | &b-Open Parkours Menu"));
-		meta.setLore(Arrays.asList(localizer.color("&7-クリックするとアスレチック一覧を開きます。 | &7-?")));
+		meta.setLore(Arrays.asList(localizer.color("&7-クリックするとアスレチック一覧を開きます。 | &7-Click to open")));
 
 		item.setItemMeta(meta);
 

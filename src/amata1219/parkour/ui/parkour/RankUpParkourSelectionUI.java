@@ -41,7 +41,7 @@ public class RankUpParkourSelectionUI extends AbstractParkourSelectionUI<RankUpP
 						//本番環境では変える
 						player.teleport(Bukkit.getWorld("world").getSpawnLocation());
 
-						user.exitParkour();
+						user.exitCurrentParkour();
 
 						MessageLocalize.applyAll("&b-$0ロビーにテレポートしました | &b-Teleported to $0 lobby", player, category.name).displayOnActionBar(player);
 					});

@@ -33,7 +33,7 @@ public class User {
 	private int coins;
 
 	//今いるアスレ
-	private Parkour parkourWithNow;
+	public Parkour currentParkour;
 
 	//今プレイ中のアスレ
 	public Parkour parkourPlayingNow;
@@ -43,10 +43,10 @@ public class User {
 	public boolean onCheckArea;
 
 	//今いるチェックエリア
-	private ParkourRegion checkAreaWithNow;
+	public ParkourRegion currentCheckArea;
 
 	//プレイし始めた時間(ミリ秒)
-	public long timeToStartPlaying;
+	public long startTime;
 
 	//アスレのプレイ開始からログアウトまでの経過時間(ミリ秒)
 	public long timeElapsed;
@@ -91,7 +91,7 @@ public class User {
 		Parkours parkours = Parkours.getInstance();
 
 		//最後にいたアスレを取得する
-		parkourWithNow = parkours.getParkour("Last parkour");
+		currentParkour = parkours.getParkour("Last parkour");
 
 		//最後に遊んでいたアスレを取得する
 		parkourPlayingNow = parkours.getParkour("Last played parkour");
@@ -158,18 +158,21 @@ public class User {
 	}
 
 	//今アスレ内にいるかどうか
-	public boolean isInParkour(){
-		return parkourWithNow != null;
+	public boolean isOnCurrentParkour(){
+		return currentParkour != null;
 	}
 
-	//今いるアスレを返す
-	public Optional<Parkour> parkourWithNow(){
-		return Optional.ofNullable(parkourWithNow);
-	}
+	//アスレから退出する
+	public void exitCurrentParkour(){
+		if(!isOnCurrentParkour()) return;
 
-	//今いるアスレをセットする
-	public void setParkourWithNow(Parkour parkour){
-		this.parkourWithNow = parkour;
+		//今いるアスレから退出する
+		currentParkour.exit(this);
+
+		currentParkour = parkourPlayingNow = null;
+
+		//通知アイテムを更新する
+		ControlFunctionalItem.updateSlot(asBukkitPlayer(), ItemType.CHERCKPOINT_TELEPORTER);
 	}
 
 	//今アスレをプレイ中かどうか
@@ -177,37 +180,9 @@ public class User {
 		return parkourPlayingNow != null;
 	}
 
-	//今プレイ中のアスレを返す
-	public Optional<Parkour> parkourPlayingNow(){
-		return Optional.ofNullable(parkourPlayingNow);
-	}
-
-	//今プレイ中のアスレをセットする
-	public void setParkourPlayingNow(Parkour parkour){
-		this.parkourPlayingNow = parkour;
-	}
-
-	//アスレから退出する
-	public void exitParkour(){
-		parkourWithNow().ifPresent(parkour -> {
-			//今いるアスレから退出する
-			parkour.exit(this);
-
-			parkourWithNow = parkourPlayingNow = null;
-
-			//通知アイテムを更新する
-			ControlFunctionalItem.updateSlot(asBukkitPlayer(), ItemType.CHERCKPOINT_TELEPORTER);
-		});
-	}
-
 	//今チェックエリア内にいるかどうか
-	public boolean isInCheckArea(){
-		return checkAreaWithNow != null;
-	}
-
-	//今いるアスレを返す
-	public Optional<ParkourRegion> checkAreaWithNow(){
-		return Optional.ofNullable(checkAreaWithNow);
+	public boolean isOnCheckArea(){
+		return currentCheckArea != null;
 	}
 
 	public Optional<StatusBoard> statusBoard(){
@@ -227,7 +202,7 @@ public class User {
 		yaml.set("Coins", coins);
 
 		//最後にいたアスレの名前を記録する
-		yaml.set("Last parkour", parkourWithNow != null ? parkourWithNow.name : null);
+		yaml.set("Last parkour", currentParkour != null ? currentParkour.name : null);
 
 		//最後にプレイしていたアスレの名前を記録する
 		yaml.set("Last played parkour", parkourPlayingNow != null ? parkourPlayingNow.name : null);

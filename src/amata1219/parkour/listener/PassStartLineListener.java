@@ -27,7 +27,7 @@ public class PassStartLineListener extends PassRegionBoundaryAbstractListener {
 		user.parkourPlayingNow = parkour;
 
 		//タイムアタックが有効であればプレイし始めた時間を記録する
-		if(enableTimeAttack) user.timeToStartPlaying = System.currentTimeMillis();
+		if(enableTimeAttack) user.startTime = System.currentTimeMillis();
 
 		user.localizer.mapplyAll("$0-&r-&b-への挑戦を始めました！ | $0 &r-&b-Challenge Started!", parkourName).displayOnActionBar(player);
 	}
