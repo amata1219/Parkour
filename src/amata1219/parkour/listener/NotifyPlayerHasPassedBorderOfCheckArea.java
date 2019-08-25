@@ -1,6 +1,5 @@
 package amata1219.parkour.listener;
 
-import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +13,7 @@ import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.sound.SoundMetadata;
 import amata1219.parkour.user.User;
+import amata1219.parkour.user.UserSet;
 
 public class NotifyPlayerHasPassedBorderOfCheckArea extends PassRegionBoundaryAbstractListener {
 
@@ -53,7 +53,7 @@ public class NotifyPlayerHasPassedBorderOfCheckArea extends PassRegionBoundaryAb
 		Player player = event.getPlayer();
 
 		//プラグインによるテレポートであれば通知アイテムを更新する
-		if(player.getGameMode() != GameMode.CREATIVE && event.getCause() == TeleportCause.PLUGIN) ControlFunctionalItem.updateSlot(player, ItemType.CHERCKPOINT_TELEPORTER);
+		if(event.getCause() == TeleportCause.PLUGIN && UserSet.getInstnace().getUser(player).isPlayingParkour()) ControlFunctionalItem.updateSlot(player, ItemType.CHERCKPOINT_TELEPORTER);
 	}
 
 }

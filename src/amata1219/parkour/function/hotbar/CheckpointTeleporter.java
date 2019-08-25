@@ -49,7 +49,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 		//チェックポイントにテレポートさせる
 		player.teleport(checkpoint.asBukkit());
 
-		localizer.mapplyAll("&b-チェックポイント$2にテレポートしました | $b-Teleported to Checkpoint$2", displayCheckAreaNumber).displayOnActionBar(player);
+		localizer.mapplyAll("$0チェックポイント$1にテレポートしました | $0Teleported to Checkpoint$1", parkour.color, displayCheckAreaNumber).displayOnActionBar(player);
 	}
 
 	@Override
