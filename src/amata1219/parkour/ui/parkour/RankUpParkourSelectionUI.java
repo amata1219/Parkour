@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 
 import amata1219.parkour.inventory.ui.InventoryLine;
 import amata1219.parkour.parkour.ParkourCategory;
-import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.parkour.RankUpParkour;
 import amata1219.parkour.string.StringLocalize;
 import amata1219.parkour.string.message.MessageLocalize;
@@ -23,7 +23,7 @@ public class RankUpParkourSelectionUI extends AbstractParkourSelectionUI<RankUpP
 			category,
 
 			//カテゴリーに対応したアスレリストを返す関数を作成する
-			() -> Parkours.getInstance().getEnabledParkours(category)
+			() -> ParkourSet.getInstance().getEnabledParkours(category)
 			.map(parkour -> (RankUpParkour) parkour)
 			.sorted((parkour1, parkour2) -> Integer.compare(parkour1.rank, parkour2.rank))
 			.collect(Collectors.toList()),

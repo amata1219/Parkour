@@ -65,7 +65,7 @@ public class Records {
 		return records.containsKey(uuid);
 	}
 
-	public long getRecord(UUID uuid){
+	public long personalBest(UUID uuid){
 		return records.getOrDefault(uuid, 0L);
 	}
 

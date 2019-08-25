@@ -20,11 +20,11 @@ import amata1219.parkour.yaml.Yaml;
 
 public class CheckAreas {
 
-	private final Parkours parkours;
+	private final ParkourSet parkours;
 
 	private final Map<Integer, List<ParkourRegion>> checkAreas = new HashMap<>();
 
-	public CheckAreas(Parkours parkours, Yaml yaml, Parkour parkour, ImmutableLocation origin){
+	public CheckAreas(ParkourSet parkours, Yaml yaml, Parkour parkour, ImmutableLocation origin){
 		this.parkours = parkours;
 
 		//チェックエリアのセクションが存在しなければ戻る

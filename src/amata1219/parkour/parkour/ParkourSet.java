@@ -13,15 +13,15 @@ import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.yaml.Yaml;
 import net.md_5.bungee.api.ChatColor;
 
-public class Parkours {
+public class ParkourSet {
 
-	private static Parkours instance;
+	private static ParkourSet instance;
 
 	public static void load(){
-		instance = new Parkours();
+		instance = new ParkourSet();
 	}
 
-	public static Parkours getInstance(){
+	public static ParkourSet getInstance(){
 		return instance;
 	}
 
@@ -42,7 +42,7 @@ public class Parkours {
 	//チェックエリアのチャンクマップ
 	public final ChunksToObjectsMap<ParkourRegion> chunksToCheckAreasMap = new ChunksToObjectsMap<>();
 
-	private Parkours(){
+	private ParkourSet(){
 		//フォルダーが存在しなければ作成する
 		if(!folder.exists()) folder.mkdirs();
 

@@ -14,7 +14,7 @@ import amata1219.parkour.function.hotbar.ItemType;
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
-import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.yaml.Yaml;
 
@@ -91,7 +91,7 @@ public class User {
 		//コイン数を取得する
 		coins = yaml.getInt("Coins");
 
-		Parkours parkours = Parkours.getInstance();
+		ParkourSet parkours = ParkourSet.getInstance();
 
 		//最後にいたアスレを取得する
 		currentParkour = parkours.getParkour("Last parkour");

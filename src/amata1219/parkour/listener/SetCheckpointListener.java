@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import amata1219.parkour.chunk.ChunksToObjectsMap;
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.string.message.MessageTemplate;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.user.User;
@@ -20,7 +20,7 @@ import amata1219.parkour.user.UserSet;
 public class SetCheckpointListener implements Listener {
 
 	private final UserSet users = UserSet.getInstnace();
-	private final ChunksToObjectsMap<ParkourRegion> chunksToCheckAreasMap = Parkours.getInstance().chunksToCheckAreasMap;
+	private final ChunksToObjectsMap<ParkourRegion> chunksToCheckAreasMap = ParkourSet.getInstance().chunksToCheckAreasMap;
 
 	@EventHandler
 	public void onSwap(PlayerSwapHandItemsEvent event){

@@ -11,7 +11,7 @@ import amata1219.parkour.function.hotbar.ControlFunctionalItem;
 import amata1219.parkour.function.hotbar.ItemType;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
-import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.sound.SoundMetadata;
 import amata1219.parkour.user.User;
 
@@ -21,7 +21,7 @@ public class NotifyPlayerHasPassedBorderOfCheckArea extends PassRegionBoundaryAb
 	private static final SoundMetadata OUT_SE = new SoundMetadata(Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 2f, 0.5f);
 
 	public NotifyPlayerHasPassedBorderOfCheckArea() {
-		super(Parkours.getInstance().chunksToCheckAreasMap);
+		super(ParkourSet.getInstance().chunksToCheckAreasMap);
 	}
 
 	@Override

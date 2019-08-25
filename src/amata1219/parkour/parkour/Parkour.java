@@ -18,10 +18,10 @@ public class Parkour {
 
 	private static final Pattern COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf(167) + "[0-9A-FK-OR]");
 
-	private final Parkours parkours;
+	private final ParkourSet parkours;
 
 	public final String name;
-	public final String firstColorCode;
+	public final String color;
 	public boolean enable;
 	public ParkourCategory category;
 	public Color borderColor;
@@ -35,17 +35,17 @@ public class Parkour {
 	public String description;
 	public PlayerConnections connections = new PlayerConnections();
 
-	public Parkour(Parkours parkours, Yaml yaml){
+	public Parkour(ParkourSet parkours, Yaml yaml){
 		this.parkours = parkours;
 
 		//yaml.nameは拡張子を取り除いたファイル名を返すのでアスレ名としてそのまま設定する
 		name = yaml.name;
 
 		if(name.length() < 2){
-			firstColorCode = "§f";
+			color = "§f";
 		}else{
 			String extract = name.substring(0, 3);
-			firstColorCode = COLOR_PATTERN.matcher(extract).matches() ? extract : "§f";
+			color = COLOR_PATTERN.matcher(extract).matches() ? extract : "§f";
 		}
 
 		enable = yaml.getBoolean("Enable");
@@ -90,6 +90,10 @@ public class Parkour {
 
 	public World world(){
 		return region.world;
+	}
+
+	public ImmutableLocation originLocation(){
+		return region.lesserBoundaryCorner;
 	}
 
 	public void teleport(Player player){
@@ -140,13 +144,13 @@ public class Parkour {
 	}
 
 	public void save(){
-		Yaml yaml = Parkours.getInstance().makeYaml(name);
+		Yaml yaml = ParkourSet.getInstance().makeYaml(name);
 
 		yaml.set("Enable", enable);
 		yaml.set("Category", category.toString());
 
 		//アスレの領域の基準点を取得する
-		ImmutableLocation origin = region.lesserBoundaryCorner;
+		ImmutableLocation origin = originLocation();
 
 		yaml.set("Origin", origin.serialize());
 		yaml.set("Region", region.relative(origin).serialize());

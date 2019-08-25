@@ -15,7 +15,7 @@ public class RankUpParkour extends Parkour {
 
 	public final int rank;
 
-	public RankUpParkour(Parkours parkours, Yaml yaml) {
+	public RankUpParkour(ParkourSet parkours, Yaml yaml) {
 		super(parkours, yaml);
 
 		//装飾コードを除いたアスレ名を取得する

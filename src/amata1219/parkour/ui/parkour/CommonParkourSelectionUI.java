@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 import amata1219.parkour.inventory.ui.InventoryLine;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
-import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.user.User;
 
 public class CommonParkourSelectionUI extends AbstractParkourSelectionUI<Parkour> {
@@ -14,7 +14,7 @@ public class CommonParkourSelectionUI extends AbstractParkourSelectionUI<Parkour
 		super(
 			user,
 			category,
-			() -> Parkours.getInstance().getEnabledParkours(category).collect(Collectors.toList()),
+			() -> ParkourSet.getInstance().getEnabledParkours(category).collect(Collectors.toList()),
 			parkours -> InventoryLine.necessaryInventoryLine(parkours.size() + 9),
 			layout -> {}
 		);

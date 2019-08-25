@@ -1,6 +1,6 @@
 package amata1219.parkour.task;
 
-import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.ParkourSet;
 
 public class SaveParkourDataTask extends AsyncTask {
 
@@ -11,7 +11,7 @@ public class SaveParkourDataTask extends AsyncTask {
 
 	@Override
 	public void run() {
-		Parkours.getInstance().saveAll();
+		ParkourSet.getInstance().saveAll();
 	}
 
 }

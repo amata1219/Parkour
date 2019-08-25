@@ -1,13 +1,13 @@
 package amata1219.parkour.command;
 
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.string.StringTemplate;
 import net.md_5.bungee.api.ChatColor;
 
 public class ParkourCommand implements Command {
 
-	private final Parkours parkours = Parkours.getInstance();
+	private final ParkourSet parkours = ParkourSet.getInstance();
 
 	/*
 	 * parkour command
@@ -137,7 +137,7 @@ public class ParkourCommand implements Command {
 	}
 
 	private void displayCommandUsage(Sender sender){
-		sender.warn("/parkour [parkour] create @ 指定された名前でアスレを作成します。");
+		sender.warn("/parkour [parkour] create @ 指定された名前でアスレを作成します。§lアスレ名の先頭に装飾コードを置く場合は必ず色コードを書体コードより先に置いて下さい。");
 		sender.warn("/parkour [parkour] delete @ アスレを削除します。");
 		sender.warn("/parkour [parkour] enable @ 有効化し選択画面に表示します。");
 		sender.warn("/parkour [parkour] disable @ 無効化し選択画面から非表示にします。");

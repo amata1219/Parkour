@@ -9,7 +9,7 @@ import org.bukkit.Location;
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
-import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.parkour.Rewards;
 import amata1219.parkour.selection.RegionSelections;
 import amata1219.parkour.string.StringSplit;
@@ -21,7 +21,7 @@ public class ParkourSettingCommand implements Command {
 	private static final Pattern RGB_FORMAT = Pattern.compile("^((2[0-4]\\d|25[0-5]|1\\d{1,2}|[1-9]\\d|\\d)( ?, ?)){2}(2[0-4]\\d|25[0-5]|1\\d{1,2}|[1-9]\\d|\\d)");
 	private static final Pattern REWARDS_FORMAT = Pattern.compile("[0-9]{1,8},[0-9]{1,8}");
 
-	private final Parkours parkours = Parkours.getInstance();
+	private final ParkourSet parkours = ParkourSet.getInstance();
 	private final RegionSelections selections = RegionSelections.getInstance();
 
 	@Override

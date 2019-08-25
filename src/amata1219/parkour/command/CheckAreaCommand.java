@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import amata1219.parkour.parkour.CheckAreas;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
-import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.selection.RegionSelection;
 import amata1219.parkour.selection.RegionSelections;
 import amata1219.parkour.string.StringTemplate;
@@ -20,7 +20,7 @@ import amata1219.parkour.tuplet.Tuple;
 
 public class CheckAreaCommand implements Command {
 
-	private final Parkours parkours = Parkours.getInstance();
+	private final ParkourSet parkours = ParkourSet.getInstance();
 	private final RegionSelections selections = RegionSelections.getInstance();
 
 	@Override

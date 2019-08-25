@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.selection.RegionSelections;
 import amata1219.parkour.string.StringTemplate;
 import net.md_5.bungee.api.ChatColor;
@@ -55,7 +55,7 @@ public class ParkourEditCommand implements Command {
 		}
 
 		//アスレが存在しなければ戻る
-		if(!Parkours.getInstance().containsParkour(parkourName)){
+		if(!ParkourSet.getInstance().containsParkour(parkourName)){
 			sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
 			return;
 		}

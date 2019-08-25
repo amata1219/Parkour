@@ -12,13 +12,13 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.yaml.Yaml;
 
 public class CheckpointSet {
 
-	private final Parkours parkours = Parkours.getInstance();
+	private final ParkourSet parkours = ParkourSet.getInstance();
 
 	private final Map<String, Map<Integer, ImmutableLocation>> checkpoints = new HashMap<>();
 	private final Map<String, Integer> latestCheckpoints = new HashMap<>();
@@ -37,7 +37,7 @@ public class CheckpointSet {
 
 			//アスレ名と対応したアスレを取得する
 			Parkour parkour = parkours.getParkour(parkourName);
-			ImmutableLocation origin = parkour.getOrigin();
+			ImmutableLocation origin = parkour.originLocation();
 
 			//このアスレのセクションを取得する
 			ConfigurationSection checkAreaSection = parkourSection.getConfigurationSection(parkourName);
@@ -159,7 +159,7 @@ public class CheckpointSet {
 			//存在しないアスレであれば繰り返す
 			if(!parkours.containsParkour(parkourName)) continue;
 
-			ImmutableLocation origin = parkours.getParkour(parkourName).getOrigin();
+			ImmutableLocation origin = parkours.getParkour(parkourName).originLocation();
 
 			for(Entry<Integer, ImmutableLocation> eachCheckpointEntry : eachParkourCheckpointsEntry.getValue().entrySet()){
 				//チェックエリア番号を取得する

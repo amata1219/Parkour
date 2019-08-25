@@ -13,7 +13,7 @@ import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
-import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.user.CheckpointSet;
@@ -44,7 +44,7 @@ public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 		ParkourCategory category = currentParkour.category;
 
 		//カテゴリー内の有効なアスレを辞書順にソートして取得する
-		List<Parkour> parkours = Parkours.getInstance()
+		List<Parkour> parkours = ParkourSet.getInstance()
 		.getEnabledParkours(category)
 		.sorted((p1, p2) -> p1.colorlessName().compareTo(p2.colorlessName()))
 		.collect(Collectors.toList());

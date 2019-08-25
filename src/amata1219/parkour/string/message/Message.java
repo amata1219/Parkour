@@ -44,25 +44,25 @@ public class Message {
 		for(Player player : players) player.spigot().sendMessage(ChatMessageType.ACTION_BAR, component);
 	}
 
-	public void sendAsClickable(Player player, ClickAction clickAction, String clickText){
+	public void displayAsClickable(Player player, ClickAction clickAction, String clickText){
 		TextComponent component = new TextComponent(text);
 		component.setClickEvent(new ClickEvent(clickAction.action, clickText));
 		sendComponent(player, component);
 	}
 
-	public void sendAsClickable(Collection<Player> players, ClickAction clickAction, String clickText){
+	public void displayAsClickable(Collection<Player> players, ClickAction clickAction, String clickText){
 		TextComponent component = new TextComponent(text);
 		component.setClickEvent(new ClickEvent(clickAction.action, clickText));
 		sendComponentToAll(players, component);
 	}
 
-	public void sendAsHoverable(Player player, HoverAction hoverAction, String... hoverTexts){
+	public void displayAsHoverable(Player player, HoverAction hoverAction, String... hoverTexts){
 		TextComponent component = new TextComponent(text);
 		component.setHoverEvent(new HoverEvent(hoverAction.action, toHoverComponents(hoverTexts)));
 		sendComponent(player, component);
 	}
 
-	public void sendAsHoverable(Collection<Player> players, HoverAction hoverAction, String... hoverTexts){
+	public void displayAsHoverable(Collection<Player> players, HoverAction hoverAction, String... hoverTexts){
 		TextComponent component = new TextComponent(text);
 		component.setHoverEvent(new HoverEvent(hoverAction.action, toHoverComponents(hoverTexts)));
 		sendComponentToAll(players, component);

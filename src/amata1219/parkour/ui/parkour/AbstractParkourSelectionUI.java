@@ -140,7 +140,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 								if(records.containsRecord(uuid)){
 									lore.add("");
 
-									String time = TimeFormat.format(records.getRecord(uuid));
+									String time = TimeFormat.format(records.personalBest(uuid));
 
 									lore.add(localizer.applyAll("&7-自己最高記録 @ &b-$0 | &7-Personal Best @ &b-$0", time));
 								}

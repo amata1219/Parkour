@@ -1,6 +1,7 @@
 package amata1219.parkour.listener;
 
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
@@ -8,25 +9,22 @@ import amata1219.parkour.function.ImprintRank;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourRegion;
-import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.parkour.RankUpParkour;
 import amata1219.parkour.parkour.Records;
-import amata1219.parkour.string.StringTemplate;
-import amata1219.parkour.string.message.MessageTemplate;
-import amata1219.parkour.tweet.Tweet;
+import amata1219.parkour.string.message.Localizer;
+import amata1219.parkour.string.message.Message.ClickAction;
 import amata1219.parkour.user.StatusBoard;
 import amata1219.parkour.user.User;
+import amata1219.parkour.user.UserSet;
 import amata1219.parkour.util.TimeFormat;
 
 public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 
-	/*
-	 * 前回の記録より良い記録であれば新記録として表示する
-	 * That's a new records of 00:00.000!
-	 */
+	private final UserSet users = UserSet.getInstnace();
 
 	public PassFinishLineListener() {
-		super(Parkours.getInstance().chunksToFinishLinesMap);
+		super(ParkourSet.getInstance().chunksToFinishLinesMap);
 	}
 
 	@Override
@@ -49,7 +47,9 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		//クリア済みのアスレとして記録する(コレクションにはSetを用いているため要素の重複は起こらない)
 		user.clearedParkourNames.add(parkourName);
 
+		String parkourColor = parkour.color;
 		String playerName = player.getName();
+		String colorlessParkourName = parkour.colorlessName();
 
 		//タイムアタックが有効の場合
 		if(enableTimeAttack){
@@ -60,30 +60,40 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			user.startTime = 0;
 
 			Records records = parkour.records;
+			UUID uuid = user.uuid;
 
-			//ゴールタイムを記録する
-			records.mightRecord(user.uuid, time);
+			long personalBest = records.personalBest(uuid);
 
-			//記録をソートする
+			//ゴールタイムを記録してみてその結果を取得する
+			boolean recorded = records.mightRecord(uuid, time);
+
+			//自己最高記録を超えた場合
+			if(personalBest > 0 && recorded){
+				for(User onlineUser : users.getOnlineUsers()){
+					onlineUser.localizer.mapplyAll("&l-$0$1さんが$2を$3でクリアすると同時に自己最高記録の$4を打ち負かしました！ | &l-$0$1 finished $2 in $3 and beat $1's personal best of $4!",
+							parkourColor, playerName, colorlessParkourName, TimeFormat.format(time), TimeFormat.format(personalBest))
+							.display(onlineUser.asBukkitPlayer());
+				}
+			}else{
+				for(User onlineUser : users.getOnlineUsers()){
+					onlineUser.localizer.mapplyAll("&l-$0$1さんが$2を$3でクリアしました！ | &l-$0$1 finished $2 in $3!",
+							parkourColor, playerName, parkourName, TimeFormat.format(time))
+							.display(onlineUser.asBukkitPlayer());
+				}
+			}
+
 			records.sortAsync();
-
-			//表示例: amata1219 cleared Update11 @ 00:01:23.231!
-			MessageTemplate.capply("&b-$0 cleared $1 @ $2!", playerName, parkourName, TimeFormat.format(time)).broadcast();
 		}else{
-			//表示例: amata1219 cleared Update6!
-			MessageTemplate.capply("&b-$0 cleared $1!", playerName, parkourName).broadcast();
+			for(User onlineUser : users.getOnlineUsers()){
+				onlineUser.localizer.mapplyAll("&l-$0$1さんが$2をクリアしました！ | &l-$0$1 finished $2!",
+						parkourColor, playerName, parkourName)
+						.display(onlineUser.asBukkitPlayer());
+			}
 		}
 
-		user.exitCurrentParkour();
+		user.parkourPlayingNow = null;
 
-		//クリア回数に基づき報酬を取得する
-		int coins = parkour.rewards.getReward(haveCleared ? 1 : 0);
-
-		//報酬のコインを与える
-		user.depositCoins(coins);
-
-		//表示例: Gave amata1219 1000 coins as a reward!
-		MessageTemplate.capply("&b-Gave $0 $1 coins as a reward!", playerName, coins).display(player);
+		Localizer localizer = user.localizer;
 
 		//ランクアップアスレの場合
 		if(parkour instanceof RankUpParkour){
@@ -121,12 +131,23 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 				throw new NullPointerException("Ranked parkour type can not be null");
 			}
 
-			//表示例: Rank up @ amata1219's update rank is 7!
-			MessageTemplate.capply("&b-&l-Rank up &7-@ &b-$0's $1 rank is $2!", playerName, category.name, rank).broadcast();
+			for(User onlineUser : users.getOnlineUsers()){
+				onlineUser.localizer.mapplyAll("$0$1さんの$2が$3に上がりました！ | $0$1's $2 rank went up to $3!", parkourColor, playerName, category.name, rank)
+				.display(player);
+			}
 
 			//ツイートリンクを表示する
-			Tweet.display(player, StringTemplate.apply("$0を初クリアしました！", parkour.colorlessName()));
+			localizer.mlocalize("&b&l#Twitterで喜びを伝えよう &r-&7-@ クリックするとツイートコマンドを表示します。 | &b%l#Tweet your joy &r-&7-@ Click to display tweet command.")
+			.displayAsClickable(player, ClickAction.SUGGEST_COMMAND, "tweet");
 		}
+
+		//クリア回数に基づき報酬を取得する
+		int coins = parkour.rewards.getReward(haveCleared ? 1 : 0);
+
+		//報酬のコインを与える
+		user.depositCoins(coins);
+
+		localizer.mapplyAll("$0報酬として$1コインを与えました！ | $0Rewarded you with $1 coins!", parkourColor, coins).display(player);
 	}
 
 }
