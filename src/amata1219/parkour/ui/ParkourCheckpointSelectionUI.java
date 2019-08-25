@@ -80,7 +80,7 @@ public class ParkourCheckpointSelectionUI implements InventoryUI {
 
 					s.icon(Material.PRISMARINE_CRYSTALS, i -> {
 						//表示例: 1 @ Update1
-						i.displayName = StringTemplate.capply("$0$1 &7-@ $1", parkourColor, majorCheckAreaNumberDisplayed, parkourName);
+						i.displayName = StringTemplate.capply("$0$1 &7-@ $2", parkourColor, majorCheckAreaNumberDisplayed, parkourName);
 
 						//説明文を設定する
 						i.lore(
