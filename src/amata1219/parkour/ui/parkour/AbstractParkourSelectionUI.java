@@ -94,7 +94,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 						int maxMajorCheckAreaNumber = parkour.checkAreas.getMaxMajorCheckAreaNumber();
 
 						//表示するテキストを決定する
-						String numberOfDisplayedCheckAreas = maxMajorCheckAreaNumber >= 0 ? String.valueOf(maxMajorCheckAreaNumber + 1) + "&7-箇所" : "None";
+						String numberOfDisplayedCheckAreas = maxMajorCheckAreaNumber >= 0 ? localizer.applyAll("$0 | $0-&7-箇所", String.valueOf(maxMajorCheckAreaNumber + 1)) : localizer.localize("無し | None");
 
 						lore.add(localizer.applyAll("&7-チェックエリア @ &b-$0 | &7-Check Areas @ &b-$0", numberOfDisplayedCheckAreas));
 
@@ -148,7 +148,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 						}
 
 						lore.add("");
-						lore.add(localizer.color("&b-クリックするとテレポートします | &b-Click to teleport"));
+						lore.add(localizer.color("&b-クリックするとテレポートします！ | &b-Click to teleport!"));
 
 						i.lore = lore;
 

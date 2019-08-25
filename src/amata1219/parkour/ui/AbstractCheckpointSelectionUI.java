@@ -92,12 +92,12 @@ public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 							localizer.mapplyAll("&b-チェックポイント$0 &7-@ &b-$1 にテレポートしました | &b-Teleported to checkpoint$0 &7-@ &b-$1", majorCheckAreaNumberDisplayed, parkour.colorlessName()).displayOnActionBar(player);
 						}else if(event.isLeftClick()){
 							//チェックポイントリストを開かせる
-							new CategorizedCheckpointSelectionUI(user, parkour).openInventory(player);
+							new ParkourCheckpointSelectionUI(user, parkour).openInventory(player);
 						}
 
 					});
 
-					s.icon(Material.LIGHT_BLUE_DYE, i -> {
+					s.icon(Material.PRISMARINE_CRYSTALS, i -> {
 						//表示例: 1 @ Update1
 						i.displayName = StringTemplate.capply("&7-$0 @ $1", majorCheckAreaNumberDisplayed, parkourName);
 

@@ -12,19 +12,20 @@ import amata1219.parkour.inventory.ui.dsl.InventoryUI;
 import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.string.StringColor;
 import amata1219.parkour.string.StringTemplate;
-import amata1219.parkour.string.message.MessageTemplate;
+import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 
-public class CategorizedCheckpointSelectionUI implements InventoryUI {
+public class ParkourCheckpointSelectionUI implements InventoryUI {
 
 	private final User user;
+	private final Localizer localizer;
 	private final Parkour parkour;
 
-	public CategorizedCheckpointSelectionUI(User user, Parkour parkour){
+	public ParkourCheckpointSelectionUI(User user, Parkour parkour){
 		this.user = user;
+		this.localizer = user.localizer;
 		this.parkour = parkour;
 	}
 
@@ -42,9 +43,11 @@ public class CategorizedCheckpointSelectionUI implements InventoryUI {
 
 		//アスレ名を取得する
 		String parkourName = parkour.name;
+		String parkourColor = parkour.color;
+		String colorlessParkourName = parkour.colorlessName();
 
 		return build(checkpointSize, l -> {
-			l.title = StringTemplate.capply("&b-$0 &r-checkpoints", parkourName);
+			l.title = localizer.applyAll("$0のチェックポイント一覧 | $0 Checkpoints", colorlessParkourName);
 
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
@@ -72,17 +75,16 @@ public class CategorizedCheckpointSelectionUI implements InventoryUI {
 						//プレイヤーを最終チェックポイントにテレポートさせる
 						player.teleport(point.asBukkit());
 
-						//表示例: Teleported to checkpoint 1 @ Update1!
-						MessageTemplate.capply("&b-Teleported to checkpoint &0 &7-@ &b-$1-&r-&b-!", majorCheckAreaNumberDisplayed, parkourName).displayOnActionBar(player);
+						localizer.applyAll("$0-r-$1のチェックポイント$2にテレポートしました | $1Teleported to $0 checkpoint$2", parkourName, parkourColor, majorCheckAreaNumberDisplayed);
 					});
 
-					s.icon(Material.LIGHT_BLUE_DYE, i -> {
+					s.icon(Material.PRISMARINE_CRYSTALS, i -> {
 						//表示例: 1 @ Update1
-						i.displayName = StringTemplate.capply("&7-$0 @ $1", majorCheckAreaNumberDisplayed, parkourName);
+						i.displayName = StringTemplate.capply("$0$1 &7-@ $1", parkourColor, majorCheckAreaNumberDisplayed, parkourName);
 
 						//説明文を設定する
 						i.lore(
-							StringColor.color("&7-: &b-Click &7-@ &b-Teleport to checkpoint in this parkour")
+							localizer.color("&7-: &b-クリック &7-@ このチェックポイントにテレポートします。 | &7-: &b-Click &7-@ Teleport to this checkpoint.")
 						);
 
 						i.amount = majorCheckAreaNumberDisplayed;

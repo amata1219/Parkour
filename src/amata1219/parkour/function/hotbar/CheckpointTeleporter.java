@@ -56,7 +56,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 	public ItemStack build(User user) {
 		Localizer localizer = user.localizer;
 
-		ItemStack item = new ItemStack(Material.LIGHT_BLUE_DYE);
+		ItemStack item = new ItemStack(Material.PRISMARINE_CRYSTALS);
 		ItemMeta meta = item.getItemMeta();
 
 		meta.setDisplayName(localizer.color("&b-最新チェックポイントにテレポートする &7-@ 左クリック &8-/ &b-最終チェックポイントにテレポートする &7-@ 右クリック | &b-Teleport to Latest Checkpoint &7- @ Left Click &8-/ &b-Teleport to Last Checkpoint &7-@ Right Click"));
