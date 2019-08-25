@@ -1,5 +1,7 @@
 package amata1219.parkour.parkour;
 
+import java.util.regex.Pattern;
+
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -14,14 +16,12 @@ import amata1219.parkour.yaml.Yaml;
 
 public class Parkour {
 
-	/*
-	 * アイコンに説明文と報酬を表示する
-	 *
-	 */
+	private static final Pattern COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf(167) + "[0-9A-FK-OR]");
 
 	private final Parkours parkours;
 
 	public final String name;
+	public final String firstColorCode;
 	public boolean enable;
 	public ParkourCategory category;
 	public Color borderColor;
@@ -40,6 +40,13 @@ public class Parkour {
 
 		//yaml.nameは拡張子を取り除いたファイル名を返すのでアスレ名としてそのまま設定する
 		name = yaml.name;
+
+		if(name.length() < 2){
+			firstColorCode = "§f";
+		}else{
+			String extract = name.substring(0, 3);
+			firstColorCode = COLOR_PATTERN.matcher(extract).matches() ? extract : "§f";
+		}
 
 		enable = yaml.getBoolean("Enable");
 		category = ParkourCategory.valueOf(yaml.getString("Category"));
@@ -77,19 +84,15 @@ public class Parkour {
 		records = new Records(yaml);
 	}
 
-	public String getColorlessName(){
+	public String colorlessName(){
 		return ChatColor.stripColor(name);
 	}
 
-	public ImmutableLocation getOrigin(){
-		return region.lesserBoundaryCorner;
-	}
-
-	public World getWorld(){
+	public World world(){
 		return region.world;
 	}
 
-	public void teleportTo(Player player){
+	public void teleport(Player player){
 		player.teleport(spawn.asBukkit());
 	}
 

@@ -29,7 +29,7 @@ public class ParkourSelectionUIOpener implements FunctionalItem {
 		Localizer localizer = user.localizer;
 
 		meta.setDisplayName(localizer.color("&b-アスレチック一覧を開く | &b-Open Parkours Menu"));
-		meta.setLore(Arrays.asList(localizer.color("&7-クリックするとアスレチック一覧を開きます。 | &7-Click to open")));
+		meta.setLore(Arrays.asList(localizer.color("&7-クリックするとアスレチック一覧を開きます。 | &7-Click to open.")));
 
 		item.setItemMeta(meta);
 

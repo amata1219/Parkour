@@ -46,7 +46,7 @@ public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 		//カテゴリー内の有効なアスレを辞書順にソートして取得する
 		List<Parkour> parkours = Parkours.getInstance()
 		.getEnabledParkours(category)
-		.sorted((p1, p2) -> p1.getColorlessName().compareTo(p2.getColorlessName()))
+		.sorted((p1, p2) -> p1.colorlessName().compareTo(p2.colorlessName()))
 		.collect(Collectors.toList());
 
 		return build(parkours.size(), l -> {
@@ -89,7 +89,7 @@ public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 							//プレイヤーを最終チェックポイントにテレポートさせる
 							player.teleport(lastCheckpoint.asBukkit());
 
-							localizer.mapplyAll("&b-チェックポイント$0 &7-@ &b-$1 にテレポートしました | &b-Teleported to checkpoint$0 &7-@ &b-$1", majorCheckAreaNumberDisplayed, parkour.getColorlessName()).displayOnActionBar(player);
+							localizer.mapplyAll("&b-チェックポイント$0 &7-@ &b-$1 にテレポートしました | &b-Teleported to checkpoint$0 &7-@ &b-$1", majorCheckAreaNumberDisplayed, parkour.colorlessName()).displayOnActionBar(player);
 						}else if(event.isLeftClick()){
 							//チェックポイントリストを開かせる
 							new CategorizedCheckpointSelectionUI(user, parkour).openInventory(player);
@@ -101,7 +101,7 @@ public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 						//表示例: 1 @ Update1
 						i.displayName = StringTemplate.capply("&7-$0 @ $1", majorCheckAreaNumberDisplayed, parkourName);
 
-						String colorlessParkourName = parkour.getColorlessName();
+						String colorlessParkourName = parkour.colorlessName();
 
 						//説明文を設定する
 						i.lore(

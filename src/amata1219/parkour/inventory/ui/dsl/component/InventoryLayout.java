@@ -83,8 +83,7 @@ public class InventoryLayout {
 	}
 
 	public void put(Apply<Slot> slotApplier, int... slotIndexes){
-		for(int slotIndex : slotIndexes)
-			slots.put(slotIndex, slotApplier.apply(new Slot()));
+		for(int slotIndex : slotIndexes) slots.put(slotIndex, slotApplier.apply(new Slot()));
 	}
 
 	public void remove(IntStream range){
@@ -92,8 +91,7 @@ public class InventoryLayout {
 	}
 
 	public void remove(int... slotIndexes){
-		for(int slotIndex : slotIndexes)
-			slots.remove(slotIndex);
+		for(int slotIndex : slotIndexes) slots.remove(slotIndex);
 	}
 
 	public void onClick(Consumer<ClickEvent> action){
@@ -102,10 +100,8 @@ public class InventoryLayout {
 	}
 
 	public void fire(ClickEvent event){
-		if(asynchronouslyRunActionOnClick)
-			Async.define(() -> actionOnClick.accept(event)).execute();
-		else
-			actionOnClick.accept(event);
+		if(asynchronouslyRunActionOnClick) Async.define(() -> actionOnClick.accept(event)).execute();
+		else actionOnClick.accept(event);
 	}
 
 	public void onOpen(Consumer<OpenEvent> action){
@@ -114,10 +110,8 @@ public class InventoryLayout {
 	}
 
 	public void fire(OpenEvent event){
-		if(asynchronouslyRunActionOnOpen)
-			Async.define(() -> actionOnOpen.accept(event)).execute();
-		else
-			actionOnOpen.accept(event);
+		if(asynchronouslyRunActionOnOpen) Async.define(() -> actionOnOpen.accept(event)).execute();
+		else actionOnOpen.accept(event);
 	}
 
 	public void onClose(Consumer<CloseEvent> action){
@@ -126,10 +120,8 @@ public class InventoryLayout {
 	}
 
 	public void fire(CloseEvent event){
-		if(asynchronouslyRunActionOnClose)
-			Async.define(() -> actionOnClose.accept(event)).execute();
-		else
-			actionOnClose.accept(event);
+		if(asynchronouslyRunActionOnClose) Async.define(() -> actionOnClose.accept(event)).execute();
+		else actionOnClose.accept(event);
 	}
 
 	private Inventory createInventory(InventoryHolder holder, InventoryOption option, String title){
@@ -137,15 +129,11 @@ public class InventoryLayout {
 		InventoryType type = option.type;
 
 		if(option.type == null)
-			if(title != null)
-				return Bukkit.createInventory(holder, size, title);
-			else
-				return Bukkit.createInventory(holder, size);
+			if(title != null) return Bukkit.createInventory(holder, size, title);
+			else return Bukkit.createInventory(holder, size);
 		else
-			if(title != null)
-				return Bukkit.createInventory(holder, type, title);
-			else
-				return Bukkit.createInventory(holder, type);
+			if(title != null) return Bukkit.createInventory(holder, type, title);
+			else return Bukkit.createInventory(holder, type);
 	}
 
 }

@@ -19,7 +19,7 @@ public class RankUpParkour extends Parkour {
 		super(parkours, yaml);
 
 		//装飾コードを除いたアスレ名を取得する
-		String parkourName = getColorlessName();
+		String parkourName = colorlessName();
 
 		//ランクアップアスレでなければ戻る
 		if(!isRankedParkour(parkourName)) throw new IllegalArgumentException("Parkour must be ranked");

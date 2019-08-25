@@ -125,7 +125,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			MessageTemplate.capply("&b-&l-Rank up &7-@ &b-$0's $1 rank is $2!", playerName, category.name, rank).broadcast();
 
 			//ツイートリンクを表示する
-			Tweet.display(player, StringTemplate.apply("$0を初クリアしました！", parkour.getColorlessName()));
+			Tweet.display(player, StringTemplate.apply("$0を初クリアしました！", parkour.colorlessName()));
 		}
 	}
 

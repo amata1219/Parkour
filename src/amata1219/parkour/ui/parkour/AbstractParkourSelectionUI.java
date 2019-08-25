@@ -76,12 +76,12 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 
 					s.onClick(e -> {
 						//アスレのスポーン地点にテレポートさせる
-						parkour.teleportTo(player);
+						parkour.teleport(player);
 
 						//アスレに参加させる
 						parkour.entry(users.getUser(player));
 
-						localizer.mapplyAll("&b-$0にテレポートしました | &b-Teleported to $0", parkour.getColorlessName()).displayOnActionBar(player);
+						localizer.mapplyAll("&b-$0にテレポートしました | &b-Teleported to $0", parkour.colorlessName()).displayOnActionBar(player);
 					});
 
 					//アスレのアイコンを設定する

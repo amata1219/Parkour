@@ -1,7 +1,5 @@
 package amata1219.parkour.function.hotbar;
 
-import java.util.Arrays;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +21,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 
 		//アスレをプレイ中でなければ戻る
 		if(!user.isPlayingParkour()){
-			localizer.mcolor("&c-アスレチックのプレイ中でないため実行出来ません | &c-?").displayOnActionBar(player);
+			localizer.mcolor("&c-アスレチックのプレイ中でないためテレポート出来ません | &c-You can't teleport because you aren't playing parkour now").displayOnActionBar(player);
 			return;
 		}
 
@@ -32,7 +30,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 		CheckpointSet checkpoints = user.checkpoints;
 
 		if(!checkpoints.containsParkour(parkour)){
-			localizer.mcolor("&c-チェックポイントが設定されていないため実行出来ません | &c-?t").displayOnActionBar(player);
+			localizer.mcolor("&c-チェックポイントが設定されていないためテレポート出来ません | &c-You can't teleport because you have not set any checkpoints").displayOnActionBar(player);
 			return;
 		}
 
@@ -41,7 +39,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 
 		//チェックポイントが無ければ戻る
 		if(checkpoint == null){
-			localizer.mcolor("&c-チェックポイントが設定されていないため実行出来ません | &c-?").displayOnActionBar(player);
+			localizer.mcolor("&c-チェックポイントが設定されていないためテレポート出来ません | &c-You can't teleport because you have not set any checkpoints").displayOnActionBar(player);
 			return;
 		}
 
@@ -51,8 +49,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 		//チェックポイントにテレポートさせる
 		player.teleport(checkpoint.asBukkit());
 
-		//表示例: チェックポイント1 @ Update12 にテレポートしました
-		localizer.mapplyAll("&b-チェックポイント$0 &7-@ &b-$1 にテレポートしました | &b-Teleported to Checkpoint$0 &7-@ &b-$1", displayCheckAreaNumber, parkour.getColorlessName()).displayOnActionBar(player);
+		localizer.mapplyAll("&b-チェックポイント$2にテレポートしました | $b-Teleported to Checkpoint$2", displayCheckAreaNumber).displayOnActionBar(player);
 	}
 
 	@Override
@@ -62,8 +59,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 		ItemStack item = new ItemStack(Material.LIGHT_BLUE_DYE);
 		ItemMeta meta = item.getItemMeta();
 
-		meta.setDisplayName(localizer.color("&b-最新/最終チェックポイントにテレポートする | &b-?"));
-		meta.setLore(Arrays.asList(localizer.color("&7-左クリックすると最新、右クリックすると最終チェックポイントにテレポートします。 | &7-?")));
+		meta.setDisplayName(localizer.color("&b-最新/最終チェックポイントにテレポートする | &b-Teleport to Latest Checkpoint &7- @ Left Click &8-/ &b-Teleport to Last Checkpoint &7-@ Right Click"));
 
 		item.setItemMeta(meta);
 

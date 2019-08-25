@@ -26,7 +26,7 @@ public class HideModeToggler implements FunctionalItem {
 		ItemStack item = new ItemStack(hideMode ? Material.GLASS : Material.BEACON);
 		ItemMeta meta = item.getItemMeta();
 
-		meta.setDisplayName(localizer.color(hideMode ? "&b-プレイヤーを表示する | &b-?" : "&b-プレイヤーを非表示にする | &b-?"));
+		meta.setDisplayName(localizer.color(hideMode ? "&b-プレイヤーを表示する | &b-Hide Players" : "&b-プレイヤーを非表示にする | &b-Unhide Players"));
 
 		item.setItemMeta(meta);
 
