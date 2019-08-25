@@ -20,7 +20,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 		Player player = user.asBukkitPlayer();
 
 		//アスレをプレイ中でなければ戻る
-		if(!user.isPlayingParkour()){
+		if(!user.isOnCurrentParkour()){
 			localizer.mcolor("&c-アスレチックのプレイ中でないためテレポート出来ません | &c-You can't teleport because you aren't playing parkour now").displayOnActionBar(player);
 			return;
 		}
@@ -49,7 +49,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 		//チェックポイントにテレポートさせる
 		player.teleport(checkpoint.asBukkit());
 
-		localizer.mapplyAll("$0チェックポイント$1にテレポートしました | $0Teleported to Checkpoint$1", parkour.color, displayCheckAreaNumber).displayOnActionBar(player);
+		localizer.mapplyAll("&b-チェックポイント$1にテレポートしました | $0Teleported to Checkpoint$1", displayCheckAreaNumber).displayOnActionBar(player);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 		ItemStack item = new ItemStack(Material.LIGHT_BLUE_DYE);
 		ItemMeta meta = item.getItemMeta();
 
-		meta.setDisplayName(localizer.color("&b-最新チェックポイントにテレポートする &7-@ 左クリック &8-/ &b-最終チェックポイントにテレポートする &7-@ 右クリック | &b-Teleport to Latest Checkpoint &7- @ Left Click &8-/ &b-Teleport to Last Checkpoint &7-@ Right Click"));
+		meta.setDisplayName(localizer.color("&b-最新チェックポイントにテレポートする &7-@ 左クリック &8-/ &b-最終チェックポイントにテレポートする &7-@ 右クリック | &b-TP to Latest CP &7- @ Left Click &8-/ &b-TP to Last CP &7-@ Right Click"));
 
 		item.setItemMeta(meta);
 

@@ -8,9 +8,9 @@ import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.user.User;
 
-public class PassStartLineListener extends PassRegionBoundaryAbstractListener {
+public class StartLinePassListener extends RegionBoundaryPassAbstractListener {
 
-	public PassStartLineListener() {
+	public StartLinePassListener() {
 		super(ParkourSet.getInstance().chunksToStartLinesMap);
 	}
 

@@ -27,12 +27,12 @@ import amata1219.parkour.command.ParkourSettingCommand;
 import amata1219.parkour.listener.DisableAnyDamageToPlayer;
 import amata1219.parkour.listener.CancelFoodLevelChange;
 import amata1219.parkour.listener.DisablePlayerCollision;
-import amata1219.parkour.listener.RewardPlayerByVoting;
+import amata1219.parkour.listener.GiveVoteReward;
 import amata1219.parkour.listener.ControlPlayerHideMode;
 import amata1219.parkour.listener.LoadUserDataListener;
-import amata1219.parkour.listener.NotifyPlayerHasPassedBorderOfCheckArea;
-import amata1219.parkour.listener.PassFinishLineListener;
-import amata1219.parkour.listener.PassStartLineListener;
+import amata1219.parkour.listener.CheckAreaPassListener;
+import amata1219.parkour.listener.FinishLinePassListener;
+import amata1219.parkour.listener.StartLinePassListener;
 import amata1219.parkour.listener.SetCheckpointListener;
 import amata1219.parkour.listener.UnloadUserDataListener;
 import amata1219.parkour.listener.IncrementJumps;
@@ -81,11 +81,11 @@ public class Main extends Plugin {
 			new LoadUserDataListener(),
 			new ControlFunctionalItem(),
 			new DisablePlayerCollision(),
-			new RewardPlayerByVoting(),
+			new GiveVoteReward(),
 			new ControlPlayerHideMode(),
-			new PassFinishLineListener(),
-			new PassStartLineListener(),
-			new NotifyPlayerHasPassedBorderOfCheckArea(),
+			new FinishLinePassListener(),
+			new StartLinePassListener(),
+			new CheckAreaPassListener(),
 			new SetCheckpointListener(),
 			new DisableAnyDamageToPlayer(),
 			new CancelFoodLevelChange(),

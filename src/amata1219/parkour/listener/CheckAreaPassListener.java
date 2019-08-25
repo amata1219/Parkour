@@ -15,12 +15,12 @@ import amata1219.parkour.sound.SoundMetadata;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 
-public class NotifyPlayerHasPassedBorderOfCheckArea extends PassRegionBoundaryAbstractListener {
+public class CheckAreaPassListener extends RegionBoundaryPassAbstractListener {
 
 	private static final SoundMetadata IN_SE = new SoundMetadata(Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 2f, 2f);
 	private static final SoundMetadata OUT_SE = new SoundMetadata(Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 2f, 0.5f);
 
-	public NotifyPlayerHasPassedBorderOfCheckArea() {
+	public CheckAreaPassListener() {
 		super(ParkourSet.getInstance().chunksToCheckAreasMap);
 	}
 

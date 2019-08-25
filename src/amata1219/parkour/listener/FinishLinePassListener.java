@@ -13,17 +13,16 @@ import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.parkour.RankUpParkour;
 import amata1219.parkour.parkour.Records;
 import amata1219.parkour.string.message.Localizer;
-import amata1219.parkour.string.message.Message.ClickAction;
 import amata1219.parkour.user.StatusBoard;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 import amata1219.parkour.util.TimeFormat;
 
-public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
+public class FinishLinePassListener extends RegionBoundaryPassAbstractListener {
 
 	private final UserSet users = UserSet.getInstnace();
 
-	public PassFinishLineListener() {
+	public FinishLinePassListener() {
 		super(ParkourSet.getInstance().chunksToFinishLinesMap);
 	}
 
@@ -47,7 +46,6 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		//クリア済みのアスレとして記録する(コレクションにはSetを用いているため要素の重複は起こらない)
 		user.clearedParkourNames.add(parkourName);
 
-		String parkourColor = parkour.color;
 		String playerName = player.getName();
 		String colorlessParkourName = parkour.colorlessName();
 
@@ -70,14 +68,14 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			//自己最高記録を超えた場合
 			if(personalBest > 0 && recorded){
 				for(User onlineUser : users.getOnlineUsers()){
-					onlineUser.localizer.mapplyAll("&l-$0$1さんが$2を$3でクリアすると同時に自己最高記録の$4を打ち負かしました！ | &l-$0$1 finished $2 in $3 and beat $1's personal best of $4!",
-							parkourColor, playerName, colorlessParkourName, TimeFormat.format(time), TimeFormat.format(personalBest))
+					onlineUser.localizer.mapplyAll("&b-&l-$0さんが$1を$2でクリアすると同時に自己最高記録の$3を超えました！ | &b-&l-$0 cleared $1 in $2 and beat $0's personal best of $4!",
+							playerName, colorlessParkourName, TimeFormat.format(time), TimeFormat.format(personalBest))
 							.display(onlineUser.asBukkitPlayer());
 				}
 			}else{
 				for(User onlineUser : users.getOnlineUsers()){
-					onlineUser.localizer.mapplyAll("&l-$0$1さんが$2を$3でクリアしました！ | &l-$0$1 finished $2 in $3!",
-							parkourColor, playerName, parkourName, TimeFormat.format(time))
+					onlineUser.localizer.mapplyAll("&b-&l-$0さんが$1を$2でクリアしました！ | &b-&l-$0 cleared $1 in $2!",
+							playerName, colorlessParkourName, TimeFormat.format(time))
 							.display(onlineUser.asBukkitPlayer());
 				}
 			}
@@ -85,9 +83,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			records.sortAsync();
 		}else{
 			for(User onlineUser : users.getOnlineUsers()){
-				onlineUser.localizer.mapplyAll("&l-$0$1さんが$2をクリアしました！ | &l-$0$1 finished $2!",
-						parkourColor, playerName, parkourName)
-						.display(onlineUser.asBukkitPlayer());
+				onlineUser.localizer.mapplyAll("&b-&l-$0さんが$1をクリアしました！ | &b-&l-$0 cleared $1!", playerName, colorlessParkourName).display(onlineUser.asBukkitPlayer());
 			}
 		}
 
@@ -132,13 +128,11 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 			}
 
 			for(User onlineUser : users.getOnlineUsers()){
-				onlineUser.localizer.mapplyAll("$0$1さんの$2が$3に上がりました！ | $0$1's $2 rank went up to $3!", parkourColor, playerName, category.name, rank)
+				onlineUser.localizer.mapplyAll("&b-&l-$0さんの$1が$2に上がりました！ | &b-&l-$0's $1 rank went up to $2!", playerName, category.name, rank)
 				.display(player);
 			}
 
 			//ツイートリンクを表示する
-			localizer.mlocalize("&b&l#Twitterで喜びを伝えよう &r-&7-@ クリックするとツイートコマンドを表示します。 | &b%l#Tweet your joy &r-&7-@ Click to display tweet command.")
-			.displayAsClickable(player, ClickAction.SUGGEST_COMMAND, "tweet");
 		}
 
 		//クリア回数に基づき報酬を取得する
@@ -147,7 +141,7 @@ public class PassFinishLineListener extends PassRegionBoundaryAbstractListener {
 		//報酬のコインを与える
 		user.depositCoins(coins);
 
-		localizer.mapplyAll("$0報酬として$1コインを与えました！ | $0Rewarded you with $1 coins!", parkourColor, coins).display(player);
+		localizer.mapplyAll("&b-報酬として$0コインを与えました！ | &b-Gave you $0 coins as reward!", coins).display(player);
 	}
 
 }

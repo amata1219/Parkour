@@ -43,7 +43,6 @@ public class ParkourCheckpointSelectionUI implements InventoryUI {
 
 		//アスレ名を取得する
 		String parkourName = parkour.name;
-		String parkourColor = parkour.color;
 		String colorlessParkourName = parkour.colorlessName();
 
 		return build(checkpointSize, l -> {
@@ -75,12 +74,12 @@ public class ParkourCheckpointSelectionUI implements InventoryUI {
 						//プレイヤーを最終チェックポイントにテレポートさせる
 						player.teleport(point.asBukkit());
 
-						localizer.applyAll("$0-r-$1のチェックポイント$2にテレポートしました | $1Teleported to $0 checkpoint$2", parkourName, parkourColor, majorCheckAreaNumberDisplayed);
+						localizer.applyAll("&b-$0のチェックポイント$1にテレポートしました | &b-Teleported to $0 checkpoint$1", colorlessParkourName, majorCheckAreaNumberDisplayed);
 					});
 
 					s.icon(Material.PRISMARINE_CRYSTALS, i -> {
 						//表示例: 1 @ Update1
-						i.displayName = StringTemplate.capply("$0$1 &7-@ $2", parkourColor, majorCheckAreaNumberDisplayed, parkourName);
+						i.displayName = StringTemplate.capply("&7-$0 @ $1", majorCheckAreaNumberDisplayed, parkourName);
 
 						//説明文を設定する
 						i.lore(

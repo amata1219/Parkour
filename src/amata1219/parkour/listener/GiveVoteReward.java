@@ -13,7 +13,7 @@ import com.vexsoftware.votifier.model.VotifierEvent;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 
-public class RewardPlayerByVoting implements Listener {
+public class GiveVoteReward implements Listener {
 
 	private final UserSet users = UserSet.getInstnace();
 
