@@ -12,11 +12,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import amata1219.amalib.schedule.Async;
-import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.tuplet.Tuple;
-import amata1219.amalib.yaml.Yaml;
+import amata1219.parkour.schedule.Async;
+import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.util.TimeFormat;
+import amata1219.parkour.yaml.Yaml;
 
 public class Records {
 

@@ -20,6 +20,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import amata1219.parkour.function.PlayerLocaleChange;
+import amata1219.parkour.listener.PlayerJoinListener;
+import amata1219.parkour.listener.PlayerQuitListener;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
@@ -27,8 +29,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import amata1219.amalib.listener.PlayerJoinListener;
-import amata1219.amalib.listener.PlayerQuitListener;
 
 public class ControlFunctionalItem implements PlayerJoinListener, PlayerQuitListener {
 

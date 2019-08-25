@@ -1,8 +1,5 @@
 package amata1219.parkour.command;
 
-import amata1219.amalib.command.Arguments;
-import amata1219.amalib.command.Command;
-import amata1219.amalib.command.Sender;
 import amata1219.parkour.function.hotbar.ControlFunctionalItem;
 
 public class RelayoutCommand implements Command {

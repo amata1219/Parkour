@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import amata1219.amalib.item.SkullMaker;
+import amata1219.parkour.item.SkullCreator;
 
 public class Hats {
 
@@ -54,7 +54,7 @@ public class Hats {
 	private static void initialize(String... texts){
 		Arrays.stream(texts)
 		.map(text -> text.split(","))
-		.map(data -> new Hat(Integer.parseInt(data[0]), Integer.parseInt(data[1]), data[2], SkullMaker.fromBase64(data[3])))
+		.map(data -> new Hat(Integer.parseInt(data[0]), Integer.parseInt(data[1]), data[2], SkullCreator.fromBase64(data[3])))
 		.forEach(HATS::add);
 	}
 

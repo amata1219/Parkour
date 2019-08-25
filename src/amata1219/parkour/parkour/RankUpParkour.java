@@ -1,6 +1,6 @@
 package amata1219.parkour.parkour;
 
-import amata1219.amalib.yaml.Yaml;
+import amata1219.parkour.yaml.Yaml;
 
 public class RankUpParkour extends Parkour {
 

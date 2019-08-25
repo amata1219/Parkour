@@ -5,10 +5,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import amata1219.amalib.command.Arguments;
-import amata1219.amalib.command.Command;
-import amata1219.amalib.command.Sender;
-import amata1219.amalib.string.StringTemplate;
+import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 

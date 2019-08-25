@@ -4,8 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import amata1219.amalib.item.SkullMaker;
-import amata1219.amalib.string.message.Localizer;
+import amata1219.parkour.item.SkullCreator;
+import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.user.User;
 
 public class MyProfileUIOpener implements FunctionalItem {
@@ -20,7 +20,7 @@ public class MyProfileUIOpener implements FunctionalItem {
 		Localizer localizer = user.localizer;
 
 		//ユーザーのUUIDに基づきスカルヘッドを作成する
-		ItemStack item = SkullMaker.fromPlayerUniqueId(user.uuid);
+		ItemStack item = SkullCreator.fromPlayerUniqueId(user.uuid);
 		ItemMeta meta = item.getItemMeta();
 
 		//使用言語に対応したテキストを表示名に設定する

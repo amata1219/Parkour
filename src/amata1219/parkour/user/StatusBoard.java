@@ -10,11 +10,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Statistic;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 
-import amata1219.amalib.scoreboard.Scoreboard;
-import amata1219.amalib.string.StringColor;
-import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.string.message.Localizer;
-import amata1219.amalib.tuplet.Quadruple;
+import amata1219.parkour.scoreboard.Scoreboard;
+import amata1219.parkour.string.StringColor;
+import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.string.message.Localizer;
+import amata1219.parkour.tuplet.Quadruple;
 
 public class StatusBoard {
 

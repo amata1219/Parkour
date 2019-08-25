@@ -4,9 +4,6 @@ import java.util.Set;
 
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.string.message.MessageTemplate;
-import amata1219.parkour.Tweet;
 import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
@@ -14,6 +11,9 @@ import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.parkour.RankUpParkour;
 import amata1219.parkour.parkour.Records;
+import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.string.message.MessageTemplate;
+import amata1219.parkour.tweet.Tweet;
 import amata1219.parkour.user.StatusBoard;
 import amata1219.parkour.user.User;
 import amata1219.parkour.util.TimeFormat;

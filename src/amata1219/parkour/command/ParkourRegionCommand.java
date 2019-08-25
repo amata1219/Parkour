@@ -2,17 +2,14 @@ package amata1219.parkour.command;
 
 import java.util.UUID;
 
-import amata1219.amalib.command.Arguments;
-import amata1219.amalib.command.Command;
-import amata1219.amalib.command.Sender;
-import amata1219.amalib.location.ImmutableLocation;
-import amata1219.amalib.region.Region;
-import amata1219.amalib.selection.RegionSelection;
-import amata1219.amalib.string.StringTemplate;
+import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.region.Region;
+import amata1219.parkour.selection.RegionSelection;
 import amata1219.parkour.selection.RegionSelections;
+import amata1219.parkour.string.StringTemplate;
 
 public class ParkourRegionCommand implements Command {
 

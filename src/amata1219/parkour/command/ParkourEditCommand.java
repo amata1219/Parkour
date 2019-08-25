@@ -6,12 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import amata1219.amalib.command.Arguments;
-import amata1219.amalib.command.Command;
-import amata1219.amalib.command.Sender;
-import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
+import amata1219.parkour.string.StringTemplate;
 import net.md_5.bungee.api.ChatColor;
 
 public class ParkourEditCommand implements Command {

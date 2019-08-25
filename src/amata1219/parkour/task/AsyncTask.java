@@ -2,7 +2,7 @@ package amata1219.parkour.task;
 
 import org.bukkit.scheduler.BukkitTask;
 
-import amata1219.amalib.schedule.Async;
+import amata1219.parkour.schedule.Async;
 
 public abstract class AsyncTask {
 

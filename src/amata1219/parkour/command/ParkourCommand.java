@@ -1,11 +1,8 @@
 package amata1219.parkour.command;
 
-import amata1219.amalib.command.Arguments;
-import amata1219.amalib.command.Command;
-import amata1219.amalib.command.Sender;
-import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.string.StringTemplate;
 import net.md_5.bungee.api.ChatColor;
 
 public class ParkourCommand implements Command {

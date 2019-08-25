@@ -1,15 +1,14 @@
-package amata1219.parkour;
+package amata1219.parkour.tweet;
 
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.sound.SoundMetadata;
-import amata1219.amalib.string.StringColor;
-import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.string.message.Message;
-import amata1219.amalib.string.message.Message.ClickAction;
-import amata1219.amalib.string.message.Message.HoverAction;
-import amata1219.amalib.string.tweet.IntentTweet;
+import amata1219.parkour.sound.SoundMetadata;
+import amata1219.parkour.string.StringColor;
+import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.string.message.Message;
+import amata1219.parkour.string.message.Message.ClickAction;
+import amata1219.parkour.string.message.Message.HoverAction;
 
 public class Tweet {
 
@@ -17,7 +16,7 @@ public class Tweet {
 
 	public static void display(Player player, String text){
 		//テキストにアジ鯖のハッシュタグを追加してビルドする
-		String tweet = IntentTweet.write(text).addHashtag("アジ鯖").build();
+		String tweet = IntentTweetBuilder.write(text).addHashtag("アジ鯖").build();
 
 		SE.play(player);
 

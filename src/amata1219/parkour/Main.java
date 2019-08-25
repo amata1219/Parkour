@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 
-import amata1219.amalib.Plugin;
 import amata1219.parkour.command.CheckAreaCommand;
 import amata1219.parkour.command.CoinCommand;
 import amata1219.parkour.command.ParkourEditCommand;
@@ -13,8 +15,12 @@ import amata1219.parkour.command.ParkourCommand;
 import amata1219.parkour.command.RelayoutCommand;
 import amata1219.parkour.command.TestCommand;
 import amata1219.parkour.command.TweetCommand;
+import amata1219.parkour.enchantment.GleamEnchantment;
+import amata1219.parkour.event.PlayerJumpEvent.PlayerJumpListener;
 import amata1219.parkour.function.PlayerLocaleChange;
 import amata1219.parkour.function.hotbar.ControlFunctionalItem;
+import amata1219.parkour.inventory.ui.dsl.InventoryUI;
+import amata1219.parkour.inventory.ui.listener.UIListener;
 import amata1219.parkour.command.DirectionCommand;
 import amata1219.parkour.command.ParkourRegionCommand;
 import amata1219.parkour.command.ParkourSettingCommand;
@@ -23,12 +29,12 @@ import amata1219.parkour.listener.DisableFoodLevelChangeListener;
 import amata1219.parkour.listener.DisablePlayerCollisionListener;
 import amata1219.parkour.listener.GiveVoteRewardCoinsListener;
 import amata1219.parkour.listener.HideNewPlayerListener;
-import amata1219.parkour.listener.UserJoinListener;
+import amata1219.parkour.listener.LoadUserDataListener;
 import amata1219.parkour.listener.PassCheckAreaListener;
 import amata1219.parkour.listener.PassFinishLineListener;
 import amata1219.parkour.listener.PassStartLineListener;
 import amata1219.parkour.listener.SetCheckpointListener;
-import amata1219.parkour.listener.UserQuitListener;
+import amata1219.parkour.listener.UnloadUserDataListener;
 import amata1219.parkour.listener.IncrementJumpsListener;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.selection.RegionSelections;
@@ -73,9 +79,11 @@ public class Main extends Plugin {
 		);
 
 		registerListeners(
+			new UIListener(),
+			new PlayerJumpListener(),
 			Users.getInstnace(),
 			RegionSelections.getInstance(),
-			new UserJoinListener(),
+			new LoadUserDataListener(),
 			new ControlFunctionalItem(),
 			new DisablePlayerCollisionListener(),
 			new GiveVoteRewardCoinsListener(),
@@ -88,7 +96,11 @@ public class Main extends Plugin {
 			new DisableFoodLevelChangeListener(),
 			new IncrementJumpsListener(),
 			new PlayerLocaleChange(),
-			new UserQuitListener()
+			new UnloadUserDataListener()
+		);
+
+		registerEnchantments(
+			GleamEnchantment.GLEAM_ENCHANTMENT
 		);
 
 		startTasks(
@@ -104,6 +116,8 @@ public class Main extends Plugin {
 	@Override
 	public void onDisable(){
 		super.onDisable();
+
+		closeAllInventoryUI();
 
 		cancelTasks();
 
@@ -133,6 +147,21 @@ public class Main extends Plugin {
 
 		//稼働中のタスクリストをクリアする
 		activeTasks.clear();
+	}
+
+	private void closeAllInventoryUI(){
+		for(Player player : Bukkit.getOnlinePlayers()){
+			InventoryView opened = player.getOpenInventory();
+			if(opened == null)
+				continue;
+
+			closeInventoryUI(player, opened.getTopInventory());
+			closeInventoryUI(player, opened.getBottomInventory());
+		}
+	}
+
+	private void closeInventoryUI(Player player, Inventory inventory){
+		if(inventory != null && inventory.getHolder() instanceof InventoryUI) player.closeInventory();
 	}
 
 }

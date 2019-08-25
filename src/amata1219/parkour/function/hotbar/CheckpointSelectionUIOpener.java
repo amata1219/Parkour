@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import amata1219.amalib.string.message.Localizer;
+import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.user.InventoryUserInterfaces;
 import amata1219.parkour.user.User;
 

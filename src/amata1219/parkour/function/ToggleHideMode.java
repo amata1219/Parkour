@@ -6,8 +6,8 @@ import java.util.function.Consumer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.schedule.Sync;
 import amata1219.parkour.Main;
+import amata1219.parkour.schedule.Sync;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 import amata1219.parkour.user.UserSetting;

@@ -2,11 +2,8 @@ package amata1219.parkour.command;
 
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.command.Arguments;
-import amata1219.amalib.command.Command;
-import amata1219.amalib.command.Sender;
-import amata1219.amalib.string.message.MessageColor;
-import amata1219.parkour.Tweet;
+import amata1219.parkour.string.message.MessageColor;
+import amata1219.parkour.tweet.Tweet;
 
 public class TweetCommand implements Command {
 

@@ -4,10 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-import amata1219.amalib.command.Arguments;
-import amata1219.amalib.command.Command;
-import amata1219.amalib.command.Sender;
-import amata1219.amalib.string.StringTemplate;
+import amata1219.parkour.string.StringTemplate;
 
 public class DirectionCommand implements Command {
 

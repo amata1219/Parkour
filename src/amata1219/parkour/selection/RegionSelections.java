@@ -15,11 +15,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import amata1219.amalib.enchantment.GleamEnchantment;
-import amata1219.amalib.selection.RegionSelection;
-import amata1219.amalib.string.StringColor;
-import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.tuplet.Tuple;
+import amata1219.parkour.enchantment.GleamEnchantment;
+import amata1219.parkour.string.StringColor;
+import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.tuplet.Tuple;
 
 public class RegionSelections implements Listener {
 

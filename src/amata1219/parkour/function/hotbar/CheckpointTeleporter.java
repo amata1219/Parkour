@@ -7,10 +7,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import amata1219.amalib.enchantment.GleamEnchantment;
-import amata1219.amalib.location.ImmutableLocation;
-import amata1219.amalib.string.message.Localizer;
+import amata1219.parkour.enchantment.GleamEnchantment;
+import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
+import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
 

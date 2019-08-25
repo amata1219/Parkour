@@ -5,12 +5,12 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Consumer;
 
-import amata1219.amalib.location.ImmutableLocation;
-import amata1219.amalib.region.Region;
-import amata1219.amalib.string.StringSplit;
-import amata1219.amalib.util.Color;
-import amata1219.amalib.yaml.Yaml;
+import amata1219.parkour.location.ImmutableLocation;
+import amata1219.parkour.region.Region;
+import amata1219.parkour.string.StringSplit;
 import amata1219.parkour.user.User;
+import amata1219.parkour.util.Color;
+import amata1219.parkour.yaml.Yaml;
 
 public class Parkour {
 

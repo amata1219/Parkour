@@ -9,12 +9,12 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import amata1219.amalib.inventory.ui.dsl.InventoryUI;
-import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
-import amata1219.amalib.sound.SoundMetadata;
-import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.hat.Hat;
 import amata1219.parkour.hat.Hats;
+import amata1219.parkour.inventory.ui.dsl.InventoryUI;
+import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
+import amata1219.parkour.sound.SoundMetadata;
+import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserHats;
 

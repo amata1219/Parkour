@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.inventory.ui.dsl.InventoryUI;
+import amata1219.parkour.inventory.ui.dsl.InventoryUI;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.ui.BuyHatUI;
 import amata1219.parkour.ui.LastCheckpointSelectionUI;

@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import amata1219.amalib.location.ImmutableLocation;
-import amata1219.amalib.region.Region;
-import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.tuplet.Tuple;
-import amata1219.amalib.yaml.Yaml;
+import amata1219.parkour.location.ImmutableLocation;
+import amata1219.parkour.region.Region;
+import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.tuplet.Tuple;
+import amata1219.parkour.yaml.Yaml;
 
 public class CheckAreas {
 

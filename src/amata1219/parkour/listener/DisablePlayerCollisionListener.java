@@ -1,40 +1,26 @@
 package amata1219.parkour.listener;
 
-import static amata1219.amalib.util.Reflection.*;
+import static amata1219.parkour.util.Reflection.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.UUID;
 
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import amata1219.amalib.listener.PlayerJoinListener;
+import net.minecraft.server.v1_13_R2.Packet;
 
 public class DisablePlayerCollisionListener implements PlayerJoinListener {
 
-	private static final Method getHandle, sendPacket;
-	private static final Field playerConnection, collisionRule, playerNames, teamAction, teamName;
+	private static final Field collisionRule, playerNames, teamAction, teamName;
 	private static final Constructor<?> newPacketPlayOutScoreboardTeam;
 
 	static{
-		Class<?> CraftPlayer = getOBCClass("entity.CraftPlayer");
-
-		getHandle = getMethod(CraftPlayer, "getHandle");
-
-		Class<?> EntityPlayer = getNMSClass("EntityPlayer");
-
-		playerConnection = getField(EntityPlayer, "playerConnection");
-
-		Class<?> PlayerConnection = getNMSClass("PlayerConnection");
-		Class<?> Packet = getNMSClass("Packet");
-
-		sendPacket = getMethod(PlayerConnection, "sendPacket", Packet);
-
 		Class<?> PacketPlayOutScoreboardTeam = getNMSClass("PacketPlayOutScoreboardTeam");
 
 		newPacketPlayOutScoreboardTeam = getConstructor(PacketPlayOutScoreboardTeam);
@@ -56,9 +42,6 @@ public class DisablePlayerCollisionListener implements PlayerJoinListener {
 	}
 
 	public void disableCollision(Player player){
-		Object entityPlayer = invokeMethod(getHandle, player);
-		Object playerConnection = getFieldValue(DisablePlayerCollisionListener.playerConnection, entityPlayer);
-
 		Object packet = newInstance(newPacketPlayOutScoreboardTeam);
 
 		setFieldValue(playerNames, packet, Arrays.asList(player.getName()));
@@ -66,7 +49,7 @@ public class DisablePlayerCollisionListener implements PlayerJoinListener {
 		setFieldValue(teamAction, packet, 0);
 		setFieldValue(teamName, packet, UUID.randomUUID().toString().substring(0, 15));
 
-		invokeMethod(sendPacket, playerConnection, packet);
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet<?>) packet);
 	}
 
 }

@@ -6,18 +6,15 @@ import java.util.regex.Pattern;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
-import amata1219.amalib.command.Arguments;
-import amata1219.amalib.command.Command;
-import amata1219.amalib.command.Sender;
-import amata1219.amalib.location.ImmutableLocation;
-import amata1219.amalib.string.StringSplit;
-import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.util.Color;
+import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.parkour.Rewards;
 import amata1219.parkour.selection.RegionSelections;
+import amata1219.parkour.string.StringSplit;
+import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.util.Color;
 
 public class ParkourSettingCommand implements Command {
 

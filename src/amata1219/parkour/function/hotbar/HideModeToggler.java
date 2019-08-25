@@ -4,8 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.function.ToggleHideMode;
+import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.user.User;
 
 public class HideModeToggler implements FunctionalItem {

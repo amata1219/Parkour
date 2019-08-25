@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import amata1219.amalib.location.ImmutableLocation;
-import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.yaml.Yaml;
+import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.yaml.Yaml;
 
 public class Checkpoints {
 

@@ -4,11 +4,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import amata1219.amalib.listener.PlayerQuitListener;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
-public class UserQuitListener implements PlayerQuitListener {
+public class UnloadUserDataListener implements PlayerQuitListener {
 
 	@Override
 	@EventHandler(priority = EventPriority.HIGHEST)

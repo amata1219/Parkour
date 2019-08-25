@@ -4,8 +4,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import amata1219.amalib.listener.PlayerJoinListener;
-import amata1219.amalib.listener.PlayerQuitListener;
 import amata1219.parkour.function.ToggleHideMode;
 
 public class HideNewPlayerListener implements PlayerJoinListener, PlayerQuitListener {

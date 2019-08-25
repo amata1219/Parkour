@@ -8,13 +8,13 @@ import java.util.function.Function;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.inventory.ui.InventoryLine;
-import amata1219.amalib.inventory.ui.dsl.InventoryUI;
-import amata1219.amalib.inventory.ui.dsl.component.Icon;
-import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
-import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.string.message.Localizer;
-import amata1219.amalib.tuplet.Quintuple;
+import amata1219.parkour.inventory.ui.InventoryLine;
+import amata1219.parkour.inventory.ui.dsl.InventoryUI;
+import amata1219.parkour.inventory.ui.dsl.component.Icon;
+import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
+import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.string.message.Localizer;
+import amata1219.parkour.tuplet.Quintuple;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSetting;
 

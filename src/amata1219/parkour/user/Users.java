@@ -14,10 +14,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import amata1219.amalib.listener.PlayerJoinListener;
-import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.yaml.Yaml;
 import amata1219.parkour.Main;
+import amata1219.parkour.listener.PlayerJoinListener;
+import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.yaml.Yaml;
 
 public class Users implements PlayerJoinListener {
 

@@ -3,8 +3,8 @@ package amata1219.parkour.function;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.string.StringTemplate;
 import amata1219.parkour.parkour.RankColor;
+import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.user.User;
 
 public class ApplyRankToDisplayName {

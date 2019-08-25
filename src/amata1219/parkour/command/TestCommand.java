@@ -6,11 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import amata1219.amalib.command.Arguments;
-import amata1219.amalib.command.Command;
-import amata1219.amalib.command.Sender;
-import amata1219.amalib.inventory.ui.dsl.InventoryUI;
-import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
+import amata1219.parkour.inventory.ui.dsl.InventoryUI;
+import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
 
 public class TestCommand implements Command {
 

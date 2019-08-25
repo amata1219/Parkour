@@ -5,12 +5,12 @@ import java.util.stream.Collectors;
 
 import org.bukkit.scheduler.BukkitTask;
 
-import amata1219.amalib.location.ImmutableLocation;
-import amata1219.amalib.region.LocationOnBorderCollector;
-import amata1219.amalib.region.Region;
-import amata1219.amalib.schedule.Async;
-import amata1219.amalib.selection.RegionSelection;
-import amata1219.amalib.util.Color;
+import amata1219.parkour.location.ImmutableLocation;
+import amata1219.parkour.region.LocationOnBorderCollector;
+import amata1219.parkour.region.Region;
+import amata1219.parkour.schedule.Async;
+import amata1219.parkour.selection.RegionSelection;
+import amata1219.parkour.util.Color;
 import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_13_R2.ParticleParamRedstone;
 import net.minecraft.server.v1_13_R2.PlayerConnection;

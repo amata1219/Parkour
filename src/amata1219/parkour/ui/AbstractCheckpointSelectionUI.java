@@ -8,14 +8,14 @@ import java.util.stream.Collectors;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.inventory.ui.dsl.InventoryUI;
-import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
-import amata1219.amalib.location.ImmutableLocation;
-import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.string.message.Localizer;
+import amata1219.parkour.inventory.ui.dsl.InventoryUI;
+import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
+import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.user.Checkpoints;
 import amata1219.parkour.user.User;
 

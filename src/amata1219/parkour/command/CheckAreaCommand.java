@@ -8,18 +8,15 @@ import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.command.Arguments;
-import amata1219.amalib.command.Command;
-import amata1219.amalib.command.Sender;
-import amata1219.amalib.selection.RegionSelection;
-import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.string.message.MessageTemplate;
-import amata1219.amalib.tuplet.Tuple;
 import amata1219.parkour.parkour.CheckAreas;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkours;
+import amata1219.parkour.selection.RegionSelection;
 import amata1219.parkour.selection.RegionSelections;
+import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.string.message.MessageTemplate;
+import amata1219.parkour.tuplet.Tuple;
 
 public class CheckAreaCommand implements Command {
 

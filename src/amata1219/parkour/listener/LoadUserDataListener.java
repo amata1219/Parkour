@@ -6,18 +6,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
-import amata1219.amalib.listener.PlayerJoinListener;
-import amata1219.amalib.schedule.Sync;
-import amata1219.amalib.string.message.Localizer;
 import amata1219.parkour.function.ApplyRankToDisplayName;
 import amata1219.parkour.function.PlayerLocaleChange;
 import amata1219.parkour.parkour.Parkour;
+import amata1219.parkour.schedule.Sync;
+import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.user.StatusBoard;
 import amata1219.parkour.user.InventoryUserInterfaces;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 
-public class UserJoinListener implements PlayerJoinListener {
+public class LoadUserDataListener implements PlayerJoinListener {
 
 	private final Users users = Users.getInstnace();
 

@@ -7,12 +7,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import amata1219.amalib.inventory.ui.InventoryLine;
-import amata1219.amalib.string.StringLocalize;
-import amata1219.amalib.string.message.MessageLocalize;
+import amata1219.parkour.inventory.ui.InventoryLine;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.parkour.RankUpParkour;
+import amata1219.parkour.string.StringLocalize;
+import amata1219.parkour.string.message.MessageLocalize;
 import amata1219.parkour.user.User;
 
 public class RankUpParkourSelectionUI extends AbstractParkourSelectionUI<RankUpParkour> {

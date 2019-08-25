@@ -11,13 +11,13 @@ import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import amata1219.amalib.inventory.ui.InventoryLine;
-import amata1219.amalib.inventory.ui.dsl.InventoryUI;
-import amata1219.amalib.inventory.ui.dsl.component.InventoryLayout;
-import amata1219.amalib.item.SkullMaker;
-import amata1219.amalib.string.StringTemplate;
-import amata1219.amalib.string.message.Localizer;
-import amata1219.amalib.tuplet.Quadruple;
+import amata1219.parkour.inventory.ui.InventoryLine;
+import amata1219.parkour.inventory.ui.dsl.InventoryUI;
+import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
+import amata1219.parkour.item.SkullCreator;
+import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.string.message.Localizer;
+import amata1219.parkour.tuplet.Quadruple;
 import amata1219.parkour.user.User;
 
 public class MyProfileUI implements InventoryUI {
@@ -67,7 +67,7 @@ public class MyProfileUI implements InventoryUI {
 			//自分のステータス表示
 			l.put((s) -> {
 				//プレイヤーのスカルヘッドを作成する
-				ItemStack skull = SkullMaker.fromPlayerUniqueId(user.uuid);
+				ItemStack skull = SkullCreator.fromPlayerUniqueId(user.uuid);
 
 				s.icon(skull, i -> {
 					i.displayName = StringTemplate.capply("&b-$0", player.getName());

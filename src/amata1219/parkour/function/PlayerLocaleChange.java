@@ -7,8 +7,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLocaleChangeEvent;
 
-import amata1219.amalib.schedule.Sync;
 import amata1219.parkour.function.hotbar.ControlFunctionalItem;
+import amata1219.parkour.schedule.Sync;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.Users;
 

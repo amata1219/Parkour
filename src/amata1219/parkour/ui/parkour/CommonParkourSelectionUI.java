@@ -2,7 +2,7 @@ package amata1219.parkour.ui.parkour;
 
 import java.util.stream.Collectors;
 
-import amata1219.amalib.inventory.ui.InventoryLine;
+import amata1219.parkour.inventory.ui.InventoryLine;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.Parkours;

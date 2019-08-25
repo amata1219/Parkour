@@ -2,7 +2,7 @@ package amata1219.parkour.user;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import amata1219.amalib.yaml.Yaml;
+import amata1219.parkour.yaml.Yaml;
 
 public class UserSetting {
 
