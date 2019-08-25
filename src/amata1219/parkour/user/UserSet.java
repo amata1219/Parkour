@@ -19,15 +19,15 @@ import amata1219.parkour.listener.PlayerJoinListener;
 import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.yaml.Yaml;
 
-public class Users implements PlayerJoinListener {
+public class UserSet implements PlayerJoinListener {
 
-	private static Users instance;
+	private static UserSet instance;
 
 	public static void load(){
-		instance = new Users();
+		instance = new UserSet();
 	}
 
-	public static Users getInstnace(){
+	public static UserSet getInstnace(){
 		return instance;
 	}
 
@@ -38,7 +38,7 @@ public class Users implements PlayerJoinListener {
 
 	private final Map<UUID, User> users = new HashMap<>();
 
-	private Users(){
+	private UserSet(){
 		//フォルダーが存在しなければ作成する
 		if(!folder.exists()) folder.mkdirs();
 

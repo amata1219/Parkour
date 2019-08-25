@@ -11,7 +11,7 @@ import amata1219.parkour.enchantment.GleamEnchantment;
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.string.message.Localizer;
-import amata1219.parkour.user.Checkpoints;
+import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 
 public class CheckpointTeleporter implements FunctionalItem {
@@ -29,7 +29,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 
 		//プレイ中のアスレを取得する
 		Parkour parkour = user.parkourPlayingNow;
-		Checkpoints checkpoints = user.checkpoints;
+		CheckpointSet checkpoints = user.checkpoints;
 
 		if(!checkpoints.containsParkour(parkour)){
 			localizer.mcolor("&c-チェックポイントが設定されていないため実行出来ません | &c-?t").displayOnActionBar(player);

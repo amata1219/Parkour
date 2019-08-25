@@ -18,11 +18,11 @@ import amata1219.parkour.tuplet.Quadruple;
 
 public class StatusBoard {
 
-	private static final ArrayList<Quadruple<Function<UserSetting, Boolean>, Integer, String, Function<User, Object>>> LINES = new ArrayList<>(12);
+	private static final ArrayList<Quadruple<Function<StatusBoardSetting, Boolean>, Integer, String, Function<User, Object>>> LINES = new ArrayList<>(12);
 	private static final Pattern DOUBLE_BYTE_CHARACTER_CHECKER = Pattern.compile("^[^!-~｡-ﾟ]+$");
 
 	@SafeVarargs
-	private static void initialize(Quadruple<Function<UserSetting, Boolean>, Integer, String, Function<User, Object>>... components){
+	private static void initialize(Quadruple<Function<StatusBoardSetting, Boolean>, Integer, String, Function<User, Object>>... components){
 		Arrays.stream(components).forEach(LINES::add);
 	}
 
@@ -140,7 +140,7 @@ public class StatusBoard {
 	}
 
 	public void loadScoreboard(){
-		UserSetting setting = user.setting;
+		StatusBoardSetting setting = user.setting;
 
 		//スコアボードを表示しない設定であれば戻る
 		if(!setting.displayScoreboard){
@@ -153,7 +153,7 @@ public class StatusBoard {
 		//スコアボードを新しく作成する
 		board = new Scoreboard(user.asBukkitPlayer(), StringColor.color("&9-&l-A-&r-&b-zisaba &9-&l-N-&r-&b-etwork"));
 
-		for(Quadruple<Function<UserSetting, Boolean>, Integer, String, Function<User, Object>> line : LINES){
+		for(Quadruple<Function<StatusBoardSetting, Boolean>, Integer, String, Function<User, Object>> line : LINES){
 			//表示しない設定であれば処理しない
 			if(!line.first.apply(setting)) continue;
 
@@ -214,9 +214,9 @@ public class StatusBoard {
 	private void updateValue(int score, boolean shouldUpdateServerAddress){
 		if(board == null) return;
 
-		Quadruple<Function<UserSetting, Boolean>, Integer, String, Function<User, Object>> line = LINES.get(score);
+		Quadruple<Function<StatusBoardSetting, Boolean>, Integer, String, Function<User, Object>> line = LINES.get(score);
 
-		UserSetting setting = user.setting;
+		StatusBoardSetting setting = user.setting;
 
 		//表示しない設定であれば戻る
 		if(!line.first.apply(setting)) return;
@@ -236,7 +236,7 @@ public class StatusBoard {
 		if(!shouldUpdateServerAddress) return;
 
 		//サーバーアドレス行のコンポーネントを取得する
-		Quadruple<Function<UserSetting, Boolean>, Integer, String, Function<User, Object>> serverAddress = LINES.get(11);
+		Quadruple<Function<StatusBoardSetting, Boolean>, Integer, String, Function<User, Object>> serverAddress = LINES.get(11);
 
 		//サーバーアドレスを表示しない又は文字列長に差が無い場合は戻る
 		if(!serverAddress.first.apply(setting) || (before != null && before.length() == after.length())) return;

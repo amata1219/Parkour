@@ -16,7 +16,7 @@ import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.parkour.sound.SoundMetadata;
 import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.UserHats;
+import amata1219.parkour.user.PurchasedHatCollection;
 
 public class BuyHatUI implements InventoryUI {
 
@@ -24,7 +24,7 @@ public class BuyHatUI implements InventoryUI {
 	private static final SoundMetadata ERROR_SE = new SoundMetadata(Sound.BLOCK_ANVIL_PLACE, 1f, 1.75f);
 
 	private final User user;
-	private final UserHats hats;
+	private final PurchasedHatCollection hats;
 	private final Localizer localizer;
 
 	public BuyHatUI(User user){

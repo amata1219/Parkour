@@ -4,9 +4,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import amata1219.parkour.yaml.Yaml;
 
-public class UserSetting {
-
-	public boolean hideMode;
+public class StatusBoardSetting {
 
 	public boolean displayScoreboard;
 	public boolean displayTraceur;
@@ -19,9 +17,7 @@ public class UserSetting {
 	public boolean displayPing;
 	public boolean displayServerAddress;
 
-	public UserSetting(Yaml yaml){
-		hideMode = yaml.getBoolean("Hide mode");
-
+	public StatusBoardSetting(Yaml yaml){
 		ConfigurationSection scoreboardSection = yaml.getConfigurationSection("Values displayed on scoreboard");
 
 		displayScoreboard = scoreboardSection.getBoolean("Scoreboard");
@@ -37,8 +33,6 @@ public class UserSetting {
 	}
 
 	public void save(Yaml yaml){
-		yaml.set("Hide mode", hideMode);
-
 		ConfigurationSection scoreboardSection = yaml.getConfigurationSection("Values displayed on scoreboard");
 
 		scoreboardSection.set("Scoreboard", displayScoreboard);

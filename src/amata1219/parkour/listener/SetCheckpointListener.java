@@ -15,11 +15,11 @@ import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.string.message.MessageTemplate;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.Users;
+import amata1219.parkour.user.UserSet;
 
 public class SetCheckpointListener implements Listener {
 
-	private final Users users = Users.getInstnace();
+	private final UserSet users = UserSet.getInstnace();
 	private final ChunksToObjectsMap<ParkourRegion> chunksToCheckAreasMap = Parkours.getInstance().chunksToCheckAreasMap;
 
 	@EventHandler

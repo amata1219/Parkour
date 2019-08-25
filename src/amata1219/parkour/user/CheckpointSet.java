@@ -16,14 +16,14 @@ import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.yaml.Yaml;
 
-public class Checkpoints {
+public class CheckpointSet {
 
 	private final Parkours parkours = Parkours.getInstance();
 
 	private final Map<String, Map<Integer, ImmutableLocation>> checkpoints = new HashMap<>();
 	private final Map<String, Integer> latestCheckpoints = new HashMap<>();
 
-	public Checkpoints(Yaml yaml){
+	public CheckpointSet(Yaml yaml){
 		//セクションが存在しなければ戻る
 		if(!yaml.isConfigurationSection("Check points")) return;
 

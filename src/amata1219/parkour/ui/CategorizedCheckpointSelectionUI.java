@@ -15,7 +15,7 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.string.StringColor;
 import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.string.message.MessageTemplate;
-import amata1219.parkour.user.Checkpoints;
+import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 
 public class CategorizedCheckpointSelectionUI implements InventoryUI {
@@ -30,7 +30,7 @@ public class CategorizedCheckpointSelectionUI implements InventoryUI {
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
-		Checkpoints checkpoints = user.checkpoints;
+		CheckpointSet checkpoints = user.checkpoints;
 
 		//アスレに対応したチェックポイントマップを取得する
 		Map<Integer, ImmutableLocation> points = checkpoints.getMajorCheckAreaNumbersAndCheckpoints(parkour);

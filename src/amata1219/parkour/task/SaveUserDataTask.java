@@ -1,7 +1,7 @@
 package amata1219.parkour.task;
 
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.Users;
+import amata1219.parkour.user.UserSet;
 
 public class SaveUserDataTask extends AsyncTask {
 
@@ -10,7 +10,7 @@ public class SaveUserDataTask extends AsyncTask {
 	 * User#changedを作る？
 	 */
 
-	private final Users users = Users.getInstnace();
+	private final UserSet users = UserSet.getInstnace();
 	private int count;
 
 	public SaveUserDataTask() {

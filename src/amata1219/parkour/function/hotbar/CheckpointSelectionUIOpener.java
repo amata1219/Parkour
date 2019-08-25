@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.parkour.string.message.Localizer;
-import amata1219.parkour.user.InventoryUserInterfaces;
+import amata1219.parkour.user.InventoryUISet;
 import amata1219.parkour.user.User;
 
 public class CheckpointSelectionUIOpener implements FunctionalItem {
@@ -23,7 +23,7 @@ public class CheckpointSelectionUIOpener implements FunctionalItem {
 			return;
 		}
 
-		InventoryUserInterfaces inventoryUserInterfaces = user.inventoryUserInterfaces;
+		InventoryUISet inventoryUserInterfaces = user.inventoryUserInterfaces;
 
 		//右クリックしたのであれば最終、左クリックしたのであれば最新のチェックポイントリストを表示する
 		if(click == ClickType.RIGHT) inventoryUserInterfaces.openLastCheckpointSelectionUI();

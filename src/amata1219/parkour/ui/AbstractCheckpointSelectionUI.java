@@ -16,17 +16,17 @@ import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.Parkours;
 import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.string.message.Localizer;
-import amata1219.parkour.user.Checkpoints;
+import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 
 public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 
 	private final User user;
 	private final String checkpointType;
-	private final BiFunction<Checkpoints, Parkour, ImmutableLocation> getCheckpoint;
-	private final BiFunction<Checkpoints, Parkour, Integer> getCheckpointNumber;
+	private final BiFunction<CheckpointSet, Parkour, ImmutableLocation> getCheckpoint;
+	private final BiFunction<CheckpointSet, Parkour, Integer> getCheckpointNumber;
 
-	public AbstractCheckpointSelectionUI(User user, String checkpointType, BiFunction<Checkpoints, Parkour, ImmutableLocation> getCheckpoint, BiFunction<Checkpoints, Parkour, Integer> getCheckpointNumber){
+	public AbstractCheckpointSelectionUI(User user, String checkpointType, BiFunction<CheckpointSet, Parkour, ImmutableLocation> getCheckpoint, BiFunction<CheckpointSet, Parkour, Integer> getCheckpointNumber){
 		this.user = user;
 		this.checkpointType = checkpointType;
 		this.getCheckpoint = getCheckpoint;
@@ -54,7 +54,7 @@ public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
-			Checkpoints checkpoints = user.checkpoints;
+			CheckpointSet checkpoints = user.checkpoints;
 
 			//各アスレ毎に処理をする
 			for(int slotIndex = 0; slotIndex < parkours.size(); slotIndex++){

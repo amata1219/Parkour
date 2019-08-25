@@ -25,14 +25,14 @@ import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.Users;
+import amata1219.parkour.user.UserSet;
 import amata1219.parkour.util.TimeFormat;
 
 public abstract class AbstractParkourSelectionUI<T extends Parkour> implements InventoryUI {
 
 	private static final ParkourCategory[] CATEGORIES = ParkourCategory.values();
 
-	private final Users users = Users.getInstnace();
+	private final UserSet users = UserSet.getInstnace();
 
 	private final User user;
 	private final Localizer localizer;

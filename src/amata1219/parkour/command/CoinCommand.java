@@ -7,11 +7,11 @@ import org.bukkit.OfflinePlayer;
 
 import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.Users;
+import amata1219.parkour.user.UserSet;
 
 public class CoinCommand implements Command {
 
-	private final Users users = Users.getInstnace();
+	private final UserSet users = UserSet.getInstnace();
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {

@@ -1,6 +1,6 @@
 package amata1219.parkour.task;
 
-import amata1219.parkour.user.Users;
+import amata1219.parkour.user.UserSet;
 
 public class UpdatePingTask extends AsyncTask {
 
@@ -10,7 +10,7 @@ public class UpdatePingTask extends AsyncTask {
 
 	@Override
 	public void run() {
-		Users.getInstnace().getOnlineUsers().forEach(user -> user.statusBoard.updatePing());
+		UserSet.getInstnace().getOnlineUsers().forEach(user -> user.statusBoard.updatePing());
 	}
 
 }

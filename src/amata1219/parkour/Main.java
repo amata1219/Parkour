@@ -43,13 +43,9 @@ import amata1219.parkour.task.SaveParkourDataTask;
 import amata1219.parkour.task.SaveUserDataTask;
 import amata1219.parkour.task.UpdatePingTask;
 import amata1219.parkour.task.UpdateTimePlayedTask;
-import amata1219.parkour.user.Users;
+import amata1219.parkour.user.UserSet;
 
 public class Main extends Plugin {
-
-	//https://twitter.com/intent/tweet?text=ツイート本文
-	//アスレクリア時やランクアップ時など
-	//各動作に音を付ける
 
 	private static Main plugin;
 
@@ -59,9 +55,8 @@ public class Main extends Plugin {
 	public void onEnable(){
 		plugin = this;
 
-		//インスタンスを生成する
 		Parkours.load();
-		Users.load();
+		UserSet.load();
 		RegionSelections.load();
 
 		registerCommands(
@@ -81,7 +76,7 @@ public class Main extends Plugin {
 		registerListeners(
 			new UIListener(),
 			new PlayerJumpListener(),
-			Users.getInstnace(),
+			UserSet.getInstnace(),
 			RegionSelections.getInstance(),
 			new LoadUserDataListener(),
 			new ControlFunctionalItem(),
@@ -117,11 +112,11 @@ public class Main extends Plugin {
 	public void onDisable(){
 		super.onDisable();
 
-		closeAllInventoryUI();
+		forceCloseAllPlayerInventoryUIs();
 
 		cancelTasks();
 
-		Users.getInstnace().saveAll();
+		UserSet.getInstnace().saveAll();
 		Parkours.getInstance().saveAll();
 	}
 
@@ -135,7 +130,6 @@ public class Main extends Plugin {
 
 	private void startTasks(AsyncTask... tasks){
 		for(AsyncTask task : tasks){
-			//稼働中のタスクリストに追加する
 			activeTasks.add(task);
 
 			task.start();
@@ -145,11 +139,10 @@ public class Main extends Plugin {
 	private void cancelTasks(){
 		for(AsyncTask task : activeTasks) task.cancel();
 
-		//稼働中のタスクリストをクリアする
 		activeTasks.clear();
 	}
 
-	private void closeAllInventoryUI(){
+	private void forceCloseAllPlayerInventoryUIs(){
 		for(Player player : Bukkit.getOnlinePlayers()){
 			InventoryView opened = player.getOpenInventory();
 			if(opened == null)

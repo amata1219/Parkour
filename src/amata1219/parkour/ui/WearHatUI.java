@@ -19,7 +19,7 @@ import amata1219.parkour.sound.SoundMetadata;
 import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.UserHats;
+import amata1219.parkour.user.PurchasedHatCollection;
 
 public class WearHatUI implements InventoryUI {
 
@@ -27,7 +27,7 @@ public class WearHatUI implements InventoryUI {
 	private static final SoundMetadata PUT_ON_SE = new SoundMetadata(Sound.ENTITY_CHICKEN_EGG, 1.5f, 1f);
 	private static final ItemStack AIR = new ItemStack(Material.AIR);
 
-	private final UserHats hats;
+	private final PurchasedHatCollection hats;
 	private final Localizer localizer;
 
 	public WearHatUI(User user){

@@ -23,7 +23,7 @@ import amata1219.parkour.function.PlayerLocaleChange;
 import amata1219.parkour.listener.PlayerJoinListener;
 import amata1219.parkour.listener.PlayerQuitListener;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.Users;
+import amata1219.parkour.user.UserSet;
 
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
@@ -158,7 +158,7 @@ public class ControlFunctionalItem implements PlayerJoinListener, PlayerQuitList
 	}
 
 	private static User toUser(Player player){
-		return Users.getInstnace().getUser(player);
+		return UserSet.getInstnace().getUser(player);
 	}
 
 }

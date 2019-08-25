@@ -7,12 +7,12 @@ import java.util.Set;
 import amata1219.parkour.hat.Hat;
 import amata1219.parkour.yaml.Yaml;
 
-public class UserHats {
+public class PurchasedHatCollection {
 
 	private final User user;
 	private final Set<Integer> hatIds;
 
-	public UserHats(User user, Yaml yaml){
+	public PurchasedHatCollection(User user, Yaml yaml){
 		this.user = user;
 		this.hatIds = new HashSet<>(yaml.getIntegerList("Purchased hat ids"));
 	}

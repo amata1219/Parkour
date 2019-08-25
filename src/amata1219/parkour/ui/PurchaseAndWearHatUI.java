@@ -22,16 +22,16 @@ import amata1219.parkour.string.message.MessageColor;
 import amata1219.parkour.string.message.MessageTemplate;
 import amata1219.parkour.enchantment.GleamEnchantment;
 import amata1219.parkour.hat.Hat;
-import amata1219.parkour.user.UserHats;
+import amata1219.parkour.user.PurchasedHatCollection;
 
 public class PurchaseAndWearHatUI implements InventoryUI {
 
 	private static final SoundMetadata BUY_SE = new SoundMetadata(Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.5f, 1);
 	private static final SoundMetadata PUT_ON_SE = new SoundMetadata(Sound.ITEM_ARMOR_EQUIP_CHAIN, 2f, 1f);
 
-	private final UserHats heads;
+	private final PurchasedHatCollection heads;
 
-	public PurchaseAndWearHatUI(UserHats heads){
+	public PurchaseAndWearHatUI(PurchasedHatCollection heads){
 		this.heads = heads;
 	}
 

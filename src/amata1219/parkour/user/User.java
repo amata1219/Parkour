@@ -52,10 +52,10 @@ public class User {
 	public long timeElapsed;
 
 	//各アスレのチェックポイント
-	public final Checkpoints checkpoints;
+	public final CheckpointSet checkpoints;
 
-	//個人設定
-	public final UserSetting setting;
+	//ステータスボードの設定
+	public final StatusBoardSetting setting;
 
 	//クリア済みのアスレの名前リスト
 	public final Set<String> clearedParkourNames;
@@ -63,14 +63,17 @@ public class User {
 	//クリエイティブワールドでのチェックポイント
 	public ImmutableLocation creativeWorldCheckpoint;
 
-	//購入したヘッドのセット
-	public final UserHats hats;
+	//プレイヤー非表示モードかどうか
+	public boolean hideMode;
 
-	//スコアボードの管理インスタンス
+	//購入したヘッドのセット
+	public final PurchasedHatCollection hats;
+
+	//ステータスボード
 	public StatusBoard statusBoard;
 
-	//InventoryUIの管理インスタンス
-	public InventoryUserInterfaces inventoryUserInterfaces;
+	//各UIを保持している
+	public InventoryUISet inventoryUserInterfaces;
 
 	//プレイヤーの言語設定に対応したテキストを選び加工するインスタンス
 	public Localizer localizer;
@@ -103,10 +106,10 @@ public class User {
 		//タイムアタックを始めてからの経過時間を取得する
 		timeElapsed = yaml.getLong("Time elapsed");
 
-		checkpoints = new Checkpoints(yaml);
+		checkpoints = new CheckpointSet(yaml);
 
 		//個人設定はYamlに基づき生成する
-		setting = new UserSetting(yaml);
+		setting = new StatusBoardSetting(yaml);
 
 		//クリア済みのアスレ名リストを取得してセットでラップする
 		clearedParkourNames = new HashSet<>(yaml.getStringList("Cleared parkour names"));
@@ -114,8 +117,10 @@ public class User {
 		//データを基に座標を作成する
 		creativeWorldCheckpoint = ImmutableLocation.deserialize(yaml.getString("Creative world checkpoint"));
 
+		hideMode = yaml.getBoolean("Hide mode");
+
 		//購入済みのスカルのIDをUUIDに変換したリストを作成する
-		hats = new UserHats(this, yaml);
+		hats = new PurchasedHatCollection(this, yaml);
 	}
 
 	//このユーザーに対応したプレイヤーを取得する
@@ -190,7 +195,7 @@ public class User {
 	}
 
 	public void save(){
-		Yaml yaml = Users.getInstnace().makeYaml(uuid);
+		Yaml yaml = UserSet.getInstnace().makeYaml(uuid);
 
 		//Updateランクを記録する
 		yaml.set("Update rank", updateRank);
@@ -218,6 +223,8 @@ public class User {
 
 		//クリエイティブワールドのチェックポイントを記録する
 		yaml.set("Creative world checkpoint", creativeWorldCheckpoint.serialize());
+
+		yaml.set("Hide mode", hideMode);
 
 		hats.save(yaml);
 

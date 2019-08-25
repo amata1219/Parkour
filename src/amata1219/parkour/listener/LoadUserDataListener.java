@@ -12,13 +12,13 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.schedule.Sync;
 import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.user.StatusBoard;
-import amata1219.parkour.user.InventoryUserInterfaces;
+import amata1219.parkour.user.InventoryUISet;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.Users;
+import amata1219.parkour.user.UserSet;
 
 public class LoadUserDataListener implements PlayerJoinListener {
 
-	private final Users users = Users.getInstnace();
+	private final UserSet users = UserSet.getInstnace();
 
 	@Override
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -27,7 +27,7 @@ public class LoadUserDataListener implements PlayerJoinListener {
 		User user = users.getUser(player);
 
 		Localizer localizer = user.localizer = new Localizer(player);
-		user.inventoryUserInterfaces = new InventoryUserInterfaces(user);
+		user.inventoryUserInterfaces = new InventoryUISet(user);
 
 		StatusBoard statusBoard = user.statusBoard = new StatusBoard(user);
 		statusBoard.loadScoreboard();

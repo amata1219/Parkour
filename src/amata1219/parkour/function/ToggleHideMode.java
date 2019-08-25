@@ -9,8 +9,7 @@ import org.bukkit.entity.Player;
 import amata1219.parkour.Main;
 import amata1219.parkour.schedule.Sync;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.Users;
-import amata1219.parkour.user.UserSetting;
+import amata1219.parkour.user.UserSet;
 
 public class ToggleHideMode {
 
@@ -20,7 +19,7 @@ public class ToggleHideMode {
 		return instance != null ? instance : (instance = new ToggleHideMode());
 	}
 
-	private final Users users = Users.getInstnace();
+	private final UserSet users = UserSet.getInstnace();
 
 	//非表示モードの使用者
 	private final HashSet<User> hideModeUsers = new HashSet<>();
@@ -35,17 +34,13 @@ public class ToggleHideMode {
 	//プレイヤーがログインした時
 	public void onPlayerJoin(Player player){
 		//ログインしたプレイヤーを全非表示モードの使用者から非表示にする
-		forEachHideModeUser((user) -> hide(user, player));
+		forEachHideModeUser(user -> hide(user, player));
 
 		//ユーザーを取得する
 		User user = users.getUser(player);
 
-		//ユーザー設定を取得する
-		UserSetting setting = user.setting;
-
 		//非表示モードを使用する設定であればそれを適用する
-		if(setting.hideMode)
-			applyHideMode(user);
+		if(user.hideMode) applyHideMode(user);
 	}
 
 	//プレイヤーがログアウトした時
@@ -71,11 +66,8 @@ public class ToggleHideMode {
 			return;
 		}
 
-		//ユーザー設定を取得する
-		UserSetting setting = user.setting;
-
 		//設定を切り替える
-		boolean isHideMode = setting.hideMode = !setting.hideMode;
+		boolean isHideMode = user.hideMode = !user.hideMode;
 
 		//非表示モードであれば全プレイヤーを非表示にする
 		if(isHideMode) applyHideMode(user);

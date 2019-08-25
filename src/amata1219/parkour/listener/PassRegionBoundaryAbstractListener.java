@@ -10,11 +10,11 @@ import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.chunk.ChunksToObjectsMap;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.Users;
+import amata1219.parkour.user.UserSet;
 
 public abstract class PassRegionBoundaryAbstractListener implements Listener {
 
-	private final Users users = Users.getInstnace();
+	private final UserSet users = UserSet.getInstnace();
 	private final ChunksToObjectsMap<ParkourRegion> chunksToRegionsMap;
 
 	protected PassRegionBoundaryAbstractListener(ChunksToObjectsMap<ParkourRegion> chunksToRegionsMap){

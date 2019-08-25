@@ -21,7 +21,7 @@ public class HideModeToggler implements FunctionalItem {
 		Localizer localizer = user.localizer;
 
 		//非表示モードかどうか
-				boolean hideMode = user.setting.hideMode;
+		boolean hideMode = user.hideMode;
 
 		ItemStack item = new ItemStack(hideMode ? Material.GLASS : Material.BEACON);
 		ItemMeta meta = item.getItemMeta();

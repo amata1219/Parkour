@@ -16,7 +16,7 @@ import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.tuplet.Quintuple;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.UserSetting;
+import amata1219.parkour.user.StatusBoardSetting;
 
 public class ScoreboardDisplaySettingsUI implements InventoryUI {
 
@@ -27,10 +27,10 @@ public class ScoreboardDisplaySettingsUI implements InventoryUI {
 	 * Function<UserSetting, Boolean> fourth = 対応した値を取得する
 	 * Consumer<UserSetting> fifth = 対応した値を反転させる
 	 */
-	private static final ArrayList<Quintuple<Integer, Material, String, Function<UserSetting, Boolean>, Consumer<UserSetting>>> ICONS = new ArrayList<>(10);
+	private static final ArrayList<Quintuple<Integer, Material, String, Function<StatusBoardSetting, Boolean>, Consumer<StatusBoardSetting>>> ICONS = new ArrayList<>(10);
 
 	@SafeVarargs
-	private static void initialize(Quintuple<Integer, Material, String, Function<UserSetting, Boolean>, Consumer<UserSetting>>... components){
+	private static void initialize(Quintuple<Integer, Material, String, Function<StatusBoardSetting, Boolean>, Consumer<StatusBoardSetting>>... components){
 		Arrays.stream(components).forEach(ICONS::add);
 	}
 
@@ -50,7 +50,7 @@ public class ScoreboardDisplaySettingsUI implements InventoryUI {
 	}
 
 	private final User user;
-	private final UserSetting setting;
+	private final StatusBoardSetting setting;
 
 	public ScoreboardDisplaySettingsUI(User user){
 		this.user = user;
@@ -68,9 +68,9 @@ public class ScoreboardDisplaySettingsUI implements InventoryUI {
 
 			l.onClose(e -> user.statusBoard.loadScoreboard());
 
-			for(Quintuple<Integer, Material, String, Function<UserSetting, Boolean>, Consumer<UserSetting>> icon : ICONS){
+			for(Quintuple<Integer, Material, String, Function<StatusBoardSetting, Boolean>, Consumer<StatusBoardSetting>> icon : ICONS){
 				String iconName = icon.third;
-				Function<UserSetting, Boolean> state = icon.fourth;
+				Function<StatusBoardSetting, Boolean> state = icon.fourth;
 
 				l.put(s -> {
 					s.icon(icon.second, i -> applyDisplaySettingToIcon(i, iconName, state.apply(setting)));

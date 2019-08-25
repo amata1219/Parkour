@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerLocaleChangeEvent;
 import amata1219.parkour.function.hotbar.ControlFunctionalItem;
 import amata1219.parkour.schedule.Sync;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.Users;
+import amata1219.parkour.user.UserSet;
 
 public class PlayerLocaleChange implements Listener {
 
@@ -40,7 +40,7 @@ public class PlayerLocaleChange implements Listener {
 			ControlFunctionalItem.updateAllSlots(player);
 
 			//スコアボードの言語表記を更新する
-			Users.getInstnace().getUser(player).statusBoard.updateAll();
+			UserSet.getInstnace().getUser(player).statusBoard.updateAll();
 		});
 	}
 
