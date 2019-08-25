@@ -44,7 +44,7 @@ public class Parkour {
 		if(name.length() < 2){
 			color = "§f";
 		}else{
-			String extract = name.substring(0, 3);
+			String extract = name.substring(0, 2);
 			color = COLOR_PATTERN.matcher(extract).matches() ? extract : "§f";
 		}
 

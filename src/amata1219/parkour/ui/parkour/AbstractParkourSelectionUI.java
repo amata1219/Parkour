@@ -94,9 +94,9 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 						int maxMajorCheckAreaNumber = parkour.checkAreas.getMaxMajorCheckAreaNumber();
 
 						//表示するテキストを決定する
-						String numberOfDisplayedCheckAreas = maxMajorCheckAreaNumber >= 0 ? String.valueOf(maxMajorCheckAreaNumber + 1) : "None";
+						String numberOfDisplayedCheckAreas = maxMajorCheckAreaNumber >= 0 ? String.valueOf(maxMajorCheckAreaNumber + 1) + "&7-箇所" : "None";
 
-						lore.add(localizer.applyAll("&7-チェックエリア @ &b-$0-&7-箇所 | &7-Check Areas @ &b-$0", numberOfDisplayedCheckAreas));
+						lore.add(localizer.applyAll("&7-チェックエリア @ &b-$0 | &7-Check Areas @ &b-$0", numberOfDisplayedCheckAreas));
 
 						Rewards rewards = parkour.rewards;
 						lore.add(localizer.applyAll("&7-初回/通常報酬 @ &b-$0-&7-/-&b-$1-&7-コイン | &7-First/Normal Reward @ &b-$0-&7-/-&b-$1 &7-Coins", rewards.getReward(0), rewards.getReward(1)));

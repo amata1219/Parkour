@@ -35,7 +35,7 @@ public class CheckpointSelectionUIOpener implements FunctionalItem {
 		ItemStack item = new ItemStack(Material.CYAN_DYE);
 		ItemMeta meta = item.getItemMeta();
 
-		meta.setDisplayName(localizer.color("&b-最新チェックポイント一覧を開く &7-@ 左クリック &8-/ &b-最終チェックポイント一覧を開く &7-@ 右クリック"));
+		meta.setDisplayName(localizer.color("&b-最新チェックポイントの選択画面を開く &7-@ 左クリック &8-/ &b-最終チェックポイントの選択画面を開く &7-@ 右クリック | &b-Open Latest Checkpoint Selection UI &7-@ Left Click &8-/ &b-Open Last Checkpoint Selection UI &7-@ Right Click"));
 
 		item.setItemMeta(meta);
 
