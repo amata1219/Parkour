@@ -26,9 +26,9 @@ public class BilingualText implements TextStream {
 	}
 
 	@Override
-	public void sendTo(Player player) {
-		if(isJapanise(player)) japanise.sendTo(player);
-		else english.sendTo(player);
+	public void sendTo(Player player, MessageType type) {
+		if(isJapanise(player)) japanise.sendTo(player, type);
+		else english.sendTo(player, type);
 	}
 
 	//使用言語に対応したTextを返す

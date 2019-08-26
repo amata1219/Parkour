@@ -2,6 +2,9 @@ package amata1219.parkour.text;
 
 import org.bukkit.entity.Player;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+
 public class Text implements TextStream {
 
 	private static final String COLORS = "0123456789AaBbCcDdEeFfKkLlMmNnOoRr";
@@ -49,8 +52,17 @@ public class Text implements TextStream {
 	}
 
 	@Override
-	public void sendTo(Player player) {
-		player.sendMessage(text);
+	public void sendTo(Player player, MessageType type) {
+		switch(type){
+		case CHAT:
+			player.sendMessage(text);
+			break;
+		case ACTION_BAR:
+			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(text));
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override

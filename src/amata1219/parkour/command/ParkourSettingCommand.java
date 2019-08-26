@@ -12,9 +12,9 @@ import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.parkour.Rewards;
 import amata1219.parkour.selection.RegionSelectionSet;
-import amata1219.parkour.string.StringSplit;
 import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.util.Color;
+import amata1219.parkour.util.StringSplit;
 
 public class ParkourSettingCommand implements Command {
 

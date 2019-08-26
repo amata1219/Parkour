@@ -2,7 +2,6 @@ package amata1219.parkour.util;
 
 import java.util.Random;
 
-import amata1219.parkour.string.StringSplit;
 import amata1219.parkour.string.StringTemplate;
 
 public class Color {

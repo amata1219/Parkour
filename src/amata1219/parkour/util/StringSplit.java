@@ -1,4 +1,4 @@
-package amata1219.parkour.string;
+package amata1219.parkour.util;
 
 import java.util.Arrays;
 
