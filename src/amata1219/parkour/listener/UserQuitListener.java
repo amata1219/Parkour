@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 
-public class UnloadUserDataListener implements PlayerQuitListener {
+public class UserQuitListener implements PlayerQuitListener {
 
 	@Override
 	@EventHandler(priority = EventPriority.HIGHEST)

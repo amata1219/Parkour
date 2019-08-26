@@ -18,11 +18,11 @@ import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 import amata1219.parkour.util.TimeFormat;
 
-public class FinishLinePassListener extends RegionBoundaryPassAbstractListener {
+public class PassFinishLineListener extends PassRegionListener {
 
 	private final UserSet users = UserSet.getInstnace();
 
-	public FinishLinePassListener() {
+	public PassFinishLineListener() {
 		super(ParkourSet.getInstance().chunksToFinishLinesMap);
 	}
 

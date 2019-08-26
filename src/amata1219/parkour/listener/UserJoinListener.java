@@ -1,13 +1,21 @@
 package amata1219.parkour.listener;
 
-import java.util.Optional;
+import static amata1219.parkour.util.Reflection.*;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.UUID;
+
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import amata1219.parkour.function.ImprintRank;
 import amata1219.parkour.function.PlayerLocaleChange;
+import amata1219.parkour.function.ToggleHideMode;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.schedule.Sync;
 import amata1219.parkour.string.message.Localizer;
@@ -15,10 +23,28 @@ import amata1219.parkour.user.StatusBoard;
 import amata1219.parkour.user.InventoryUISet;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
+import net.minecraft.server.v1_13_R2.Packet;
 
-public class LoadUserDataListener implements PlayerJoinListener {
+public class UserJoinListener implements PlayerJoinListener {
+
+	private static final Field collisionRule, playerNames, teamAction, teamName;
+	private static final Constructor<?> newPacketPlayOutScoreboardTeam;
+
+	static{
+		//プライベートなフィールドを書き換える為にリフレクションを用いる
+
+		Class<?> PacketPlayOutScoreboardTeam = getNMSClass("PacketPlayOutScoreboardTeam");
+
+		newPacketPlayOutScoreboardTeam = getConstructor(PacketPlayOutScoreboardTeam);
+
+		collisionRule = getField(PacketPlayOutScoreboardTeam, "f");
+		playerNames = getField(PacketPlayOutScoreboardTeam, "h");
+		teamAction = getField(PacketPlayOutScoreboardTeam, "i");
+		teamName = getField(PacketPlayOutScoreboardTeam, "a");
+	}
 
 	private final UserSet users = UserSet.getInstnace();
+	private final ToggleHideMode hideModeFunction = ToggleHideMode.getInstance();
 
 	@Override
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -26,9 +52,19 @@ public class LoadUserDataListener implements PlayerJoinListener {
 		Player player = event.getPlayer();
 		User user = users.getUser(player);
 
+		//ローカライザーを生成する
 		Localizer localizer = user.localizer = new Localizer(player);
+
+		//プレイヤー非表示機能にプレイヤーがログインした事を通知する
+		hideModeFunction.onPlayerJoin(player);
+
+		//プレイヤーの衝突を無効化する
+		disableCollision(event.getPlayer());
+
+		//各UIを生成する
 		user.inventoryUserInterfaces = new InventoryUISet(user);
 
+		//ステータスボードを生成しロードする
 		StatusBoard statusBoard = user.statusBoard = new StatusBoard(user);
 		statusBoard.loadScoreboard();
 
@@ -63,6 +99,25 @@ public class LoadUserDataListener implements PlayerJoinListener {
 				user.timeElapsed = 0;
 			}
 		}
+	}
+
+	public void disableCollision(Player player){
+		//新しくパケットを作成する
+		Object packet = newInstance(newPacketPlayOutScoreboardTeam);
+
+		//対象となるプレイヤーを書き込む
+		setFieldValue(playerNames, packet, Arrays.asList(player.getName()));
+
+		//衝突はしない設定にする
+		setFieldValue(collisionRule, packet, "never");
+
+		//チームに参加するアクションとする
+		setFieldValue(teamAction, packet, 0);
+
+		//適当にチーム名を決める
+		setFieldValue(teamName, packet, UUID.randomUUID().toString().substring(0, 15));
+
+		((CraftPlayer) player).getHandle().playerConnection.sendPacket((Packet<?>) packet);
 	}
 
 }

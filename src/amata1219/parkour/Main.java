@@ -24,18 +24,16 @@ import amata1219.parkour.inventory.ui.listener.UIListener;
 import amata1219.parkour.command.DirectionCommand;
 import amata1219.parkour.command.ParkourRegionCommand;
 import amata1219.parkour.command.ParkourSettingCommand;
-import amata1219.parkour.listener.DisableAnyDamageToPlayer;
-import amata1219.parkour.listener.CancelFoodLevelChange;
-import amata1219.parkour.listener.DisablePlayerCollision;
-import amata1219.parkour.listener.GiveVoteReward;
-import amata1219.parkour.listener.ControlPlayerHideMode;
-import amata1219.parkour.listener.LoadUserDataListener;
-import amata1219.parkour.listener.CheckAreaPassListener;
-import amata1219.parkour.listener.FinishLinePassListener;
-import amata1219.parkour.listener.StartLinePassListener;
+import amata1219.parkour.listener.PlayerDamageListener;
+import amata1219.parkour.listener.FoodLevelChangeListener;
+import amata1219.parkour.listener.VoteListener;
+import amata1219.parkour.listener.UserJoinListener;
+import amata1219.parkour.listener.PassCheckAreaListener;
+import amata1219.parkour.listener.PassFinishLineListener;
+import amata1219.parkour.listener.PassStartLineListener;
 import amata1219.parkour.listener.SetCheckpointListener;
-import amata1219.parkour.listener.UnloadUserDataListener;
-import amata1219.parkour.listener.IncrementJumps;
+import amata1219.parkour.listener.UserQuitListener;
+import amata1219.parkour.listener.JumpListener;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.selection.RegionSelections;
 import amata1219.parkour.task.AsyncTask;
@@ -78,20 +76,18 @@ public class Main extends Plugin {
 			new PlayerJumpListener(),
 			UserSet.getInstnace(),
 			RegionSelections.getInstance(),
-			new LoadUserDataListener(),
+			new UserJoinListener(),
 			new ControlFunctionalItem(),
-			new DisablePlayerCollision(),
-			new GiveVoteReward(),
-			new ControlPlayerHideMode(),
-			new FinishLinePassListener(),
-			new StartLinePassListener(),
-			new CheckAreaPassListener(),
+			new VoteListener(),
+			new PassFinishLineListener(),
+			new PassStartLineListener(),
+			new PassCheckAreaListener(),
 			new SetCheckpointListener(),
-			new DisableAnyDamageToPlayer(),
-			new CancelFoodLevelChange(),
-			new IncrementJumps(),
+			new PlayerDamageListener(),
+			new FoodLevelChangeListener(),
+			new JumpListener(),
 			new PlayerLocaleChange(),
-			new UnloadUserDataListener()
+			new UserQuitListener()
 		);
 
 		registerEnchantments(
