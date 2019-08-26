@@ -15,7 +15,6 @@ import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.yaml.Yaml;
 
 public class User {
@@ -74,9 +73,6 @@ public class User {
 
 	//各UIを保持している
 	public InventoryUISet inventoryUserInterfaces;
-
-	//プレイヤーの言語設定に対応したテキストを選び加工するインスタンス
-	public Localizer localizer;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する

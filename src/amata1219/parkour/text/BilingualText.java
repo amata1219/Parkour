@@ -11,6 +11,10 @@ public class BilingualText implements TextStream {
 		this.english = new Text(english);
 	}
 
+	public static BilingualText stream(String japanise, String english){
+		return new BilingualText(japanise, english);
+	}
+
 	@Override
 	public TextStream color(char alternateColorCode) {
 		japanise.color(alternateColorCode);
@@ -32,7 +36,7 @@ public class BilingualText implements TextStream {
 	}
 
 	//使用言語に対応したTextを返す
-	public Text localize(Player player){
+	public TextStream localize(Player player){
 		return isJapanise(player) ? japanise : english;
 	}
 

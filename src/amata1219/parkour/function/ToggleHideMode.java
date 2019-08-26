@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 
 import amata1219.parkour.Main;
 import amata1219.parkour.schedule.Sync;
+import amata1219.parkour.text.BilingualText;
+import amata1219.parkour.text.TextStream.MessageType;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 
@@ -45,10 +47,6 @@ public class ToggleHideMode {
 
 	//プレイヤーがログアウトした時
 	public void onPlayerQuit(Player player){
-		//CraftPlayer#removeDisconnectingPlayer(Player)が同等の機能を持っている
-		//ログアウトしたプレイヤーを全非表示モードの使用者に表示する
-		//forEachHideModeUser((user) -> show(user, player));
-
 		//ユーザーを取得する
 		User user = users.getUser(player);
 
@@ -62,7 +60,9 @@ public class ToggleHideMode {
 
 		//クールダウン中なら戻る
 		if(cooldownUsers.contains(user)){
-			user.localizer.mcolor("&c-入力が速過ぎます | &c-Input too fast").displayOnActionBar(player);
+			BilingualText.stream("&c-入力が速すぎます！", "&c-Input too fast!")
+			.color()
+			.sendTo(player, MessageType.ACTION_BAR);
 			return;
 		}
 

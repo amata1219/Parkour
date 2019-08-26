@@ -16,6 +16,10 @@ public class Text implements TextStream {
 		this.text = text;
 	}
 
+	public static Text stream(String text){
+		return new Text(text);
+	}
+
 	@Override
 	public TextStream color(char alternateColorCode) {
 		//文字列を1文字ずつに分解する
