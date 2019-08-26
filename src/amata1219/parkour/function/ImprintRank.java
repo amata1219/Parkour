@@ -9,10 +9,9 @@ import amata1219.parkour.user.User;
 
 public class ImprintRank {
 
-	public static void imprint(User user){
+	public static void apply(User user){
 		int rank = user.updateRank();
 
-		//プレイヤーを取得する
 		Player player = user.asBukkitPlayer();
 
 		ChatColor rankColor = RankColor.values()[rank].color;

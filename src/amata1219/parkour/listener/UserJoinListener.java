@@ -82,7 +82,7 @@ public class UserJoinListener implements PlayerJoinListener {
 		Sync.define(() -> user.statusBoard().ifPresent(it -> it.updatePing())).executeLater(6000);
 
 		//プレイヤー名にランクを表示させる
-		ImprintRank.imprint(user);
+		ImprintRank.apply(user);
 
 		//最終ログアウト時にどこかのアスレにいた場合
 		if(user.isOnCurrentParkour()){

@@ -110,7 +110,7 @@ public class PassFinishLineListener extends PassRegionListener {
 				user.incrementUpdateRank();
 
 				//表示名を更新する
-				ImprintRank.imprint(user);
+				ImprintRank.apply(user);
 
 				board.updateUpdateRank();
 				break;

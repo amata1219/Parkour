@@ -11,7 +11,7 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.parkour.Rewards;
-import amata1219.parkour.selection.RegionSelections;
+import amata1219.parkour.selection.RegionSelectionSet;
 import amata1219.parkour.string.StringSplit;
 import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.util.Color;
@@ -22,7 +22,7 @@ public class ParkourSettingCommand implements Command {
 	private static final Pattern REWARDS_FORMAT = Pattern.compile("[0-9]{1,8},[0-9]{1,8}");
 
 	private final ParkourSet parkours = ParkourSet.getInstance();
-	private final RegionSelections selections = RegionSelections.getInstance();
+	private final RegionSelectionSet selections = RegionSelectionSet.getInstance();
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {

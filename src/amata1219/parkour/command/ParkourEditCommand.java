@@ -7,13 +7,13 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.selection.RegionSelections;
+import amata1219.parkour.selection.RegionSelectionSet;
 import amata1219.parkour.string.StringTemplate;
 import net.md_5.bungee.api.ChatColor;
 
 public class ParkourEditCommand implements Command {
 
-	private final RegionSelections selections = RegionSelections.getInstance();
+	private final RegionSelectionSet selections = RegionSelectionSet.getInstance();
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {

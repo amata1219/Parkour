@@ -8,13 +8,13 @@ import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.region.Region;
 import amata1219.parkour.selection.RegionSelection;
-import amata1219.parkour.selection.RegionSelections;
+import amata1219.parkour.selection.RegionSelectionSet;
 import amata1219.parkour.string.StringTemplate;
 
 public class ParkourRegionCommand implements Command {
 
 	private final ParkourSet parkours = ParkourSet.getInstance();
-	private final RegionSelections selections = RegionSelections.getInstance();
+	private final RegionSelectionSet selections = RegionSelectionSet.getInstance();
 
 	@Override
 	public void onCommand(Sender sender, Arguments args) {

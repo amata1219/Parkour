@@ -20,15 +20,15 @@ import amata1219.parkour.string.StringColor;
 import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.tuplet.Tuple;
 
-public class RegionSelections implements Listener {
+public class RegionSelectionSet implements Listener {
 
-	private static RegionSelections instance;
+	private static RegionSelectionSet instance;
 
 	public static void load(){
-		instance = new RegionSelections();
+		instance = new RegionSelectionSet();
 	}
 
-	public static RegionSelections getInstance(){
+	public static RegionSelectionSet getInstance(){
 		return instance;
 	}
 	//範囲選択用のツール
@@ -37,7 +37,7 @@ public class RegionSelections implements Listener {
 
 	private final HashMap<UUID, Tuple<String, RegionSelection>> selections = new HashMap<>();
 
-	private RegionSelections(){
+	private RegionSelectionSet(){
 		selectionTool = new ItemStack(Material.STONE_AXE);
 
 		ItemMeta meta = selectionTool.getItemMeta();

@@ -35,7 +35,7 @@ import amata1219.parkour.listener.SetCheckpointListener;
 import amata1219.parkour.listener.UserQuitListener;
 import amata1219.parkour.listener.JumpListener;
 import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.selection.RegionSelections;
+import amata1219.parkour.selection.RegionSelectionSet;
 import amata1219.parkour.task.AsyncTask;
 import amata1219.parkour.task.SaveParkourDataTask;
 import amata1219.parkour.task.SaveUserDataTask;
@@ -55,7 +55,7 @@ public class Main extends Plugin {
 
 		ParkourSet.load();
 		UserSet.load();
-		RegionSelections.load();
+		RegionSelectionSet.load();
 
 		registerCommands(
 			new ParkourCommand(),
@@ -75,7 +75,7 @@ public class Main extends Plugin {
 			new UIListener(),
 			new PlayerJumpListener(),
 			UserSet.getInstnace(),
-			RegionSelections.getInstance(),
+			RegionSelectionSet.getInstance(),
 			new UserJoinListener(),
 			new ControlFunctionalItem(),
 			new VoteListener(),
