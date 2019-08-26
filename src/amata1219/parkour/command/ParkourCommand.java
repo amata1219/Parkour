@@ -67,6 +67,12 @@ public class ParkourCommand implements Command {
 				return;
 			}
 
+			//アスレ名の先頭に装飾コードが存在しない場合
+			if(!Parkour.PREFIX_PATTERN.matcher(parkourName).find()){
+				sender.warn("アスレ名の先頭には必ず装飾コードを置いて下さい。");
+				return;
+			}
+
 			//ファイルを作成する
 			parkours.makeYaml(parkourName);
 
@@ -137,7 +143,7 @@ public class ParkourCommand implements Command {
 	}
 
 	private void displayCommandUsage(Sender sender){
-		sender.warn("/parkour [parkour] create @ 指定された名前でアスレを作成します。§lアスレ名の先頭に装飾コードを置く場合は必ず色コードを書体コードより先に置いて下さい。");
+		sender.warn("/parkour [parkour] create @ 指定された名前でアスレを作成します。アスレ名の先頭には必ず装飾コードを置いて下さい。");
 		sender.warn("/parkour [parkour] delete @ アスレを削除します。");
 		sender.warn("/parkour [parkour] enable @ 有効化し選択画面に表示します。");
 		sender.warn("/parkour [parkour] disable @ 無効化し選択画面から非表示にします。");

@@ -1,5 +1,8 @@
 package amata1219.parkour.parkour;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -14,9 +17,12 @@ import amata1219.parkour.yaml.Yaml;
 
 public class Parkour {
 
+	public static final Pattern PREFIX_PATTERN = Pattern.compile("(?i)§[0-9a-fA-F]");
+
 	private final ParkourSet parkours;
 
 	public final String name;
+	public final String prefixColor;
 	public boolean enable;
 	public ParkourCategory category;
 	public Color borderColor;
@@ -35,6 +41,9 @@ public class Parkour {
 
 		//yaml.nameは拡張子を取り除いたファイル名を返すのでアスレ名としてそのまま設定する
 		name = yaml.name;
+
+		Matcher prefixColorMatcher = PREFIX_PATTERN.matcher(name);
+		prefixColor = prefixColorMatcher.find() ? prefixColorMatcher.group() : "§f";
 
 		enable = yaml.getBoolean("Enable");
 		category = ParkourCategory.valueOf(yaml.getString("Category"));
