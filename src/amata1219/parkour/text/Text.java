@@ -56,21 +56,6 @@ public class Text implements TextStream {
 	}
 
 	@Override
-	public void sendTo(Player player) {
-		player.sendMessage(text);
-	}
-
-	@Override
-	public void actionbar(Player player) {
-		player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(text));
-	}
-
-	@Override
-	public void title(String subTitle, int fadeIn, int stay, int fadeOut, Player player) {
-		player.sendTitle(text, subTitle, fadeIn, stay, fadeOut);
-	}
-
-	@Override
 	public String toString(){
 		return text;
 	}

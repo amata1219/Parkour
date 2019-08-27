@@ -4,6 +4,6 @@ import org.bukkit.entity.Player;
 
 public interface Messenger {
 
-	void sendTo(Player player, String message);
+	void sendTo(Player player);
 
 }
