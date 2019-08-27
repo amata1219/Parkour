@@ -17,33 +17,34 @@ public interface TextStream {
 	//対応した属性名を値に置き換える
 	public TextStream setAttribute(String name, Object value);
 
-	default public void sendTo(Player player){
-		sendTo(player, MessageType.CHAT);
-	}
-
-	public void sendTo(Player player, MessageType type);
+	public void sendTo(Player player);
 
 	default public void sendTo(Collection<? extends Player> players){
-		sendTo(players, MessageType.CHAT);
-	}
-
-	default public void sendTo(Collection<? extends Player> players, MessageType type){
-		players.forEach(player -> sendTo(player, type));
+		players.forEach(this::sendTo);
 	}
 
 	default public void broadcast(){
-		broadcast(MessageType.CHAT);
+		sendTo(Bukkit.getOnlinePlayers());
 	}
 
-	default public void broadcast(MessageType type){
-		sendTo(Bukkit.getOnlinePlayers(), type);
+	public void actionbar(Player player);
+
+	default public void actionbar(Collection<? extends Player> players){
+		players.forEach(this::actionbar);
 	}
 
-	public static enum MessageType {
+	default public void actionbar(){
+		actionbar(Bukkit.getOnlinePlayers());
+	}
 
-		CHAT,
-		ACTION_BAR;
+	public void title(String subTitle, int fadeIn, int stay, int fadeOut, Player player);
 
+	default public void title(String subTitle, int fadeIn, int stay, int fadeOut, Collection<? extends Player> players){
+		players.forEach(player -> title(subTitle, fadeIn, stay, fadeOut, players));
+	}
+
+	default public void title(String subTitle, int fadeIn, int stay, int fadeOut){
+		title(subTitle, fadeIn, stay, fadeOut, Bukkit.getOnlinePlayers());
 	}
 
 }

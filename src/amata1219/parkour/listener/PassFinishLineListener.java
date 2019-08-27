@@ -70,20 +70,20 @@ public class PassFinishLineListener extends PassRegionListener {
 				for(User onlineUser : users.getOnlineUsers()){
 					onlineUser.localizer.mapplyAll("&b-&l-$0さんが$1を$2でクリアすると同時に自己最高記録の$3を超えました！ | &b-&l-$0 cleared $1 in $2 and beat $0's personal best of $4!",
 							playerName, colorlessParkourName, TimeFormat.format(time), TimeFormat.format(personalBest))
-							.display(onlineUser.asBukkitPlayer());
+							.sendTo(onlineUser.asBukkitPlayer());
 				}
 			}else{
 				for(User onlineUser : users.getOnlineUsers()){
 					onlineUser.localizer.mapplyAll("&b-&l-$0さんが$1を$2でクリアしました！ | &b-&l-$0 cleared $1 in $2!",
 							playerName, colorlessParkourName, TimeFormat.format(time))
-							.display(onlineUser.asBukkitPlayer());
+							.sendTo(onlineUser.asBukkitPlayer());
 				}
 			}
 
 			records.sortAsync();
 		}else{
 			for(User onlineUser : users.getOnlineUsers()){
-				onlineUser.localizer.mapplyAll("&b-&l-$0さんが$1をクリアしました！ | &b-&l-$0 cleared $1!", playerName, colorlessParkourName).display(onlineUser.asBukkitPlayer());
+				onlineUser.localizer.mapplyAll("&b-&l-$0さんが$1をクリアしました！ | &b-&l-$0 cleared $1!", playerName, colorlessParkourName).sendTo(onlineUser.asBukkitPlayer());
 			}
 		}
 
@@ -129,7 +129,7 @@ public class PassFinishLineListener extends PassRegionListener {
 
 			for(User onlineUser : users.getOnlineUsers()){
 				onlineUser.localizer.mapplyAll("&b-&l-$0さんの$1が$2に上がりました！ | &b-&l-$0's $1 rank went up to $2!", playerName, category.name, rank)
-				.display(player);
+				.sendTo(player);
 			}
 
 			//ツイートリンクを表示する
@@ -141,7 +141,7 @@ public class PassFinishLineListener extends PassRegionListener {
 		//報酬のコインを与える
 		user.depositCoins(coins);
 
-		localizer.mapplyAll("&b-報酬として$0コインを与えました！ | &b-Gave you $0 coins as reward!", coins).display(player);
+		localizer.mapplyAll("&b-報酬として$0コインを与えました！ | &b-Gave you $0 coins as reward!", coins).sendTo(player);
 	}
 
 }

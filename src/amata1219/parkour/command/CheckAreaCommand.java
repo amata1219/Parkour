@@ -74,7 +74,7 @@ public class CheckAreaCommand implements Command {
 			//バインドする
 			Tuple<Integer, Integer> position = checkAreas.bindCheckArea(majorCheckAreaNumber, newCheckArea);
 
-			MessageTemplate.capply("$0-&r-にチェックエリア($1,$2)を追加しました。", parkourName, position.first.intValue() + 1, position.second.intValue() + 1).display(player);
+			MessageTemplate.capply("$0-&r-にチェックエリア($1,$2)を追加しました。", parkourName, position.first.intValue() + 1, position.second.intValue() + 1).sendTo(player);
 			break;
 		}case "set":{
 			//範囲選択がされていなければ戻る
@@ -112,7 +112,7 @@ public class CheckAreaCommand implements Command {
 
 			checkAreas.setCheckArea(majorCheckAreaNumber, minorCheckAreaNumber, newCheckArea);
 
-			MessageTemplate.capply("$0-&r-のチェックエリア($1,$2)を書き換えました。", parkourName, majorCheckAreaNumber + 1, minorCheckAreaNumber + 1).display(player);
+			MessageTemplate.capply("$0-&r-のチェックエリア($1,$2)を書き換えました。", parkourName, majorCheckAreaNumber + 1, minorCheckAreaNumber + 1).sendTo(player);
 			break;
 		}case "insert":{
 			//範囲選択がされていなければ戻る
@@ -138,7 +138,7 @@ public class CheckAreaCommand implements Command {
 
 			checkAreas.insertCheckArea(majorCheckAreaNumber, newCheckArea);
 
-			MessageTemplate.capply("$0-&r-の$1にチェックエリアを挿入しました。", parkourName, majorCheckAreaNumber + 1).display(player);
+			MessageTemplate.capply("$0-&r-の$1にチェックエリアを挿入しました。", parkourName, majorCheckAreaNumber + 1).sendTo(player);
 			break;
 		}case "remove":{
 			//メジャーチェックエリア番号が指定されていなければ戻る
@@ -168,7 +168,7 @@ public class CheckAreaCommand implements Command {
 			//指定された番号にバインドされたチェックエリアを削除する
 			checkAreas.unbindCheckArea(majorCheckAreaNumber, minorCheckAreaNumber);
 
-			MessageTemplate.capply("$0-&r-のチェックエリア($1,$2)を削除しました。", parkourName, majorCheckAreaNumber + 1, minorCheckAreaNumber + 1).display(player);
+			MessageTemplate.capply("$0-&r-のチェックエリア($1,$2)を削除しました。", parkourName, majorCheckAreaNumber + 1, minorCheckAreaNumber + 1).sendTo(player);
 			break;
 		}case "clear":{
 			//メジャーチェックエリア番号が指定されていなければ戻る
@@ -186,7 +186,7 @@ public class CheckAreaCommand implements Command {
 			//指定された番号にバインドされたチェックエリアを全て削除する
 			checkAreas.unbindAllCheckAreas(majorCheckAreaNumber);
 
-			MessageTemplate.capply("$0-&r-のチェックエリア($1, All)を削除しました。", parkourName, majorCheckAreaNumber + 1).display(player);
+			MessageTemplate.capply("$0-&r-のチェックエリア($1, All)を削除しました。", parkourName, majorCheckAreaNumber + 1).sendTo(player);
 			break;
 		}case "list":{
 			Map<Integer, List<ParkourRegion>> areasMap = checkAreas.getCheckAreas();
