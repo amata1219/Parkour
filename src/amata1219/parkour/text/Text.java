@@ -1,9 +1,11 @@
 package amata1219.parkour.text;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import org.bukkit.entity.Player;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import amata1219.parkour.tuplet.Tuple;
 
 public class Text implements TextStream {
 
@@ -53,6 +55,11 @@ public class Text implements TextStream {
 	public TextStream setAttribute(String name, Object value) {
 		text = text.replaceAll(name, value.toString());
 		return this;
+	}
+
+	@Override
+	public Collection<Tuple<Player, Text>> map(Collection<? extends Player> players) {
+		return players.stream().map(player -> new Tuple<Player, Text>(player, this)).collect(Collectors.toList());
 	}
 
 	@Override

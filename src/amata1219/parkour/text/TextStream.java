@@ -9,6 +9,8 @@ import amata1219.parkour.tuplet.Tuple;
 
 public interface TextStream {
 
+
+
 	/*
 	 * 下記の様な使い方を想定した設計になっています。
 	 *
@@ -35,6 +37,6 @@ public interface TextStream {
 		return map(Collections.singleton(player));
 	}
 
-	Collection<Tuple<Player, Text>> map(Collection<Player> players);
+	Collection<Tuple<Player, Text>> map(Collection<? extends Player> players);
 
 }

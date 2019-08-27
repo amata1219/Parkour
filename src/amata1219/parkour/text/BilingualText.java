@@ -1,6 +1,11 @@
 package amata1219.parkour.text;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import org.bukkit.entity.Player;
+
+import amata1219.parkour.tuplet.Tuple;
 
 public class BilingualText implements TextStream {
 
@@ -30,33 +35,23 @@ public class BilingualText implements TextStream {
 	}
 
 	@Override
-	public void sendTo(Player player) {
-		localize(player).sendTo(player);
-	}
-
-	@Override
-	public void actionbar(Player player) {
-		localize(player).actionbar(player);
-	}
-
-	@Override
-	public void title(String subTitle, int fadeIn, int stay, int fadeOut, Player player) {
-		localize(player).title(subTitle, fadeIn, stay, fadeOut, player);
+	public Collection<Tuple<Player, Text>> map(Collection<? extends Player> players) {
+		return players.stream().map(player -> new Tuple<Player, Text>(player, localize(player))).collect(Collectors.toList());
 	}
 
 	//使用言語に対応したTextを返す
-	public TextStream localize(Player player){
+	public Text localize(Player player){
 		return isJapanise(player) ? japanise : english;
-	}
-
-	//使用言語に対応したStringを返す
-	public String toString(Player player){
-		return localize(player).toString();
 	}
 
 	//使用言語が日本語か判定する
 	private boolean isJapanise(Player player){
 		return player.getLocale().equals("ja_jp");
+	}
+
+	//使用言語に対応したStringを返す
+	public String toString(Player player){
+		return localize(player).toString();
 	}
 
 }
