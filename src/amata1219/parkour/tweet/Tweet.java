@@ -20,7 +20,7 @@ public class Tweet {
 
 		SE.play(player);
 
-		Message.wrap(StringTemplate.capply("&b-# Share on Twitter &7-@ &f-$0", text)).displayAsClickableAndHoverable(player, ClickAction.OPEN_URL, tweet, HoverAction.SHOW_TEXT, StringColor.color("&7-: &b-Click to tweet!"));
+		MessageStyle.wrap(StringTemplate.capply("&b-# Share on Twitter &7-@ &f-$0", text)).displayAsClickableAndHoverable(player, ClickAction.OPEN_URL, tweet, HoverAction.SHOW_TEXT, StringColor.color("&7-: &b-Click to tweet!"));
 	}
 
 }

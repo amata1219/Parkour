@@ -6,7 +6,7 @@ import amata1219.parkour.text.Text;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class ActionBar implements Messenger {
+public class ActionBar implements MessageStyle {
 
 	public static final ActionBar INSTANCE = new ActionBar();
 

@@ -5,22 +5,20 @@ import java.util.Collections;
 
 import org.bukkit.entity.Player;
 
+import amata1219.parkour.message.Messenger;
 import amata1219.parkour.tuplet.Tuple;
 
 public interface TextStream {
 
-
-
 	/*
-	 * 下記の様な使い方を想定した設計になっています。
+	 * 下記の様な使い方を想定した設計にしています。
 	 *
-	 * Text("&b-$player_name-&7-: &f-$chat_message")
+	 * Text.stream("&b-$player_name-&7-: &f-$text")
 	 * .setAttribute("$player_name", player.getName())
-	 * .setAttribute("$chat_message", message)
+	 * .setAttribute("$text", text)
 	 * .color()
-	 * .map(Bukkit.getOnlinePlayers())
-	 * .forEach(ActionBar::sendTo)
-	 *
+	 * .setTargets(Bukkit.getOnlinePlayers())
+	 * .sendActionBarMessage();
 	 */
 
 	default TextStream color(){
@@ -33,8 +31,13 @@ public interface TextStream {
 	//対応した属性名を値に置き換える
 	TextStream setAttribute(String name, Object value);
 
-	default Collection<Tuple<Player, Text>> map(Player player){
-		return map(Collections.singleton(player));
+	//テキストを送信するプレイヤーを設定する
+	default Messenger setTarget(Player target){
+		return setTargets(Collections.singletonList(target));
+	}
+
+	default Messenger setTargets(Collection<? extends Player> players){
+		return new Messenger(map(players));
 	}
 
 	Collection<Tuple<Player, Text>> map(Collection<? extends Player> players);

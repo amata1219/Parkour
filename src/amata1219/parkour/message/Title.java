@@ -2,7 +2,9 @@ package amata1219.parkour.message;
 
 import org.bukkit.entity.Player;
 
-public class Title implements Messenger {
+import amata1219.parkour.text.Text;
+
+public class Title implements MessageStyle {
 
 	public final int fadeIn, stay, fadeOut;
 
@@ -13,8 +15,7 @@ public class Title implements Messenger {
 	}
 
 	@Override
-	public void sendTo(Player player, String title) {
-
+	public void sendTo(Player player, Text text) {
 	}
 
 }
