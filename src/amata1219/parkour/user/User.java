@@ -74,6 +74,8 @@ public class User {
 	//各UIを保持している
 	public InventoryUISet inventoryUserInterfaces;
 
+	public TimeAttackProgress timeAttackProgress;
+
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
 		this.uuid = UUID.fromString(yaml.name);
