@@ -1,11 +1,6 @@
 package amata1219.parkour.text;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
-
 import org.bukkit.entity.Player;
-
-import amata1219.parkour.tuplet.Tuple;
 
 public class Text implements TextStream {
 
@@ -48,18 +43,19 @@ public class Text implements TextStream {
 		}
 
 		text = new String(characters).replace(NULL, "");
+
 		return this;
 	}
 
 	@Override
 	public TextStream setAttribute(String name, Object value) {
-		text = text.replaceAll(name, value.toString());
+		text = text.replace(name, value.toString());
 		return this;
 	}
 
 	@Override
-	public Collection<Tuple<Player, Text>> map(Collection<? extends Player> players) {
-		return players.stream().map(player -> new Tuple<Player, Text>(player, this)).collect(Collectors.toList());
+	public Text map(Player player) {
+		return this;
 	}
 
 	@Override

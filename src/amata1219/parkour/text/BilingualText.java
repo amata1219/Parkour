@@ -1,11 +1,6 @@
 package amata1219.parkour.text;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
-
 import org.bukkit.entity.Player;
-
-import amata1219.parkour.tuplet.Tuple;
 
 public class BilingualText implements TextStream {
 
@@ -35,8 +30,8 @@ public class BilingualText implements TextStream {
 	}
 
 	@Override
-	public Collection<Tuple<Player, Text>> map(Collection<? extends Player> players) {
-		return players.stream().map(player -> new Tuple<Player, Text>(player, localize(player))).collect(Collectors.toList());
+	public Text map(Player player) {
+		return localize(player);
 	}
 
 	//使用言語に対応したTextを返す

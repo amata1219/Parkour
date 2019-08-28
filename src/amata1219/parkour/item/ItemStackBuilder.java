@@ -12,6 +12,10 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import amata1219.parkour.enchantment.GleamEnchantment;
 
 public class ItemStackBuilder {
 
@@ -24,14 +28,6 @@ public class ItemStackBuilder {
 	private Map<Enchantment, Integer> enchantments = new HashMap<>();
 	private Set<ItemFlag> flags = new HashSet<>();
 	private Consumer<ItemStack> raw;
-
-	public static ItemStackBuilder builder(ItemStack basedItemStack){
-		return new ItemStackBuilder(basedItemStack);
-	}
-
-	public static ItemStackBuilder builder(Material material){
-		return new ItemStackBuilder(material);
-	}
 
 	public ItemStackBuilder(ItemStack basedItemStack){
 		this.basedItemStack = basedItemStack;
@@ -74,6 +70,39 @@ public class ItemStackBuilder {
 
 	public void addFlag(ItemFlag flag){
 		flags.add(flag);
+	}
+
+	public void gleam(){
+		enchantments.put(GleamEnchantment.GLEAM_ENCHANTMENT, 0);
+	}
+
+	public void raw(Consumer<ItemStack> raw){
+		this.raw = raw;
+	}
+
+	public ItemStack build(){
+		ItemStack item = basedItemStack != null ? basedItemStack : new ItemStack(material);
+
+		item.setAmount(amount);
+
+		ItemMeta meta = item.getItemMeta();
+
+		if(meta != null){
+			if(meta instanceof Damageable) ((Damageable) meta).setDamage(damage);
+
+			meta.setDisplayName(displayName);
+			meta.setLore(lore);
+
+			enchantments.entrySet().forEach(entry -> meta.addEnchant(entry.getKey(), entry.getValue(), true));
+
+			meta.addItemFlags(flags.toArray(new ItemFlag[flags.size()]));
+
+			item.setItemMeta(meta);
+		}
+
+		if(raw != null) raw.accept(item);
+
+		return item;
 	}
 
 }

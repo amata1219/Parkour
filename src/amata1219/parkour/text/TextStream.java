@@ -2,6 +2,7 @@ package amata1219.parkour.text;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 import org.bukkit.entity.Player;
 
@@ -37,9 +38,14 @@ public interface TextStream {
 	}
 
 	default Messenger setTargets(Collection<? extends Player> players){
-		return new Messenger(map(players));
+		//各プレイヤーとテキストをマップする
+		Collection<Tuple<Player, Text>> tuples = players.stream()
+				.map(player -> new Tuple<Player, Text>(player, map(player)))
+				.collect(Collectors.toList());
+
+		return new Messenger(tuples);
 	}
 
-	Collection<Tuple<Player, Text>> map(Collection<? extends Player> players);
+	Text map(Player player);
 
 }
