@@ -15,8 +15,8 @@ public interface TextStream {
 	 * 下記の様な使い方を想定した設計にしています。
 	 *
 	 * Text.stream("&b-$player_name-&7-: &f-$text")
-	 * .setAttribute("$player_name", player.getName())
-	 * .setAttribute("$text", text)
+	 * .setAttribute("player_name", player.getName())
+	 * .setAttribute("text", text)
 	 * .color()
 	 * .setTargets(Bukkit.getOnlinePlayers())
 	 * .sendActionBarMessage();
@@ -26,7 +26,7 @@ public interface TextStream {
 		return color('&');
 	}
 
-	//指定された代替カラーコードをセクションに置き換える
+	//指定された代替カラーコードを§に置き換える
 	TextStream color(char alternateColorCode);
 
 	//対応した属性名を値に置き換える
@@ -40,12 +40,13 @@ public interface TextStream {
 	default Messenger setTargets(Collection<? extends Player> players){
 		//各プレイヤーとテキストをマップする
 		Collection<Tuple<Player, Text>> tuples = players.stream()
-				.map(player -> new Tuple<Player, Text>(player, map(player)))
+				.map(player -> new Tuple<Player, Text>(player, correspondingTo(player)))
 				.collect(Collectors.toList());
 
 		return new Messenger(tuples);
 	}
 
-	Text map(Player player);
+	@Deprecated
+	Text correspondingTo(Player player);
 
 }

@@ -54,7 +54,8 @@ public class Text implements TextStream {
 	}
 
 	@Override
-	public Text map(Player player) {
+	@Deprecated
+	public Text correspondingTo(Player player) {
 		return this;
 	}
 

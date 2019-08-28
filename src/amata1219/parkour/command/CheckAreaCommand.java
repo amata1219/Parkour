@@ -14,8 +14,7 @@ import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.selection.RegionSelection;
 import amata1219.parkour.selection.RegionSelectionSet;
-import amata1219.parkour.string.StringTemplate;
-import amata1219.parkour.string.message.MessageTemplate;
+import amata1219.parkour.text.Text;
 import amata1219.parkour.tuplet.Tuple;
 
 public class CheckAreaCommand implements Command {
@@ -74,7 +73,13 @@ public class CheckAreaCommand implements Command {
 			//バインドする
 			Tuple<Integer, Integer> position = checkAreas.bindCheckArea(majorCheckAreaNumber, newCheckArea);
 
-			MessageTemplate.capply("$0-&r-にチェックエリア($1,$2)を追加しました。", parkourName, position.first.intValue() + 1, position.second.intValue() + 1).sendTo(player);
+			Text.stream("$parkour-&r-にチェックエリア($major, $minor)を追加しました。")
+			.setAttribute("$parkour", parkourName)
+			.setAttribute("$major", position.first.intValue() + 1)
+			.setAttribute("$minor", position.second.intValue() + 1)
+			.color()
+			.setTarget(player)
+			.sendChatMessage();
 			break;
 		}case "set":{
 			//範囲選択がされていなければ戻る
@@ -112,7 +117,13 @@ public class CheckAreaCommand implements Command {
 
 			checkAreas.setCheckArea(majorCheckAreaNumber, minorCheckAreaNumber, newCheckArea);
 
-			MessageTemplate.capply("$0-&r-のチェックエリア($1,$2)を書き換えました。", parkourName, majorCheckAreaNumber + 1, minorCheckAreaNumber + 1).sendTo(player);
+			Text.stream("$parkour-&r-のチェックエリア($major, $minor)を書き換えました。")
+			.setAttribute("$parkour", parkourName)
+			.setAttribute("$major", majorCheckAreaNumber + 1)
+			.setAttribute("$minor", minorCheckAreaNumber + 1)
+			.color()
+			.setTarget(player)
+			.sendChatMessage();
 			break;
 		}case "insert":{
 			//範囲選択がされていなければ戻る
@@ -138,7 +149,12 @@ public class CheckAreaCommand implements Command {
 
 			checkAreas.insertCheckArea(majorCheckAreaNumber, newCheckArea);
 
-			MessageTemplate.capply("$0-&r-の$1にチェックエリアを挿入しました。", parkourName, majorCheckAreaNumber + 1).sendTo(player);
+			Text.stream("$parkour-&r-の$majorにチェックエリアを挿入しました。")
+			.setAttribute("$parkour", parkourName)
+			.setAttribute("$major", majorCheckAreaNumber + 1)
+			.color()
+			.setTarget(player)
+			.sendChatMessage();
 			break;
 		}case "remove":{
 			//メジャーチェックエリア番号が指定されていなければ戻る
@@ -168,7 +184,13 @@ public class CheckAreaCommand implements Command {
 			//指定された番号にバインドされたチェックエリアを削除する
 			checkAreas.unbindCheckArea(majorCheckAreaNumber, minorCheckAreaNumber);
 
-			MessageTemplate.capply("$0-&r-のチェックエリア($1,$2)を削除しました。", parkourName, majorCheckAreaNumber + 1, minorCheckAreaNumber + 1).sendTo(player);
+			Text.stream("$parkour-&r-のチェックエリア($major, $minor)を削除しました。")
+			.setAttribute("$parkour", parkourName)
+			.setAttribute("$major", majorCheckAreaNumber + 1)
+			.setAttribute("$minor", minorCheckAreaNumber + 1)
+			.color()
+			.setTarget(player)
+			.sendChatMessage();
 			break;
 		}case "clear":{
 			//メジャーチェックエリア番号が指定されていなければ戻る
@@ -186,7 +208,12 @@ public class CheckAreaCommand implements Command {
 			//指定された番号にバインドされたチェックエリアを全て削除する
 			checkAreas.unbindAllCheckAreas(majorCheckAreaNumber);
 
-			MessageTemplate.capply("$0-&r-のチェックエリア($1, All)を削除しました。", parkourName, majorCheckAreaNumber + 1).sendTo(player);
+			Text.stream("$parkour-&r-のチェックエリア($major, All)を削除しました。")
+			.setAttribute("$parkour", parkourName)
+			.setAttribute("$major", majorCheckAreaNumber + 1)
+			.color()
+			.setTarget(player)
+			.sendChatMessage();
 			break;
 		}case "list":{
 			Map<Integer, List<ParkourRegion>> areasMap = checkAreas.getCheckAreas();
@@ -201,15 +228,25 @@ public class CheckAreaCommand implements Command {
 			for(Entry<Integer, List<ParkourRegion>> areasEntry : areasMap.entrySet()){
 				int majorCheckAreaNumber = areasEntry.getKey();
 
-				//番号を表示する
-				sender.message(StringTemplate.capply("&7-: &b-$0", majorCheckAreaNumber + 1));
+				//メジャーチェックエリア番号を表示する
+				Text.stream("&7-: &b-$major")
+				.setAttribute("$major", majorCheckAreaNumber + 1)
+				.color()
+				.setTarget(player)
+				.sendChatMessage();
 
 				List<ParkourRegion> areas = areasEntry.getValue();
 
 				//各チェックエリアの座標情報を表示する
 				for(int minorCheckAreaNumber = 0; minorCheckAreaNumber < areas.size(); minorCheckAreaNumber++){
 					ParkourRegion area = areas.get(minorCheckAreaNumber);
-					sender.message(StringTemplate.capply("  &7-: &f-$0 - &f-$1", minorCheckAreaNumber + 1, area.serialize().replace(",", "§7,§f")));
+
+					Text.stream("  &7-: &f-$minor &7-- &f-$region")
+					.setAttribute("$minor", minorCheckAreaNumber + 1)
+					.setAttribute("$region", area.serialize().replace(",", "§7,§f"))
+					.color()
+					.setTarget(player)
+					.sendChatMessage();
 				}
 			}
 			break;

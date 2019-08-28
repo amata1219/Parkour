@@ -131,7 +131,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 								AtomicInteger rank = new AtomicInteger(1);
 
 								topTenRecords.stream()
-								.map(record -> localizer.applyAll("&b-$0-&7-位 &b-$1 &7-@ &b-$2 | &b-$0-&7-. &b-$1 &7-@ &b-$2", rank.getAndIncrement(), Bukkit.getOfflinePlayer(record.first).getName(), record.second))
+								.correspondingTo(record -> localizer.applyAll("&b-$0-&7-位 &b-$1 &7-@ &b-$2 | &b-$0-&7-. &b-$1 &7-@ &b-$2", rank.getAndIncrement(), Bukkit.getOfflinePlayer(record.first).getName(), record.second))
 								.forEach(lore::add);
 
 								UUID uuid = user.uuid;

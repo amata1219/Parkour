@@ -30,7 +30,8 @@ public class BilingualText implements TextStream {
 	}
 
 	@Override
-	public Text map(Player player) {
+	@Deprecated
+	public Text correspondingTo(Player player) {
 		return localize(player);
 	}
 
