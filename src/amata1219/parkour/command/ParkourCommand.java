@@ -52,7 +52,7 @@ public class ParkourCommand implements Command {
 		if(parkourName.equals("list")){
 			for(Parkour parkour : parkours.getParkours()){
 				String text = StringTemplate.capply("&7-: &r-$0 &7-@ &r-$1", parkour.name, parkour.enable ? "&b-有効" : "&7-無効");
-				sender.message(text);
+				sender.sendMessage(text);
 
 			}
 			return;

@@ -78,7 +78,7 @@ public class CheckAreaCommand implements Command {
 			.setAttribute("$major", position.first.intValue() + 1)
 			.setAttribute("$minor", position.second.intValue() + 1)
 			.color()
-			.setTarget(player)
+			.setReceiver(player)
 			.sendChatMessage();
 			break;
 		}case "set":{
@@ -122,7 +122,7 @@ public class CheckAreaCommand implements Command {
 			.setAttribute("$major", majorCheckAreaNumber + 1)
 			.setAttribute("$minor", minorCheckAreaNumber + 1)
 			.color()
-			.setTarget(player)
+			.setReceiver(player)
 			.sendChatMessage();
 			break;
 		}case "insert":{
@@ -153,7 +153,7 @@ public class CheckAreaCommand implements Command {
 			.setAttribute("$parkour", parkourName)
 			.setAttribute("$major", majorCheckAreaNumber + 1)
 			.color()
-			.setTarget(player)
+			.setReceiver(player)
 			.sendChatMessage();
 			break;
 		}case "remove":{
@@ -189,7 +189,7 @@ public class CheckAreaCommand implements Command {
 			.setAttribute("$major", majorCheckAreaNumber + 1)
 			.setAttribute("$minor", minorCheckAreaNumber + 1)
 			.color()
-			.setTarget(player)
+			.setReceiver(player)
 			.sendChatMessage();
 			break;
 		}case "clear":{
@@ -212,7 +212,7 @@ public class CheckAreaCommand implements Command {
 			.setAttribute("$parkour", parkourName)
 			.setAttribute("$major", majorCheckAreaNumber + 1)
 			.color()
-			.setTarget(player)
+			.setReceiver(player)
 			.sendChatMessage();
 			break;
 		}case "list":{
@@ -232,7 +232,7 @@ public class CheckAreaCommand implements Command {
 				Text.stream("&7-: &b-$major")
 				.setAttribute("$major", majorCheckAreaNumber + 1)
 				.color()
-				.setTarget(player)
+				.setReceiver(player)
 				.sendChatMessage();
 
 				List<ParkourRegion> areas = areasEntry.getValue();
@@ -245,7 +245,7 @@ public class CheckAreaCommand implements Command {
 					.setAttribute("$minor", minorCheckAreaNumber + 1)
 					.setAttribute("$region", area.serialize().replace(",", "§7,§f"))
 					.color()
-					.setTarget(player)
+					.setReceiver(player)
 					.sendChatMessage();
 				}
 			}

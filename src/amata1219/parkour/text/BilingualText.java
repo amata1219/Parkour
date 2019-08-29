@@ -2,6 +2,8 @@ package amata1219.parkour.text;
 
 import org.bukkit.entity.Player;
 
+import amata1219.parkour.command.Sender;
+
 public class BilingualText implements TextStream {
 
 	private final Text japanise, english;
@@ -31,8 +33,8 @@ public class BilingualText implements TextStream {
 
 	@Override
 	@Deprecated
-	public Text correspondingTo(Player player) {
-		return localize(player);
+	public Text correspondingTo(Sender receiver) {
+		return receiver.isPlayerCommandSender() ? localize(receiver.asPlayerCommandSender()) : japanise;
 	}
 
 	//使用言語に対応したTextを返す

@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.text.Text;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 
@@ -22,20 +22,23 @@ public class CoinCommand implements Command {
 		}
 
 		//第1引数をプレイヤー名として取得する
-		String playerName = args.next();
+		String specifiedPlayerName = args.next();
 
 		@SuppressWarnings("deprecation")
-		OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
+		OfflinePlayer specifiedPlayer = Bukkit.getOfflinePlayer(specifiedPlayerName);
 
-		if(player == null || !player.hasPlayedBefore()){
-			sender.warn(StringTemplate.apply("$0はサーバーに参加した事がありません。", playerName));
+		//指定されたプレイヤーがサーバーに一度も参加した事がなければ戻る
+		if(specifiedPlayer == null || !specifiedPlayer.hasPlayedBefore()){
+			Text.stream("&c-$playerはサーバーに参加した事がありません。")
+			.setAttribute("$player", specifiedPlayerName)
+			.color();
 			return;
 		}
 
-		UUID uuid = player.getUniqueId();
+		UUID uuid = specifiedPlayer.getUniqueId();
 
 		if(!users.containsUser(uuid)){
-			sender.warn(StringTemplate.apply("$0はサーバーに参加した事がありません。", playerName));
+			sender.warn(StringTemplate.apply("$0はサーバーに参加した事がありません。", specifiedPlayerName));
 			return;
 		}
 
@@ -54,7 +57,7 @@ public class CoinCommand implements Command {
 
 			user.depositCoins(coins);
 
-			sender.info(StringTemplate.apply("$0に$1コイン与えました。", playerName, coins));
+			sender.info(StringTemplate.apply("$0に$1コイン与えました。", specifiedPlayerName, coins));
 			return;
 		}case "withdraw":{
 			if(!args.hasNextInt()){
@@ -66,10 +69,10 @@ public class CoinCommand implements Command {
 
 			user.withdrawCoins(coins);
 
-			sender.info(StringTemplate.apply("$0から$1コイン奪いました。", playerName, coins));
+			sender.info(StringTemplate.apply("$0から$1コイン奪いました。", specifiedPlayerName, coins));
 			return;
 		}case "see":{
-			sender.info(StringTemplate.apply("$0は$1コイン持っています。", playerName, user.coins()));
+			sender.info(StringTemplate.apply("$0は$1コイン持っています。", specifiedPlayerName, user.coins()));
 			return;
 		}default:
 			displayCommandUsage(sender);
