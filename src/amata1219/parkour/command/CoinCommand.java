@@ -33,7 +33,7 @@ public class CoinCommand implements Command {
 			Text.stream("&c-$playerはサーバーに参加した事がありません。")
 			.setAttribute("$player", playerName)
 			.color()
-			.setReceiver(sender)
+			.setReceiver(sender.asPlayerCommandSender())
 			.sendChatMessage();
 			return;
 		}
@@ -50,9 +50,15 @@ public class CoinCommand implements Command {
 			}
 
 			int coins = args.nextInt();
+
 			user.depositCoins(coins);
 
-			sender.info(StringTemplate.apply("$0に$1コイン与えました。", playerName, coins));
+			Text.stream("$playerに$coinsコインを与えました。")
+			.setAttribute("$player", playerName)
+			.setAttribute("$coins", coins)
+			.color()
+			.setReceiver(sender.asPlayerCommandSender())
+			.sendChatMessage();
 			return;
 		}case "withdraw":{
 			if(!args.hasNextInt()){
@@ -64,10 +70,20 @@ public class CoinCommand implements Command {
 
 			user.withdrawCoins(coins);
 
-			sender.info(StringTemplate.apply("$0から$1コイン奪いました。", playerName, coins));
+			Text.stream("$playerから$coinsコインを奪いました。")
+			.setAttribute("$player", playerName)
+			.setAttribute("$coins", coins)
+			.color()
+			.setReceiver(sender.asPlayerCommandSender())
+			.sendChatMessage();
 			return;
 		}case "see":{
-			sender.info(StringTemplate.apply("$0は$1コイン持っています。", playerName, user.coins()));
+			Text.stream("$playerは$coinsコイン持っています。")
+			.setAttribute("$player", playerName)
+			.setAttribute("$coins", user.coins())
+			.color()
+			.setReceiver(sender.asPlayerCommandSender())
+			.sendChatMessage();
 			return;
 		}default:
 			displayCommandUsage(sender);

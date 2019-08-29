@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
-import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import amata1219.parkour.message.Messenger;
 import amata1219.parkour.tuplet.Tuple;
@@ -33,20 +33,20 @@ public interface TextStream {
 	TextStream setAttribute(String name, Object value);
 
 	//テキストを送信するプレイヤーを設定する
-	default Messenger setReceiver(CommandSender target){
-		return setReceivers(Collections.singletonList(target));
+	default Messenger setReceiver(Player receiver){
+		return setReceivers(Collections.singletonList(receiver));
 	}
 
-	default Messenger setReceivers(Collection<CommandSender> receivers){
+	default Messenger setReceivers(Collection<Player> receivers){
 		//各プレイヤーとテキストをマップする
-		Collection<Tuple<CommandSender, Text>> tuples = receivers.stream()
-				.map(player -> new Tuple<CommandSender, Text>(player, correspondingTo(player)))
+		Collection<Tuple<Player, Text>> tuples = receivers.stream()
+				.map(player -> new Tuple<Player, Text>(player, correspondingTo(player)))
 				.collect(Collectors.toList());
 
 		return new Messenger(tuples);
 	}
 
 	@Deprecated
-	Text correspondingTo(CommandSender receiver);
+	Text correspondingTo(Player receiver);
 
 }

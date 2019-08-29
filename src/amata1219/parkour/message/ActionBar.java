@@ -1,6 +1,5 @@
 package amata1219.parkour.message;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import amata1219.parkour.text.Text;
@@ -12,8 +11,8 @@ public class ActionBar implements MessageStyle {
 	public static final ActionBar INSTANCE = new ActionBar();
 
 	@Override
-	public void sendTo(CommandSender receiver, Text text) {
-		if(receiver instanceof Player) ((Player) receiver).spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(text.toString()));
+	public void sendTo(Player receiver, Text text) {
+		receiver.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(text.toString()));
 	}
 
 }

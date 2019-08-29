@@ -4,7 +4,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.text.BilingualText;
+import amata1219.parkour.text.Text;
 
 public class DirectionCommand implements Command {
 
@@ -19,16 +20,13 @@ public class DirectionCommand implements Command {
 		//プレイヤーの今いる座標を取得する
 		Location location = player.getLocation();
 
-		//アクションバーへのメッセージ表示を有効にする
-		sender.displayMessageToActionbar = true;
-
 		if(args.hasNextFloat()){
 			//第1引数をyawとして取得する
 			float yaw = args.nextFloat();
 
 			//第2引数が存在しない或いはfloat型の値ではない場合は警告しつつ戻る
 			if(!args.hasNextFloat()){
-				sender.warn(": Syntax error > /direction [yaw] [pitch]");
+				displayCommandUsage(player);
 				return;
 			}
 
@@ -37,39 +35,68 @@ public class DirectionCommand implements Command {
 
 			adjustAndSetYaw(location, yaw);
 			adjustAndSetPitch(location, pitch);
+
+			BilingualText.stream("&b-ヨーを$yawに、ピッチを$pitchに設定しました。", "&b-Set your yaw to $yaw and pitch $pitch")
+			.setAttribute("$yaw", yaw)
+			.setAttribute("$pitch", pitch)
+			.color()
+			.setReceiver(player)
+			.sendChatMessage();
 		}else{
 			switch(args.next()){
 			case "yaw":
 				if(!args.hasNextFloat()){
-					sender.warn(": Syntax error > /direction yaw [yaw]");
+					Text.stream("&c-/direction yaw [yaw]")
+					.color()
+					.setReceiver(player)
+					.sendActionBarMessage();
 					return;
 				}
 
 				float yaw = args.nextFloat();
 
 				adjustAndSetYaw(location, yaw);
+
+				BilingualText.stream("&b-ヨーを$yawに設定しました。", "&b-Set your yaw to $yaw")
+				.setAttribute("$yaw", yaw)
+				.color()
+				.setReceiver(player)
+				.sendActionBarMessage();
 				break;
 			case "pitch":
 				if(!args.hasNextFloat()){
-					sender.warn(": Syntax error > /direction pitch [pitch]");
+					Text.stream("&c-/direction pitch [pitch]")
+					.color()
+					.setReceiver(player)
+					.sendActionBarMessage();
 					return;
 				}
 
 				float pitch = args.nextFloat();
 
 				adjustAndSetPitch(location, pitch);
+
+				BilingualText.stream("&b-ピッチを$pitchに設定しました。", "&b-Set your yaw to $pitch")
+				.setAttribute("$pitch", pitch)
+				.color()
+				.setReceiver(player)
+				.sendActionBarMessage();
 				break;
 			default:
-				sender.warn(": Syntax error > /direction [yaw] [pitch] | /set yaw [yaw] | /set pitch [pitch]");
+				displayCommandUsage(player);
 				return;
 			}
 		}
 
 		//yawとpitchを適用する
 		player.teleport(location, TeleportCause.COMMAND);
+	}
 
-		//表示例: Set your direction @ 75.2 / 45.0
-		sender.info(StringTemplate.capply("Set your direction &7-@ &b-$0 &7-/ &b-$1", location.getYaw(), location.getPitch()));
+	private void displayCommandUsage(Player player){
+		Text.stream("&c-/direction [yaw] [pitch] &7-| &c-/direction yaw [yaw] &7-| &c-/direction pitch [pitch]")
+		.color()
+		.setReceiver(player)
+		.sendActionBarMessage();
 	}
 
 	private void adjustAndSetYaw(Location location, float yaw){
