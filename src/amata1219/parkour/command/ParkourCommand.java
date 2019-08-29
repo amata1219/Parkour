@@ -1,8 +1,14 @@
 package amata1219.parkour.command;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.bukkit.entity.Player;
+
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.text.Text;
+import amata1219.parkour.text.TextStream;
 import net.md_5.bungee.api.ChatColor;
 
 public class ParkourCommand implements Command {
@@ -45,15 +51,20 @@ public class ParkourCommand implements Command {
 			return;
 		}
 
+		Player player = sender.asPlayerCommandSender();
+
 		//第1引数をアスレ名として取得する
 		String parkourName = ChatColor.translateAlternateColorCodes('&', args.next());
 
 		//第1引数がlistであればアスレ名を全て表示する
 		if(parkourName.equals("list")){
 			for(Parkour parkour : parkours.getParkours()){
-				String text = StringTemplate.capply("&7-: &r-$0 &7-@ &r-$1", parkour.name, parkour.enable ? "&b-有効" : "&7-無効");
-				sender.sendMessage(text);
-
+				Text.stream("&7-: &r-$parkour-&r &7-@ $enable")
+				.setAttribute("$parkour", parkour.name)
+				.setAttribute("$enable", parkour.enable ? "&b-有効" : "&7-無効")
+				.color()
+				.setReceiver(player)
+				.sendChatMessage();
 			}
 			return;
 		}
@@ -63,7 +74,11 @@ public class ParkourCommand implements Command {
 		case "create":{
 			//対応したファイルが存在していれば戻る
 			if(parkours.containsParkour(parkourName)){
-				sender.warn(StringTemplate.capply("$0-&r-&c-は既に存在しています。", parkourName));
+				Text.stream("$parkour-&r-は既に存在しています。")
+				.setAttribute("$parkour", parkourName)
+				.color()
+				.setReceiver(player)
+				.sendChatMessage();
 				return;
 			}
 
@@ -79,11 +94,15 @@ public class ParkourCommand implements Command {
 			//無効化された状態で登録する
 			parkours.registerParkour(parkourName);
 
-			sender.info(StringTemplate.capply("$0-&r-&b-を作成しました。", parkourName));
+			Text.stream("$parkour-&r-のデータを新規作成しました。")
+			.setAttribute("$parkour", parkourName)
+			.color()
+			.setReceiver(player)
+			.sendChatMessage();
 			break;
 		}case "delete":{
 			//指定されたアスレが存在しなければ戻る
-			if(blockNotExistParkour(sender, parkourName)) return;
+			if(blockNotExistParkour(player, parkourName)) return;
 
 			//アスレが登録されていれば登録を解除する
 			parkours.unregisterParkour(parkourName);
@@ -91,50 +110,78 @@ public class ParkourCommand implements Command {
 			//ファイルを削除する
 			parkours.makeYaml(parkourName).file.delete();
 
-			sender.info(StringTemplate.capply("$0-&r-&b-を削除しました。", parkourName));
+			Text.stream("$parkour-&r-を削除しました。")
+			.setAttribute("$parkour", parkourName)
+			.color()
+			.setReceiver(player)
+			.sendChatMessage();
 			break;
 		}case "enable":{
 			//指定されたアスレが存在しなければ戻る
-			if(blockNotExistParkour(sender, parkourName)) return;
+			if(blockNotExistParkour(player, parkourName)) return;
 
 			Parkour parkour = getParkour(parkourName);
 
 			if(parkour.enable){
-				sender.warn(StringTemplate.capply("$0-&r-&c-は既に有効化されています。", parkourName));
+				Text.stream("$parkour-&r-は既に有効化されています。")
+				.setAttribute("$parkour", parkourName)
+				.color()
+				.setReceiver(player)
+				.sendChatMessage();
 				return;
 			}
 
 			//アスレを有効化する
 			parkour.update(it -> it.enable = true);
 
-			sender.info(StringTemplate.capply("$0-&r-&b-を有効化しました。", parkourName));
+			Text.stream("$parkour-&r-を有効化しました。")
+			.setAttribute("$parkour", parkourName)
+			.color()
+			.setReceiver(player)
+			.sendChatMessage();
 			break;
 		}case "disable":{
 			//指定されたアスレが存在しなければ戻る
-			if(blockNotExistParkour(sender, parkourName)) return;
+			if(blockNotExistParkour(player, parkourName)) return;
 
 			Parkour parkour = getParkour(parkourName);
 
 			if(!parkour.enable){
-				sender.warn(StringTemplate.capply("$0-&r-&c-は既に無効化されています。", parkourName));
+				Text.stream("$parkour-&r-は既に無効化されています。")
+				.setAttribute("$parkour", parkourName)
+				.color()
+				.setReceiver(player)
+				.sendChatMessage();
 				return;
 			}
 
 			//アスレを無効化する
 			parkour.update(it -> it.enable = false);
 
-			sender.info(StringTemplate.capply("$0-&r-&b-を無効化しました。", parkourName));
+			Text.stream("$parkour-&r-を無効化しました。")
+			.setAttribute("$parkour", parkourName)
+			.color()
+			.setReceiver(player)
+			.sendChatMessage();
 			break;
 		}case "info":{
 			//指定されたアスレが存在しなければ戻る
-			if(blockNotExistParkour(sender, parkourName)) return;
+			if(blockNotExistParkour(player, parkourName)) return;
 
 			Parkour parkour = getParkour(parkourName);
 
-			sender.info(StringTemplate.capply("&7-: &b-State &7-@ &f-$0", parkour.enable ? "有効" : "無効"));
-			sender.info(StringTemplate.capply("&7-: &b-Region &7-@ &f-$0", parkour.region.serialize()));
-			sender.info(StringTemplate.capply("&7-: &b-Start Line &7-@ &f-$0", parkour.startLine.serialize()));
-			sender.info(StringTemplate.capply("&7-: &b-FinishLine &7-@ &f-$0", parkour.finishLine.serialize()));
+			List<TextStream> texts = Arrays.asList(
+				Text.stream("&7-: &b-State &7-@ &f-$enable")
+				.setAttribute("$enable", parkour.enable ? "&b-有効" : "&7-無効"),
+				Text.stream("&7-: &b-Region &7-@ &f-$region")
+				.setAttribute("$enable", parkour.region.serialize()),
+				Text.stream("&7-: &b-Start Line &7-@ &f-$start_line")
+				.setAttribute("$enable", parkour.startLine.serialize()),
+				Text.stream("&7-: &b-Finish Line &7-@ &f-$finish_line")
+				.setAttribute("$enable", parkour.finishLine.serialize())
+			);
+
+			texts.forEach(text -> text.color().setReceiver(player).sendChatMessage());
 			break;
 		}default:
 			displayCommandUsage(sender);
@@ -155,10 +202,14 @@ public class ParkourCommand implements Command {
 		return parkours.getParkour(parkourName);
 	}
 
-	private boolean blockNotExistParkour(Sender sender, String parkourName){
+	private boolean blockNotExistParkour(Player player, String parkourName){
 		if(parkours.containsParkour(parkourName)) return false;
 
-		sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
+		Text.stream("$parkour-&r-は存在しません。")
+		.setAttribute("$parkour", parkourName)
+		.color()
+		.setReceiver(player)
+		.sendChatMessage();
 		return true;
 	}
 
