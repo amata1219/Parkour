@@ -1,15 +1,16 @@
 package amata1219.parkour.message;
 
-import amata1219.parkour.command.Sender;
+import org.bukkit.command.CommandSender;
+
 import amata1219.parkour.text.Text;
 import amata1219.parkour.tuplet.Tuple;
 
 public interface MessageStyle {
 
-	default void sendTo(Tuple<Sender, Text> map){
+	default void sendTo(Tuple<CommandSender, Text> map){
 		sendTo(map.first, map.second);
 	}
 
-	void sendTo(Sender receiver, Text text);
+	void sendTo(CommandSender receiver, Text text);
 
 }

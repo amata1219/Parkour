@@ -22,23 +22,19 @@ public class CoinCommand implements Command {
 		}
 
 		//第1引数をプレイヤー名として取得する
-		String specifiedPlayerName = args.next();
+		String playerName = args.next();
 
 		@SuppressWarnings("deprecation")
-		OfflinePlayer specifiedPlayer = Bukkit.getOfflinePlayer(specifiedPlayerName);
+		OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
+		UUID uuid = player.getUniqueId();
 
 		//指定されたプレイヤーがサーバーに一度も参加した事がなければ戻る
-		if(specifiedPlayer == null || !specifiedPlayer.hasPlayedBefore()){
-			Text.stream("&c-$playerはサーバーに参加した事がありません。")
-			.setAttribute("$player", specifiedPlayerName)
-			.color();
-			return;
-		}
-
-		UUID uuid = specifiedPlayer.getUniqueId();
-
 		if(!users.containsUser(uuid)){
-			sender.warn(StringTemplate.apply("$0はサーバーに参加した事がありません。", specifiedPlayerName));
+			Text.stream("&c-$playerはサーバーに参加した事がありません。")
+			.setAttribute("$player", playerName)
+			.color()
+			.setReceiver(sender)
+			.sendChatMessage();
 			return;
 		}
 
@@ -54,10 +50,9 @@ public class CoinCommand implements Command {
 			}
 
 			int coins = args.nextInt();
-
 			user.depositCoins(coins);
 
-			sender.info(StringTemplate.apply("$0に$1コイン与えました。", specifiedPlayerName, coins));
+			sender.info(StringTemplate.apply("$0に$1コイン与えました。", playerName, coins));
 			return;
 		}case "withdraw":{
 			if(!args.hasNextInt()){
@@ -69,10 +64,10 @@ public class CoinCommand implements Command {
 
 			user.withdrawCoins(coins);
 
-			sender.info(StringTemplate.apply("$0から$1コイン奪いました。", specifiedPlayerName, coins));
+			sender.info(StringTemplate.apply("$0から$1コイン奪いました。", playerName, coins));
 			return;
 		}case "see":{
-			sender.info(StringTemplate.apply("$0は$1コイン持っています。", specifiedPlayerName, user.coins()));
+			sender.info(StringTemplate.apply("$0は$1コイン持っています。", playerName, user.coins()));
 			return;
 		}default:
 			displayCommandUsage(sender);

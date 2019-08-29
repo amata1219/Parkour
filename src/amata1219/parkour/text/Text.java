@@ -1,6 +1,6 @@
 package amata1219.parkour.text;
 
-import amata1219.parkour.command.Sender;
+import org.bukkit.command.CommandSender;
 
 public class Text implements TextStream {
 
@@ -55,7 +55,7 @@ public class Text implements TextStream {
 
 	@Override
 	@Deprecated
-	public Text correspondingTo(Sender sender) {
+	public Text correspondingTo(CommandSender sender) {
 		return this;
 	}
 
