@@ -1,12 +1,10 @@
 package amata1219.parkour.function.hotbar;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.parkour.text.BilingualText;
-import amata1219.parkour.text.TextStream.MessageType;
 import amata1219.parkour.user.InventoryUISet;
 import amata1219.parkour.user.User;
 
@@ -14,14 +12,13 @@ public class CheckpointSelectionUIOpener implements FunctionalItem {
 
 	@Override
 	public void onClick(User user, ClickType click) {
-		Player player = user.asBukkitPlayer();
-
 		//どこのアスレにもいなければ戻る
 		if(!user.isOnCurrentParkour()){
-			BilingualText.stream("&c-パルクール中でないためチェックポイントの選択画面を開けません！",
-					"&c-You can't open checkpoint selection UI because you aren't playing parkour now!")
+			BilingualText.stream("&c-パルクール中でないためチェックポイントの選択画面を開けません",
+					"&c-You can't open checkpoint selection UI because you aren't playing parkour now")
 					.color()
-					.sendTo(player, MessageType.ACTION_BAR);
+					.setReceiver(user.asBukkitPlayer())
+					.sendActionBarMessage();
 			return;
 		}
 

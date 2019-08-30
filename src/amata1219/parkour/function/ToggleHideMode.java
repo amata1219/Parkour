@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import amata1219.parkour.Main;
 import amata1219.parkour.schedule.Sync;
 import amata1219.parkour.text.BilingualText;
-import amata1219.parkour.text.TextStream.MessageType;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 
@@ -60,9 +59,10 @@ public class ToggleHideMode {
 
 		//クールダウン中なら戻る
 		if(cooldownUsers.contains(user)){
-			BilingualText.stream("&c-入力が速すぎます！", "&c-Input too fast!")
+			BilingualText.stream("&c-入力が速すぎます", "&c-Input too fast")
 			.color()
-			.sendTo(player, MessageType.ACTION_BAR);
+			.setReceiver(player)
+			.sendActionBarMessage();
 			return;
 		}
 

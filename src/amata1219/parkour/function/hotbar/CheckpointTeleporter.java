@@ -8,7 +8,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import amata1219.parkour.enchantment.GleamEnchantment;
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.string.message.Localizer;
+import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 
@@ -16,12 +16,15 @@ public class CheckpointTeleporter implements FunctionalItem {
 
 	@Override
 	public void onClick(User user, ClickType click) {
-		Localizer localizer = user.localizer;
 		Player player = user.asBukkitPlayer();
 
 		//アスレをプレイ中でなければ戻る
 		if(!user.isOnCurrentParkour()){
-			localizer.mcolor("&c-アスレチックのプレイ中でないためテレポート出来ません | &c-You can't teleport because you aren't playing parkour now").displayOnActionBar(player);
+			BilingualText.stream("&c-アスレチックのプレイ中でないためテレポート出来ません",
+					"&c-You can't teleport because you aren't playing parkour now")
+					.color()
+					.setReceiver(player)
+					.sendActionBarMessage();
 			return;
 		}
 
@@ -30,7 +33,11 @@ public class CheckpointTeleporter implements FunctionalItem {
 		CheckpointSet checkpoints = user.checkpoints;
 
 		if(!checkpoints.containsParkour(parkour)){
-			localizer.mcolor("&c-チェックポイントが設定されていないためテレポート出来ません | &c-You can't teleport because you have not set any checkpoints").displayOnActionBar(player);
+			BilingualText.stream("&c-チェックポイントが設定されていないためテレポート出来ません",
+					"&c-You can't teleport because you have not set any checkpoints")
+					.color()
+					.setReceiver(player)
+					.sendActionBarMessage();
 			return;
 		}
 
@@ -39,7 +46,11 @@ public class CheckpointTeleporter implements FunctionalItem {
 
 		//チェックポイントが無ければ戻る
 		if(checkpoint == null){
-			localizer.mcolor("&c-チェックポイントが設定されていないためテレポート出来ません | &c-You can't teleport because you have not set any checkpoints").displayOnActionBar(player);
+			BilingualText.stream("&c-チェックポイントが設定されていないためテレポート出来ません",
+					"&c-You can't teleport because you have not set any checkpoints")
+					.color()
+					.setReceiver(player)
+					.sendActionBarMessage();
 			return;
 		}
 
@@ -49,17 +60,26 @@ public class CheckpointTeleporter implements FunctionalItem {
 		//チェックポイントにテレポートさせる
 		player.teleport(checkpoint.asBukkit());
 
-		localizer.mapplyAll("&b-チェックポイント$1にテレポートしました | $0Teleported to Checkpoint$1", displayCheckAreaNumber).displayOnActionBar(player);
+		BilingualText.stream("$colorチェックポイント$numberにテレポートしました", "$colorTeleported to checkpoint$number")
+		.setAttribute("$color", parkour.prefixColor)
+		.setAttribute("$number", displayCheckAreaNumber)
+		.setReceiver(player)
+		.sendActionBarMessage();
 	}
 
 	@Override
 	public ItemStack build(User user) {
-		Localizer localizer = user.localizer;
-
 		ItemStack item = new ItemStack(Material.LIGHT_BLUE_DYE);
+
 		ItemMeta meta = item.getItemMeta();
 
-		meta.setDisplayName(localizer.color("&b-最新チェックポイントにテレポートする &7-@ 左クリック &8-/ &b-最終チェックポイントにテレポートする &7-@ 右クリック | &b-TP to Latest CP &7- @ Left Click &8-/ &b-TP to Last CP &7-@ Right Click"));
+		//最新@左 最終@右
+		String displayName = BilingualText.stream("&b-チェックポイントにテレポートする-&r-(最新 @ 左 / 最終 @ 右)",
+				"&b-Teleport to Checkpoint-&r-(Latest @ L / Last @ R)")
+				.color()
+				.toString();
+
+		meta.setDisplayName(displayName);
 
 		item.setItemMeta(meta);
 
