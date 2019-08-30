@@ -12,7 +12,7 @@ import amata1219.parkour.chunk.ChunksToObjectsMap;
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.string.message.MessageTemplate;
+import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
@@ -73,7 +73,11 @@ public class SetCheckpointListener implements Listener {
 		//チェックポイントとして設定する
 		user.checkpoints.setCheckpoint(parkour, majorCheckAreaNumber, new ImmutableLocation(location));
 
-		MessageTemplate.capply("&b-Set checkpoint @ $0", majorCheckAreaNumber + 1).displayOnActionBar(player);
+		BilingualText.stream("チェックポイント$numberを設定しました。", "Set checkpoint$number")
+		.setAttribute("$number", majorCheckAreaNumber + 1)
+		.color()
+		.setReceiver(player)
+		.sendActionBarMessage();
 	}
 
 }

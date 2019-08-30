@@ -12,7 +12,6 @@ import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.parkour.RankUpParkour;
 import amata1219.parkour.parkour.Records;
-import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.user.StatusBoard;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
