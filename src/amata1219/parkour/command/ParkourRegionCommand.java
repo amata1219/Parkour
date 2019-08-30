@@ -9,7 +9,7 @@ import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.region.Region;
 import amata1219.parkour.selection.RegionSelection;
 import amata1219.parkour.selection.RegionSelectionSet;
-import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.text.Text;
 
 public class ParkourRegionCommand implements Command {
 
@@ -71,8 +71,13 @@ public class ParkourRegionCommand implements Command {
 			return;
 		}
 
-		//表示例: Update1のスタートラインを設定しました(world,0,0,0,20,1,2)。
-		sender.info(StringTemplate.capply("$0-&r-&b-の$1を$2にセットしました。", parkourName, regionName, selection));
+		Text.stream("$parkour-&r-の$regionを$2に設定しました。")
+		.setAttribute("$parkour", parkourName)
+		.setAttribute("$region", regionName)
+		.setAttribute("$selection", selection)
+		.color()
+		.setReceiver(sender.asPlayerCommandSender())
+		.sendChatMessage();
 	}
 
 	private void displayCommandUsage(Sender sender){
