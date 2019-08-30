@@ -14,29 +14,31 @@ import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.string.StringTemplate;
-import amata1219.parkour.string.message.Localizer;
+import amata1219.parkour.text.BilingualText;
+import amata1219.parkour.text.TextStream;
 import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 
 public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 
 	private final User user;
-	private final String checkpointType;
+	private final BilingualText checkpointType;
 	private final BiFunction<CheckpointSet, Parkour, ImmutableLocation> getCheckpoint;
 	private final BiFunction<CheckpointSet, Parkour, Integer> getCheckpointNumber;
 
-	public AbstractCheckpointSelectionUI(User user, String checkpointType, BiFunction<CheckpointSet, Parkour, ImmutableLocation> getCheckpoint, BiFunction<CheckpointSet, Parkour, Integer> getCheckpointNumber){
+	public AbstractCheckpointSelectionUI(User user, String japanise, String english, BiFunction<CheckpointSet, Parkour, ImmutableLocation> getCheckpoint, BiFunction<CheckpointSet, Parkour, Integer> getCheckpointNumber){
 		this.user = user;
-		this.checkpointType = checkpointType;
+		this.checkpointType = BilingualText.stream(japanise, english);
 		this.getCheckpoint = getCheckpoint;
 		this.getCheckpointNumber = getCheckpointNumber;
 	}
 
+	public String getCheckpointType(){
+		return checkpointType.correspondingTo(user.asBukkitPlayer()).toString();
+	}
+
 	@Override
 	public Function<Player, InventoryLayout> layout() {
-		Localizer localizer = user.localizer;
-
 		//今いるアスレを取得する
 		Parkour currentParkour = user.currentParkour;
 
@@ -50,7 +52,10 @@ public abstract class AbstractCheckpointSelectionUI implements InventoryUI {
 		.collect(Collectors.toList());
 
 		return build(parkours.size(), l -> {
-			l.title = localizer.applyAll("$0の$1チェックポイント一覧 | List of $1 Checkpoints in $0", category.name, localizer.localize(checkpointType));
+			l.title = BilingualText.stream("$category内の$typeチェックポイント一覧", "$type Checkpoints in $category")
+					.setAttribute("$category", category.name)
+					.setAttribute("$type", getCheckpointType())
+					.toString();
 
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 

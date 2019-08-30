@@ -14,6 +14,10 @@ public class ClickableMessage implements MessageStyle {
 	public final ClickAction action;
 	public final TextStream value;
 
+	public ClickableMessage(ClickAction action, String value){
+		this(action, Text.stream(value));
+	}
+
 	public ClickableMessage(ClickAction action, TextStream value){
 		this.action = action;
 		this.value = value;

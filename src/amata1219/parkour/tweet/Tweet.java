@@ -7,7 +7,6 @@ import amata1219.parkour.message.ClickableMessage;
 import amata1219.parkour.message.ClickableMessage.ClickAction;
 import amata1219.parkour.sound.SoundMetadata;
 import amata1219.parkour.text.BilingualText;
-import amata1219.parkour.text.Text;
 
 public class Tweet {
 
@@ -15,15 +14,13 @@ public class Tweet {
 
 	public static void display(Player player, String text){
 		//テキストにアジ鯖のハッシュタグを追加してビルドする
-		String tweet = new IntentTweetBuilder(text)
-				.addHashtag("アジ鯖")
-				.build();
+		String tweet = new IntentTweetBuilder(text).addHashtag("アジ鯖").build();
 
 		BilingualText.stream("&b-&l-#クリックして呟こう &r-@ $text", "&b-&l-#Click to Tweet &r-@ $text")
 		.setAttribute("$text", text)
 		.color()
 		.setReceiver(player)
-		.send(new ClickableMessage(ClickAction.OPEN_URL, Text.stream(tweet)));
+		.send(new ClickableMessage(ClickAction.OPEN_URL, tweet));
 
 		SE.play(player);
 	}
