@@ -103,7 +103,11 @@ public class ParkourSettingCommand implements Command {
 
 			parkour.apply(it -> it.description = description);
 
-			sender.info(StringTemplate.capply("$0-&r-の説明文を書き換えました。", parkourName));
+			Text.stream("$parkour-&r-の説明文を書き換えました。")
+			.setAttribute("$parkour", parkourName)
+			.color()
+			.setReceiver(player)
+			.sendChatMessage();
 			break;
 		}case "spawn": {
 			//プレイヤーの座標を取得する
@@ -112,7 +116,11 @@ public class ParkourSettingCommand implements Command {
 			//イミュータブルな座標にしブロックの中央に調整した上でセットする
 			parkour.apply(it -> it.spawn = new ImmutableLocation(location));
 
-			sender.info(StringTemplate.capply("$0-&r-のスポーン地点を現在地点に書き換えました。", parkourName));
+			Text.stream("$parkour-&r-のスポーン地点を現在地点に書き換えました。")
+			.setAttribute("$parkour", parkourName)
+			.color()
+			.setReceiver(player)
+			.sendChatMessage();
 			break;
 		}case "color":{
 			String text = args.next();
@@ -134,7 +142,11 @@ public class ParkourSettingCommand implements Command {
 				it.checkAreas.recolorAll();
 			});
 
-			sender.info(StringTemplate.capply("$0-&r-のパーティクル色を書き換えました。", parkourName));
+			Text.stream("$parkour-&r-のパーティクル色を書き換えました。")
+			.setAttribute("$parkour", parkourName)
+			.color()
+			.setReceiver(player)
+			.sendChatMessage();
 			break;
 		}case "rewards":{
 			String text = args.next();
@@ -150,7 +162,11 @@ public class ParkourSettingCommand implements Command {
 			//報酬を更新する
 			parkour.apply(it -> it.rewards = new Rewards(coins));
 
-			sender.info(StringTemplate.capply("$0-&r-の報酬を書き換えました。", parkourName));
+			Text.stream("$parkour-&r-の報酬を現在地点に書き換えました。")
+			.setAttribute("$parkour", parkourName)
+			.color()
+			.setReceiver(player)
+			.sendChatMessage();
 			return;
 		}case "timeattack":{
 			if(!args.hasNextBoolean()){
@@ -165,14 +181,24 @@ public class ParkourSettingCommand implements Command {
 
 			//既に同じ設定であれば戻る
 			if(enableTimeAttack == parkour.timeAttackEnable){
-				sender.warn(StringTemplate.apply("既にタイムアタックは$0化されています。", stateName));
+				Text.stream("$parkour-&r-のタイムアタックは既に$state化されています。")
+				.setAttribute("$parkour", parkourName)
+				.setAttribute("$state", stateName)
+				.color()
+				.setReceiver(player)
+				.sendChatMessage();
 				return;
 			}
 
 			//更新する
 			parkour.apply(it -> it.timeAttackEnable = enableTimeAttack);
 
-			sender.info(StringTemplate.capply("$0-&r-でのタイムアタックを$1にしました。", parkourName, stateName));
+			Text.stream("$parkour-&r-のタイムアタックを$stateにしました。")
+			.setAttribute("$parkour", parkourName)
+			.setAttribute("$state", stateName)
+			.color()
+			.setReceiver(player)
+			.sendChatMessage();
 			break;
 		}default:
 			displayCommandUsage(sender);
