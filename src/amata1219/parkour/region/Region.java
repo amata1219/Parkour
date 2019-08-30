@@ -5,6 +5,7 @@ import org.bukkit.World;
 
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.location.Location;
+import amata1219.parkour.text.Text;
 
 public class Region {
 
@@ -113,7 +114,15 @@ public class Region {
 	}
 
 	public String serialize(){
-		return StringTemplate.apply("$0,$1,$2,$3,$4,$5,$6", world.getName(), lesserBoundaryCorner.x, lesserBoundaryCorner.y, lesserBoundaryCorner.z, greaterBoundaryCorner.x, greaterBoundaryCorner.y, greaterBoundaryCorner.z);
+		return Text.stream("$world,$lesser_x,$lesser_y,$lesser_z,$greater_x,$greater_y,$greater_z")
+				.setAttribute("$world", world.getName())
+				.setAttribute("$lesser_x", lesserBoundaryCorner.x)
+				.setAttribute("$lesser_y", lesserBoundaryCorner.y)
+				.setAttribute("$lesser_z", lesserBoundaryCorner.z)
+				.setAttribute("$greater_x", greaterBoundaryCorner.x)
+				.setAttribute("$greater_y", greaterBoundaryCorner.y)
+				.setAttribute("$greater_z", greaterBoundaryCorner.z)
+				.toString();
 	}
 
 }

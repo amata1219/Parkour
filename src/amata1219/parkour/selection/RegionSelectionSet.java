@@ -16,8 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.parkour.enchantment.GleamEnchantment;
-import amata1219.parkour.string.StringColor;
-import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.text.Text;
 import amata1219.parkour.tuplet.Tuple;
 
 public class RegionSelectionSet implements Listener {
@@ -33,7 +32,7 @@ public class RegionSelectionSet implements Listener {
 	}
 	//範囲選択用のツール
 	private final ItemStack selectionTool;
-	private final String selectionToolLore = StringColor.color("&7-&o-@SelectionTool");
+	private final String selectionToolLore = "§7@SelectionTool";
 
 	private final HashMap<UUID, Tuple<String, RegionSelection>> selections = new HashMap<>();
 
@@ -99,10 +98,13 @@ public class RegionSelectionSet implements Listener {
 		RegionSelection selection = getSelection(uuid);
 
 		//カンマを灰色にする
-		String selectionInformation = selection.toString().replace(",", StringColor.color("&7-,-&b"));
+		String selectionInformation = selection.toString().replace(",", "§7,§b");
 
 		//表示名を作成する
-		String displayName = StringTemplate.capply("&b-$0 &7-@ &b-$1", parkourName, selectionInformation);
+		String displayName = Text.stream("&b-$parkour &r-&7-@ $b-information")
+				.setAttribute("$parkour", parkourName)
+				.setAttribute("$information", selectionInformation)
+				.toString();
 
 		ItemMeta meta = tool.getItemMeta();
 

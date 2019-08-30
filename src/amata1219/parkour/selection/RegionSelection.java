@@ -6,7 +6,7 @@ import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.location.Location;
 import amata1219.parkour.location.MutableLocation;
 import amata1219.parkour.region.Region;
-import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.text.Text;
 
 public class RegionSelection {
 
@@ -80,9 +80,15 @@ public class RegionSelection {
 		ImmutableLocation lesserBoundaryCorner = getLesserBoundaryCorner();
 		ImmutableLocation greaterBoundaryCorner = getGreaterBoundaryCorner();
 
-		return StringTemplate.apply("$0,$1,$2,$3,$4,$5,$6", world != null ? world.getName() : "null",
-				lesserBoundaryCorner.getIntX(), lesserBoundaryCorner.getIntY(), lesserBoundaryCorner.getIntZ(),
-				greaterBoundaryCorner.getIntX(), greaterBoundaryCorner.getIntY(), greaterBoundaryCorner.getIntZ());
+		return Text.stream("$world,$lesser_x,$lesser_y,$lesser_z,$greater_x,$greater_y,$greater_z")
+				.setAttribute("$world", world != null ? world.getName() : "null")
+				.setAttribute("$lesser_x", lesserBoundaryCorner.getIntX())
+				.setAttribute("$lesser_y", lesserBoundaryCorner.getIntY())
+				.setAttribute("$lesser_z", lesserBoundaryCorner.getIntZ())
+				.setAttribute("$greater_x", greaterBoundaryCorner.getIntX())
+				.setAttribute("$greater_y", greaterBoundaryCorner.getIntY())
+				.setAttribute("$greater_z", greaterBoundaryCorner.getIntZ())
+				.toString();
 	}
 
 }
