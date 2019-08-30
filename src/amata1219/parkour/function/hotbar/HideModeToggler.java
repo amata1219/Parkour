@@ -5,7 +5,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.parkour.function.ToggleHideMode;
-import amata1219.parkour.string.message.Localizer;
+import amata1219.parkour.text.BilingualText;
+import amata1219.parkour.text.TextStream;
 import amata1219.parkour.user.User;
 
 public class HideModeToggler implements FunctionalItem {
@@ -18,18 +19,16 @@ public class HideModeToggler implements FunctionalItem {
 
 	@Override
 	public ItemStack build(User user) {
-		Localizer localizer = user.localizer;
-
-		//非表示モードかどうか
 		boolean hideMode = user.hideMode;
-
 		ItemStack item = new ItemStack(hideMode ? Material.GLASS : Material.BEACON);
 		ItemMeta meta = item.getItemMeta();
 
-		meta.setDisplayName(localizer.color(hideMode ? "&b-プレイヤーを表示する &7-@ クリック | &b-Hide Players &7-@ Click" : "&b-プレイヤーを非表示にする &7-@ クリック | &b-Unhide Players &7-@ Click"));
+		TextStream stream = null;
+		if(hideMode) stream = BilingualText.stream("&b-プレイヤーを表示する", "&b-Hide Players");
+		else stream = BilingualText.stream("&b-プレイヤーを非表示にする", "&b-Unhide Players");
 
+		meta.setDisplayName(stream.color().toString());
 		item.setItemMeta(meta);
-
 		return item;
 	}
 
