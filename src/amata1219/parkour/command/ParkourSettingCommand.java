@@ -1,10 +1,13 @@
 package amata1219.parkour.command;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
@@ -12,7 +15,8 @@ import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.parkour.Rewards;
 import amata1219.parkour.selection.RegionSelectionSet;
-import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.text.Text;
+import amata1219.parkour.text.TextStream;
 import amata1219.parkour.util.Color;
 import amata1219.parkour.util.StringSplit;
 
@@ -36,7 +40,8 @@ public class ParkourSettingCommand implements Command {
 		}
 
 		//送信者のUUIDを取得する
-		UUID uuid = sender.asPlayerCommandSender().getUniqueId();
+		Player player = sender.asPlayerCommandSender();
+		UUID uuid = player.getUniqueId();
 
 		//対象となるアスレの名前を取得する
 		String parkourName = selections.hasSelection(uuid) ? selections.getSelectedParkourName(uuid) : ChatColor.translateAlternateColorCodes('&', args.next());
@@ -51,12 +56,22 @@ public class ParkourSettingCommand implements Command {
 
 		switch(args.next()){
 		case "info":{
-			sender.sendMessage(StringTemplate.capply("&7-: &b-Category &7-@ &f-$0", parkour.category.name));
-			sender.sendMessage(StringTemplate.capply("&7-: &b-Name &7-@ &f-$0", parkourName));
-			sender.sendMessage(StringTemplate.capply("&7-: &b-Description &7-@ &f-$0", parkour.description));
-			sender.sendMessage(StringTemplate.capply("&7-: &b-Spawn &7-@ &f-$0", parkour.spawn.serialize().replace(",", "§7,§f")));
-			sender.sendMessage(StringTemplate.capply("&7-: &b-Color &7-@ &f-$0", parkour.borderColor.serialize()));
-			sender.sendMessage(StringTemplate.capply("&7-: &b-Time Attack &7-@ &f-$0", parkour.timeAttackEnable));
+			List<TextStream> texts = Arrays.asList(
+				Text.stream("&7-: &b-Name &7-@ &f-$parkour")
+				.setAttribute("$parkour", parkourName),
+				Text.stream("&7-: &b-Category &7-@ &f-$category")
+				.setAttribute("$category", parkour.category.name),
+				Text.stream("&7-: &b-Description &7-@ &f-$description")
+				.setAttribute("$description", parkour.description),
+				Text.stream("&7-: &b-Spawn &7-@ &f-$spawn")
+				.setAttribute("$spawn", parkour.spawn.serialize()),
+				Text.stream("&7-: &b-Color &7-@ &f-$color")
+				.setAttribute("$color", parkour.borderColor.serialize()),
+				Text.stream("&7-: &b-Time Attack &7-@ &f-$enable")
+				.setAttribute("$enable", parkour.timeAttackEnable ? "&b-有効" : "&7-無効")
+			);
+
+			texts.forEach(text -> text.color().setReceiver(player).sendChatMessage());
 			break;
 		}case "category":{
 			try{
