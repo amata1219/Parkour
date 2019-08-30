@@ -1,7 +1,5 @@
 package amata1219.parkour.tuplet;
 
-import amata1219.parkour.string.StringTemplate;
-
 public class Quadruple<F, S, T, FO> {
 
 	public final F first;
@@ -14,11 +12,6 @@ public class Quadruple<F, S, T, FO> {
 		this.second = second;
 		this.third = third;
 		this.fourth = fourth;
-	}
-
-	@Override
-	public String toString(){
-		return StringTemplate.apply("Tuple(first = $0, second = $1, third = $2, fourth = $3)", first, second, third, fourth);
 	}
 
 }
