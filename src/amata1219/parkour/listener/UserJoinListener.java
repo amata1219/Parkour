@@ -5,9 +5,11 @@ import static amata1219.parkour.util.Reflection.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,9 +18,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import amata1219.parkour.function.ImprintRank;
 import amata1219.parkour.function.PlayerLocaleChange;
 import amata1219.parkour.function.ToggleHideMode;
+import amata1219.parkour.parkour.CheckAreas;
 import amata1219.parkour.parkour.Parkour;
+import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.schedule.Sync;
-import amata1219.parkour.string.message.Localizer;
+import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.user.StatusBoard;
 import amata1219.parkour.user.InventoryUISet;
 import amata1219.parkour.user.User;
@@ -51,9 +55,6 @@ public class UserJoinListener implements PlayerJoinListener {
 	public void onJoin(PlayerJoinEvent event){
 		Player player = event.getPlayer();
 		User user = users.getUser(player);
-
-		//ローカライザーを生成する
-		Localizer localizer = user.localizer = new Localizer(player);
 
 		//プレイヤー非表示機能にプレイヤーがログインした事を通知する
 		hideModeFunction.onPlayerJoin(player);
@@ -91,7 +92,25 @@ public class UserJoinListener implements PlayerJoinListener {
 			//再参加させる
 			parkour.entry(user);
 
-			localizer.mapplyAll("$0-&r-への挑戦を再開しました！ | $0 &r-Challenge Restarted!", parkour.name).displayOnActionBar(player);
+			Location location = player.getLocation();
+			CheckAreas checkAreas = parkour.checkAreas;
+
+			//どこかのチェックエリア内にいるか調べる
+			label: for(List<ParkourRegion> areas : checkAreas.getCheckAreas().values()){
+				for(ParkourRegion area : areas){
+					if(!area.isIn(location)) continue;
+
+					user.currentCheckArea = area;
+					break label;
+				}
+			}
+
+			BilingualText.stream("$color$parkourへの挑戦を再開しました！", "$color$parkour challenge restarted!")
+			.setAttribute("$color", parkour.prefixColor)
+			.setAttribute("$parkour", parkour.colorlessName())
+			.color()
+			.setReceiver(player)
+			.sendActionBarMessage();
 
 			//タイムアタックの途中であれば経過時間からスタート時のタイムを再計算しセットする
 			if(user.isPlayingParkour() && user.timeElapsed > 0){

@@ -47,7 +47,7 @@ public class PassStartLineListener extends PassRegionListener {
 					.setAttribute("$parkour", parkour.colorlessName())
 					.color()
 					.setReceiver(player)
-					.sendChatMessage();
+					.sendActionBarMessage();
 		}
 	}
 
