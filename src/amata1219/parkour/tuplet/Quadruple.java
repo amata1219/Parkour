@@ -1,16 +1,11 @@
 package amata1219.parkour.tuplet;
 
-public class Quadruple<F, S, T, FO> {
+public class Quadruple<F, S, T, FO> extends Triple<F, S, T> {
 
-	public final F first;
-	public final S second;
-	public final T third;
 	public final FO fourth;
 
 	public Quadruple(F first, S second, T third, FO fourth){
-		this.first = first;
-		this.second = second;
-		this.third = third;
+		super(first, second, third);
 		this.fourth = fourth;
 	}
 

@@ -1,14 +1,11 @@
 package amata1219.parkour.tuplet;
 
-public class Triple<F, S, T> {
+public class Triple<F, S, T> extends Tuple<F, S> {
 
-	public final F first;
-	public final S second;
 	public final T third;
 
 	public  Triple(F first, S second, T third){
-		this.first = first;
-		this.second = second;
+		super(first, second);
 		this.third = third;
 	}
 
