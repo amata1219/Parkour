@@ -1,17 +1,12 @@
 package amata1219.parkour.listener;
 
-import java.util.List;
-
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
-import amata1219.parkour.chunk.ChunksToObjectsMap;
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.user.User;
@@ -20,7 +15,6 @@ import amata1219.parkour.user.UserSet;
 public class SetCheckpointListener implements Listener {
 
 	private final UserSet users = UserSet.getInstnace();
-	private final ChunksToObjectsMap<ParkourRegion> chunksToCheckAreasMap = ParkourSet.getInstance().chunksToCheckAreasMap;
 
 	@EventHandler
 	public void onSwap(PlayerSwapHandItemsEvent event){
@@ -33,30 +27,9 @@ public class SetCheckpointListener implements Listener {
 		User user = users.getUser(player);
 
 		//足を地に着いていなければ戻る
-		if(!player.isOnGround()) return;
+		if(!player.isOnGround() || !user.isPlayingParkour() || !user.isOnCheckArea()) return;
 
-		//今いるアスレが無ければ戻る
-		if(!user.isOnCurrentParkour()) return;
-
-		Location location = player.getLocation();
-
-		//プレイヤーの現在地に存在するチェックエリアのリストを取得する
-		List<ParkourRegion> checkAreas = chunksToCheckAreasMap.get(location);
-
-		//チェックエリアが存在しなければ戻る
-		if(checkAreas.isEmpty()) return;
-
-		ParkourRegion checkArea = null;
-
-		for(ParkourRegion area : checkAreas){
-			if(!area.isIn(location)) continue;
-
-			checkArea = area;
-			break;
-		}
-
-		//チェックエリア内にいなければ戻る
-		if(checkArea == null) return;
+		ParkourRegion checkArea = user.currentCheckArea;
 
 		//チェックエリアがあるアスレを取得する
 		Parkour parkour = checkArea.parkour;
@@ -71,7 +44,7 @@ public class SetCheckpointListener implements Listener {
 		if(majorCheckAreaNumber < 0) return;
 
 		//チェックポイントとして設定する
-		user.checkpoints.setCheckpoint(parkour, majorCheckAreaNumber, new ImmutableLocation(location));
+		user.checkpoints.setCheckpoint(parkour, majorCheckAreaNumber, new ImmutableLocation(player.getLocation()));
 
 		BilingualText.stream("チェックポイント$numberを設定しました。", "Set checkpoint$number")
 		.setAttribute("$number", majorCheckAreaNumber + 1)
