@@ -31,7 +31,7 @@ public class PassCheckAreaListener extends PassRegionListener {
 
 		//チェックエリアに入った場合
 		if(!existsFrom && existsTo){
-			user.onCheckArea = true;
+			user.currentCheckArea = to;
 
 			IN_SE.play(player);
 
@@ -39,7 +39,7 @@ public class PassCheckAreaListener extends PassRegionListener {
 			ControlFunctionalItem.updateSlot(player, ItemType.CHERCKPOINT_TELEPORTER);
 		//チェックエリアから出た場合
 		}else if(existsFrom && !existsTo){
-			user.onCheckArea = false;
+			user.currentCheckArea = null;
 
 			OUT_SE.play(player);
 

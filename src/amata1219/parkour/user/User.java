@@ -37,10 +37,6 @@ public class User {
 	//今プレイ中のアスレ
 	public Parkour parkourPlayingNow;
 
-	//これやるぐらいならSetCheckpointListenerの為にも今いるエリアを保持した方が良い
-	//今チェックエリア内にいるかどうか
-	public boolean onCheckArea;
-
 	//今いるチェックエリア
 	public ParkourRegion currentCheckArea;
 
@@ -96,10 +92,6 @@ public class User {
 
 		//最後に遊んでいたアスレを取得する
 		parkourPlayingNow = parkours.getParkour("Last played parkour");
-
-		//このフラグどうにかしたい
-		//今チェックエリア内にいるかどうか取得する
-		onCheckArea = yaml.getBoolean("On check area");
 
 		//タイムアタックを始めてからの経過時間を取得する
 		timeElapsed = yaml.getLong("Time elapsed");
@@ -213,9 +205,6 @@ public class User {
 
 		//最後にプレイしていたアスレの名前を記録する
 		yaml.set("Last played parkour", parkourPlayingNow != null ? parkourPlayingNow.name : null);
-
-		//チェックエリア内にいたかどうか記録する
-		yaml.set("On check area", onCheckArea);
 
 		//タイムアタック中であれば経過時間を記録し、そうでなければ削除する
 		yaml.set("Time elapsed", timeElapsed > 0 ? timeElapsed : null);
