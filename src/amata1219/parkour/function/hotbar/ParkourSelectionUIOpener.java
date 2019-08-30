@@ -1,13 +1,11 @@
 package amata1219.parkour.function.hotbar;
 
-import java.util.Arrays;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.parkour.parkour.ParkourCategory;
-import amata1219.parkour.string.message.Localizer;
+import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.user.User;
 
 public class ParkourSelectionUIOpener implements FunctionalItem {
@@ -23,14 +21,13 @@ public class ParkourSelectionUIOpener implements FunctionalItem {
 	@Override
 	public ItemStack build(User user) {
 		ItemStack item = new ItemStack(Material.HEART_OF_THE_SEA);
-
 		ItemMeta meta = item.getItemMeta();
 
-		Localizer localizer = user.localizer;
+		String displayName = BilingualText.stream("&b-アスレチック一覧を開く", "&b-Open Parkour List")
+				.color()
+				.toString();
 
-		meta.setDisplayName(localizer.color("&b-アスレチック一覧を開く &7-@ クリック | &b-Open Parkours Menu &7-@ Click"));
-		meta.setLore(Arrays.asList(localizer.color("&7-クリックするとアスレチック一覧を開きます。 | &7-Click to open parkour selection UI.")));
-
+		meta.setDisplayName(displayName);
 		item.setItemMeta(meta);
 
 		return item;

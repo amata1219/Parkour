@@ -74,8 +74,8 @@ public class CheckpointTeleporter implements FunctionalItem {
 		ItemMeta meta = item.getItemMeta();
 
 		//最新@左 最終@右
-		String displayName = BilingualText.stream("&b-チェックポイントにテレポートする &r-(最新 @ 左 / 最終 @ 右)",
-				"&b-Teleport to Checkpoint &r-(Latest @ L / Last @ R)")
+		String displayName = BilingualText.stream("&b-チェックポイントにテレポートする &7-(最新 @ 左 / 最終 @ 右)",
+				"&b-Teleport to Checkpoint &7-(Latest @ L / Last @ R)")
 				.color()
 				.toString();
 

@@ -35,8 +35,8 @@ public class CheckpointSelectionUIOpener implements FunctionalItem {
 
 		ItemMeta meta = item.getItemMeta();
 
-		String displayName = BilingualText.stream("&b-最新チェックポイント一覧 &7-@ 左クリック / &b-最終チェックポイント一覧 &7-@右クリック",
-				"&b-Latest Checkpoints &7-@ Left Click / &b-Last Checkpoints &7-@ Right Click")
+		String displayName = BilingualText.stream("&b-チェックポイント一覧を開く &7-(最新 @ 左 / 最終 @ 右)",
+				"&b-Open Checkpoint List &7-(Latest @ L / Last @ R)")
 				.localize(user.asBukkitPlayer())
 				.color()
 				.toString();
