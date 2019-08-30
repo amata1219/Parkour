@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.selection.RegionSelectionSet;
-import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.text.Text;
 import net.md_5.bungee.api.ChatColor;
 
 public class ParkourEditCommand implements Command {
@@ -56,7 +56,11 @@ public class ParkourEditCommand implements Command {
 
 		//アスレが存在しなければ戻る
 		if(!ParkourSet.getInstance().containsParkour(parkourName)){
-			sender.warn(StringTemplate.capply("$0-&r-&c-は存在しません。", parkourName));
+			Text.stream("$parkour-&r-は存在しません。")
+			.setAttribute("$parkour", parkourName)
+			.color()
+			.setReceiver(player)
+			.sendChatMessage();
 			return;
 		}
 
@@ -68,7 +72,11 @@ public class ParkourEditCommand implements Command {
 
 		player.getInventory().addItem(selectionTool);
 
-		sender.info(StringTemplate.capply("$0-&r-&b-用の範囲選択ツールを与えました。", parkourName));
+		Text.stream("$parkour-&r-用の範囲選択ツールを与えました。")
+		.setAttribute("$parkour", parkourName)
+		.color()
+		.setReceiver(player)
+		.sendChatMessage();
 		return;
 	}
 
