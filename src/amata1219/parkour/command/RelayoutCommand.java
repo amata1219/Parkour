@@ -1,6 +1,9 @@
 package amata1219.parkour.command;
 
+import org.bukkit.entity.Player;
+
 import amata1219.parkour.function.hotbar.ControlFunctionalItem;
+import amata1219.parkour.text.BilingualText;
 
 public class RelayoutCommand implements Command {
 
@@ -9,11 +12,15 @@ public class RelayoutCommand implements Command {
 		//プレイヤーでなければ戻る
 		if(blockNonPlayer(sender)) return;
 
-		//ホットバーのアイテムを再配置する
-		ControlFunctionalItem.initializeSlots(sender.asPlayerCommandSender());
+		Player player = sender.asPlayerCommandSender();
 
-		sender.displayMessageToActionbar = true;
-		sender.info("Relayout items on the hotbar");
+		//ホットバーのアイテムを再配置する
+		ControlFunctionalItem.initializeSlots(player);
+
+		BilingualText.stream("&b-ホットバー上のアイテムを再生成しました", "&b-Regenerated items on hotbar")
+		.color()
+		.setReceiver(player)
+		.sendActionBarMessage();
 	}
 
 }

@@ -41,7 +41,7 @@ public class DirectionCommand implements Command {
 			.setAttribute("$pitch", pitch)
 			.color()
 			.setReceiver(player)
-			.sendChatMessage();
+			.sendActionBarMessage();
 		}else{
 			switch(args.next()){
 			case "yaw":
