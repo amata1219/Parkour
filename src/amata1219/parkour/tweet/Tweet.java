@@ -3,12 +3,11 @@ package amata1219.parkour.tweet;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import amata1219.parkour.message.ClickableMessage;
+import amata1219.parkour.message.ClickableMessage.ClickAction;
 import amata1219.parkour.sound.SoundMetadata;
-import amata1219.parkour.string.StringColor;
-import amata1219.parkour.string.StringTemplate;
-import amata1219.parkour.string.message.Message;
-import amata1219.parkour.string.message.Message.ClickAction;
-import amata1219.parkour.string.message.Message.HoverAction;
+import amata1219.parkour.text.BilingualText;
+import amata1219.parkour.text.Text;
 
 public class Tweet {
 
@@ -16,11 +15,17 @@ public class Tweet {
 
 	public static void display(Player player, String text){
 		//テキストにアジ鯖のハッシュタグを追加してビルドする
-		String tweet = IntentTweetBuilder.write(text).addHashtag("アジ鯖").build();
+		String tweet = new IntentTweetBuilder(text)
+				.addHashtag("アジ鯖")
+				.build();
+
+		BilingualText.stream("&b-&l-#クリックして呟こう &r-@ $text", "&b-&l-#Click to Tweet &r-@ $text")
+		.setAttribute("$text", text)
+		.color()
+		.setReceiver(player)
+		.send(new ClickableMessage(ClickAction.OPEN_URL, Text.stream(tweet)));
 
 		SE.play(player);
-
-		MessageStyle.wrap(StringTemplate.capply("&b-# Share on Twitter &7-@ &f-$0", text)).displayAsClickableAndHoverable(player, ClickAction.OPEN_URL, tweet, HoverAction.SHOW_TEXT, StringColor.color("&7-: &b-Click to tweet!"));
 	}
 
 }
