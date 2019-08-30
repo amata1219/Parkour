@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.parkour.item.SkullCreator;
-import amata1219.parkour.string.message.Localizer;
+import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.user.User;
 
 public class MyProfileUIOpener implements FunctionalItem {
@@ -17,15 +17,15 @@ public class MyProfileUIOpener implements FunctionalItem {
 
 	@Override
 	public ItemStack build(User user) {
-		Localizer localizer = user.localizer;
-
 		//ユーザーのUUIDに基づきスカルヘッドを作成する
 		ItemStack item = SkullCreator.fromPlayerUniqueId(user.uuid);
 		ItemMeta meta = item.getItemMeta();
 
-		//使用言語に対応したテキストを表示名に設定する
-		meta.setDisplayName(localizer.color("&b-プロフィールを開く &7-@ クリック | &b-Open My Profile &7-@ Click"));
+		String displayName = BilingualText.stream("&b-プロフィールを開く", "&b-Open My Profile")
+				.color()
+				.toString();
 
+		meta.setDisplayName(displayName);
 		item.setItemMeta(meta);
 
 		return item;
