@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 
 import amata1219.parkour.Main;
 import amata1219.parkour.chunk.ChunksToObjectsMap;
-import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.yaml.Yaml;
 import net.md_5.bungee.api.ChatColor;
 
@@ -63,7 +62,7 @@ public class ParkourSet {
 	}
 
 	public boolean existsFil(String parkourName){
-		return new File(folder, StringTemplate.apply("$0.yml", parkourName)).exists();
+		return new File(folder, parkourName + ".yml").exists();
 	}
 
 	public void registerParkour(Parkour parkour){
@@ -83,7 +82,7 @@ public class ParkourSet {
 	}
 
 	public void registerParkour(String parkourName){
-		File file = new File(folder, StringTemplate.apply("$0.yml", parkourName));
+		File file = new File(folder, parkourName + ".yml");
 
 		//コンフィグが存在しなければ戻る
 		if(!file.exists()) return;
@@ -161,7 +160,7 @@ public class ParkourSet {
 	}
 
 	public Yaml makeYaml(String parkourName){
-		return new Yaml(plugin, new File(folder, StringTemplate.apply("$0.yml", parkourName)), "parkour.yml");
+		return new Yaml(plugin, new File(folder, parkourName + ".yml"), "parkour.yml");
 	}
 
 	private void registerParkourRegion(ParkourRegion region, ChunksToObjectsMap<ParkourRegion> chunksToRegionsMap){

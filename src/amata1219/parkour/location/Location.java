@@ -3,7 +3,7 @@ package amata1219.parkour.location;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 
-import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.text.Text;
 
 public interface Location {
 
@@ -100,7 +100,14 @@ public interface Location {
 	}
 
 	default String serialize(){
-		return StringTemplate.apply("$0,$1,$2,$3,$4,$5", getWorld().getName(), getX(), getY(), getZ(), getYaw(), getPitch());
+		return Text.stream("$world,$x,$y,$z,$yaw,$pitch")
+				.setAttribute("$world", getWorld().getName())
+				.setAttribute("$x", getX())
+				.setAttribute("$y", getY())
+				.setAttribute("$z", getZ())
+				.setAttribute("$yaw", getYaw())
+				.setAttribute("$pitch", getPitch())
+				.toString();
 	}
 
 }

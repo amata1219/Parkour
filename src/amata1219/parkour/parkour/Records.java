@@ -13,7 +13,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import amata1219.parkour.schedule.Async;
-import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.util.TimeFormat;
 import amata1219.parkour.yaml.Yaml;
@@ -99,10 +98,10 @@ public class Records {
 
 	public void save(Yaml yaml){
 		//レコードを記録する
-		for(Entry<UUID, Long> recordEntry : records.entrySet()) yaml.set(StringTemplate.apply("Records.$0", recordEntry.getKey()) , recordEntry.getValue());
+		for(Entry<UUID, Long> recordEntry : records.entrySet()) yaml.set("Records." + recordEntry.getKey() , recordEntry.getValue());
 
 		//撤回された記録を削除する
-		for(UUID holder : holdersOfWithdrawnRecords) yaml.set(StringTemplate.apply("Records.$0", holder), null);
+		for(UUID holder : holdersOfWithdrawnRecords) yaml.set("Records." + holder, null);
 	}
 
 }

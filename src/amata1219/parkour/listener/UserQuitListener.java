@@ -25,7 +25,8 @@ public class UserQuitListener implements PlayerQuitListener {
 		user.statusBoard.clearScoreboard();
 		user.statusBoard = null;
 
-		user.localizer = null;
+		user.currentParkour = user.parkourPlayingNow = null;
+		user.currentCheckArea = null;
 	}
 
 }

@@ -47,9 +47,9 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 @SuppressWarnings("deprecation")
-public class DummyWorld implements World {
+public class DummyWorld4Debug implements World {
 
-	public static final World INSTANCE = new DummyWorld();
+	public static final World INSTANCE = new DummyWorld4Debug();
 
 	@Override
 	public Set<String> getListeningPluginChannels() {

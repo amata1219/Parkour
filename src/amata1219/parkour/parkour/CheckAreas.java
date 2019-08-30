@@ -14,7 +14,6 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.region.Region;
-import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.yaml.Yaml;
 
@@ -284,7 +283,7 @@ public class CheckAreas {
 			.collect(Collectors.toList());
 
 			//指定階層にセットする
-			yaml.set(StringTemplate.apply("Check areas.$0", majorCheckAreaNumber), deserializedCheckAreas);
+			yaml.set("Check areas." + majorCheckAreaNumber, deserializedCheckAreas);
 		}
 	}
 

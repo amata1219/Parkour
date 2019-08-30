@@ -5,7 +5,6 @@ import org.bukkit.World;
 
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.location.Location;
-import amata1219.parkour.string.StringTemplate;
 
 public class Region {
 

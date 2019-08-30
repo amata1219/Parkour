@@ -84,7 +84,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 		item.setItemMeta(meta);
 
 		//プレイヤーがチェックエリア内にいれば輝かせる
-		if(user.onCheckArea) GleamEnchantment.gleam(item);
+		if(user.isOnCheckArea()) GleamEnchantment.gleam(item);
 
 		return item;
 	}
