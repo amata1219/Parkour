@@ -37,7 +37,7 @@ public interface TextStream {
 		return setReceivers(Collections.singletonList(receiver));
 	}
 
-	default Messenger setReceivers(Collection<Player> receivers){
+	default Messenger setReceivers(Collection<? extends Player> receivers){
 		//各プレイヤーとテキストをマップする
 		Collection<Tuple<Player, Text>> tuples = receivers.stream()
 				.map(player -> new Tuple<Player, Text>(player, correspondingTo(player)))

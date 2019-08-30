@@ -1,8 +1,11 @@
 package amata1219.parkour.listener;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import amata1219.parkour.function.ImprintRank;
@@ -10,16 +13,17 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.ParkourSet;
+import amata1219.parkour.parkour.RankColor;
 import amata1219.parkour.parkour.RankUpParkour;
 import amata1219.parkour.parkour.Records;
+import amata1219.parkour.sound.SoundMetadata;
+import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.user.StatusBoard;
 import amata1219.parkour.user.User;
-import amata1219.parkour.user.UserSet;
-import amata1219.parkour.util.TimeFormat;
 
 public class PassFinishLineListener extends PassRegionListener {
 
-	private final UserSet users = UserSet.getInstnace();
+	private static final SoundMetadata RANK_UP_SE = new SoundMetadata(Sound.ENTITY_ENDER_DRAGON_DEATH, 0.5f, 1.2f);
 
 	public PassFinishLineListener() {
 		super(ParkourSet.getInstance().chunksToFinishLinesMap);
@@ -45,8 +49,10 @@ public class PassFinishLineListener extends PassRegionListener {
 		//クリア済みのアスレとして記録する(コレクションにはSetを用いているため要素の重複は起こらない)
 		user.clearedParkourNames.add(parkourName);
 
-		String playerName = player.getName();
+		String prefixColor = parkour.prefixColor;
 		String colorlessParkourName = parkour.colorlessName();
+		String playerName = player.getName();
+		Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
 
 		//タイムアタックが有効の場合
 		if(enableTimeAttack){
@@ -66,29 +72,41 @@ public class PassFinishLineListener extends PassRegionListener {
 
 			//自己最高記録を超えた場合
 			if(personalBest > 0 && recorded){
-				for(User onlineUser : users.getOnlineUsers()){
-					onlineUser.localizer.mapplyAll("&b-&l-$0さんが$1を$2でクリアすると同時に自己最高記録の$3を超えました！ | &b-&l-$0 cleared $1 in $2 and beat $0's personal best of $4!",
-							playerName, colorlessParkourName, TimeFormat.format(time), TimeFormat.format(personalBest))
-							.sendMessage(onlineUser.asBukkitPlayer());
-				}
+				BilingualText.stream("$color-&l-$playerさんが$parkourを$timeでクリアすると同時に自己最高記録の$bestを越えました！",
+						"$color-&l-$player cleared $parkour in $time and beat $player's personal best of $best!")
+						.setAttribute("$color", prefixColor)
+						.setAttribute("$player", playerName)
+						.setAttribute("$parkour", colorlessParkourName)
+						.setAttribute("$time", time)
+						.setAttribute("$best", personalBest)
+						.color()
+						.setReceivers(onlinePlayers)
+						.sendChatMessage();
 			}else{
-				for(User onlineUser : users.getOnlineUsers()){
-					onlineUser.localizer.mapplyAll("&b-&l-$0さんが$1を$2でクリアしました！ | &b-&l-$0 cleared $1 in $2!",
-							playerName, colorlessParkourName, TimeFormat.format(time))
-							.sendMessage(onlineUser.asBukkitPlayer());
-				}
+				BilingualText.stream("$color-&l-$playerさんが$parkourを$timeでクリアしました！",
+						"$color-&l-$player cleared $parkour in $time!")
+						.setAttribute("$color", prefixColor)
+						.setAttribute("$player", playerName)
+						.setAttribute("$parkour", colorlessParkourName)
+						.setAttribute("$time", time)
+						.color()
+						.setReceivers(onlinePlayers)
+						.sendChatMessage();
 			}
 
 			records.sortAsync();
 		}else{
-			for(User onlineUser : users.getOnlineUsers()){
-				onlineUser.localizer.mapplyAll("&b-&l-$0さんが$1をクリアしました！ | &b-&l-$0 cleared $1!", playerName, colorlessParkourName).sendMessage(onlineUser.asBukkitPlayer());
-			}
+			BilingualText.stream("$color-&l-$playerさんが$parkourをクリアしました！",
+					"$color-&l-$player cleared $parkour!")
+					.setAttribute("$color", prefixColor)
+					.setAttribute("$player", playerName)
+					.setAttribute("$parkour", colorlessParkourName)
+					.color()
+					.setReceivers(onlinePlayers)
+					.sendChatMessage();
 		}
 
 		user.parkourPlayingNow = null;
-
-		Localizer localizer = user.localizer;
 
 		//ランクアップアスレの場合
 		if(parkour instanceof RankUpParkour){
@@ -126,12 +144,20 @@ public class PassFinishLineListener extends PassRegionListener {
 				throw new NullPointerException("Ranked parkour type can not be null");
 			}
 
-			for(User onlineUser : users.getOnlineUsers()){
-				onlineUser.localizer.mapplyAll("&b-&l-$0さんの$1が$2に上がりました！ | &b-&l-$0's $1 rank went up to $2!", playerName, category.name, rank)
-				.sendMessage(player);
-			}
+			RANK_UP_SE.play(onlinePlayers);
+
+			BilingualText.stream("$color-&l-$playerさんの$typeランクが$rankに上がりました！",
+					"$color-&l-$player's $type rank went up to $rank!")
+					.setAttribute("$color", RankColor.values()[rank])
+					.setAttribute("$player", playerName)
+					.setAttribute("$type", category.name)
+					.setAttribute("$rank", rank)
+					.color()
+					.setReceivers(onlinePlayers)
+					.sendChatMessage();
 
 			//ツイートリンクを表示する
+			//Tweet.～
 		}
 
 		//クリア回数に基づき報酬を取得する
@@ -140,7 +166,12 @@ public class PassFinishLineListener extends PassRegionListener {
 		//報酬のコインを与える
 		user.depositCoins(coins);
 
-		localizer.mapplyAll("&b-報酬として$0コインを与えました！ | &b-Gave you $0 coins as reward!", coins).sendMessage(player);
+		BilingualText.stream("$color報酬として$coinsコインを与えました！", "$colorGave you $coins coins as reward!")
+		.setAttribute("$color", prefixColor)
+		.setAttribute("$coins", coins)
+		.color()
+		.setReceivers(onlinePlayers)
+		.sendChatMessage();
 	}
 
 }

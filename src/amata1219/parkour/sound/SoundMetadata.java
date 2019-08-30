@@ -28,7 +28,7 @@ public class SoundMetadata {
 		player.playSound(player.getLocation(), sound, category != null ? category : SoundCategory.MASTER, volume, pitch);
 	}
 
-	public void play(Collection<Player> players){
+	public void play(Collection<? extends Player> players){
 		players.forEach(this::play);
 	}
 
