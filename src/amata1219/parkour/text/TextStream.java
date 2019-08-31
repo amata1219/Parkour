@@ -46,7 +46,6 @@ public interface TextStream {
 		return new Messenger(tuples);
 	}
 
-	@Deprecated
 	Text correspondingTo(Player receiver);
 
 }

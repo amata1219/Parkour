@@ -54,7 +54,6 @@ public class Text implements TextStream {
 	}
 
 	@Override
-	@Deprecated
 	public Text correspondingTo(Player sender) {
 		return this;
 	}
