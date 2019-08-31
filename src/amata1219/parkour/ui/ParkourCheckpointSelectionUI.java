@@ -8,29 +8,27 @@ import java.util.stream.Collectors;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import amata1219.parkour.inventory.ui.dsl.InventoryUI;
 import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
-import amata1219.parkour.string.StringTemplate;
-import amata1219.parkour.string.message.Localizer;
+import amata1219.parkour.text.BilingualText;
+import amata1219.parkour.text.Text;
 import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 
-public class ParkourCheckpointSelectionUI implements InventoryUI {
+public class ParkourCheckpointSelectionUI extends AbstractUI {
 
-	private final User user;
-	private final Localizer localizer;
 	private final Parkour parkour;
 
 	public ParkourCheckpointSelectionUI(User user, Parkour parkour){
-		this.user = user;
-		this.localizer = user.localizer;
+		super(user);
 		this.parkour = parkour;
 	}
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
+		Player player = user.asBukkitPlayer();
+
 		CheckpointSet checkpoints = user.checkpoints;
 
 		//アスレに対応したチェックポイントマップを取得する
@@ -43,10 +41,10 @@ public class ParkourCheckpointSelectionUI implements InventoryUI {
 
 		//アスレ名を取得する
 		String parkourName = parkour.name;
-		String colorlessParkourName = parkour.colorlessName();
+		String prefixColor = parkour.prefixColor;
 
 		return build(checkpointSize, l -> {
-			l.title = localizer.applyAll("$0のチェックポイント一覧 | $0 Checkpoints", colorlessParkourName);
+			l.title = parkour.colorlessName();
 
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
@@ -57,14 +55,11 @@ public class ParkourCheckpointSelectionUI implements InventoryUI {
 				//対応した座標を取得する
 				ImmutableLocation point = points.get(majorCheckAreaNumber);
 
-				int majorCheckAreaNumberDisplayed = majorCheckAreaNumber + 1;
+				int majorCheckAreaNumberForDisplay = majorCheckAreaNumber + 1;
 
 				l.put(s -> {
 
 					s.onClick(e -> {
-						//クリックしたプレイヤーを取得する
-						Player player = e.player;
-
 						//今いるアスレを取得する
 						Parkour current = user.currentParkour;
 
@@ -74,19 +69,33 @@ public class ParkourCheckpointSelectionUI implements InventoryUI {
 						//プレイヤーを最終チェックポイントにテレポートさせる
 						player.teleport(point.asBukkit());
 
-						localizer.applyAll("&b-$0のチェックポイント$1にテレポートしました | &b-Teleported to $0 checkpoint$1", colorlessParkourName, majorCheckAreaNumberDisplayed);
+						BilingualText.stream("$parkour-&r-$colorのチェックポイント$numberにテレポートしました",
+								"You teleported to $parkour checkpoint$number")
+								.setAttribute("$parkour", parkourName)
+								.setAttribute("$color", prefixColor)
+								.setAttribute("$number", majorCheckAreaNumberForDisplay)
+								.color()
+								.setReceiver(player)
+								.sendActionBarMessage();
 					});
 
 					s.icon(Material.PRISMARINE_CRYSTALS, i -> {
-						//表示例: 1 @ Update1
-						i.displayName = StringTemplate.capply("&7-$0 @ $1", majorCheckAreaNumberDisplayed, parkourName);
+						i.displayName = Text.stream("$color$number &7-@ $parkour")
+								.setAttribute("$color", prefixColor)
+								.setAttribute("$number", majorCheckAreaNumberForDisplay)
+								.setAttribute("$parkour", parkourName)
+								.color()
+								.toString();
 
-						//説明文を設定する
-						i.lore(
-							localizer.color("&7-: &b-クリック &7-@ このチェックポイントにテレポートします。 | &7-: &b-Click &7-@ Teleport to this checkpoint.")
-						);
+						String lore = BilingualText.stream("&7-: &b-クリック &7-@ このチェックポイントにテレポートします。",
+								"&7-: &b-Click &7-@ Teleport to this checkpoint.")
+								.textBy(player)
+								.color()
+								.toString();
 
-						i.amount = majorCheckAreaNumberDisplayed;
+						i.lore(lore);
+
+						i.amount = majorCheckAreaNumberForDisplay;
 					});
 
 				}, slotIndex);
