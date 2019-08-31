@@ -20,11 +20,22 @@ import amata1219.parkour.user.User;
 
 public class AbstractCheckpointListUI extends AbstractParkourUI {
 
+	//Playerを引数に受け取って使用言語に対応した結果を生成する関数を表す
+	interface LocaleFunction<T> extends Function<Player, T> {
+
+		default T apply(Player player){
+			return resultByLanguageUsed(player.getLocale().equals("ja_jp"));
+		}
+
+		T resultByLanguageUsed(boolean japanise);
+
+	}
+
 	//ParkourとCheckpointSetを引数に受け取って結果を生成する関数を表す
 	interface CheckpointFunction<T> extends  BiFunction<Parkour, CheckpointSet, T> { }
 
 	//使用言語に対応したチェックポイントタイプを返す
-	private final Function<String, String> checkpointTypeForLocale;
+	private final LocaleFunction<String> checkpointTypeForLocale;
 
 	//入力された情報から条件に合うチェックポイントを返す
 	private final CheckpointFunction<ImmutableLocation> checkpoint;
@@ -32,7 +43,7 @@ public class AbstractCheckpointListUI extends AbstractParkourUI {
 	//入力された情報から条件に合うメジャーチェックポイント番号を返す
 	private final CheckpointFunction<Integer> majorCheckpointNumber;
 
-	public AbstractCheckpointListUI(User user, Function<String, String> checkpointTypeForLocale,
+	public AbstractCheckpointListUI(User user, LocaleFunction<String> checkpointTypeForLocale,
 			CheckpointFunction<ImmutableLocation> checkpoint, CheckpointFunction<Integer> majorCheckpointNumber) {
 		super(user);
 		this.checkpointTypeForLocale = checkpointTypeForLocale;
@@ -45,7 +56,7 @@ public class AbstractCheckpointListUI extends AbstractParkourUI {
 		Player player = user.asBukkitPlayer();
 
 		//プレイヤーの使用言語に対応したチェックポイント
-		String checkpointType = checkpointTypeForLocale.apply(player.getLocale());
+		String checkpointType = checkpointTypeForLocale.apply(player);
 
 		//今いるパルクールとそのカテゴリー
 		Parkour currentParkour = user.currentParkour;
@@ -61,7 +72,7 @@ public class AbstractCheckpointListUI extends AbstractParkourUI {
 
 		return build(parkours.size(), l -> {
 			l.title = BilingualText.stream("$category内の$typeチェックポイント一覧", "$type Checkpoints in $category")
-					.correspondingTo(player)
+					.textBy(player)
 					.setAttribute("$category", category.name)
 					.setAttribute("$type", checkpointType)
 					.toString();
@@ -110,13 +121,13 @@ public class AbstractCheckpointListUI extends AbstractParkourUI {
 						i.lore(
 							BilingualText.stream("&7-: $b-右クリック &7-@ このチェックポイントにテレポートします。",
 									"&7-: &b-Right click &7-@ You teleport to this checkpoint.")
-									.correspondingTo(player)
+									.textBy(player)
 									.color()
 									.toString(),
 
 							BilingualText.stream("&7-: $b-左クリック &7-@ このパルクール内で設定したチェックポイントの一覧を開きます。",
 									"&7-: &b-Right click &7-@ You teleport to this checkpoint.")
-									.correspondingTo(player)
+									.textBy(player)
 									.color()
 									.toString()
 						);

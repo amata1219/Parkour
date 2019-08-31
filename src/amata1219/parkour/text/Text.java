@@ -54,7 +54,7 @@ public class Text implements TextStream {
 	}
 
 	@Override
-	public Text correspondingTo(Player sender) {
+	public Text textBy(Player sender) {
 		return this;
 	}
 

@@ -30,7 +30,7 @@ public class BilingualText implements TextStream {
 	}
 
 	@Override
-	public Text correspondingTo(Player receiver) {
+	public Text textBy(Player receiver) {
 		return localize(receiver);
 	}
 

@@ -27,7 +27,7 @@ public class ClickableMessage implements MessageStyle {
 	@Override
 	public void sendTo(Player receiver, Text text) {
 		TextComponent component = new TextComponent(text.toString());
-		component.setClickEvent(new ClickEvent(action.action, value.correspondingTo(receiver).toString()));
+		component.setClickEvent(new ClickEvent(action.action, value.textBy(receiver).toString()));
 		receiver.spigot().sendMessage(ChatMessageType.CHAT, component);
 	}
 
