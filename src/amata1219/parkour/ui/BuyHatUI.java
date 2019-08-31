@@ -14,38 +14,38 @@ import amata1219.parkour.hat.Hats;
 import amata1219.parkour.inventory.ui.dsl.InventoryUI;
 import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.parkour.sound.SoundMetadata;
-import amata1219.parkour.string.message.Localizer;
+import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.PurchasedHatCollection;
 
-public class BuyHatUI implements InventoryUI {
+public class BuyHatUI extends AbstractUI {
 
 	private static final SoundMetadata BUY_SE = new SoundMetadata(Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.75f);
 	private static final SoundMetadata ERROR_SE = new SoundMetadata(Sound.BLOCK_ANVIL_PLACE, 1f, 1.75f);
 
 	private final User user;
 	private final PurchasedHatCollection hats;
-	private final Localizer localizer;
 
 	public BuyHatUI(User user){
-		this.user = user;
+		super(user);
 		this.hats = user.hats;
-		this.localizer = user.localizer;
 	}
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
-		//未購入ハットのリスト
+		//未購入の帽子のリスト
 		List<Hat> hats = Hats.HATS.stream()
 		.filter(hat -> !this.hats.has(hat))
 		.collect(Collectors.toList());
 
+		Player player = user.asBukkitPlayer();
+
 		return build(hats.size(), l -> {
-			Player player = l.player;
+			l.title = BilingualText.stream("帽子の購入", "Buy Hats")
+					.textBy(player)
+					.toString();
 
-			l.title = localizer.color("帽子の購入 | Buy Hats");
-
-			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
+			l.defaultSlot(AbstractUI.DEFAULT_SLOT);
 
 			for(int index = 0; index < hats.size(); index++){
 				Hat hat = hats.get(index);

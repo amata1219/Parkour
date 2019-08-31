@@ -18,16 +18,16 @@ import amata1219.parkour.text.Text;
 import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 
-public class AbstractCheckpointListUI extends AbstractParkourUI {
+public class AbstractCheckpointListUI extends AbstractUI {
 
 	//Playerを引数に受け取って使用言語に対応した結果を生成する関数を表す
 	interface LocaleFunction<T> extends Function<Player, T> {
 
 		default T apply(Player player){
-			return resultByLanguageUsed(player.getLocale().equals("ja_jp"));
+			return resultBy(player.getLocale().equals("ja_jp"));
 		}
 
-		T resultByLanguageUsed(boolean japanise);
+		T resultBy(boolean isJapanise);
 
 	}
 
@@ -77,7 +77,7 @@ public class AbstractCheckpointListUI extends AbstractParkourUI {
 					.setAttribute("$type", checkpointType)
 					.toString();
 
-			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
+			l.defaultSlot(AbstractUI.DEFAULT_SLOT);
 
 			for(int slotIndex = 0; slotIndex < parkours.size(); slotIndex++){
 				Parkour parkour = parkours.get(slotIndex);
