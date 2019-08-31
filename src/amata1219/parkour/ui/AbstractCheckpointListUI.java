@@ -20,22 +20,11 @@ import amata1219.parkour.user.User;
 
 public class AbstractCheckpointListUI extends AbstractUI {
 
-	//Playerを引数に受け取って使用言語に対応した結果を生成する関数を表す
-	interface LocaleFunction<T> extends Function<Player, T> {
-
-		default T apply(Player player){
-			return resultBy(player.getLocale().equals("ja_jp"));
-		}
-
-		T resultBy(boolean isJapanise);
-
-	}
-
 	//ParkourとCheckpointSetを引数に受け取って結果を生成する関数を表す
-	interface CheckpointFunction<T> extends  BiFunction<Parkour, CheckpointSet, T> { }
+	interface CheckpointFunction<T> extends BiFunction<Parkour, CheckpointSet, T> { }
 
 	//使用言語に対応したチェックポイントタイプを返す
-	private final LocaleFunction<String> checkpointTypeForLocale;
+	private final LocaleFunction checkpointTypeForLocale;
 
 	//入力された情報から条件に合うチェックポイントを返す
 	private final CheckpointFunction<ImmutableLocation> checkpoint;
@@ -43,7 +32,7 @@ public class AbstractCheckpointListUI extends AbstractUI {
 	//入力された情報から条件に合うメジャーチェックポイント番号を返す
 	private final CheckpointFunction<Integer> majorCheckpointNumber;
 
-	public AbstractCheckpointListUI(User user, LocaleFunction<String> checkpointTypeForLocale,
+	public AbstractCheckpointListUI(User user, LocaleFunction checkpointTypeForLocale,
 			CheckpointFunction<ImmutableLocation> checkpoint, CheckpointFunction<Integer> majorCheckpointNumber) {
 		super(user);
 		this.checkpointTypeForLocale = checkpointTypeForLocale;

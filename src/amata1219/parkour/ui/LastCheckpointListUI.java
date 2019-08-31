@@ -7,7 +7,7 @@ public class LastCheckpointListUI extends AbstractCheckpointListUI {
 	public LastCheckpointListUI(User user) {
 		super(
 			user,
-			japanise -> japanise ? "最終" : "Last",
+			new LocaleFunction("最終", "Last"),
 			(parkour, checkpoints) -> checkpoints.getLastCheckpoint(parkour),
 			(parkour, checkpoints) -> checkpoints.getLastCheckpointNumber(parkour)
 		);
