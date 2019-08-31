@@ -4,14 +4,12 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import amata1219.parkour.hat.Hat;
 import amata1219.parkour.hat.Hats;
-import amata1219.parkour.inventory.ui.dsl.InventoryUI;
 import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.parkour.sound.SoundMetadata;
 import amata1219.parkour.text.BilingualText;
@@ -23,19 +21,18 @@ public class BuyHatUI extends AbstractUI {
 	private static final SoundMetadata BUY_SE = new SoundMetadata(Sound.ENTITY_PLAYER_LEVELUP, 1f, 1.75f);
 	private static final SoundMetadata ERROR_SE = new SoundMetadata(Sound.BLOCK_ANVIL_PLACE, 1f, 1.75f);
 
-	private final User user;
-	private final PurchasedHatCollection hats;
+	private final PurchasedHatCollection purchasedHats;
 
 	public BuyHatUI(User user){
 		super(user);
-		this.hats = user.hats;
+		this.purchasedHats = user.hats;
 	}
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
 		//未購入の帽子のリスト
 		List<Hat> hats = Hats.HATS.stream()
-		.filter(hat -> !this.hats.has(hat))
+		.filter(hat -> !purchasedHats.has(hat))
 		.collect(Collectors.toList());
 
 		Player player = user.asBukkitPlayer();
@@ -54,11 +51,16 @@ public class BuyHatUI extends AbstractUI {
 				ItemStack clonedHatItem = hat.item.clone();
 
 				l.put(s -> {
-					if(this.hats.canBuy(hat)){
+					if(purchasedHats.canBuy(hat)){
 						s.onClick(e -> {
-							this.hats.buy(hat);
-							localizer.mapplyAll("&b-$0の帽子を購入しました。 | &b-?", hatName).displayOnActionBar(player);
+							purchasedHats.buy(hat);
 							BUY_SE.play(player);
+
+							BilingualText.stream("&b-$nameの帽子を購入しました", "&b-You bought a $name hat")
+							.setAttribute("$name", hatName)
+							.color()
+							.setReceiver(player)
+							.sendActionBarMessage();
 
 							//表示を更新する
 							user.inventoryUserInterfaces.openBuyHatUI();
@@ -66,19 +68,40 @@ public class BuyHatUI extends AbstractUI {
 
 						s.icon(i -> {
 							i.basedItemStack = clonedHatItem;
-							i.displayName = localizer.applyAll("&b-$0 &7-@ &b-$1コイン | &b-?", hatName, value);
-							i.lore(localizer.color("&7-クリックすると購入出来ます。 | &7-?"));
+
+							i.displayName = BilingualText.stream("&b-$name &7-@ &b-$coinsコイン", "&b-$name &7-@ &b-$coins Coins")
+									.textBy(player)
+									.setAttribute("$name", hatName)
+									.setAttribute("$coins", value)
+									.color()
+									.toString();
+
+							String lore = BilingualText.stream("&7-クリックで購入します。", "&7-Click to buy.")
+									.textBy(player)
+									.color()
+									.toString();
+
+							i.lore(lore);
 						});
 					}else{
-						s.onClick(e -> {
-							localizer.mcolor("&c-所持コイン数が足りないため購入出来ません。 | &c-?");
-							ERROR_SE.play(player);
-						});
+						s.onClick(e -> ERROR_SE.play(player));
 
 						s.icon(i -> {
 							i.basedItemStack = clonedHatItem;
-							i.displayName = localizer.applyAll("&c-$0 &7-@ &c-$1コイン | &c-?", hatName, value);
-							i.lore(localizer.color("&7-所持コイン数が足りないため購入出来ません。 | &f-?"));
+
+							i.displayName = BilingualText.stream("&c-$name &7-@ &c-$coinsコイン", "&c-$name &7-@ &c-$coins Coins")
+									.textBy(player)
+									.setAttribute("$name", hatName)
+									.setAttribute("$coins", value)
+									.color()
+									.toString();
+
+							String lore = BilingualText.stream("&7-コインが足りないため購入出来ません。", "&7-You cannot buy it because you don't have enough coins.")
+									.textBy(player)
+									.color()
+									.toString();
+
+							i.lore(lore);
 						});
 					}
 

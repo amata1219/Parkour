@@ -23,7 +23,6 @@ public class ClickableMessage implements MessageStyle {
 		this.value = value;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void sendTo(Player receiver, Text text) {
 		TextComponent component = new TextComponent(text.toString());
