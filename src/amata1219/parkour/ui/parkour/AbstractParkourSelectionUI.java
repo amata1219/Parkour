@@ -20,6 +20,8 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.Records;
 import amata1219.parkour.parkour.Rewards;
+import amata1219.parkour.text.BilingualText;
+import amata1219.parkour.text.TextStream;
 import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
@@ -76,7 +78,12 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 						//アスレに参加させる
 						parkour.entry(users.getUser(player));
 
-						localizer.mapplyAll("&b-$0にテレポートしました | &b-Teleported to $0", parkour.colorlessName()).displayOnActionBar(player);
+						BilingualText.stream("$parkour-&r-$colorにテレポートしました", "&colorYou teleported to $parkour")
+						.setAttribute("$parkour", parkourName)
+						.setAttribute("$color", parkour.prefixColor)
+						.color()
+						.setReceiver(player)
+						.sendActionBarMessage();
 					});
 
 					//アスレのアイコンを設定する
@@ -88,20 +95,42 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 						//アスレの最大メジャーチェックエリア番号を取得する
 						int maxMajorCheckAreaNumber = parkour.checkAreas.getMaxMajorCheckAreaNumber();
 
-						//表示するテキストを決定する
-						String numberOfDisplayedCheckAreas = maxMajorCheckAreaNumber >= 0 ? localizer.applyAll("$0 | $0-&7-箇所", String.valueOf(maxMajorCheckAreaNumber + 1)) : localizer.localize("無し | None");
+						TextStream numberOfCheckAreasForDisplay = null;
+						if(maxMajorCheckAreaNumber >= 0) numberOfCheckAreasForDisplay = BilingualText.stream("$size-&7-箇所", "$size").setAttribute("$size", maxMajorCheckAreaNumber + 1);
+						else numberOfCheckAreasForDisplay = BilingualText.stream("無し", "None");
 
-						lore.add(localizer.applyAll("&7-チェックエリア @ &b-$0 | &7-Check Areas @ &b-$0", numberOfDisplayedCheckAreas));
+						lore.add(
+							BilingualText.stream("&7-チェックエリア @ &b-$size", "&7-Check Areas @ &b-$size")
+							.textBy(player)
+							.setAttribute("$size", numberOfCheckAreasForDisplay.textBy(player).toString())
+							.color()
+							.toString()
+						);
 
 						Rewards rewards = parkour.rewards;
-						lore.add(localizer.applyAll("&7-初回/通常報酬 @ &b-$0-&7-/-&b-$1-&7-コイン | &7-First/Normal Reward @ &b-$0-&7-/-&b-$1 &7-Coins", rewards.getReward(0), rewards.getReward(1)));
+						lore.add(
+							BilingualText.stream("&7-初回/通常報酬 @ &b-$first-&7-/-&b-$after-&7-コイン",
+									"&7-First/Normal Reward @ &b-$first-&7-/-&b-$after &7-Coins")
+									.textBy(player)
+									.setAttribute("$first", rewards.getReward(0))
+									.setAttribute("$after", rewards.getReward(1))
+									.color()
+									.toString()
+						);
 
 						boolean timeAttackEnable = parkour.timeAttackEnable;
 
-						//表示するテキストを決定する
-						String textOfTimeAttackEnable = StringLocalize.localize(timeAttackEnable ? "&b-有効 | &b-Enable" : "&7-無効 | &7-Disable", player);
+						TextStream textOfTimeAttackEnable = null;
+						if(timeAttackEnable) textOfTimeAttackEnable = BilingualText.stream("&b-有効", "&b-Enable");
+						else textOfTimeAttackEnable = BilingualText.stream("&7-無効", "&7-Disable");
 
-						lore.add(localizer.applyAll("&7-タイムアタック @ $0 | &7-Time Attack @ $0", textOfTimeAttackEnable));
+						lore.add(
+							BilingualText.stream("&7-タイムアタック @ $enable", "&7-Time Attack @ $enable")
+							.textBy(player)
+							.setAttribute("$enable", textOfTimeAttackEnable.textBy(player).toString())
+							.color()
+							.toString()
+						);
 
 						String description = parkour.description;
 
@@ -121,12 +150,26 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 							if(!topTenRecords.isEmpty()){
 								lore.add("");
 
-								lore.add(localizer.applyAll("&7-上位-&b-$0-&7-件の記録 | &7-Top &b-$0-&7 Records", topTenRecords.size()));
+								lore.add(
+									BilingualText.stream("&7-上位-&b-$size-&7-件の記録", "&7-Top &b-$size-&7 Records")
+									.textBy(player)
+									.setAttribute("$size", topTenRecords.size())
+									.color()
+									.toString()
+								);
 
 								AtomicInteger rank = new AtomicInteger(1);
 
 								topTenRecords.stream()
-								.textBy(record -> localizer.applyAll("&b-$0-&7-位 &b-$1 &7-@ &b-$2 | &b-$0-&7-. &b-$1 &7-@ &b-$2", rank.getAndIncrement(), Bukkit.getOfflinePlayer(record.first).getName(), record.second))
+								.map(record ->
+									BilingualText.stream("&b-$rank-&7-位 &b-$name &7-@ &b-$time", "&b-$rank-&7-. &b-$name &7-@ &b-$time")
+									.textBy(player)
+									.setAttribute("$rank", rank.getAndIncrement())
+									.setAttribute("$name", Bukkit.getOfflinePlayer(record.first))
+									.setAttribute("$time", record.second)
+									.color()
+									.toString()
+								)
 								.forEach(lore::add);
 
 								UUID uuid = user.uuid;
@@ -137,13 +180,24 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 
 									String time = TimeFormat.format(records.personalBest(uuid));
 
-									lore.add(localizer.applyAll("&7-自己最高記録 @ &b-$0 | &7-Personal Best @ &b-$0", time));
+									lore.add(
+										BilingualText.stream("&7-自己最高記録 @ &b-$time", "&7-Personal Best @ &b-$time")
+										.textBy(player)
+										.setAttribute("$time", time)
+										.color()
+										.toString()
+									);
 								}
 							}
 						}
 
 						lore.add("");
-						lore.add(localizer.color("&b-クリックするとテレポートします！ | &b-Click to teleport!"));
+						lore.add(
+							BilingualText.stream("&b-クリックするとテレポートします！", "&b-Click to teleport!")
+							.textBy(player)
+							.color()
+							.toString()
+						);
 
 						i.lore = lore;
 
@@ -169,7 +223,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 					s.onClick(e -> user.inventoryUserInterfaces.openParkourSelectionUI(category));
 
 					s.icon(category.icon, i -> {
-						i.displayName = StringTemplate.capply("&b-$0", category.name);
+						i.displayName = "§b" + category.name;
 
 						//今開いているカテゴリーと同じであれば輝かせる
 						if(category == this.category) i.gleam();
