@@ -1,12 +1,13 @@
 package amata1219.parkour.ui;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+
+import com.google.common.collect.ImmutableList;
 
 import amata1219.parkour.inventory.ui.InventoryLine;
 import amata1219.parkour.inventory.ui.dsl.InventoryUI;
@@ -31,14 +32,10 @@ public class ScoreboardDisplaySettingsUI implements InventoryUI {
 	//StatusBoardSettingを引数に受け取って結果を生成する関数を表す
 	private static interface DisplaySetting extends Function<StatusBoardSetting, Boolean> { };
 
-	private static final ArrayList<ToggleButton> BUTTONS = new ArrayList<>(10);
-
-	private static void initialize(ToggleButton... buttons){
-		Arrays.stream(buttons).forEach(BUTTONS::add);
-	}
+	private static final List<ToggleButton> BUTTONS;
 
 	static{
-		initialize(
+		BUTTONS = ImmutableList.of(
 			new ToggleButton(0, Material.SIGN, "スコアボード", "Scoreboard", s -> s.displayScoreboard, s -> s.displayScoreboard = !s.displayScoreboard),
 			new ToggleButton(2, Material.SIGN, "Updateランク", "Update Rank", s -> s.displayUpdateRank, s -> s.displayUpdateRank = !s.displayUpdateRank),
 			new ToggleButton(4, Material.SIGN, "Extendランク", "Extend Rank", s -> s.displayExtendRank, s -> s.displayExtendRank = !s.displayExtendRank),
