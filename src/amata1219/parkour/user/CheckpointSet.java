@@ -13,7 +13,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.yaml.Yaml;
 
 public class CheckpointSet {
@@ -169,11 +168,11 @@ public class CheckpointSet {
 				ImmutableLocation point = origin.relative(eachCheckpointEntry.getValue());
 
 				//対応したアスレ、チェックエリア番号にセットする
-				yaml.set(StringTemplate.apply("Check points.$0.$1", parkourName, checkAreaNumber), point.serialize());
+				yaml.set("Check points." + parkourName + "." + checkAreaNumber, point.serialize());
 			}
 
 			//最新のチェックポイントをセットする
-			yaml.set(StringTemplate.apply("Check points.$0.Latest", parkourName), latestCheckpoints.get(parkourName));
+			yaml.set("Check points." + parkourName + ".Latest", latestCheckpoints.get(parkourName));
 		}
 	}
 
