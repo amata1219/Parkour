@@ -11,6 +11,7 @@ import amata1219.parkour.inventory.ui.InventoryLine;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.parkour.RankUpParkour;
+import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.user.User;
 
 public class RankUpParkourSelectionUI extends AbstractParkourSelectionUI<RankUpParkour> {
@@ -42,10 +43,20 @@ public class RankUpParkourSelectionUI extends AbstractParkourSelectionUI<RankUpP
 
 						user.exitCurrentParkour();
 
-						MessageLocalize.applyAll("&b-$0ロビーにテレポートしました | &b-Teleported to $0 lobby", player, category.name).displayOnActionBar(player);
+						BilingualText.stream("&b-$categoryロビーにテレポートしました", "&b-You teleported to $category lobby")
+						.setAttribute("$category", category.name)
+						.color()
+						.setReceiver(player)
+						.sendActionBarMessage();
 					});
 
-					s.icon(Material.NETHER_STAR, i -> i.displayName = StringLocalize.applyAll("&b-$0ロビーにテレポートする | &b-Teleport to $0 Lobby", player, category.name));
+					String displayName = BilingualText.stream("&b-$categoryロビーにテレポートする", "&b-Teleport to $category Lobby")
+							.textBy(player)
+							.setAttribute("$category", category.name)
+							.color()
+							.toString();
+
+					s.icon(Material.NETHER_STAR, i -> i.displayName = displayName);
 
 				}, layout.option.size - 10);
 
