@@ -1,7 +1,9 @@
 package amata1219.parkour.function.hotbar;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import org.bukkit.GameMode;
@@ -30,9 +32,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.google.common.collect.ImmutableSet;
+
 public class ControlFunctionalItem implements PlayerJoinListener, PlayerQuitListener {
 
 	private static final Map<Integer, FunctionalItem> ITEMS = new HashMap<>(5);
+	private static final Set<Material> CLICKABLE_MATERIALS;
 	private static final ItemStack AIR = new ItemStack(Material.AIR);
 
 	static{
@@ -43,6 +48,60 @@ public class ControlFunctionalItem implements PlayerJoinListener, PlayerQuitList
 			new HideModeToggler(),
 			new MyProfileUIOpener()
 		);
+
+		CLICKABLE_MATERIALS = ImmutableSet.copyOf(Arrays.asList(
+			Material.NOTE_BLOCK,
+			Material.LEVER,
+			Material.CHEST,
+			Material.TRAPPED_CHEST,
+			Material.ENDER_CHEST,
+			Material.BLACK_SHULKER_BOX,
+			Material.BLUE_SHULKER_BOX,
+			Material.BROWN_SHULKER_BOX,
+			Material.CYAN_SHULKER_BOX,
+			Material.GRAY_SHULKER_BOX,
+			Material.GREEN_SHULKER_BOX,
+			Material.LIGHT_BLUE_SHULKER_BOX,
+			Material.LIGHT_GRAY_SHULKER_BOX,
+			Material.LIME_SHULKER_BOX,
+			Material.MAGENTA_SHULKER_BOX,
+			Material.ORANGE_SHULKER_BOX,
+			Material.PINK_SHULKER_BOX,
+			Material.PURPLE_SHULKER_BOX,
+			Material.RED_SHULKER_BOX,
+			Material.WHITE_SHULKER_BOX,
+			Material.YELLOW_SHULKER_BOX,
+			Material.ACACIA_BUTTON,
+			Material.BIRCH_BUTTON,
+			Material.DARK_OAK_BUTTON,
+			Material.JUNGLE_BUTTON,
+			Material.OAK_BUTTON,
+			Material.SPRUCE_BUTTON,
+			Material.STONE_BUTTON,
+			Material.ACACIA_FENCE_GATE,
+			Material.BIRCH_FENCE_GATE,
+			Material.DARK_OAK_FENCE_GATE,
+			Material.JUNGLE_FENCE_GATE,
+			Material.OAK_FENCE_GATE,
+			Material.SPRUCE_FENCE_GATE,
+			Material.ACACIA_TRAPDOOR,
+			Material.BIRCH_TRAPDOOR,
+			Material.DARK_OAK_TRAPDOOR,
+			Material.IRON_TRAPDOOR,
+			Material.JUNGLE_TRAPDOOR,
+			Material.OAK_TRAPDOOR,
+			Material.SPRUCE_TRAPDOOR,
+			Material.ACACIA_DOOR,
+			Material.BIRCH_DOOR,
+			Material.DARK_OAK_DOOR,
+			Material.IRON_DOOR,
+			Material.JUNGLE_DOOR,
+			Material.OAK_DOOR,
+			Material.SPRUCE_DOOR,
+			Material.REPEATER,
+			Material.COMPARATOR,
+			Material.DAYLIGHT_DETECTOR
+		));
 	}
 
 	private static void initialize(FunctionalItem... items){
@@ -72,6 +131,13 @@ public class ControlFunctionalItem implements PlayerJoinListener, PlayerQuitList
 
 		//クリックしたプレイヤーを取得する
 		Player player = event.getPlayer();
+
+		if(!player.isSneaking() && event.hasBlock()){
+			Material material = event.getClickedBlock().getType();
+
+			//クリック可能なアイテムであれば戻る
+			if(CLICKABLE_MATERIALS.contains(material)) return;
+		}
 
 		//ユーザーを取得する
 		User user = toUser(player);

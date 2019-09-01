@@ -100,12 +100,12 @@ public interface Location {
 	}
 
 	default String serialize(){
-		return Text.stream("$world,$x,$y,$z,$yaw,$pitch")
+		return Text.stream("$world,$x,$y,$z,$_yaw,$pitch")
 				.setAttribute("$world", getWorld().getName())
 				.setAttribute("$x", getX())
 				.setAttribute("$y", getY())
 				.setAttribute("$z", getZ())
-				.setAttribute("$yaw", getYaw())
+				.setAttribute("$_yaw", getYaw())
 				.setAttribute("$pitch", getPitch())
 				.toString();
 	}
