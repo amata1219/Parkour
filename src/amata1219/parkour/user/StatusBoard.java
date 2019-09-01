@@ -1,7 +1,6 @@
 package amata1219.parkour.user;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -9,100 +8,41 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Statistic;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.entity.Player;
+
+import com.google.common.collect.ImmutableList;
 
 import amata1219.parkour.scoreboard.Scoreboard;
-import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.text.Text;
-import amata1219.parkour.tuplet.Quintuple;
+import amata1219.parkour.tuplet.Quadruple;
+import amata1219.parkour.ui.LocaleFunction;
 
 public class StatusBoard {
 
-	private static final ArrayList<Quintuple<Function<StatusBoardSetting, Boolean>, Integer, String, String, Function<User, Object>>> LINES = new ArrayList<>(12);
-	private static final Pattern DOUBLE_BYTE_CHARACTER_CHECKER = Pattern.compile("^[^!-~｡-ﾟ]+$");
+	private static class Line extends Quadruple<Function<StatusBoardSetting, Boolean>, Integer, LocaleFunction, Function<User, Object>> {
 
-	@SafeVarargs
-	private static void initialize(Quintuple<Function<StatusBoardSetting, Boolean>, Integer, String, String, Function<User, Object>>... components){
-		Arrays.stream(components).forEach(LINES::add);
+		public Line(Function<StatusBoardSetting, Boolean> displaySetting, Integer score, String japanise, String english, Function<User, Object> value) {
+			super(displaySetting, score, new LocaleFunction(japanise, english), value);
+		}
+
 	}
 
+	private static final List<Line> LINES;
+	private static final Pattern DOUBLE_BYTE_CHARACTER_CHECKER = Pattern.compile("^[^!-~｡-ﾟ]+$");
+
 	static{
-		initialize(
-			/*new Quintuple<>(s -> true, 11, "  ", " ", u -> ""),
-			new Quintuple<>(s -> true, 10, "  ", " ", u -> ""),
-			new Quintuple<>(s -> s.displayTraceur, 9, "&b-トレイサー &7-@ &f-$value", "&b-Traceur &7-@ &f-$value", u -> u.asBukkitPlayer().getName()),
-			new Quintuple<>(s -> s.displayUpdateRank, 8, "&b-Updateランク &7-@ &f-$value", "&b-Update Rank &7-@ &f-$value", u -> u.getUpdateRank()),
-			new Quintuple<>(s -> s.displayExtendRank, 7, "&b-Extendランク &7-@ &f-$value", "&b-Extend Rank &7-@ &f-$value", u -> u.getExtendRank()),
-			new Quintuple<>(s -> s.displayJumps, 6, "&b-ジャンプ数 &7-@ &f-$value", "&b-Jumps &7-@ &f-$value", u -> u.asBukkitPlayer().getStatistic(Statistic.JUMP)),
-			new Quintuple<>(s -> s.displayCoins, 5, "&b-所持コイン数 &7-@ &f-$value", "&b-Coins &7-@ &f-$value", u -> u.getCoins()),
-			new Quintuple<>(s -> s.displayTimePlayed, 4, "&b-総プレイ時間 &7-@ &f-$valueh", "&b-Time Played &7-@ &f-$valueh", u -> u.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
-			new Quintuple<>(s -> s.displayOnlinePlayers, 3, "&b-接続プレイヤー数 &7-@ &f-$value", "&b-Online Players &7-@ &f-$value", u -> Bukkit.getOnlinePlayers().size()),
-			new Quintuple<>(s -> s.displayPing, 2, "&b-遅延 &7-@ &f-$valuems", "&b-Ping &7-@ &f-$valuems", u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
-			new Quintuple<>(s -> true, 1, " ", " ", u -> ""),
-			new Quintuple<>(s -> s.displayServerAddress, 0, "$value", "$value", u -> {
-
-			new Quintuple<>(s -> true, 11, "  ", " ", u -> ""),
-			new Quintuple<>(s -> true, 10, "  ", " ", u -> ""),
-			new Quintuple<>(s -> s.displayTraceur, 9, "&b-トレイサー&7-::-&7-<-&f-$value-&7->", "&b-Traceur&7-::-&7-<-&f-$value-&7->", u -> u.asBukkitPlayer().getName()),
-			new Quintuple<>(s -> s.displayUpdateRank, 8, "&b-Updateランク&7-::-&7-<-&f-$value-&7->", "&b-Update Rank&7-::-&7-<-&f-$value-&7->", u -> u.getUpdateRank()),
-			new Quintuple<>(s -> s.displayExtendRank, 7, "&b-Extendランク&7-::-&7-<-&f-$value-&7->", "&b-Extend Rank&7-::-&7-<-&f-$value-&7->", u -> u.getExtendRank()),
-			new Quintuple<>(s -> s.displayJumps, 6, "&b-ジャンプ数&7-::-&7-<-&f-$value-&7->", "&b-Jumps&7-::-&7-<-&f-$value-&7->", u -> u.asBukkitPlayer().getStatistic(Statistic.JUMP)),
-			new Quintuple<>(s -> s.displayCoins, 5, "&b-所持コイン数&7-::-&7-<-&f-$value-&7->", "&b-Coins&7-::-&7-<-&f-$value-&7->", u -> u.getCoins()),
-			new Quintuple<>(s -> s.displayTimePlayed, 4, "&b-総プレイ時間&7-::-&7-<-&f-$valueh-&7->", "&b-Time Played&7-::-&7-<-&f-$value-&7->h", u -> u.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
-			new Quintuple<>(s -> s.displayOnlinePlayers, 3, "&b-接続プレイヤー数&7-::-&7-<-&f-$value-&7->", "&b-Online Players&7-::-&7-<-&f-$value-&7->", u -> Bukkit.getOnlinePlayers().size()),
-			new Quintuple<>(s -> s.displayPing, 2, "&b-遅延&7-::-&7-<-&f-$valuems-&7->", "&b-Ping&7-::-&7-<-&f-$value-&7->ms", u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
-			new Quintuple<>(s -> true, 1, " ", " ", u -> ""),
-			new Quintuple<>(s -> s.displayServerAddress, 0, "$value", "$value", u -> {
-
-			new Quintuple<>(s -> true, 11, "  ", " ", u -> ""),
-			new Quintuple<>(s -> true, 10, "  ", " ", u -> ""),
-			new Quintuple<>(s -> s.displayTraceur, 9, "&b-トレイサー&7-: &7-<-&f-$value-&7->", "&b-Traceur&7-: &7-<-&f-$value-&7->", u -> u.asBukkitPlayer().getName()),
-			new Quintuple<>(s -> s.displayUpdateRank, 8, "&b-Updateランク&7-: &7-<-&f-$value-&7->", "&b-Update Rank&7-: &7-<-&f-$value-&7->", u -> u.getUpdateRank()),
-			new Quintuple<>(s -> s.displayExtendRank, 7, "&b-Extendランク&7-: &7-<-&f-$value-&7->", "&b-Extend Rank&7-: &7-<-&f-$value-&7->", u -> u.getExtendRank()),
-			new Quintuple<>(s -> s.displayJumps, 6, "&b-ジャンプ数&7-: &7-<-&f-$value-&7->", "&b-Jumps&7-: &7-<-&f-$value-&7->", u -> u.asBukkitPlayer().getStatistic(Statistic.JUMP)),
-			new Quintuple<>(s -> s.displayCoins, 5, "&b-所持コイン数&7-: &7-<-&f-$value-&7->", "&b-Coins&7-: &7-<-&f-$value-&7->", u -> u.getCoins()),
-			new Quintuple<>(s -> s.displayTimePlayed, 4, "&b-総プレイ時間&7-: &7-<-&f-$valueh-&7->", "&b-Time Played&7-: &7-<-&f-$value-&7->h", u -> u.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
-			new Quintuple<>(s -> s.displayOnlinePlayers, 3, "&b-接続プレイヤー数&7-: &7-<-&f-$value-&7->", "&b-Online Players&7-: &7-<-&f-$value-&7->", u -> Bukkit.getOnlinePlayers().size()),
-			new Quintuple<>(s -> s.displayPing, 2, "&b-遅延&7-: &7-<-&f-$valuems-&7->", "&b-Ping&7-: &7-<-&f-$value-&7->ms", u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
-			new Quintuple<>(s -> true, 1, " ", " ", u -> ""),
-			new Quintuple<>(s -> s.displayServerAddress, 0, "$value", "$value", u -> {
-
-			new Quintuple<>(s -> true, 11, "  ", " ", u -> ""),
-			new Quintuple<>(s -> true, 10, "  ", " ", u -> ""),
-			new Quintuple<>(s -> s.displayTraceur, 9, "&b-トレイサー &7-@ &7-<-&f-$value-&7->", "&b-Traceur &7-@ &7-<-&f-$value-&7->", u -> u.asBukkitPlayer().getName()),
-			new Quintuple<>(s -> s.displayUpdateRank, 8, "&b-Updateランク &7-@ &7-<-&f-$value-&7->", "&b-Update Rank &7-@ &7-<-&f-$value-&7->", u -> u.getUpdateRank()),
-			new Quintuple<>(s -> s.displayExtendRank, 7, "&b-Extendランク &7-@ &7-<-&f-$value-&7->", "&b-Extend Rank &7-@ &7-<-&f-$value-&7->", u -> u.getExtendRank()),
-			new Quintuple<>(s -> s.displayJumps, 6, "&b-ジャンプ数 &7-@ &7-<-&f-$value-&7->", "&b-Jumps &7-@ &7-<-&f-$value-&7->", u -> u.asBukkitPlayer().getStatistic(Statistic.JUMP)),
-			new Quintuple<>(s -> s.displayCoins, 5, "&b-所持コイン数 &7-@ &7-<-&f-$value-&7->", "&b-Coins &7-@ &7-<-&f-$value-&7->", u -> u.getCoins()),
-			new Quintuple<>(s -> s.displayTimePlayed, 4, "&b-総プレイ時間 &7-@ &7-<-&f-$valueh-&7->", "&b-Time Played &7-@ &7-<-&f-$value-&7->h", u -> u.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
-			new Quintuple<>(s -> s.displayOnlinePlayers, 3, "&b-接続プレイヤー数 &7-@ &7-<-&f-$value-&7->", "&b-Online Players &7-@ &7-<-&f-$value-&7->", u -> Bukkit.getOnlinePlayers().size()),
-			new Quintuple<>(s -> s.displayPing, 2, "&b-遅延 &7-@ &7-<-&f-$valuems-&7->", "&b-Ping &7-@ &7-<-&f-$value-&7->ms", u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
-			new Quintuple<>(s -> true, 1, " ", " ", u -> ""),
-			new Quintuple<>(s -> s.displayServerAddress, 0, "$value", "$value", u -> {
-
-			new Quintuple<>(s -> true, 11, "  ", " ", u -> ""),
-            new Quintuple<>(s -> true, 10, "  ", " ", u -> ""),
-            new Quintuple<>(s -> s.displayTraceur, 9, "&b-トレイサー &7-@ &f-$value", "&b-Traceur &7-@ &f-$value", u -> u.asBukkitPlayer().getName()),
-            new Quintuple<>(s -> s.displayUpdateRank, 8, "&b-Updateランク &7-@ &f-$value", "&b-Update Rank &7-@ &f-$value", u -> u.getUpdateRank()),
-            new Quintuple<>(s -> s.displayExtendRank, 7, "&b-Extendランク &7-@ &f-$value", "&b-Extend Rank &7-@ &f-$value", u -> u.getExtendRank()),
-            new Quintuple<>(s -> s.displayJumps, 6, "&b-ジャンプ数 &7-@ &f-$value", "&b-Jumps &7-@ &f-$value", u -> u.asBukkitPlayer().getStatistic(Statistic.JUMP)),
-            new Quintuple<>(s -> s.displayCoins, 5, "&b-所持コイン数 &7-@ &f-$value", "&b-Coins &7-@ &f-$value", u -> u.getCoins()),
-            new Quintuple<>(s -> s.displayTimePlayed, 4, "&b-総プレイ時間 &7-@ &f-$valueh", "&b-Time Played &7-@ &f-$valueh", u -> u.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
-            new Quintuple<>(s -> s.displayOnlinePlayers, 3, "&b-接続プレイヤー数 &7-@ &f-$value", "&b-Online Players &7-@ &f-$value", u -> Bukkit.getOnlinePlayers().size()),
-            new Quintuple<>(s -> s.displayPing, 2, "&b-遅延 &7-@ &f-$valuems", "&b-Ping &7-@ &f-$valuems", u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
-            new Quintuple<>(s -> true, 1, " ", " ", u -> ""),
-            new Quintuple<>(s -> s.displayServerAddress, 0, "$value", "$value", u -> {*/
-
-			new Quintuple<>(s -> true, 10, " ", " ", u -> ""),
-			new Quintuple<>(s -> s.displayTraceur, 9, "&b-トレイサー&7-: &f-$value", "&b-Traceur&7-: &f-$value", u -> u.asBukkitPlayer().getName()),
-			new Quintuple<>(s -> s.displayUpdateRank, 8, "&b-Updateランク&7-: &f-$value", "&b-Update Rank&7-: &f-$value", u -> u.updateRank()),
-			new Quintuple<>(s -> s.displayExtendRank, 7, "&b-Extendランク&7-: &f-$value", "&b-Extend Rank&7-: &f-$value", u -> u.extendRank()),
-			new Quintuple<>(s -> s.displayJumps, 6, "&b-ジャンプ数&7-: &f-$value", "&b-Jumps&7-: &f-$value", u -> u.asBukkitPlayer().getStatistic(Statistic.JUMP)),
-			new Quintuple<>(s -> s.displayCoins, 5, "&b-所持コイン数&7-: &f-$value", "&b-Coins&7-: &f-$value", u -> u.coins()),
-			new Quintuple<>(s -> s.displayTimePlayed, 4, "&b-総プレイ時間&7-: &f-$valueh", "&b-Time Played&7-: &f-$valueh", u -> u.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
-			new Quintuple<>(s -> s.displayOnlinePlayers, 3, "&b-接続プレイヤー数&7-: &f-$value", "&b-Online Players&7-: &f-$value", u -> Bukkit.getOnlinePlayers().size()),
-			new Quintuple<>(s -> s.displayPing, 2, "&b-遅延&7-: &f-$valuems", "&b-Ping&7-: &f-$valuems", u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
-			new Quintuple<>(s -> true, 1, "", "", u -> ""),
-			new Quintuple<>(s -> s.displayServerAddress, 0, "$value", "$value", u -> {
+		LINES = ImmutableList.of(
+			new Line(s -> true, 10, " ", " ", u -> ""),
+			new Line(s -> s.displayTraceur, 9, "&b-トレイサー&7-: &f-$value", "&b-Traceur&7-: &f-$value", u -> u.asBukkitPlayer().getName()),
+			new Line(s -> s.displayUpdateRank, 8, "&b-Updateランク&7-: &f-$value", "&b-Update Rank&7-: &f-$value", u -> u.updateRank()),
+			new Line(s -> s.displayExtendRank, 7, "&b-Extendランク&7-: &f-$value", "&b-Extend Rank&7-: &f-$value", u -> u.extendRank()),
+			new Line(s -> s.displayJumps, 6, "&b-ジャンプ数&7-: &f-$value", "&b-Jumps&7-: &f-$value", u -> u.asBukkitPlayer().getStatistic(Statistic.JUMP)),
+			new Line(s -> s.displayCoins, 5, "&b-所持コイン数&7-: &f-$value", "&b-Coins&7-: &f-$value", u -> u.coins()),
+			new Line(s -> s.displayTimePlayed, 4, "&b-総プレイ時間&7-: &f-$valueh", "&b-Time Played&7-: &f-$valueh", u -> u.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000),
+			new Line(s -> s.displayOnlinePlayers, 3, "&b-接続プレイヤー数&7-: &f-$value", "&b-Online Players&7-: &f-$value", u -> Bukkit.getOnlinePlayers().size()),
+			new Line(s -> s.displayPing, 2, "&b-遅延&7-: &f-$valuems", "&b-Ping&7-: &f-$valuems", u -> ((CraftPlayer) u.asBukkitPlayer()).getHandle().ping),
+			new Line(s -> true, 1, "", "", u -> ""),
+			new Line(s -> s.displayServerAddress, 0, "$value", "$value", u -> {
 				Scoreboard board = u.statusBoard.board;
 
 				int maxLength = 0;
@@ -152,12 +92,15 @@ public class StatusBoard {
 		//スコアボードを新しく作成する
 		board = new Scoreboard(user.asBukkitPlayer(), Text.stream("&9-&l-A-&r-&b-zisaba &9-&l-N-&r-&b-etwork").color().toString());
 
-		for(Quintuple<Function<StatusBoardSetting, Boolean>, Integer, String, String, Function<User, Object>> line : LINES){
+		for(Line line : LINES){
 			//表示しない設定であれば処理しない
 			if(!line.first.apply(setting)) continue;
 
 			//表示するテキストを作成する
-			String text = BilingualText.stream(line.third, line.fourth).setAttribute("$value", line.fifth.apply(user)).color().toString();
+			String text = Text.stream(line.third.apply(user.asBukkitPlayer()))
+					.setAttribute("$value", line.fourth.apply(user))
+					.color()
+					.toString();
 
 			//対応したスコアにテキストをセットする
 			board.setScore(line.second, text);
@@ -210,10 +153,10 @@ public class StatusBoard {
 		updateValue(score, false);
 	}
 
-	private void updateValue(int score, boolean shouldUpdateServerAddress){
+	private void updateValue(int score, boolean whetherToUpdate){
 		if(board == null) return;
 
-		Quintuple<Function<StatusBoardSetting, Boolean>, Integer, String, String, Function<User, Object>> line = LINES.get(score);
+		Line line = LINES.get(score);
 
 		StatusBoardSetting setting = user.setting;
 
@@ -223,24 +166,32 @@ public class StatusBoard {
 		//現在表示されている文字列を取得する
 		String before = board.getScore(score);
 
+		Player player = user.asBukkitPlayer();
+
 		//表示する文字列を作成する
-		String after = localizer.applyAll(line.third, line.fourth.apply(user));
+		String after = Text.stream(line.third.apply(player))
+				.setAttribute("$value", line.fourth.apply(user))
+				.color()
+				.toString();
 
 		//指定されたスコアをアップデートする
 		board.updateScore(line.second, after);
 
 		//サーバーアドレスの表示を更新しないのであれば戻る
-		if(!shouldUpdateServerAddress) return;
+		if(!whetherToUpdate) return;
 
 		//サーバーアドレス行のコンポーネントを取得する
-		Quintuple<Function<StatusBoardSetting, Boolean>, Integer, String, String, Function<User, Object>> serverAddress = LINES.get(11);
+		Line serverAddress = LINES.get(11);
 
 		//サーバーアドレスを表示しない又は文字列長に差が無い場合は戻る
 		if(!serverAddress.first.apply(setting) || (before != null && before.length() == after.length())) return;
 
-		String serverAddressDisplayed = localizer.applyAll(serverAddress.third, serverAddress.fourth.apply(user));
+		String serverAddressForDisplay = Text.stream(serverAddress.third.apply(player))
+				.setAttribute("$value", serverAddress.fourth.apply(user))
+				.color()
+				.toString();
 
-		board.updateScore(serverAddress.second, serverAddressDisplayed);
+		board.updateScore(serverAddress.second, serverAddressForDisplay);
 	}
 
 }
