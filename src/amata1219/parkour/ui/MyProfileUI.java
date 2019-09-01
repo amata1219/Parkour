@@ -127,7 +127,7 @@ public class MyProfileUI implements InventoryUI {
 					s.onClick(e -> button.fourth.accept(user));
 
 					s.icon(button.second, i -> {
-						i.displayName = "";
+						i.displayName = button.third.apply(player);
 						i.gleam();
 					});
 

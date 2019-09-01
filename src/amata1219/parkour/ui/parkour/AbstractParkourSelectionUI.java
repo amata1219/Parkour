@@ -20,9 +20,6 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.Records;
 import amata1219.parkour.parkour.Rewards;
-import amata1219.parkour.string.StringLocalize;
-import amata1219.parkour.string.StringTemplate;
-import amata1219.parkour.string.message.Localizer;
 import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
@@ -35,7 +32,6 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 	private final UserSet users = UserSet.getInstnace();
 
 	private final User user;
-	private final Localizer localizer;
 	private final ParkourCategory category;
 	private final Supplier<List<T>> parkours;
 	private final Function<List<T>, InventoryLine> line;
@@ -43,7 +39,6 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 
 	public AbstractParkourSelectionUI(User user, ParkourCategory category, Supplier<List<T>> parkours, Function<List<T>, InventoryLine> line, Consumer<InventoryLayout> raw){
 		this.user = user;
-		this.localizer = user.localizer;
 		this.category = category;
 		this.parkours = parkours;
 		this.line = line;

@@ -11,8 +11,6 @@ import amata1219.parkour.inventory.ui.InventoryLine;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.parkour.RankUpParkour;
-import amata1219.parkour.string.StringLocalize;
-import amata1219.parkour.string.message.MessageLocalize;
 import amata1219.parkour.user.User;
 
 public class RankUpParkourSelectionUI extends AbstractParkourSelectionUI<RankUpParkour> {
@@ -25,6 +23,7 @@ public class RankUpParkourSelectionUI extends AbstractParkourSelectionUI<RankUpP
 			//カテゴリーに対応したアスレリストを返す関数を作成する
 			() -> ParkourSet.getInstance().getEnabledParkours(category)
 			.map(parkour -> (RankUpParkour) parkour)
+			.filter(parkour -> parkour.rank <= rank.get() + 1)
 			.sorted((parkour1, parkour2) -> Integer.compare(parkour1.rank, parkour2.rank))
 			.collect(Collectors.toList()),
 
