@@ -16,11 +16,11 @@ import amata1219.parkour.text.Text;
 import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 
-public class ParkourCheckpointSelectionUI extends AbstractUI {
+public class ParkourCheckpointListUI extends AbstractUI {
 
 	private final Parkour parkour;
 
-	public ParkourCheckpointSelectionUI(User user, Parkour parkour){
+	public ParkourCheckpointListUI(User user, Parkour parkour){
 		super(user);
 		this.parkour = parkour;
 	}

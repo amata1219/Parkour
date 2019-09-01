@@ -223,8 +223,6 @@ public class StatusBoard {
 		//現在表示されている文字列を取得する
 		String before = board.getScore(score);
 
-		Localizer localizer = user.localizer;
-
 		//表示する文字列を作成する
 		String after = localizer.applyAll(line.third, line.fourth.apply(user));
 

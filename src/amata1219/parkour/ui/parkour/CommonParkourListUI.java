@@ -8,9 +8,9 @@ import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.user.User;
 
-public class CommonParkourSelectionUI extends AbstractParkourSelectionUI<Parkour> {
+public class CommonParkourListUI extends AbstractParkourListUI<Parkour> {
 
-	public CommonParkourSelectionUI(User user, ParkourCategory category) {
+	public CommonParkourListUI(User user, ParkourCategory category) {
 		super(
 			user,
 			category,

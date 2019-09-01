@@ -14,9 +14,9 @@ import amata1219.parkour.parkour.RankUpParkour;
 import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.user.User;
 
-public class RankUpParkourSelectionUI extends AbstractParkourSelectionUI<RankUpParkour> {
+public class RankUpParkourListUI extends AbstractParkourListUI<RankUpParkour> {
 
-	public RankUpParkourSelectionUI(User user, ParkourCategory category,  Supplier<Integer> rank) {
+	public RankUpParkourListUI(User user, ParkourCategory category,  Supplier<Integer> rank) {
 		super(
 			user,
 			category,

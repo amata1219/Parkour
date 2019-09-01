@@ -95,7 +95,7 @@ public class AbstractCheckpointListUI extends AbstractUI {
 
 						}else if(e.isLeftClick()){
 							//パルクール内のチェックポイントのリストを開かせる
-							new ParkourCheckpointSelectionUI(user, parkour).openInventory(player);
+							new ParkourCheckpointListUI(user, parkour).openInventory(player);
 						}
 					});
 

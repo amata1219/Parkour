@@ -27,7 +27,7 @@ import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 import amata1219.parkour.util.TimeFormat;
 
-public abstract class AbstractParkourSelectionUI<T extends Parkour> implements InventoryUI {
+public abstract class AbstractParkourListUI<T extends Parkour> implements InventoryUI {
 
 	private static final ParkourCategory[] CATEGORIES = ParkourCategory.values();
 
@@ -39,7 +39,7 @@ public abstract class AbstractParkourSelectionUI<T extends Parkour> implements I
 	private final Function<List<T>, InventoryLine> line;
 	private final Consumer<InventoryLayout> raw;
 
-	public AbstractParkourSelectionUI(User user, ParkourCategory category, Supplier<List<T>> parkours, Function<List<T>, InventoryLine> line, Consumer<InventoryLayout> raw){
+	public AbstractParkourListUI(User user, ParkourCategory category, Supplier<List<T>> parkours, Function<List<T>, InventoryLine> line, Consumer<InventoryLayout> raw){
 		this.user = user;
 		this.category = category;
 		this.parkours = parkours;

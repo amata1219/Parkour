@@ -12,8 +12,8 @@ import amata1219.parkour.ui.LatestCheckpointListUI;
 import amata1219.parkour.ui.MyProfileUI;
 import amata1219.parkour.ui.ScoreboardDisplaySettingsUI;
 import amata1219.parkour.ui.WearHatUI;
-import amata1219.parkour.ui.parkour.CommonParkourSelectionUI;
-import amata1219.parkour.ui.parkour.RankUpParkourSelectionUI;
+import amata1219.parkour.ui.parkour.CommonParkourListUI;
+import amata1219.parkour.ui.parkour.RankUpParkourListUI;
 
 public class InventoryUISet {
 
@@ -40,10 +40,10 @@ public class InventoryUISet {
 		buyHatUI = new BuyHatUI(user);
 		wearHatUI = new WearHatUI(user);
 		myProfileUI = new MyProfileUI(user);
-		for(ParkourCategory category : COMMON_CATEGORIES) parkourSelectionUIs.put(category, new CommonParkourSelectionUI(user, category));
+		for(ParkourCategory category : COMMON_CATEGORIES) parkourSelectionUIs.put(category, new CommonParkourListUI(user, category));
 
-		parkourSelectionUIs.put(ParkourCategory.UPDATE, new RankUpParkourSelectionUI(user, ParkourCategory.UPDATE, () -> user.updateRank()));
-		parkourSelectionUIs.put(ParkourCategory.EXTEND, new RankUpParkourSelectionUI(user, ParkourCategory.EXTEND, () -> user.extendRank()));
+		parkourSelectionUIs.put(ParkourCategory.UPDATE, new RankUpParkourListUI(user, ParkourCategory.UPDATE, () -> user.updateRank()));
+		parkourSelectionUIs.put(ParkourCategory.EXTEND, new RankUpParkourListUI(user, ParkourCategory.EXTEND, () -> user.extendRank()));
 	}
 
 	public void openMyProfileUI(){
