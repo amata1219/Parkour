@@ -24,6 +24,7 @@ public class ParkourSelectionUIOpener implements FunctionalItem {
 		ItemMeta meta = item.getItemMeta();
 
 		String displayName = BilingualText.stream("&b-アスレチック一覧を開く", "&b-Open Parkour List")
+				.textBy(user.asBukkitPlayer())
 				.color()
 				.toString();
 

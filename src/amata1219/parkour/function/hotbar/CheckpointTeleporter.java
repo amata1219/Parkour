@@ -76,6 +76,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 		//最新@左 最終@右
 		String displayName = BilingualText.stream("&b-チェックポイントにテレポートする &7-(最新 @ 左 / 最終 @ 右)",
 				"&b-Teleport to Checkpoint &7-(Latest @ L / Last @ R)")
+				.textBy(user.asBukkitPlayer())
 				.color()
 				.toString();
 

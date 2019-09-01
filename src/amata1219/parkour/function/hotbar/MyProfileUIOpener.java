@@ -22,6 +22,7 @@ public class MyProfileUIOpener implements FunctionalItem {
 		ItemMeta meta = item.getItemMeta();
 
 		String displayName = BilingualText.stream("&b-プロフィールを開く", "&b-Open My Profile")
+				.textBy(user.asBukkitPlayer())
 				.color()
 				.toString();
 

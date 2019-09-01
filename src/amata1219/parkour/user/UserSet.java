@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import amata1219.parkour.Main;
 import amata1219.parkour.listener.PlayerJoinListener;
-import amata1219.parkour.string.StringTemplate;
 import amata1219.parkour.yaml.Yaml;
 
 public class UserSet implements PlayerJoinListener {
@@ -75,7 +74,7 @@ public class UserSet implements PlayerJoinListener {
 	}
 
 	public Yaml makeYaml(UUID uuid){
-		return new Yaml(plugin, new File(folder, StringTemplate.apply("$0.yml", uuid)), "user.yml");
+		return new Yaml(plugin, new File(folder, uuid.toString() + ".yml"), "user.yml");
 	}
 
 	public void saveAll(){

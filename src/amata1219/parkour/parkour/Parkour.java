@@ -12,7 +12,7 @@ import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.region.Region;
 import amata1219.parkour.user.User;
 import amata1219.parkour.util.Color;
-import amata1219.parkour.util.StringSplit;
+import amata1219.parkour.util.Splitter;
 import amata1219.parkour.yaml.Yaml;
 
 public class Parkour {
@@ -76,7 +76,7 @@ public class Parkour {
 		checkAreas = new CheckAreas(parkours, yaml, this, origin);
 
 		timeAttackEnable = yaml.getBoolean("Time attack");
-		rewards = new Rewards(StringSplit.splitToIntArguments(yaml.getString("Rewards")));
+		rewards = new Rewards(Splitter.splitToIntArguments(yaml.getString("Rewards")));
 		description = yaml.getString("Description");
 		records = new Records(yaml);
 	}

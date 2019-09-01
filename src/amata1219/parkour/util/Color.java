@@ -2,14 +2,14 @@ package amata1219.parkour.util;
 
 import java.util.Random;
 
-import amata1219.parkour.string.StringTemplate;
+import amata1219.parkour.text.Text;
 
 public class Color {
 
 	private static final Random random = new Random();
 
 	public static Color deserialize(String text){
-		int[] values = StringSplit.splitToIntArguments(text);
+		int[] values = Splitter.splitToIntArguments(text);
 		return new Color(values[0], values[1], values[2]);
 	}
 
@@ -38,7 +38,11 @@ public class Color {
 	}
 
 	public String serialize(){
-		return StringTemplate.apply("$0,$1,$2", red, green, blue);
+		return Text.stream("$red,$green,$blue")
+				.setAttribute("$red", red)
+				.setAttribute("$green", green)
+				.setAttribute("$blue", blue)
+				.toString();
 	}
 
 }

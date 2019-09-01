@@ -13,8 +13,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import amata1219.parkour.string.StringTemplate;
-
 public class Yaml extends YamlConfiguration {
 
 	public final JavaPlugin plugin;
@@ -75,7 +73,7 @@ public class Yaml extends YamlConfiguration {
 
 		InputStream in = plugin.getResource(resourceFileName);
 		if(in == null)
-			throw new IllegalArgumentException(StringTemplate.apply("The embedded resource '$0' cannot be found in $1", resourceFileName, file));
+			throw new IllegalArgumentException("The embedded resource '" + resourceFileName + "' cannot be found in " + file);
 
 		String path = file.getPath();
 		int lastIndex = path.lastIndexOf(47);
@@ -93,7 +91,7 @@ public class Yaml extends YamlConfiguration {
 			output.close();
 			in.close();
 		}catch(IOException ex){
-			plugin.getLogger().log(Level.SEVERE, StringTemplate.apply("Cound not save $0 to $1", file.getName(), file), ex);
+			plugin.getLogger().log(Level.SEVERE, "Cound not save " + file.getName() + " to " + file, ex);
 		}
 	}
 

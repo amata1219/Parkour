@@ -31,22 +31,12 @@ public class BilingualText implements TextStream {
 
 	@Override
 	public Text textBy(Player receiver) {
-		return localize(receiver);
-	}
-
-	//使用言語に対応したTextを返す
-	public Text localize(Player player){
-		return isJapanise(player) ? japanise : english;
-	}
-
-	//使用言語が日本語か判定する
-	private boolean isJapanise(Player player){
-		return player.getLocale().equals("ja_jp");
+		return receiver.getLocale().equals("ja_jp") ? japanise : english;
 	}
 
 	//使用言語に対応したStringを返す
 	public String toString(Player player){
-		return localize(player).toString();
+		return textBy(player).toString();
 	}
 
 }

@@ -27,7 +27,7 @@ public class HideModeToggler implements FunctionalItem {
 		if(hideMode) stream = BilingualText.stream("&b-プレイヤーを表示する", "&b-Hide Players");
 		else stream = BilingualText.stream("&b-プレイヤーを非表示にする", "&b-Unhide Players");
 
-		meta.setDisplayName(stream.color().toString());
+		meta.setDisplayName(stream.textBy(user.asBukkitPlayer()).color().toString());
 		item.setItemMeta(meta);
 		return item;
 	}

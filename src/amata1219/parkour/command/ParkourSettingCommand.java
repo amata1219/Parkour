@@ -18,7 +18,7 @@ import amata1219.parkour.selection.RegionSelectionSet;
 import amata1219.parkour.text.Text;
 import amata1219.parkour.text.TextStream;
 import amata1219.parkour.util.Color;
-import amata1219.parkour.util.StringSplit;
+import amata1219.parkour.util.Splitter;
 
 public class ParkourSettingCommand implements Command {
 
@@ -132,7 +132,7 @@ public class ParkourSettingCommand implements Command {
 			}
 
 			//各値に分割する
-			int[] values = StringSplit.splitToIntArguments(text);
+			int[] values = Splitter.splitToIntArguments(text);
 
 			//各アスレのパーティクル色を更新する
 			parkour.apply(it -> {
@@ -157,7 +157,7 @@ public class ParkourSettingCommand implements Command {
 			}
 
 			//各値に分割する
-			int[] coins = StringSplit.splitToIntArguments(text);
+			int[] coins = Splitter.splitToIntArguments(text);
 
 			//報酬を更新する
 			parkour.apply(it -> it.rewards = new Rewards(coins));
