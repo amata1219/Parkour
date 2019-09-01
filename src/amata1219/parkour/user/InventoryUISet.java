@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 import amata1219.parkour.inventory.ui.dsl.InventoryUI;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.ui.BuyHatUI;
-import amata1219.parkour.ui.LastCheckpointSelectionUI;
-import amata1219.parkour.ui.LatestCheckpointSelectionUI;
+import amata1219.parkour.ui.LastCheckpointListUI;
+import amata1219.parkour.ui.LatestCheckpointListUI;
 import amata1219.parkour.ui.MyProfileUI;
 import amata1219.parkour.ui.ScoreboardDisplaySettingsUI;
 import amata1219.parkour.ui.WearHatUI;
@@ -17,8 +17,10 @@ import amata1219.parkour.ui.parkour.RankUpParkourSelectionUI;
 
 public class InventoryUISet {
 
+	//微妙
 	private static final ParkourCategory[] COMMON_CATEGORIES = new ParkourCategory[]{ParkourCategory.NORMAL, ParkourCategory.SEGMENT, ParkourCategory.BIOME};
 
+	//綺麗じゃないどうにかしろ
 	private final Player player;
 	private final InventoryUI myProfileUI;
 	private final InventoryUI lastCheckpointSelectionUI;
@@ -31,8 +33,8 @@ public class InventoryUISet {
 	public InventoryUISet(User user){
 		player = user.asBukkitPlayer();
 
-		lastCheckpointSelectionUI = new LastCheckpointSelectionUI(user);
-		latestCheckpointSelectionUI = new LatestCheckpointSelectionUI(user);
+		lastCheckpointSelectionUI = new LastCheckpointListUI(user);
+		latestCheckpointSelectionUI = new LatestCheckpointListUI(user);
 
 		scoreboardOptionSelectionUI = new ScoreboardDisplaySettingsUI(user);
 		buyHatUI = new BuyHatUI(user);
