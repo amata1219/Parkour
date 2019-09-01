@@ -13,39 +13,39 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import amata1219.parkour.hat.Hat;
 import amata1219.parkour.hat.Hats;
-import amata1219.parkour.inventory.ui.dsl.InventoryUI;
 import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
+import amata1219.parkour.item.ItemStackBuilder;
 import amata1219.parkour.sound.SoundMetadata;
-import amata1219.parkour.string.StringTemplate;
-import amata1219.parkour.string.message.Localizer;
+import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.PurchasedHatCollection;
 
-public class WearHatUI implements InventoryUI {
+public class WearHatUI extends AbstractUI {
 
 	private static final SoundMetadata WEAR_SE = new SoundMetadata(Sound.ITEM_ARMOR_EQUIP_CHAIN, 5f, 0.25f);
 	private static final SoundMetadata PUT_ON_SE = new SoundMetadata(Sound.ENTITY_CHICKEN_EGG, 1.5f, 1f);
 	private static final ItemStack AIR = new ItemStack(Material.AIR);
 
-	private final PurchasedHatCollection hats;
-	private final Localizer localizer;
+	private final PurchasedHatCollection purchasedHats;
 
 	public WearHatUI(User user){
-		this.hats = user.hats;
-		this.localizer = user.localizer;
+		super(user);
+		purchasedHats = user.hats;
 	}
 
 	@Override
 	public Function<Player, InventoryLayout> layout() {
+		Player player = user.asBukkitPlayer();
+
 		//購入済みハットのリスト
 		List<Hat> hats = Hats.HATS.stream()
-		.filter(this.hats::has)
+		.filter(purchasedHats::has)
 		.collect(Collectors.toList());
 
 		return build(hats.size() + 1, l -> {
-			Player player = l.player;
-
-			l.title = localizer.color("帽子を被る | ?");
+			l.title = BilingualText.stream("帽子を被る", "Wear Hats")
+					.textBy(player)
+					.toString();
 
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
@@ -73,27 +73,39 @@ public class WearHatUI implements InventoryUI {
 
 						//表示名を帽子のプレイヤー名にする
 						ItemMeta meta = equippedHelmet.getItemMeta();
-						meta.setDisplayName(StringTemplate.capply("&f-$0", hatName));
+						meta.setDisplayName("§f" + hatName);
 						equippedHelmet.setItemMeta(meta);
 
-						ItemStack putOnButton = new ItemStack(Material.CHEST);
-						ItemMeta putOnMeta = putOnButton.getItemMeta();
-						putOnMeta.setDisplayName(localizer.color("&b-帽子を仕舞う | &b-?"));
-						putOnButton.setItemMeta(putOnMeta);
+						String displayName = BilingualText.stream("&c-帽子を仕舞う", "&c-ResetHat")
+								.textBy(player)
+								.color()
+								.toString();
 
-						e.clickedInventory.setItem(lastSlotIndex, putOnButton);
+						ItemStack button = new ItemStackBuilder(Material.CHEST)
+						.setDisplayName(displayName)
+						.build();
 
-						localizer.mapplyAll("&b-$0の帽子を被りました | &b-?", hatName).displayOnActionBar(player);
+						e.clickedInventory.setItem(lastSlotIndex, button);
 
 						WEAR_SE.play(player);
+
+						BilingualText.stream("&c-$nameの帽子を被りました", "&c-You wore a $name hat")
+						.setAttribute("$name", hatName)
+						.color()
+						.setReceiver(player)
+						.sendActionBarMessage();
 
 						openInventory(player);
 					});
 
 					s.icon(i -> {
 						i.basedItemStack = hatItem.clone();
-						i.displayName = StringTemplate.capply("&b-$0", hatName);
-						i.lore(localizer.color("&7-クリックすると被ります。 | &7-?"));
+						i.displayName = "§b" + hatName;
+						String lore = BilingualText.stream("&7-クリックすると被ります。", "&7-Click to wear")
+								.textBy(player)
+								.color()
+								.toString();
+						i.lore(lore);
 					});
 
 				}, slotIndex++);
@@ -110,15 +122,24 @@ public class WearHatUI implements InventoryUI {
 
 					inventory.setHelmet(AIR);
 					e.clickedInventory.setItem(lastSlotIndex, AIR);
-					localizer.mcolor("&b-帽子を仕舞いました | &b-?").displayOnActionBar(player);
 
 					PUT_ON_SE.play(player);
+
+					BilingualText.stream("&c-帽子を仕舞いました", "&c-Reset your hat")
+					.color()
+					.setReceiver(player)
+					.sendActionBarMessage();
 
 					openInventory(player);
 				});
 
+				String displayName = BilingualText.stream("&c-帽子を仕舞う", "&c-ResetHat")
+						.textBy(player)
+						.color()
+						.toString();
+
 				//帽子を被っていればそれを脱ぐ為のボタンをセットする
-				if(player.getInventory().getHelmet() != null) s.icon(Material.CHEST, i -> i.displayName = localizer.color("&b-帽子を仕舞う | &b-?"));
+				if(player.getInventory().getHelmet() != null) s.icon(Material.CHEST, i -> i.displayName = displayName);
 
 			}, lastSlotIndex);
 		});

@@ -72,20 +72,20 @@ public class ScoreboardDisplaySettingsUI implements InventoryUI {
 
 			l.onClose(e -> user.statusBoard.loadScoreboard());
 
-			for(ToggleButton icon : BUTTONS){
-				String iconName = icon.third.apply(player);
-				DisplaySetting displaySetting = icon.fourth;
+			for(ToggleButton button : BUTTONS){
+				String buttonName = button.third.apply(player);
+				DisplaySetting displaySetting = button.fourth;
 
 				l.put(s -> {
-					s.icon(icon.second, i -> applyDisplaySetting(i, iconName, displaySetting.apply(setting)));
+					s.icon(button.second, i -> applyDisplaySetting(i, buttonName, displaySetting.apply(setting)));
 
 					s.onClick(e -> {
 						//表示設定を反転させる
-						icon.fifth.accept(setting);
+						button.fifth.accept(setting);
 
-						applyDisplaySetting(e.currentIcon, iconName, displaySetting.apply(setting));
+						applyDisplaySetting(e.currentIcon, buttonName, displaySetting.apply(setting));
 					});
-				}, icon.first);
+				}, button.first);
 
 			}
 		});

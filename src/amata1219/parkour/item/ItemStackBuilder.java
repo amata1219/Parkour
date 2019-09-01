@@ -39,45 +39,53 @@ public class ItemStackBuilder {
 		this.material = material;
 	}
 
-	public void setAmount(int amount){
+	public ItemStackBuilder setAmount(int amount){
 		this.amount = amount;
+		return this;
 	}
 
-	public void setDamage(int damage){
+	public ItemStackBuilder setDamage(int damage){
 		this.damage = damage;
+		return this;
 	}
 
-	public void setDisplayName(String displayName){
+	public ItemStackBuilder setDisplayName(String displayName){
 		this.displayName = displayName;
+		return this;
 	}
 
-	public void addLore(String text){
+	public ItemStackBuilder addLore(String text){
 		lore.add(text);
+		return this;
 	}
 
-	public void setLore(Collection<String> lore){
+	public ItemStackBuilder setLore(Collection<String> lore){
 		this.lore.clear();
 		this.lore.addAll(lore);
+		return this;
 	}
 
-	public void addEnchantment(Enchantment enchantment){
-		addEnchantment(enchantment, 1);
+	public ItemStackBuilder addEnchantment(Enchantment enchantment){
+		return addEnchantment(enchantment, 1);
 	}
 
-	public void addEnchantment(Enchantment enchantment, int level){
+	public ItemStackBuilder addEnchantment(Enchantment enchantment, int level){
 		enchantments.put(enchantment, level);
+		return this;
 	}
 
-	public void addFlag(ItemFlag flag){
+	public ItemStackBuilder addFlag(ItemFlag flag){
 		flags.add(flag);
+		return this;
 	}
 
-	public void gleam(){
-		enchantments.put(GleamEnchantment.GLEAM_ENCHANTMENT, 0);
+	public ItemStackBuilder gleam(){
+		return addEnchantment(GleamEnchantment.GLEAM_ENCHANTMENT);
 	}
 
-	public void raw(Consumer<ItemStack> raw){
+	public ItemStackBuilder raw(Consumer<ItemStack> raw){
 		this.raw = raw;
+		return this;
 	}
 
 	public ItemStack build(){
