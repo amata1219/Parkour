@@ -184,10 +184,6 @@ public class User {
 		return Optional.ofNullable(statusBoard);
 	}
 
-	public Optional<TimeAttackProgress> getTimeAttackProgress(){
-		return Optional.ofNullable(timeAttackProgress);
-	}
-
 	public void save(){
 		Yaml yaml = UserSet.getInstnace().makeYaml(uuid);
 
@@ -219,7 +215,6 @@ public class User {
 
 		hats.save(yaml);
 		checkpoints.save(yaml);
-		getTimeAttackProgress().ifPresent(it -> it.save(yaml));
 		setting.save(yaml);
 
 		//セーブする

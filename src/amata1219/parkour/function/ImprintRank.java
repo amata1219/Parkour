@@ -17,6 +17,7 @@ public class ImprintRank {
 				.setAttribute("$rank_color", RankColor.values()[rank].color)
 				.setAttribute("$player_name", player.getName())
 				.setAttribute("$rank", rank)
+				.color()
 				.toString();
 
 		player.setDisplayName(displayName);

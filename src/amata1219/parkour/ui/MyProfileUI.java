@@ -62,10 +62,10 @@ public class MyProfileUI implements InventoryUI {
 
 	static{
 		BUTTONS = ImmutableList.of(
-			new Button(4, Material.PRISMARINE_SLAB, "&b-スコアボードオプション", "&b-Scoreboard Options", user -> user.inventoryUserInterfaces.openScoreboardOptionSelectionUI()),
-			new Button(5, Material.PRISMARINE_BRICK_SLAB, "&b-帽子を購入する", "&b-Buy Hats", user -> user.inventoryUserInterfaces.openBuyHatUI()),
-			new Button(6, Material.DARK_PRISMARINE_SLAB, "&b-帽子を被る", "&b-?", user -> user.inventoryUserInterfaces.openWearHatUI()),
-			new Button(7, Material.QUARTZ_SLAB, "&bロビーにテレポートする", "&b-Teleport to Lobby", user -> {
+			new Button(4, Material.PRISMARINE_SLAB, "スコアボードオプション", "Scoreboard Options", user -> user.inventoryUserInterfaces.openScoreboardOptionSelectionUI()),
+			new Button(5, Material.PRISMARINE_BRICK_SLAB, "帽子を購入する", "Buy Hats", user -> user.inventoryUserInterfaces.openBuyHatUI()),
+			new Button(6, Material.DARK_PRISMARINE_SLAB, "帽子を被る", "Wear Hats", user -> user.inventoryUserInterfaces.openWearHatUI()),
+			new Button(7, Material.QUARTZ_SLAB, "ロビーにテレポートする", "Teleport to Lobby", user -> {
 				//アスレから退出させる
 				user.exitCurrentParkour();
 
@@ -84,7 +84,6 @@ public class MyProfileUI implements InventoryUI {
 		LORE_BUILDERS = ImmutableList.of(
 			new LoreBuilder("Updateランク", "Update Rank", user -> user.updateRank()),
 			new LoreBuilder("Extendランク", "Extend Rank", user -> user.extendRank()),
-			new LoreBuilder("", "", user -> ""),
 			new LoreBuilder("ジャンプ数", "Jumps", user -> user.asBukkitPlayer().getStatistic(Statistic.JUMP)),
 			new LoreBuilder("所持コイン数", "Coins", user -> user.coins()),
 			new LoreBuilder("総プレイ時間", "Time Played", user -> user.asBukkitPlayer().getStatistic(Statistic.PLAY_ONE_MINUTE))
@@ -116,7 +115,11 @@ public class MyProfileUI implements InventoryUI {
 				s.icon(skull, i -> {
 					i.displayName = "§b" + player.getName();
 
-					i.lore = LORE_BUILDERS.stream().map(builder -> builder.buildBy(user)).collect(Collectors.toList());
+					List<String> lore = LORE_BUILDERS.stream().map(builder -> builder.buildBy(user)).collect(Collectors.toList());
+					lore.add(0, "");
+					lore.add(3, "");
+
+					i.lore = lore;
 				});
 
 			}, 1);
@@ -127,7 +130,7 @@ public class MyProfileUI implements InventoryUI {
 					s.onClick(e -> button.fourth.accept(user));
 
 					s.icon(button.second, i -> {
-						i.displayName = button.third.apply(player);
+						i.displayName = "§b" + button.third.apply(player);
 						i.gleam();
 					});
 
