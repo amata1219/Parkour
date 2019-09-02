@@ -26,8 +26,7 @@ public class SetCheckpointListener implements Listener {
 		//ユーザーを取得する
 		User user = users.getUser(player);
 
-		//足を地に着いていなければ戻る
-		if(!player.isOnGround() || !user.isPlayingParkour() || !user.isOnCheckArea()) return;
+		if(!user.isPlayingParkour() || !user.isOnCheckArea()) return;
 
 		ParkourRegion checkArea = user.currentCheckArea;
 
@@ -43,10 +42,16 @@ public class SetCheckpointListener implements Listener {
 		//不正な番号であれば戻る
 		if(majorCheckAreaNumber < 0) return;
 
+		//地に足をついていなければ戻る
+		if(player.isOnGround()){
+
+			return;
+		}
+
 		//チェックポイントとして設定する
 		user.checkpoints.setCheckpoint(parkour, majorCheckAreaNumber, new ImmutableLocation(player.getLocation()));
 
-		BilingualText.stream("$colorチェックポイント$numberを設定しました", "Set checkpoint$number")
+		BilingualText.stream("$colorチェックポイント$numberを設定しました", "$colorSet checkpoint$number")
 		.setAttribute("$color", parkour.prefixColor)
 		.setAttribute("$number", majorCheckAreaNumber + 1)
 		.color()
