@@ -28,8 +28,8 @@ public class CheckpointTeleporter implements FunctionalItem {
 			return;
 		}
 
-		//プレイ中のアスレを取得する
-		Parkour parkour = user.parkourPlayingNow;
+		//今いるアスレ
+		Parkour parkour = user.currentParkour;
 		CheckpointSet checkpoints = user.checkpoints;
 
 		if(!checkpoints.containsParkour(parkour)){
@@ -41,7 +41,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 			return;
 		}
 
-		//右クリックしたのであれば最終チェックポイントを、左クリックしたのであれば最新チェックポイントを取得する
+		//右クリックしたのであれば最終チェックポイント、左クリックしたのであれば最新チェックポイント
 		ImmutableLocation checkpoint = click == ClickType.RIGHT ? checkpoints.getLastCheckpoint(parkour) : checkpoints.getLatestCheckpoint(parkour);
 
 		//チェックポイントが無ければ戻る

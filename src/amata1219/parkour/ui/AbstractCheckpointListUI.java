@@ -108,13 +108,13 @@ public class AbstractCheckpointListUI extends AbstractUI {
 								.toString();
 
 						i.lore(
-							BilingualText.stream("&7-: $b-右クリック &7-@ このチェックポイントにテレポートします。",
+							BilingualText.stream("&7-: &b-右クリック &7-@ このチェックポイントにテレポートします。",
 									"&7-: &b-Right click &7-@ You teleport to this checkpoint.")
 									.textBy(player)
 									.color()
 									.toString(),
 
-							BilingualText.stream("&7-: $b-左クリック &7-@ このパルクール内で設定したチェックポイントの一覧を開きます。",
+							BilingualText.stream("&7-: &b-左クリック &7-@ このパルクール内で設定したチェックポイントの一覧を開きます。",
 									"&7-: &b-Right click &7-@ You teleport to this checkpoint.")
 									.textBy(player)
 									.color()

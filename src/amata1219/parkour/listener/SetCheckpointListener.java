@@ -46,7 +46,8 @@ public class SetCheckpointListener implements Listener {
 		//チェックポイントとして設定する
 		user.checkpoints.setCheckpoint(parkour, majorCheckAreaNumber, new ImmutableLocation(player.getLocation()));
 
-		BilingualText.stream("チェックポイント$numberを設定しました。", "Set checkpoint$number")
+		BilingualText.stream("$colorチェックポイント$numberを設定しました", "Set checkpoint$number")
+		.setAttribute("$color", parkour.prefixColor)
 		.setAttribute("$number", majorCheckAreaNumber + 1)
 		.color()
 		.setReceiver(player)

@@ -97,13 +97,10 @@ public class RegionSelectionSet implements Listener {
 		//セレクションを取得する
 		RegionSelection selection = getSelection(uuid);
 
-		//カンマを灰色にする
-		String selectionInformation = selection.toString().replace(",", "§7,§b");
-
 		//表示名を作成する
-		String displayName = Text.stream("&b-$parkour &r-&7-@ &b-$information")
+		String displayName = Text.stream("&b-$parkour &r-&7-@ &7-$information")
 				.setAttribute("$parkour", parkourName)
-				.setAttribute("$information", selectionInformation)
+				.setAttribute("$information", selection)
 				.color()
 				.toString();
 

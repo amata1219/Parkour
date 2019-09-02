@@ -36,7 +36,7 @@ public class DirectionCommand implements Command {
 			adjustAndSetYaw(location, yaw);
 			adjustAndSetPitch(location, pitch);
 
-			BilingualText.stream("&b-ヨーを$yawに、ピッチを$pitchに設定しました。", "&b-Set your yaw to $yaw and pitch $pitch")
+			BilingualText.stream("&b-ヨーを$yawに、ピッチを$pitchに設定しました", "&b-Set your yaw to $yaw and pitch $pitch")
 			.setAttribute("$yaw", yaw)
 			.setAttribute("$pitch", pitch)
 			.color()
@@ -57,7 +57,7 @@ public class DirectionCommand implements Command {
 
 				adjustAndSetYaw(location, yaw);
 
-				BilingualText.stream("&b-ヨーを$yawに設定しました。", "&b-Set your yaw to $yaw")
+				BilingualText.stream("&b-ヨーを$yawに設定しました", "&b-Set your yaw to $yaw")
 				.setAttribute("$yaw", yaw)
 				.color()
 				.setReceiver(player)
@@ -76,7 +76,7 @@ public class DirectionCommand implements Command {
 
 				adjustAndSetPitch(location, pitch);
 
-				BilingualText.stream("&b-ピッチを$pitchに設定しました。", "&b-Set your yaw to $pitch")
+				BilingualText.stream("&b-ピッチを$pitchに設定しました", "&b-Set your yaw to $pitch")
 				.setAttribute("$pitch", pitch)
 				.color()
 				.setReceiver(player)

@@ -71,7 +71,7 @@ public class ParkourRegionCommand implements Command {
 			return;
 		}
 
-		Text.stream("$parkour-&r-の$regionを$2に設定しました。")
+		Text.stream("$parkour-&r-の$regionを$selectionに設定しました。")
 		.setAttribute("$parkour", parkourName)
 		.setAttribute("$region", regionName)
 		.setAttribute("$selection", selection)
