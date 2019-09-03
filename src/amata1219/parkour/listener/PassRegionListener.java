@@ -27,7 +27,7 @@ public abstract class PassRegionListener implements Listener {
 		User user = users.getUser(player);
 
 		//今いるアスレが無ければ戻る
-		if(!user.isOnCurrentParkour()) return;
+		if(!user.isOnParkour()) return;
 
 		Location from = event.getFrom();
 
@@ -56,6 +56,8 @@ public abstract class PassRegionListener implements Listener {
 
 		//アスレを取得する
 		Parkour parkour = (fromRegion != null ? fromRegion.parkour : (toRegion != null ? toRegion.parkour : null));
+
+		System.out.println(parkour != null);
 
 		//アスレが存在しなければ戻る
 		if(parkour == null) return;

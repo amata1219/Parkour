@@ -19,7 +19,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 		Player player = user.asBukkitPlayer();
 
 		//アスレをプレイ中でなければ戻る
-		if(!user.isOnCurrentParkour()){
+		if(!user.isOnParkour()){
 			BilingualText.stream("&c-アスレチックのプレイ中でないためテレポート出来ません",
 					"&c-You can't teleport because you aren't playing parkour now")
 					.color()

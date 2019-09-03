@@ -86,7 +86,7 @@ public class UserJoinListener implements PlayerJoinListener {
 		ImprintRank.apply(user);
 
 		//最終ログアウト時にどこかのアスレにいた場合
-		if(user.isOnCurrentParkour()){
+		if(user.isOnParkour()){
 			Parkour parkour = user.currentParkour;
 
 			//再参加させる

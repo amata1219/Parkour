@@ -13,7 +13,7 @@ public class ParkourSelectionUIOpener implements FunctionalItem {
 	@Override
 	public void onClick(User user, ClickType click) {
 		//ステージのカテゴリーを取得する
-		ParkourCategory category = user.isOnCurrentParkour() ? user.currentParkour.category : ParkourCategory.NORMAL;
+		ParkourCategory category = user.isOnParkour() ? user.currentParkour.category : ParkourCategory.NORMAL;
 
 		user.inventoryUserInterfaces.openParkourSelectionUI(category);
 	}

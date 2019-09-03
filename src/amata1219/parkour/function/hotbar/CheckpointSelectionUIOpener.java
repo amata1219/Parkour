@@ -13,7 +13,7 @@ public class CheckpointSelectionUIOpener implements FunctionalItem {
 	@Override
 	public void onClick(User user, ClickType click) {
 		//どこのアスレにもいなければ戻る
-		if(!user.isOnCurrentParkour()){
+		if(!user.isOnParkour()){
 			BilingualText.stream("&c-パルクール中でないためチェックポイントの選択画面を開けません",
 					"&c-You can't open checkpoint selection UI because you aren't playing parkour now")
 					.color()

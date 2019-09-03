@@ -21,6 +21,8 @@ public class PassStartLineListener extends PassRegionListener {
 
 		boolean timeAttackEnable = parkour.timeAttackEnable;
 
+		System.out.println("start");
+
 		//スポーン地点側に戻ってきた場合
 		if(user.isPlayingParkour()){
 			user.parkourPlayingNow = null;

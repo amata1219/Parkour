@@ -122,31 +122,31 @@ public class StatusBoard {
 	}
 
 	public void updateUpdateRank(){
-		updateValue(3);
+		updateValue(2);
 	}
 
 	public void updateExtendRank(){
-		updateValue(4);
+		updateValue(3);
 	}
 
 	public void updateJumps(){
-		updateValue(5);
+		updateValue(4);
 	}
 
 	public void updateCoins(){
-		updateValue(6);
+		updateValue(5);
 	}
 
 	public void updateTimePlayed(){
-		updateValue(7);
+		updateValue(6);
 	}
 
 	public void updateOnlinePlayers(){
-		updateValue(8);
+		updateValue(7);
 	}
 
 	public void updatePing(){
-		updateValue(9);
+		updateValue(8);
 	}
 
 	private void updateValue(int score){

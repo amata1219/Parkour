@@ -153,13 +153,13 @@ public class User {
 	}
 
 	//今アスレ内にいるかどうか
-	public boolean isOnCurrentParkour(){
+	public boolean isOnParkour(){
 		return currentParkour != null;
 	}
 
 	//アスレから退出する
 	public void exitCurrentParkour(){
-		if(!isOnCurrentParkour()) return;
+		if(!isOnParkour()) return;
 
 		//今いるアスレから退出する
 		currentParkour.exit(this);
