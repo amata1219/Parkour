@@ -6,13 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.bukkit.configuration.ConfigurationSection;
 
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
+import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.yaml.Yaml;
 
 public class CheckpointSet {
@@ -61,10 +62,6 @@ public class CheckpointSet {
 		}
 	}
 
-	public List<Parkour> getParkourList(){
-		return checkpoints.keySet().stream().filter(parkours::containsParkour).map(parkours::getParkour).collect(Collectors.toList());
-	}
-
 	public boolean containsParkour(Parkour parkour){
 		return containsParkour(parkour.name);
 	}
@@ -89,50 +86,46 @@ public class CheckpointSet {
 		return checkpoints.containsKey(parkourName) ? new ArrayList<>(checkpoints.get(parkourName).values()) : Collections.emptyList();
 	}
 
-	public ImmutableLocation getLastCheckpoint(Parkour parkour){
+	public Optional<Tuple<Integer, ImmutableLocation>> getLastCheckpoint(Parkour parkour){
 		return getLastCheckpoint(parkour.name);
 	}
 
-	public ImmutableLocation getLastCheckpoint(String parkourName){
-		int lastCheckpointNumber = getLastCheckpointNumber(parkourName);
+	public Optional<Tuple<Integer, ImmutableLocation>> getLastCheckpoint(String parkourName){
+		//チェックポイントが存在しなければ戻る
+		if(!checkpoints.containsKey(parkourName)) Optional.empty();
 
-		return lastCheckpointNumber != -1 ? checkpoints.get(parkourName).get(lastCheckpointNumber) : null;
+		Map<Integer, ImmutableLocation> checkpointMap = checkpoints.get(parkourName);
+
+		int lastCheckpointNumber = checkpoints.get(parkourName).keySet().stream()
+				.mapToInt(Integer::intValue)
+				.max()
+				.getAsInt();
+
+		ImmutableLocation lastCheckpointLocation = checkpointMap.get(lastCheckpointNumber);
+
+		return Optional.of(new Tuple<>(lastCheckpointNumber, lastCheckpointLocation));
 	}
 
-	public int getLastCheckpointNumber(Parkour parkour){
-		return getLastCheckpointNumber(parkour.name);
-	}
-
-	public int getLastCheckpointNumber(String parkourName){
-		return checkpoints.containsKey(parkourName) ? checkpoints.get(parkourName).keySet().stream().mapToInt(Integer::intValue).max().orElse(-1) : -1;
-	}
-
-	public ImmutableLocation getLatestCheckpoint(Parkour parkour){
+	public Optional<Tuple<Integer, ImmutableLocation>> getLatestCheckpoint(Parkour parkour){
 		return getLatestCheckpoint(parkour.name);
 	}
 
-	public ImmutableLocation getLatestCheckpoint(String parkourName){
-		//最新のチェックポイントが存在しなければnullを返す
-		if(!latestCheckpoints.containsKey(parkourName)) return null;
+	public Optional<Tuple<Integer, ImmutableLocation>> getLatestCheckpoint(String parkourName){
+		//最新のチェックポイントが存在しなければ戻る
+		if(!latestCheckpoints.containsKey(parkourName)) return Optional.empty();
 
 		//最新のチェックエリア番号を取得する
 		int latestCheckAreaNumber = latestCheckpoints.get(parkourName);
 
-		//念の為にチェックポイントマップが存在しなければnullを返す
-		if(!checkpoints.containsKey(parkourName)) return null;
+		//念の為にチェックポイントマップが存在しなければ戻る
+		if(!checkpoints.containsKey(parkourName)) return Optional.empty();
 
 		//アスレ内のチェックポイントマップを取得する
 		Map<Integer, ImmutableLocation> points = checkpoints.get(parkourName);
 
-		return points.get(latestCheckAreaNumber);
-	}
+		ImmutableLocation latestCheckpointLocation = points.get(latestCheckAreaNumber);
 
-	public int getLatestCheckpointNumber(Parkour parkour){
-		return getLatestCheckpointNumber(parkour.name);
-	}
-
-	public int getLatestCheckpointNumber(String parkourName){
-		return latestCheckpoints.containsKey(parkourName) ? latestCheckpoints.get(parkourName) : -1;
+		return Optional.of(new Tuple<>(latestCheckAreaNumber, latestCheckpointLocation));
 	}
 
 	public void setCheckpoint(Parkour parkour, int checkAreaNumber, ImmutableLocation location){
@@ -151,21 +144,21 @@ public class CheckpointSet {
 
 	public void save(Yaml yaml){
 		//各チェックポイントを記録する
-		for(Entry<String, Map<Integer, ImmutableLocation>> eachParkourCheckpointsEntry : checkpoints.entrySet()){
+		for(Entry<String, Map<Integer, ImmutableLocation>> parkourCheckpointsEntry : checkpoints.entrySet()){
 			//アスレ名を取得する
-			String parkourName = eachParkourCheckpointsEntry.getKey();
+			String parkourName = parkourCheckpointsEntry.getKey();
 
 			//存在しないアスレであれば繰り返す
 			if(!parkours.containsParkour(parkourName)) continue;
 
 			ImmutableLocation origin = parkours.getParkour(parkourName).originLocation();
 
-			for(Entry<Integer, ImmutableLocation> eachCheckpointEntry : eachParkourCheckpointsEntry.getValue().entrySet()){
+			for(Entry<Integer, ImmutableLocation> checkpointEntry : parkourCheckpointsEntry.getValue().entrySet()){
 				//チェックエリア番号を取得する
-				String checkAreaNumber = eachCheckpointEntry.getKey().toString();
+				String checkAreaNumber = checkpointEntry.getKey().toString();
 
 				//チェックポイントを取得し相対座標化する
-				ImmutableLocation point = origin.relative(eachCheckpointEntry.getValue());
+				ImmutableLocation point = origin.relative(checkpointEntry.getValue());
 
 				//対応したアスレ、チェックエリア番号にセットする
 				yaml.set("Check points." + parkourName + "." + checkAreaNumber, point.serialize());
