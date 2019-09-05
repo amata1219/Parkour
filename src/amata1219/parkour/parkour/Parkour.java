@@ -103,10 +103,12 @@ public class Parkour {
 
 		user.currentParkour = this;
 
-		Player player = user.asBukkitPlayer();
+		displayParticles(user);
+	}
 
+	public void displayParticles(User user){
 		//パケット送信用のコネクションリストに追加する
-		connections.add(player);
+		connections.add(user.asBukkitPlayer());
 
 		//全境界線を表示する
 		startLine.displayBorders();
@@ -115,9 +117,11 @@ public class Parkour {
 	}
 
 	public void exit(User user){
-		Player player = user.asBukkitPlayer();
+		undisplayParticles(user);
+	}
 
-		connections.remove(player);
+	public void undisplayParticles(User user){
+		connections.remove(user.asBukkitPlayer());
 
 		//プレイヤーがいれば戻る
 		if(!connections.isEmpty()) return;

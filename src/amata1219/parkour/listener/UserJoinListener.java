@@ -89,8 +89,7 @@ public class UserJoinListener implements PlayerJoinListener {
 		if(user.isOnParkour()){
 			Parkour parkour = user.currentParkour;
 
-			//再参加させる
-			parkour.entry(user);
+			parkour.displayParticles(user);
 
 			Location location = player.getLocation();
 			CheckAreas checkAreas = parkour.checkAreas;

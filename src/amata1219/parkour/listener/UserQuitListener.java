@@ -18,7 +18,7 @@ public class UserQuitListener implements PlayerQuitListener {
 		if(user.isPlayingParkour() && user.parkourPlayingNow.timeAttackEnable) user.timeElapsed = System.currentTimeMillis() - user.startTime;
 
 		//今いるアスレから退出させる
-		if(user.isOnParkour()) user.currentParkour.exit(user);
+		if(user.isOnParkour()) user.currentParkour.undisplayParticles(user);
 
 		user.inventoryUserInterfaces = null;
 
