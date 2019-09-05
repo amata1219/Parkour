@@ -62,11 +62,11 @@ public class CheckpointSet {
 		}
 	}
 
-	public boolean containsParkour(Parkour parkour){
-		return containsParkour(parkour.name);
+	public boolean hasCheckpoint(Parkour parkour){
+		return hasCheckpoint(parkour.name);
 	}
 
-	public boolean containsParkour(String parkourName){
+	public boolean hasCheckpoint(String parkourName){
 		return checkpoints.containsKey(parkourName);
 	}
 
@@ -82,6 +82,24 @@ public class CheckpointSet {
 				.sorted(Entry.comparingByKey())
 				.map(entry -> new Tuple<>(entry.getKey(), entry.getValue()))
 				.collect(Collectors.toList());
+	}
+
+	public Optional<Tuple<Integer, ImmutableLocation>> getCheckpoint(Parkour parkour, Integer checkAreaNumber){
+		return getCheckpoint(parkour.name, checkAreaNumber);
+	}
+
+	public Optional<Tuple<Integer, ImmutableLocation>> getCheckpoint(String parkourName, Integer checkAreaNumber){
+		//チェックポイントが存在しなければ戻る
+		if(!checkpoints.containsKey(parkourName)) return Optional.empty();
+
+		Map<Integer, ImmutableLocation> checkpointMap = checkpoints.get(parkourName);
+
+		//チェックポイントが存在しなければ戻る
+		if(!checkpointMap.containsKey(checkAreaNumber)) return Optional.empty();
+
+		ImmutableLocation checkpointLocation = checkpointMap.get(checkAreaNumber);
+
+		return Optional.of(new Tuple<>(checkAreaNumber, checkpointLocation));
 	}
 
 	public Optional<Tuple<Integer, ImmutableLocation>> getLastCheckpoint(Parkour parkour){

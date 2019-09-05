@@ -55,7 +55,7 @@ public class AbstractCheckpointListUI extends AbstractUI {
 		CheckpointSet checkpoints = user.checkpoints;
 
 		List<Parkour> parkours = ParkourSet.getInstance().getEnabledParkours(category)
-				.filter(checkpoints::containsParkour)
+				.filter(checkpoints::hasCheckpoint)
 				.sorted((a, b) -> a.colorlessName().compareTo(b.colorlessName()))
 				.collect(Collectors.toList());
 

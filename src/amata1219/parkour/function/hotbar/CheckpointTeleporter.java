@@ -32,7 +32,7 @@ public class CheckpointTeleporter implements FunctionalItem {
 		Parkour parkour = user.currentParkour;
 		CheckpointSet checkpoints = user.checkpoints;
 
-		if(!checkpoints.containsParkour(parkour)){
+		if(!checkpoints.hasCheckpoint(parkour)){
 			BilingualText.stream("&c-チェックポイントが設定されていないためテレポート出来ません",
 					"&c-You can't teleport because you have not set any checkpoints")
 					.color()

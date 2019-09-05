@@ -13,6 +13,7 @@ import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.text.Text;
+import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 
@@ -31,13 +32,7 @@ public class ParkourCheckpointListUI extends AbstractUI {
 
 		CheckpointSet checkpoints = user.checkpoints;
 
-		//アスレに対応したチェックポイントマップを取得する
-		Map<Integer, ImmutableLocation> points = checkpoints.getMajorCheckAreaNumbersAndCheckpoints(parkour);
-
-		//メジャーチェックエリア番号を昇順にソートする
-		List<Integer> sortedMajorCheckAreaNumbers = points.keySet().stream().sorted((x, y) -> Integer.compare(x, y)).collect(Collectors.toList());
-
-		int checkpointSize = sortedMajorCheckAreaNumbers.size();
+		List<Tuple<Integer, ImmutableLocation>> points = checkpoints.getCheckpoints(parkour);
 
 		//アスレ名を取得する
 		String parkourName = parkour.name;

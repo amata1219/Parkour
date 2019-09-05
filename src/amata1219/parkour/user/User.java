@@ -70,7 +70,8 @@ public class User {
 	//各UIを保持している
 	public InventoryUISet inventoryUserInterfaces;
 
-	public TimeAttackProgress timeAttackProgress;
+	//アスレの進捗度
+	private ParkourChallengeProgress progress;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する
@@ -182,6 +183,10 @@ public class User {
 
 	public Optional<StatusBoard> statusBoard(){
 		return Optional.ofNullable(statusBoard);
+	}
+
+	public Optional<ParkourChallengeProgress> parkourChallengeProgress(){
+		return Optional.of(progress);
 	}
 
 	public void save(){
