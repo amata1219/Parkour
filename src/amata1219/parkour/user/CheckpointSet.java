@@ -1,11 +1,11 @@
 package amata1219.parkour.user;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.Optional;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -70,20 +70,18 @@ public class CheckpointSet {
 		return checkpoints.containsKey(parkourName);
 	}
 
-	public Map<Integer, ImmutableLocation> getMajorCheckAreaNumbersAndCheckpoints(Parkour parkour){
-		return getMajorCheckAreaNumbersAndCheckpoints(parkour.name);
-	}
-
-	public Map<Integer, ImmutableLocation> getMajorCheckAreaNumbersAndCheckpoints(String parkourName){
-		return checkpoints.containsKey(parkourName) ? new HashMap<>(checkpoints.get(parkourName)) : Collections.emptyMap();
-	}
-
-	public List<ImmutableLocation> getCheckpoints(Parkour parkour){
+	public List<Tuple<Integer, ImmutableLocation>> getCheckpoints(Parkour parkour){
 		return getCheckpoints(parkour.name);
 	}
 
-	public List<ImmutableLocation> getCheckpoints(String parkourName){
-		return checkpoints.containsKey(parkourName) ? new ArrayList<>(checkpoints.get(parkourName).values()) : Collections.emptyList();
+	public List<Tuple<Integer, ImmutableLocation>> getCheckpoints(String parkourName){
+		//チェックポイントが存在しなければ戻る
+		if(!checkpoints.containsKey(parkourName)) return Collections.emptyList();
+
+		return checkpoints.get(parkourName).entrySet().stream()
+				.sorted(Entry.comparingByKey())
+				.map(entry -> new Tuple<>(entry.getKey(), entry.getValue()))
+				.collect(Collectors.toList());
 	}
 
 	public Optional<Tuple<Integer, ImmutableLocation>> getLastCheckpoint(Parkour parkour){
