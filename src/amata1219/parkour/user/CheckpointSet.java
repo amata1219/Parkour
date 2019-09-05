@@ -122,6 +122,28 @@ public class CheckpointSet {
 		return Optional.of(new Tuple<>(lastCheckpointNumber, lastCheckpointLocation));
 	}
 
+	public Optional<Tuple<Integer, ImmutableLocation>> getLastCheckpoint(Parkour parkour, int limit){
+		return getLastCheckpoint(parkour.name, limit);
+	}
+
+	public Optional<Tuple<Integer, ImmutableLocation>> getLastCheckpoint(String parkourName, int limit){
+		//チェックポイントが存在しなければ戻る
+		if(!checkpoints.containsKey(parkourName)) Optional.empty();
+
+		Map<Integer, ImmutableLocation> checkpointMap = checkpoints.get(parkourName);
+
+		//最終チェックポイントのメジャーチェックエリア番号を求める
+		int lastCheckpointNumber = checkpoints.get(parkourName).keySet().stream()
+				.mapToInt(Integer::intValue)
+				.filter(i -> i <= limit)
+				.max()
+				.getAsInt();
+
+		ImmutableLocation lastCheckpointLocation = checkpointMap.get(lastCheckpointNumber);
+
+		return Optional.of(new Tuple<>(lastCheckpointNumber, lastCheckpointLocation));
+	}
+
 	public Optional<Tuple<Integer, ImmutableLocation>> getLatestCheckpoint(Parkour parkour){
 		return getLatestCheckpoint(parkour.name);
 	}
@@ -135,6 +157,24 @@ public class CheckpointSet {
 
 		//念の為にチェックポイントマップが存在しなければ戻る
 		if(!checkpoints.containsKey(parkourName)) return Optional.empty();
+
+		//アスレ内のチェックポイントマップを取得する
+		Map<Integer, ImmutableLocation> points = checkpoints.get(parkourName);
+
+		ImmutableLocation latestCheckpointLocation = points.get(latestCheckAreaNumber);
+
+		return Optional.of(new Tuple<>(latestCheckAreaNumber, latestCheckpointLocation));
+	}
+
+	public Optional<Tuple<Integer, ImmutableLocation>> getLatestCheckpoint(String parkourName, int limit){
+		//最新のチェックポイントが存在しなければ戻る
+		if(!latestCheckpoints.containsKey(parkourName)) return Optional.empty();
+
+		//最新のチェックエリア番号を取得する
+		int latestCheckAreaNumber = latestCheckpoints.get(parkourName);
+
+		//念の為にチェックポイントマップが存在しなければ戻る
+		if(latestCheckAreaNumber > limit || !checkpoints.containsKey(parkourName)) return Optional.empty();
 
 		//アスレ内のチェックポイントマップを取得する
 		Map<Integer, ImmutableLocation> points = checkpoints.get(parkourName);
