@@ -1,7 +1,6 @@
 package amata1219.parkour.ui;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -19,6 +18,7 @@ import amata1219.parkour.text.Text;
 import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
+import amata1219.parkour.util.Optional;
 
 public class AbstractCheckpointListUI extends AbstractUI {
 
@@ -71,7 +71,7 @@ public class AbstractCheckpointListUI extends AbstractUI {
 				String prefixColor = parkour.prefixColor;
 
 				//最終チェックポイントが存在する事が保証されているのでそのまま取得する
-				Tuple<Integer, ImmutableLocation> lastCheckpoint = checkpoint.apply(parkour, checkpoints).get();
+				Tuple<Integer, ImmutableLocation> lastCheckpoint = checkpoint.apply(parkour, checkpoints).reference;
 				int majorCheckAreaNumberForDisplay = lastCheckpoint.first;
 
 				l.put(s -> {

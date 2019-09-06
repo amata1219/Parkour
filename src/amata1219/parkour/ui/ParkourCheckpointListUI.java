@@ -1,9 +1,7 @@
 package amata1219.parkour.ui;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -32,25 +30,25 @@ public class ParkourCheckpointListUI extends AbstractUI {
 
 		CheckpointSet checkpoints = user.checkpoints;
 
-		List<Tuple<Integer, ImmutableLocation>> points = checkpoints.getCheckpoints(parkour);
+		List<Tuple<Integer, ImmutableLocation>> points = user.parkourChallengeProgress()
+				.setPresentFunction(it -> checkpoints.getCheckpoints(parkour, it.currentCheckAreaNumber()))
+				.setEmptyFunction(() -> checkpoints.getCheckpoints(parkour))
+				.apply();
 
 		//アスレ名を取得する
 		String parkourName = parkour.name;
 		String prefixColor = parkour.prefixColor;
 
-		return build(checkpointSize, l -> {
+		return build(points.size(), l -> {
 			l.title = parkour.colorlessName();
 
 			l.defaultSlot(s -> s.icon(Material.LIGHT_GRAY_STAINED_GLASS_PANE, i -> i.displayName = " "));
 
 			//各座標毎に処理をする
-			for(int slotIndex = 0; slotIndex < checkpointSize; slotIndex++){
-				int majorCheckAreaNumber = sortedMajorCheckAreaNumbers.get(slotIndex);
-
-				//対応した座標を取得する
-				ImmutableLocation point = points.get(majorCheckAreaNumber);
-
-				int majorCheckAreaNumberForDisplay = majorCheckAreaNumber + 1;
+			for(int slotIndex = 0; slotIndex < points.size(); slotIndex++){
+				Tuple<Integer, ImmutableLocation> checkpoint = points.get(slotIndex);
+				ImmutableLocation point = checkpoint.second;
+				int majorCheckAreaNumberForDisplay = checkpoint.first + 1;
 
 				l.put(s -> {
 
