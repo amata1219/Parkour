@@ -84,6 +84,21 @@ public class CheckpointSet {
 				.collect(Collectors.toList());
 	}
 
+	public List<Tuple<Integer, ImmutableLocation>> getCheckpoints(Parkour parkour, int limit){
+		return getCheckpoints(parkour.name, limit);
+	}
+
+	public List<Tuple<Integer, ImmutableLocation>> getCheckpoints(String parkourName, int limit){
+		//チェックポイントが存在しなければ戻る
+		if(!checkpoints.containsKey(parkourName)) return Collections.emptyList();
+
+		return checkpoints.get(parkourName).entrySet().stream()
+				.filter(entry -> entry.getKey() <= limit)
+				.sorted(Entry.comparingByKey())
+				.map(entry -> new Tuple<>(entry.getKey(), entry.getValue()))
+				.collect(Collectors.toList());
+	}
+
 	public Optional<Tuple<Integer, ImmutableLocation>> getCheckpoint(Parkour parkour, Integer checkAreaNumber){
 		return getCheckpoint(parkour.name, checkAreaNumber);
 	}

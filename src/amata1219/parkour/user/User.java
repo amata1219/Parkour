@@ -185,6 +185,10 @@ public class User {
 		return Optional.ofNullable(statusBoard);
 	}
 
+	public boolean isChallenging(){
+		return progress != null;
+	}
+
 	public Optional<ParkourChallengeProgress> parkourChallengeProgress(){
 		return Optional.of(progress);
 	}
