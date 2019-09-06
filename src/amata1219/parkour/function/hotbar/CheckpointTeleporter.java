@@ -9,8 +9,10 @@ import amata1219.parkour.enchantment.GleamEnchantment;
 import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.text.BilingualText;
+import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
+import amata1219.parkour.util.Optional;
 
 public class CheckpointTeleporter implements FunctionalItem {
 
@@ -42,10 +44,10 @@ public class CheckpointTeleporter implements FunctionalItem {
 		}
 
 		//右クリックしたのであれば最終チェックポイント、左クリックしたのであれば最新チェックポイント
-		ImmutableLocation checkpoint = click == ClickType.RIGHT ? checkpoints.getLastCheckpoint(parkour) : checkpoints.getLatestCheckpoint(parkour);
+		Optional<Tuple<Integer, ImmutableLocation>> wrappedCheckpoint = click == ClickType.RIGHT ? checkpoints.getLastCheckpoint(parkour) : checkpoints.getLatestCheckpoint(parkour);
 
 		//チェックポイントが無ければ戻る
-		if(checkpoint == null){
+		if(!wrappedCheckpoint.isPresent()){
 			BilingualText.stream("&c-チェックポイントが設定されていないためテレポート出来ません",
 					"&c-You can't teleport because you have not set any checkpoints")
 					.color()
@@ -54,15 +56,14 @@ public class CheckpointTeleporter implements FunctionalItem {
 			return;
 		}
 
-		//チェックエリアの番号を取得し表示用に+1する
-		int displayCheckAreaNumber = (click == ClickType.RIGHT ? checkpoints.getLastCheckpointNumber(parkour) : checkpoints.getLatestCheckpointNumber(parkour)) + 1;
+		Tuple<Integer, ImmutableLocation> checkpoint = wrappedCheckpoint.forcedUnwrapping();
 
 		//チェックポイントにテレポートさせる
-		player.teleport(checkpoint.asBukkit());
+		player.teleport(checkpoint.second.asBukkit());
 
 		BilingualText.stream("$colorチェックポイント$numberにテレポートしました", "$colorTeleported to checkpoint$number")
 		.setAttribute("$color", parkour.prefixColor)
-		.setAttribute("$number", displayCheckAreaNumber)
+		.setAttribute("$number", checkpoint.first + 1)
 		.setReceiver(player)
 		.sendActionBarMessage();
 	}

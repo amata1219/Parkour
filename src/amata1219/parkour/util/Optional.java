@@ -8,7 +8,7 @@ public class Optional<T> {
 
 	public static final Optional<?> EMPTY = of(null);
 
-	public final T reference;
+	private final T reference;
 	private Function<T, ?> action, emptyAction;
 
 	public static <T> Optional<T> of(T reference){
@@ -26,6 +26,10 @@ public class Optional<T> {
 
 	public boolean isPresent(){
 		return reference != null;
+	}
+
+	public T forcedUnwrapping(){
+		return reference;
 	}
 
 	public Optional<T> setPresentFunction(Function<T, ?> action){

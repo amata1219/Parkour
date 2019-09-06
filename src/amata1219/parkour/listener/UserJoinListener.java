@@ -6,7 +6,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.bukkit.Location;
@@ -27,6 +26,7 @@ import amata1219.parkour.user.StatusBoard;
 import amata1219.parkour.user.InventoryUISet;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
+import amata1219.parkour.util.Optional;
 import net.minecraft.server.v1_13_R2.Packet;
 
 public class UserJoinListener implements PlayerJoinListener {
@@ -73,7 +73,7 @@ public class UserJoinListener implements PlayerJoinListener {
 		users.getOnlineUsers().stream()
 		.map(User::statusBoard)
 		.filter(Optional::isPresent)
-		.map(Optional::get)
+		.map(Optional::forcedUnwrapping)
 		.forEach(StatusBoard::updateOnlinePlayers);
 
 		//もし5秒以内に言語設定に変更があればスコアボードの表示を更新する
