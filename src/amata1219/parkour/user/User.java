@@ -112,6 +112,10 @@ public class User {
 
 		//購入済みのスカルのIDをUUIDに変換したリストを作成する
 		hats = new PurchasedHatCollection(this, yaml);
+
+		int currentCheckAreaNumber = yaml.getInt("Parkour challenge progress");
+
+		if(currentCheckAreaNumber > -1) progress = new ParkourChallengeProgress(currentCheckAreaNumber);
 	}
 
 	//このユーザーに対応したプレイヤーを取得する
@@ -221,6 +225,8 @@ public class User {
 		yaml.set("Creative world checkpoint", creativeWorldCheckpoint.serialize());
 
 		yaml.set("Hide mode", hideMode);
+
+		if(progress != null) yaml.set("Parkour challenge progress", progress.currentCheckAreaNumber());
 
 		hats.save(yaml);
 		checkpoints.save(yaml);

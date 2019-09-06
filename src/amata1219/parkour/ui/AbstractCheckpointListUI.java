@@ -71,7 +71,7 @@ public class AbstractCheckpointListUI extends AbstractUI {
 				String prefixColor = parkour.prefixColor;
 
 				//最終チェックポイントが存在する事が保証されているのでそのまま取得する
-				Tuple<Integer, ImmutableLocation> lastCheckpoint = checkpoint.apply(parkour, checkpoints).reference;
+				Tuple<Integer, ImmutableLocation> lastCheckpoint = checkpoint.apply(parkour, checkpoints).forcedUnwrapping();
 				int majorCheckAreaNumberForDisplay = lastCheckpoint.first;
 
 				l.put(s -> {
