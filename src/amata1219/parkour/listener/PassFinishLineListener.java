@@ -107,6 +107,7 @@ public class PassFinishLineListener extends PassRegionListener {
 		}
 
 		user.parkourPlayingNow = null;
+		user.progress = null;
 
 		//ランクアップアスレの場合
 		if(parkour instanceof RankUpParkour){

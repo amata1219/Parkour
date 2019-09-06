@@ -71,7 +71,7 @@ public class User {
 	public InventoryUISet inventoryUserInterfaces;
 
 	//アスレの進捗度
-	private ParkourChallengeProgress progress;
+	public ParkourChallengeProgress progress;
 
 	public User(Yaml yaml){
 		//ファイル名に基づきUUIDを生成し代入する

@@ -6,6 +6,7 @@ import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.text.BilingualText;
+import amata1219.parkour.user.ParkourChallengeProgress;
 import amata1219.parkour.user.User;
 
 public class PassStartLineListener extends PassRegionListener {
@@ -21,8 +22,6 @@ public class PassStartLineListener extends PassRegionListener {
 
 		boolean timeAttackEnable = parkour.timeAttackEnable;
 
-		System.out.println("start");
-
 		//スポーン地点側に戻ってきた場合
 		if(user.isPlayingParkour()){
 			user.parkourPlayingNow = null;
@@ -31,6 +30,7 @@ public class PassStartLineListener extends PassRegionListener {
 			if(!timeAttackEnable) return;
 
 			user.startTime = 0;
+			user.progress = null;
 
 			BilingualText.stream("&c-タイマーをリセットしました", "&c-Reset your timer")
 			.color()
@@ -38,6 +38,7 @@ public class PassStartLineListener extends PassRegionListener {
 
 		//アスレをプレイし始めた場合
 		}else{
+			user.progress = new ParkourChallengeProgress();
 			user.parkourPlayingNow = parkour;
 
 			//タイムアタックが有効であればプレイし始めた時間を記録する

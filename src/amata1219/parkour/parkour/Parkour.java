@@ -117,6 +117,7 @@ public class Parkour {
 	}
 
 	public void exit(User user){
+		user.progress = null;
 		undisplayParticles(user);
 	}
 
