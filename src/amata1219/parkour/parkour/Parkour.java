@@ -133,13 +133,9 @@ public class Parkour {
 		checkAreas.undisplayAll();
 	}
 
-	public void apply(Consumer<Parkour> applier){
-		applier.accept(this);
-	}
-
 	public void update(Consumer<Parkour> applier){
 		parkours.unregisterParkour(this);
-		apply(applier);
+		applier.accept(this);
 		parkours.registerParkour(this);
 	}
 

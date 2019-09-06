@@ -84,7 +84,7 @@ public class ParkourSettingCommand implements Command {
 				}
 
 				//正しいカテゴリーであれば書き換える
-				parkour.apply(it -> it.category = category);
+				parkour.category = category;
 			}catch(Exception e){
 				sender.warn("指定されたカテゴリーは不正です。[Normal, Update, Extend, Segment, Biome]から選んで下さい。");
 				return;
@@ -101,7 +101,7 @@ public class ParkourSettingCommand implements Command {
 
 			String description = ChatColor.translateAlternateColorCodes('&', args.getRange(args.getIndex(), args.getLength()));
 
-			parkour.apply(it -> it.description = description);
+			parkour.description = description;
 
 			Text.stream("$parkour-&r-の説明文を書き換えました。")
 			.setAttribute("$parkour", parkourName)
@@ -114,7 +114,7 @@ public class ParkourSettingCommand implements Command {
 			Location location = sender.asPlayerCommandSender().getLocation();
 
 			//イミュータブルな座標にしブロックの中央に調整した上でセットする
-			parkour.apply(it -> it.spawn = new ImmutableLocation(location));
+			parkour.spawn = new ImmutableLocation(location);
 
 			Text.stream("$parkour-&r-のスポーン地点を現在地点に書き換えました。")
 			.setAttribute("$parkour", parkourName)
@@ -135,12 +135,10 @@ public class ParkourSettingCommand implements Command {
 			int[] values = Splitter.splitToIntArguments(text);
 
 			//各アスレのパーティクル色を更新する
-			parkour.apply(it -> {
-				it.borderColor =  new Color(values[0], values[1], values[2]);
-				it.startLine.recolorParticles();
-				it.finishLine.recolorParticles();
-				it.checkAreas.recolorAll();
-			});
+			parkour.borderColor =  new Color(values[0], values[1], values[2]);
+			parkour.startLine.recolorParticles();
+			parkour.finishLine.recolorParticles();
+			parkour.checkAreas.recolorAll();
 
 			Text.stream("$parkour-&r-のパーティクル色を書き換えました。")
 			.setAttribute("$parkour", parkourName)
@@ -160,7 +158,7 @@ public class ParkourSettingCommand implements Command {
 			int[] coins = Splitter.splitToIntArguments(text);
 
 			//報酬を更新する
-			parkour.apply(it -> it.rewards = new Rewards(coins));
+			parkour.rewards = new Rewards(coins);
 
 			Text.stream("$parkour-&r-の報酬を現在地点に書き換えました。")
 			.setAttribute("$parkour", parkourName)
@@ -191,7 +189,7 @@ public class ParkourSettingCommand implements Command {
 			}
 
 			//更新する
-			parkour.apply(it -> it.timeAttackEnable = enableTimeAttack);
+			parkour.timeAttackEnable = enableTimeAttack;
 
 			Text.stream("$parkour-&r-のタイムアタックを$stateにしました。")
 			.setAttribute("$parkour", parkourName)
