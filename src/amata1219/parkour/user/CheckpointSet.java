@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
-import java.util.Optional;
 
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -14,6 +13,7 @@ import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.tuplet.Tuple;
+import amata1219.parkour.util.Optional;
 import amata1219.parkour.yaml.Yaml;
 
 public class CheckpointSet {
@@ -179,6 +179,10 @@ public class CheckpointSet {
 		ImmutableLocation latestCheckpointLocation = points.get(latestCheckAreaNumber);
 
 		return Optional.of(new Tuple<>(latestCheckAreaNumber, latestCheckpointLocation));
+	}
+
+	public Optional<Tuple<Integer, ImmutableLocation>> getLatestCheckpoint(Parkour parkour, int limit){
+		return getLatestCheckpoint(parkour.name, limit);
 	}
 
 	public Optional<Tuple<Integer, ImmutableLocation>> getLatestCheckpoint(String parkourName, int limit){

@@ -17,10 +17,10 @@ import amata1219.parkour.ui.parkour.RankUpParkourListUI;
 
 public class InventoryUISet {
 
-	//微妙
+	//改修予定
+
 	private static final ParkourCategory[] COMMON_CATEGORIES = new ParkourCategory[]{ParkourCategory.NORMAL, ParkourCategory.SEGMENT, ParkourCategory.BIOME};
 
-	//綺麗じゃないどうにかしろ
 	private final Player player;
 	private final InventoryUI myProfileUI;
 	private final InventoryUI lastCheckpointSelectionUI;

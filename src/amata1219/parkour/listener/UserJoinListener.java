@@ -77,10 +77,10 @@ public class UserJoinListener implements PlayerJoinListener {
 		.forEach(StatusBoard::updateOnlinePlayers);
 
 		//もし5秒以内に言語設定に変更があればスコアボードの表示を更新する
-		PlayerLocaleChange.applyIfLocaleChanged(user, 100, u -> u.statusBoard().ifPresent(it -> it.updateAll()));
+		PlayerLocaleChange.applyIfLocaleChanged(user, 100, u -> u.statusBoard().setPresentProcedure(it -> it.updateAll()));
 
 		//30秒後にPingの表示を更新する
-		Sync.define(() -> user.statusBoard().ifPresent(it -> it.updatePing())).executeLater(6000);
+		Sync.define(() -> user.statusBoard().setPresentProcedure(it -> it.updatePing())).executeLater(6000);
 
 		//プレイヤー名にランクを表示させる
 		ImprintRank.apply(user);

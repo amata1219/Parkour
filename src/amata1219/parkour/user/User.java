@@ -1,7 +1,6 @@
 package amata1219.parkour.user;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -15,6 +14,7 @@ import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.ParkourSet;
+import amata1219.parkour.util.Optional;
 import amata1219.parkour.yaml.Yaml;
 
 public class User {
@@ -182,7 +182,7 @@ public class User {
 	}
 
 	public Optional<StatusBoard> statusBoard(){
-		return Optional.ofNullable(statusBoard);
+		return Optional.of(statusBoard);
 	}
 
 	public boolean isChallenging(){

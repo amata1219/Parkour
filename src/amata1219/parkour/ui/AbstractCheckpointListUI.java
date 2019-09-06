@@ -1,6 +1,7 @@
 package amata1219.parkour.ui;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -15,29 +16,25 @@ import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.text.Text;
+import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 
 public class AbstractCheckpointListUI extends AbstractUI {
 
-	//ParkourとCheckpointSetを引数に受け取って結果を生成する関数を表す
-	interface CheckpointFunction<T> extends BiFunction<Parkour, CheckpointSet, T> { }
+	//入力された情報から条件に合うチェックポイントを返す関数を表す
+	interface CheckpointFunction extends BiFunction<Parkour, CheckpointSet, Optional<Tuple<Integer, ImmutableLocation>>> { }
 
 	//使用言語に対応したチェックポイントタイプを返す
 	private final LocaleFunction checkpointTypeForLocale;
 
 	//入力された情報から条件に合うチェックポイントを返す
-	private final CheckpointFunction<ImmutableLocation> checkpoint;
+	private final CheckpointFunction checkpoint;
 
-	//入力された情報から条件に合うメジャーチェックポイント番号を返す
-	private final CheckpointFunction<Integer> majorCheckpointNumber;
-
-	public AbstractCheckpointListUI(User user, LocaleFunction checkpointTypeForLocale,
-			CheckpointFunction<ImmutableLocation> checkpoint, CheckpointFunction<Integer> majorCheckpointNumber) {
+	public AbstractCheckpointListUI(User user, LocaleFunction checkpointTypeForLocale, CheckpointFunction checkpoint) {
 		super(user);
 		this.checkpointTypeForLocale = checkpointTypeForLocale;
 		this.checkpoint = checkpoint;
-		this.majorCheckpointNumber = majorCheckpointNumber;
 	}
 
 	@Override
@@ -72,8 +69,10 @@ public class AbstractCheckpointListUI extends AbstractUI {
 				Parkour parkour = parkours.get(slotIndex);
 				String parkourName = parkour.name;
 				String prefixColor = parkour.prefixColor;
-				ImmutableLocation lastCheckpoint = checkpoint.apply(parkour, checkpoints);
-				int majorCheckAreaNumberForDisplay = majorCheckpointNumber.apply(parkour, checkpoints) + 1;
+
+				//最終チェックポイントが存在する事が保証されているのでそのまま取得する
+				Tuple<Integer, ImmutableLocation> lastCheckpoint = checkpoint.apply(parkour, checkpoints).get();
+				int majorCheckAreaNumberForDisplay = lastCheckpoint.first;
 
 				l.put(s -> {
 					s.onClick(e -> {
@@ -81,7 +80,7 @@ public class AbstractCheckpointListUI extends AbstractUI {
 							//別のパルクールに移動する場合は参加処理をする
 							if(!parkour.equals(user.currentParkour)) parkour.entry(user);
 
-							player.teleport(lastCheckpoint.asBukkit());
+							player.teleport(lastCheckpoint.second.asBukkit());
 
 							BilingualText.stream("$parkour-&r-$colorの$typeチェックポイント$numberにテレポートしました",
 									"$colorYou teleported to checkpoint$number in $parkour")

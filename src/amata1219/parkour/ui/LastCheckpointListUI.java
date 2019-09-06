@@ -8,8 +8,10 @@ public class LastCheckpointListUI extends AbstractCheckpointListUI {
 		super(
 			user,
 			new LocaleFunction("最終", "Last"),
-			(parkour, checkpoints) -> checkpoints.getLastCheckpoint(parkour),
-			(parkour, checkpoints) -> checkpoints.getLastCheckpointNumber(parkour)
+			(parkour, checkpoints) -> user.parkourChallengeProgress()
+					.setPresentFunction(it -> checkpoints.getLastCheckpoint(parkour, it.currentCheckAreaNumber()))
+					.setEmptyFunction(() -> checkpoints.getLastCheckpoint(parkour))
+					.apply()
 		);
 	}
 
