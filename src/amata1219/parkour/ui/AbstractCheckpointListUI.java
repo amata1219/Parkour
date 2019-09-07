@@ -41,14 +41,11 @@ public class AbstractCheckpointListUI extends AbstractUI {
 	public Function<Player, InventoryLayout> layout() {
 		Player player = user.asBukkitPlayer();
 
-		//プレイヤーの使用言語に対応したチェックポイント
 		String checkpointType = checkpointTypeForLocale.apply(player);
 
-		//今いるパルクールとそのカテゴリー
 		Parkour currentParkour = user.currentParkour;
 		ParkourCategory category = currentParkour.category;
 
-		//ユーザーのチェックポイントデータ
 		CheckpointSet checkpoints = user.checkpoints;
 
 		List<Parkour> parkours = ParkourSet.getInstance().getEnabledParkours(category)

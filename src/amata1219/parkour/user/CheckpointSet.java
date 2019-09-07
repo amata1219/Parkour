@@ -127,10 +127,12 @@ public class CheckpointSet {
 
 		Map<Integer, ImmutableLocation> checkpointMap = checkpoints.get(parkourName);
 
-		int lastCheckpointNumber = checkpoints.get(parkourName).keySet().stream()
+		int lastCheckpointNumber = checkpointMap.keySet().stream()
 				.mapToInt(Integer::intValue)
 				.max()
-				.getAsInt();
+				.orElse(-1);
+
+		if(lastCheckpointNumber <= -1) return Optional.empty();
 
 		ImmutableLocation lastCheckpointLocation = checkpointMap.get(lastCheckpointNumber);
 
@@ -147,12 +149,13 @@ public class CheckpointSet {
 
 		Map<Integer, ImmutableLocation> checkpointMap = checkpoints.get(parkourName);
 
-		//最終チェックポイントのメジャーチェックエリア番号を求める
-		int lastCheckpointNumber = checkpoints.get(parkourName).keySet().stream()
+		int lastCheckpointNumber = checkpointMap.keySet().stream()
 				.mapToInt(Integer::intValue)
 				.filter(i -> i <= limit)
 				.max()
-				.getAsInt();
+				.orElse(-1);
+
+		if(lastCheckpointNumber <= -1) return Optional.empty();
 
 		ImmutableLocation lastCheckpointLocation = checkpointMap.get(lastCheckpointNumber);
 
