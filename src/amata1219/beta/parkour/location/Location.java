@@ -5,7 +5,7 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 
 import amata1219.beta.parkour.serialize.Deserializer;
-import amata1219.parkour.text.Text;
+import amata1219.beta.parkour.serialize.Serializer;
 
 public interface Location {
 
@@ -109,14 +109,7 @@ public interface Location {
 	}
 
 	default String serialize(){
-		return Text.stream("$world,$x,$y,$z,$_yaw,$pitch")
-				.setAttribute("$world", getWorld().getName())
-				.setAttribute("$x", getX())
-				.setAttribute("$y", getY())
-				.setAttribute("$z", getZ())
-				.setAttribute("$_yaw", getYaw())
-				.setAttribute("$pitch", getPitch())
-				.toString();
+		return Serializer.serialize(getWorld().getName(), getX(), getY(), getZ(), getYaw(), getPitch());
 	}
 
 }
