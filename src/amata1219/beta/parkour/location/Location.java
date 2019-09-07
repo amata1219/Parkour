@@ -1,4 +1,4 @@
-package amata1219.parkour.location;
+package amata1219.beta.parkour.location;
 
 import org.bukkit.Chunk;
 import org.bukkit.World;

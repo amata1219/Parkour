@@ -2,7 +2,7 @@ package amata1219.parkour.command;
 
 import java.util.UUID;
 
-import amata1219.parkour.location.ImmutableLocation;
+import amata1219.beta.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.ParkourSet;

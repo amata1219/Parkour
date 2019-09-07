@@ -33,6 +33,10 @@ public class PassCheckAreaListener extends PassRegionListener {
 		if(!existsFrom && existsTo){
 			user.currentCheckArea = to;
 
+			user.parkourChallengeProgress().setPresentProcedure(progress -> {
+
+			}).apply();
+
 			IN_SE.play(player);
 
 			//通知アイテムを輝かせる

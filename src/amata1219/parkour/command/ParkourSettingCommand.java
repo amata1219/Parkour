@@ -9,7 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import amata1219.parkour.location.ImmutableLocation;
+import amata1219.beta.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourSet;

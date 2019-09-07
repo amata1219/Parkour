@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import amata1219.parkour.location.ImmutableLocation;
+import amata1219.beta.parkour.location.ImmutableLocation;
 import amata1219.parkour.region.Region;
 import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.yaml.Yaml;

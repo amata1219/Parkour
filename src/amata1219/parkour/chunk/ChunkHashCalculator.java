@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bukkit.Chunk;
 
-import amata1219.parkour.location.Location;
+import amata1219.beta.parkour.location.Location;
 
 public class ChunkHashCalculator {
 

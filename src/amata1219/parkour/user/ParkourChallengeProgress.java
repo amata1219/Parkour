@@ -2,14 +2,14 @@ package amata1219.parkour.user;
 
 public class ParkourChallengeProgress {
 
-	private int currentCheckAreanumber = Integer.MAX_VALUE;
+	private int currentCheckAreanumber = 0;
 
 	public ParkourChallengeProgress(){
 
 	}
 
 	public ParkourChallengeProgress(int currentCheckAreaNumber){
-		this.currentCheckAreanumber = Integer.MAX_VALUE;
+		this.currentCheckAreanumber = currentCheckAreaNumber;
 	}
 
 	public int currentCheckAreaNumber(){

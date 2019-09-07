@@ -5,7 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
-import amata1219.parkour.location.ImmutableLocation;
+import amata1219.beta.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.parkour.ParkourRegion;

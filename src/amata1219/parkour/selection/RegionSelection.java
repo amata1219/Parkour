@@ -2,9 +2,9 @@ package amata1219.parkour.selection;
 
 import org.bukkit.World;
 
-import amata1219.parkour.location.ImmutableLocation;
-import amata1219.parkour.location.Location;
-import amata1219.parkour.location.MutableLocation;
+import amata1219.beta.parkour.location.ImmutableLocation;
+import amata1219.beta.parkour.location.Location;
+import amata1219.beta.parkour.location.MutableLocation;
 import amata1219.parkour.region.Region;
 import amata1219.parkour.text.Text;
 

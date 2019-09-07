@@ -11,7 +11,7 @@ import java.util.Map;
 
 import org.bukkit.Chunk;
 
-import amata1219.parkour.location.Location;
+import amata1219.beta.parkour.location.Location;
 
 public class ChunksToObjectsMap<V> {
 

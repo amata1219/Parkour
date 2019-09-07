@@ -3,8 +3,8 @@ package amata1219.parkour.region;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-import amata1219.parkour.location.ImmutableLocation;
-import amata1219.parkour.location.Location;
+import amata1219.beta.parkour.location.ImmutableLocation;
+import amata1219.beta.parkour.location.Location;
 import amata1219.parkour.text.Text;
 
 public class Region {

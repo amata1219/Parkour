@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import amata1219.beta.parkour.location.ImmutableLocation;
 import amata1219.parkour.enchantment.GleamEnchantment;
-import amata1219.parkour.location.ImmutableLocation;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.tuplet.Tuple;
