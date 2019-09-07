@@ -31,7 +31,7 @@ public class Deserializer {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T deserialize(Class<?> type){
+	public <T> T deserializeTo(Class<?> type){
 		Object[] arguments = IntStream.range(0, data.length)
 				.mapToObj(i -> mappers[i].apply(data[i]))
 				.toArray();

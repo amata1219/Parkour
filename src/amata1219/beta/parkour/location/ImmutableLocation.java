@@ -1,6 +1,5 @@
 package amata1219.beta.parkour.location;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 public class ImmutableLocation implements Location {
@@ -20,9 +19,8 @@ public class ImmutableLocation implements Location {
 	 *
 	 */
 
-	public static ImmutableLocation deserialize(String data){
-		String[] coordinates = data.split(",");
-		return new ImmutableLocation(Bukkit.getWorld(coordinates[0]), Double.parseDouble(coordinates[1]), Double.parseDouble(coordinates[2]), Double.parseDouble(coordinates[3]), Float.parseFloat(coordinates[4]), Float.parseFloat(coordinates[5]));
+	public static ImmutableLocation deserialize(String text){
+		return Location.deserialize(text).deserializeTo(ImmutableLocation.class);
 	}
 
 	public final World world;

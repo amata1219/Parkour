@@ -1,11 +1,20 @@
 package amata1219.beta.parkour.location;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 
+import amata1219.beta.parkour.serialize.Deserializer;
 import amata1219.parkour.text.Text;
 
 public interface Location {
+
+	public static Deserializer deserialize(String text){
+		return Deserializer.stream(text)
+				.map(Bukkit::getWorld, World.class, 0)
+				.map(Double::parseDouble, double.class, 1, 2, 3)
+				.map(Float::parseFloat, float.class, 4, 5);
+	}
 
 	World getWorld();
 
