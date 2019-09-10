@@ -1,16 +1,12 @@
 package amata1219.beta.parkour.serialize;
 
-import amata1219.function.BiRecursable;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class Serializer {
 
-	public static final BiRecursable<Object[], Integer, String> SERIALIZER = BiRecursable.define((objs, index, self) -> {
-		if(objs.length - 1 == index) return objs[index].toString();
-		else return objs[index].toString() + "," + self.apply(objs, index + 1);
-	});
-
 	public static String serialize(Object... objects){
-		return SERIALIZER.apply(objects, 0);
+		return String.join(",", Arrays.stream(objects).map(Object::toString).collect(Collectors.toList()));
 	}
 
 }
