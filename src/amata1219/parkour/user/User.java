@@ -15,7 +15,6 @@ import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.util.Optional;
-import amata1219.parkour.yaml.Yaml;
 
 public class User {
 

@@ -1,12 +1,11 @@
 package amata1219.beta.parkour.serialize;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import com.google.common.base.Joiner;
 
 public class Serializer {
 
-	public static String serialize(Object... objects){
-		return String.join(",", Arrays.stream(objects).map(Object::toString).collect(Collectors.toList()));
+	public static String serialize(Object... parts){
+		return Joiner.on(',').join(parts);
 	}
 
 }

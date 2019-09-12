@@ -1,6 +1,6 @@
 package amata1219.parkour.chunk;
 
-import static amata1219.parkour.chunk.ChunkHashCalculator.*;
+import static amata1219.parkour.chunk.ChunkHashCalculate.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

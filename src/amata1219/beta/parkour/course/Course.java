@@ -3,11 +3,6 @@ package amata1219.beta.parkour.course;
 import org.bukkit.ChatColor;
 
 import amata1219.beta.parkour.location.ImmutableLocation;
-import amata1219.parkour.parkour.CheckAreas;
-import amata1219.parkour.parkour.ParkourRegion;
-import amata1219.parkour.parkour.PlayerConnections;
-import amata1219.parkour.parkour.Records;
-import amata1219.parkour.parkour.Rewards;
 import amata1219.parkour.region.Region;
 
 public class Course {

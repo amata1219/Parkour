@@ -7,7 +7,7 @@ import org.bukkit.Chunk;
 
 import amata1219.beta.parkour.location.Location;
 
-public class ChunkHashCalculator {
+public class ChunkHashCalculate {
 
 	public static long calculate(Chunk chunk){
 		return calculate(chunk.getX(), chunk.getZ());
