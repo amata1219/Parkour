@@ -15,7 +15,7 @@ import amata1219.beta.parkour.location.Location;
 
 public class ChunksToObjectsMap<V> {
 
-	public final Map<Long, List<V>> chunksToObjectsMap = new HashMap<>();
+	private final Map<Long, List<V>> chunksToObjectsMap = new HashMap<>();
 
 	public boolean containsChunkHash(Chunk chunk){
 		return containsChunkHash(calculate(chunk));

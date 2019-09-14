@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 
@@ -22,7 +23,7 @@ public class Course {
 	public Category category;
 	public ChatColor courseColor;
 	public Color boundaryColor;
-	public ImmutableLocation spawn;
+	public ImmutableLocation spawnLocation;
 	public Region region;
 	public VisibleRegion startLine, finishLine;
 	public CheckAreaSet checkAreas;
@@ -39,15 +40,26 @@ public class Course {
 
 		yaml.get(yml -> yml.getString("Category"))
 		.bind(Category::valueOf)
-		.ifJustOrElse(this::setCategory, Category.NORMAL);
+		.ifJustOrElse(this::setCategory, () -> Category.NORMAL);
 
 		yaml.get(yml -> yml.getString("Course color"))
 		.bind(ChatColor::valueOf)
-		.ifJustOrElse(this::setCourseColor, ChatColor.WHITE);
+		.ifJustOrElse(this::setCourseColor, () -> ChatColor.WHITE);
 
 		yaml.get(yml -> yml.getString("Boundary color"))
-		.bind(text -> Deserializer.stream(text).map(Integer::parseInt, int.class, 1, 3).deserializeTo(Color.class))
-		.ifJustOrElse(this::setBoundaryColor, Color.WHITE);
+		.bind(
+			text -> Deserializer.stream(text)
+			.map(Integer::parseInt, int.class, 1, 3)
+			.deserializeTo(Color.class)
+		).ifJustOrElse(this::setBoundaryColor, () -> Color.WHITE);
+
+		yaml.get(yml -> yml.getString("Spawn location"))
+		.bind(ImmutableLocation::deserialize)
+		.ifJustOrElse(this::setSpawnLocation, () -> new ImmutableLocation(Bukkit.getWorld("world"), 0, 0, 0));
+
+		yaml.get(yml -> yml.getString("Region"))
+		.bind(Region::deserialize)
+		.ifJustOrElse(this::setRegion, () -> );
 	}
 
 	public Category category(){
@@ -74,21 +86,32 @@ public class Course {
 		if(boundaryColor != null) this.boundaryColor = boundaryColor;
 	}
 
+	public ImmutableLocation spawnLocation(){
+		return spawnLocation;
+	}
+
+	public void setSpawnLocation(ImmutableLocation spawnLocation){
+		if(spawnLocation != null) this.spawnLocation = spawnLocation;
+	}
+
+	public Region region(){
+		return region;
+	}
+
+	public void setRegion(Region region){
+		//update
+	}
+
 	/*
-	 * 	public final String name;
-	public final String prefixColor;
-	public boolean enable;
-	public ParkourCategory category;
-	public Color borderColor;
-	public Region region;
-	public ImmutableLocation spawn;
-	public ParkourRegion startLine, finishLine;
-	public CheckAreas checkAreas;
-	public Rewards rewards;
-	public boolean timeAttackEnable;
-	public Records records;
-	public String description;
-	public PlayerConnections connections = new PlayerConnections();
+	 * Region region
+	 * (newRegion)
+	 *
+	 * if(region != null) parkours.unregister(region)
+	 *
+	 * parkours.register(newRegion)
+	 *
+	 * region = newRegion
+	 *
 	 */
 
 	public static enum Category {
