@@ -1,5 +1,6 @@
 package amata1219.beta.parkour.serialize;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.function.Function;
@@ -43,7 +44,7 @@ public class Deserializer {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T deserializeTo(Class<?> type){
+	public <T> T deserializeTo(Class<T> type){
 		Object[] arguments = IntStream.range(0, data.length)
 				.mapToObj(i -> mappers[i].apply(data[i]))
 				.toArray();
@@ -52,8 +53,10 @@ public class Deserializer {
 			if(types[i] == null) types[i] = arguments[i].getClass();
 
 		try{
-			return (T) type.getConstructor(types).newInstance(arguments);
-		}catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e){
+			Constructor<?> constructor = type.getDeclaredConstructor(types);
+			constructor.setAccessible(true);
+			return (T) constructor.newInstance(arguments);
+		}catch(NullPointerException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e){
 			e.printStackTrace();
 		}
 
