@@ -1,4 +1,4 @@
-package amata1219.parkour.region;
+package amata1219.beta.parkour.region;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,8 @@ import amata1219.beta.parkour.location.Location;
 public class LocationOnBorderCollector {
 
 	public static List<ImmutableLocation> collect(Region region, int howManyPointsInBlock){
-		if(howManyPointsInBlock <= 0) throw new IllegalArgumentException("Points in block must be one or more");
+		if(howManyPointsInBlock <= 0)
+			throw new IllegalArgumentException("Points in block must be one or more");
 
 		region = region.extend(1, 0, 1);
 

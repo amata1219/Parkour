@@ -1,9 +1,14 @@
 package amata1219.beta.parkour.course;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import org.bukkit.ChatColor;
 
 import amata1219.beta.parkour.location.ImmutableLocation;
 import amata1219.parkour.region.Region;
+import net.minecraft.server.v1_13_R2.PlayerConnection;
 
 public class Course {
 
@@ -12,6 +17,7 @@ public class Course {
 	public Category category;
 	public ImmutableLocation spawn;
 	public Region region;
+	public Map<UUID, PlayerConnection> connections = new HashMap<>();
 
 	public boolean enable;
 
