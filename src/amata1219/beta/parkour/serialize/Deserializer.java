@@ -22,6 +22,18 @@ public class Deserializer {
 		types = new Class<?>[data.length];
 	}
 
+	public Deserializer map(Function<String, ?> mapper, int startInclusive, int endInclusive){
+		return map(mapper, null, startInclusive, endInclusive);
+	}
+
+	public Deserializer map(Function<String, ?> mapper, int... indexes){
+		return map(mapper, null, indexes);
+	}
+
+	public Deserializer map(Function<String, ?> mapper, Class<?> type, int startInclusive, int endInclusive){
+		return map(mapper, type, IntStream.rangeClosed(startInclusive, endInclusive).toArray());
+	}
+
 	public Deserializer map(Function<String, ?> mapper, Class<?> type, int... indexes){
 		Arrays.stream(indexes).forEach(index -> {
 			mappers[index] = mapper;
@@ -35,6 +47,9 @@ public class Deserializer {
 		Object[] arguments = IntStream.range(0, data.length)
 				.mapToObj(i -> mappers[i].apply(data[i]))
 				.toArray();
+
+		for(int i = 0; i < types.length; i++)
+			if(types[i] == null) types[i] = arguments[i].getClass();
 
 		try{
 			return (T) type.getConstructor(types).newInstance(arguments);

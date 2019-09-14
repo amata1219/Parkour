@@ -11,8 +11,8 @@ public interface Location {
 
 	public static Deserializer deserialize(String text){
 		return Deserializer.stream(text)
-				.map(Bukkit::getWorld, World.class, 0)
-				.map(Double::parseDouble, double.class, 1, 2, 3)
+				.map(Bukkit::getWorld, 0)
+				.map(Double::parseDouble, double.class, 1, 3)
 				.map(Float::parseFloat, float.class, 4, 5);
 	}
 

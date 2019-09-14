@@ -5,6 +5,7 @@ import org.bukkit.World;
 
 import amata1219.beta.parkour.location.ImmutableLocation;
 import amata1219.beta.parkour.location.Location;
+import amata1219.beta.parkour.serialize.Deserializer;
 import amata1219.beta.parkour.serialize.Serializer;
 
 public class Region {
@@ -12,50 +13,27 @@ public class Region {
 	public final World world;
 	public final ImmutableLocation lesserBoundaryCorner, greaterBoundaryCorner;
 
-	public static Region deserialize(String data){
-		String[] coordinates = data.split(",");
-		World world = Bukkit.getWorld(coordinates[0]);
-		ImmutableLocation lesserBoundaryCorner = new ImmutableLocation(world, Double.parseDouble(coordinates[1]), Double.parseDouble(coordinates[2]), Double.parseDouble(coordinates[3]));
-		ImmutableLocation greaterBoundaryCorner = new ImmutableLocation(world, Double.parseDouble(coordinates[4]), Double.parseDouble(coordinates[5]), Double.parseDouble(coordinates[6]));
-		return new Region(lesserBoundaryCorner, greaterBoundaryCorner);
+	public static Region deserialize(String text){
+		return Deserializer.stream(text)
+		.map(Bukkit::getWorld, 0)
+		.map(Double::parseDouble, double.class, 1, 6)
+		.deserializeTo(Region.class);
 	}
 
-	public Region(Location lesserBoundaryCorner, Location greaterBoundaryCorner){
-		this(lesserBoundaryCorner.getWorld(), lesserBoundaryCorner.getIntX(), lesserBoundaryCorner.getIntY(), lesserBoundaryCorner.getIntZ(),
-				greaterBoundaryCorner.getIntX(), greaterBoundaryCorner.getIntY(), greaterBoundaryCorner.getIntZ());
+	public Region(ImmutableLocation lesserBoundaryCorner, ImmutableLocation greaterBoundaryCorner){
+		this.world = lesserBoundaryCorner.world;
+		this.lesserBoundaryCorner = lesserBoundaryCorner;
+		this.greaterBoundaryCorner = greaterBoundaryCorner;
 	}
 
-	public Region(World world, double lesserBoundaryCornerX, double lesserBoundaryCornerY, double lesserBoundaryCornerZ,
-					double greaterBoundaryCornerX, double greaterBoundaryCornerY, double greaterBoundaryCornerZ){
-
+	public Region(World world, double minX, double minY, double minZ, double maxX, double maxY, double maxZ){
 		this.world = world;
-
-		lesserBoundaryCorner = new ImmutableLocation(world,
-				Math.min(lesserBoundaryCornerX, greaterBoundaryCornerX),
-				Math.min(lesserBoundaryCornerY, greaterBoundaryCornerY),
-				Math.min(lesserBoundaryCornerZ, greaterBoundaryCornerZ)
-		);
-
-		greaterBoundaryCorner = new ImmutableLocation(world,
-				Math.max(lesserBoundaryCornerX, greaterBoundaryCornerX),
-				Math.max(lesserBoundaryCornerY, greaterBoundaryCornerY),
-				Math.max(lesserBoundaryCornerZ, greaterBoundaryCornerZ)
-		);
+		lesserBoundaryCorner = new ImmutableLocation(world, minX, minY, minZ);
+		greaterBoundaryCorner = new ImmutableLocation(world, maxX, maxY, maxZ);
 	}
 
 	public boolean isIn(Location location){
 		return isIn(location.getWorld(), location.getIntX(), location.getIntY(), location.getIntZ());
-	}
-
-	public boolean isIn(org.bukkit.Location location){
-		return isIn(location.getWorld(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
-	}
-
-	public boolean isIn(World world, int x, int y, int z){
-		return lesserBoundaryCorner.x <= x && x <= greaterBoundaryCorner.x
-				&& lesserBoundaryCorner.y <= y && y <= greaterBoundaryCorner.y
-				&& lesserBoundaryCorner.z <= z && z <= greaterBoundaryCorner.z
-				&& world.equals(world);
 	}
 
 	public boolean isIn(World world, double x, double y, double z){
@@ -65,31 +43,31 @@ public class Region {
 				&& world.equals(world);
 	}
 
-	public int getLength(){
+	public double getLength(){
 		return greaterBoundaryCorner.getIntX() - lesserBoundaryCorner.getIntX();
 	}
 
-	public int getHeight(){
+	public double getHeight(){
 		return greaterBoundaryCorner.getIntY() - lesserBoundaryCorner.getIntY();
 	}
 
-	public int getWidth(){
+	public double getWidth(){
 		return greaterBoundaryCorner.getIntZ() - lesserBoundaryCorner.getIntZ();
 	}
 
-	public int getArea(){
+	public double getArea(){
 		return getLength() * getWidth();
 	}
 
-	public int getVolume(){
+	public double getVolume(){
 		return getArea() * getHeight();
 	}
 
-	public Region extend(int x, int y, int z){
+	public Region extend(double x, double y, double z){
 		return new Region(lesserBoundaryCorner.add(Math.min(x, 0), Math.min(y, 0), Math.min(z, 0)), greaterBoundaryCorner.add(Math.max(x, 0), Math.max(y, 0), Math.max(z, 0)));
 	}
 
-	public Region add(int x, int y, int z){
+	public Region add(double x, double y, double z){
 		return new Region(lesserBoundaryCorner.add(x, y, z), greaterBoundaryCorner.add(x, y, z));
 	}
 
@@ -97,7 +75,7 @@ public class Region {
 		return add(location.getIntX(), location.getIntY(), location.getIntZ());
 	}
 
-	public Region sub(int x, int y, int z){
+	public Region sub(double x, double y, double z){
 		return new Region(lesserBoundaryCorner.sub(x, y, z), greaterBoundaryCorner.sub(x, y, z));
 	}
 
@@ -105,7 +83,7 @@ public class Region {
 		return sub(location.getIntX(), location.getIntY(), location.getIntZ());
 	}
 
-	public Region relative(int x, int y, int z){
+	public Region relative(double x, double y, double z){
 		return new Region(world, lesserBoundaryCorner.x - x, lesserBoundaryCorner.y - y, lesserBoundaryCorner.z - z, greaterBoundaryCorner.x - x, greaterBoundaryCorner.y - y, greaterBoundaryCorner.z - z);
 	}
 
