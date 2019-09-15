@@ -33,7 +33,7 @@ public class Course {
 	public VisibleRegion startLine, finishLine;
 	public CheckAreaSet checkAreas;
 	public int[] rewards;
-	public boolean timeAttackEnable;
+	public boolean timeAttackEnabled;
 	//public RecordSet records;
 	public Map<UUID, PlayerConnection> connections = new HashMap<>();
 	public boolean enable;
@@ -152,7 +152,11 @@ public class Course {
 	}
 
 	public boolean isTimeAttackEnabled(){
+		return timeAttackEnabled;
+	}
 
+	public void setTimeAttackEnabled(boolean value){
+		timeAttackEnabled = value;
 	}
 
 	private <T> void safeSet(T value, Runnable setter){
@@ -161,7 +165,6 @@ public class Course {
 
 	/*
 	 *
-	public boolean timeAttackEnable;
 	//public RecordSet records;
 	public Map<UUID, PlayerConnection> connections = new HashMap<>();
 	public boolean enable;
