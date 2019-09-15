@@ -2,9 +2,7 @@ package amata1219.beta.parkour.course;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,8 +12,8 @@ import org.bukkit.World;
 import amata1219.beta.parkour.location.ImmutableLocation;
 import amata1219.beta.parkour.region.VisibleRegion;
 import amata1219.beta.parkour.serialize.Deserializer;
+import amata1219.beta.parkour.util.ApproximateChatColorFinder;
 import amata1219.parkour.region.Region;
-import graffiti.Maybe;
 import graffiti.Yaml;
 import net.minecraft.server.v1_13_R2.PlayerConnection;
 
@@ -26,8 +24,8 @@ public class Course {
 	public final String name;
 	public String description;
 	public Category category;
-	public ChatColor courseColor;
 	public Color boundaryColor;
+	public ChatColor courseColor;
 	public ImmutableLocation spawnLocation;
 	public Region region;
 	public VisibleRegion startLine, finishLine;
@@ -46,10 +44,6 @@ public class Course {
 		yaml.get(yml -> yml.getString("Category"))
 		.bind(Category::valueOf)
 		.ifJustOrElse(this::setCategory, () -> Category.NORMAL);
-
-		yaml.get(yml -> yml.getString("Course color"))
-		.bind(ChatColor::valueOf)
-		.ifJustOrElse(this::setCourseColor, () -> ChatColor.WHITE);
 
 		yaml.get(yml -> yml.getString("Boundary color"))
 		.bind(
@@ -87,16 +81,14 @@ public class Course {
 		return courseColor;
 	}
 
-	public void setCourseColor(ChatColor value){
-		safeSet(value, () -> courseColor = value);
-	}
-
 	public Color boundaryColor(){
 		return boundaryColor;
 	}
 
 	public void setBoundaryColor(Color value){
 		safeSet(value, () -> boundaryColor = value);
+		ChatColor color = ApproximateChatColorFinder.find(boundaryColor);
+		safeSet(color, () -> courseColor = color);
 	}
 
 	public ImmutableLocation spawnLocation(){

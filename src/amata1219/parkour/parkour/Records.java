@@ -7,72 +7,68 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.bukkit.configuration.ConfigurationSection;
-
 import java.util.Map.Entry;
-import java.util.Set;
+import java.util.TreeMap;
 
 import amata1219.parkour.schedule.Async;
 import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.util.TimeFormat;
-import amata1219.parkour.yaml.Yaml;
+import graffiti.Maybe;
+import graffiti.Yaml;
 
 public class Records {
 
-	//全記録
-	private final Map<UUID, Long> records;
+	public static void main(String[] $){
+		TreeMap<Integer, Integer> map = new TreeMap<>();
+		map.put(100, 1);
+		map.put(1, 2);
+		map.put(345, 3);
+		map.put(98, 4);
+		map.put(12, 5);
+		map.
+		map.forEach((k, v) -> System.out.println(k + "," + v.toString()));
+	}
 
+	/*
+	 * Records:
+	 * - "uuid:time"
+	 * - "uuid:time"
+	 *
+	 */
+
+	private final Map<UUID, Long> records = new HashMap<>();
+	private final SortedMap<Long, UUID>
 	//上位10件の記録(非同期でリストを操作する為スレッドセーフなリストにしている)
-	public final List<Tuple<UUID, String>> topTenRecords = new CopyOnWriteArrayList<>();
-
-	//撤回された記録の保有者リスト
-	private final List<UUID> holdersOfWithdrawnRecords = new ArrayList<>();
+	public final List<Tuple<UUID, String>> bestRecords = new CopyOnWriteArrayList<>();
 
 	public Records(Yaml yaml){
-		if(!yaml.isConfigurationSection("Records")){
-			records = new HashMap<>();
-			return;
-		}
-
-		ConfigurationSection recordsSection = yaml.getConfigurationSection("Records");
-
-		Set<String> holdersOfRecords = recordsSection.getKeys(false);
-		records = new HashMap<>(holdersOfRecords.size());
-
-		for(String holder : holdersOfRecords){
-			//UUIDに変換する
-			UUID uuid = UUID.fromString(holder);
-
-			//タイムに変換する
-			long time = recordsSection.getLong(holder);
-
-			records.put(uuid, time);
-		}
+		yaml.getStringList("Records").stream()
+		.map(text -> text.split(","))
+		.forEach(data -> records.put(UUID.fromString(data[0]), Long.parseLong(data[1])));
 
 		sortAsync();
 	}
 
-	//必要であれば記録する
-	public boolean mightRecord(UUID uuid, long time){
-		if(records.getOrDefault(uuid, Long.MAX_VALUE) <= time) return false;
-
-		records.put(uuid, time);
-		return true;
+	public void tryRcord(UUID uuid, long time){
+		personalBest(uuid).ifJustOrElse(best -> {
+			if(best > time) records.put(uuid, time);
+		}, () -> Long.MAX_VALUE);
 	}
 
 	public boolean containsRecord(UUID uuid){
 		return records.containsKey(uuid);
 	}
 
-	public long personalBest(UUID uuid){
-		return records.getOrDefault(uuid, 0L);
+	public Maybe<Long> personalBest(UUID uuid){
+		return Maybe.unit(records.get(uuid));
 	}
 
 	public void withdrawRecord(UUID uuid){
 		records.remove(uuid);
-		holdersOfWithdrawnRecords.add(uuid);
 		sortAsync();
 	}
+
+	public void runForBestRecords(BiConsumer<Integer, Entry<>>)
 
 	public void sortAsync(){
 		Async.define(() -> {
@@ -81,7 +77,7 @@ public class Records {
 			//記録を昇順にソートする
 			list.sort(Entry.comparingByValue());
 
-			topTenRecords.clear();
+			bestRecords.clear();
 
 			//最大で上位10件の記録をリストに追加する
 			for(int index = 0; index < Math.min(10, records.size()); index++){
@@ -91,7 +87,7 @@ public class Records {
 				UUID uuid = record.getKey();
 
 				//記録をフォーマットして追加する
-				topTenRecords.add(new Tuple<>(uuid, TimeFormat.format(records.get(uuid))));
+				bestRecords.add(new Tuple<>(uuid, TimeFormat.format(records.get(uuid))));
 			}
 		}).execute();
 	}
@@ -99,9 +95,6 @@ public class Records {
 	public void save(Yaml yaml){
 		//レコードを記録する
 		for(Entry<UUID, Long> recordEntry : records.entrySet()) yaml.set("Records." + recordEntry.getKey() , recordEntry.getValue());
-
-		//撤回された記録を削除する
-		for(UUID holder : holdersOfWithdrawnRecords) yaml.set("Records." + holder, null);
 	}
 
 }
