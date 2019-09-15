@@ -23,6 +23,10 @@ public class Deserializer {
 		types = new Class<?>[data.length];
 	}
 
+	public int lastIndex(){
+		return data.length - 1;
+	}
+
 	public Deserializer map(Function<String, ?> mapper, int startInclusive, int endInclusive){
 		return map(mapper, null, startInclusive, endInclusive);
 	}
