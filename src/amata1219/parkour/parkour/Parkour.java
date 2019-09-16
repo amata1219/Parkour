@@ -11,9 +11,7 @@ import org.bukkit.util.Consumer;
 import amata1219.beta.parkour.location.ImmutableLocation;
 import amata1219.parkour.region.Region;
 import amata1219.parkour.user.User;
-import amata1219.parkour.util.Color;
 import amata1219.parkour.util.Splitter;
-import amata1219.parkour.yaml.Yaml;
 
 public class Parkour {
 

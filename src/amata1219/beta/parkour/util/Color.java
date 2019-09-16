@@ -1,16 +1,19 @@
-package amata1219.parkour.util;
+package amata1219.beta.parkour.util;
 
 import java.util.Random;
 
-import amata1219.parkour.text.Text;
+import amata1219.beta.parkour.serialize.Deserializer;
+import amata1219.beta.parkour.serialize.Serializer;
+import amata1219.parkour.util.Range;
 
 public class Color {
 
-	private static final Random random = new Random();
+	private static final Random RANDOM = new Random();
 
 	public static Color deserialize(String text){
-		int[] values = Splitter.splitToIntArguments(text);
-		return new Color(values[0], values[1], values[2]);
+		return Deserializer.stream(text)
+							.map(Integer::parseInt, 0 ,2)
+							.deserializeTo(Color.class);
 	}
 
 	public final int red, green, blue;
@@ -34,15 +37,11 @@ public class Color {
 	}
 
 	private int adjust(int value, int width){
-		return Range.max(Range.min(value + random.nextInt(width) - (width / 2 - 1), 255), 0);
+		return Range.limit(0, 255, value + RANDOM.nextInt(width) - (width / 2 - 1));
 	}
 
 	public String serialize(){
-		return Text.stream("$red,$green,$blue")
-				.setAttribute("$red", red)
-				.setAttribute("$green", green)
-				.setAttribute("$blue", blue)
-				.toString();
+		return Serializer.serialize(red, green, blue);
 	}
 
 }
