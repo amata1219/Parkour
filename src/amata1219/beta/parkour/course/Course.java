@@ -3,17 +3,20 @@ package amata1219.beta.parkour.course;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.World;
 
 import amata1219.beta.parkour.location.ImmutableLocation;
 import amata1219.beta.parkour.region.VisibleRegion;
 import amata1219.beta.parkour.serialize.Deserializer;
 import amata1219.beta.parkour.util.ApproximateChatColorFinder;
+import amata1219.beta.parkour.util.Color;
 import amata1219.parkour.region.Region;
+import graffiti.Maybe;
 import graffiti.Yaml;
 import net.minecraft.server.v1_13_R2.PlayerConnection;
 
@@ -22,19 +25,19 @@ public class Course {
 	private static final World MAIN_WORLD = Bukkit.getWorld("world");
 
 	public final String name;
-	public String description;
-	public Category category;
-	public Color boundaryColor;
-	public ChatColor courseColor;
-	public ImmutableLocation spawnLocation;
-	public Region region;
-	public VisibleRegion startLine, finishLine;
-	public CheckAreaSet checkAreas;
-	public int[] rewards;
-	public boolean timeAttackEnabled;
+	private String description;
+	private Category category;
+	private Color boundaryColor;
+	private ChatColor courseColor;
+	private ImmutableLocation spawnLocation;
+	private Region region;
+	private VisibleRegion startLine, finishLine;
+	private CheckAreaSet checkAreas;
+	private int[] rewards;
+	private boolean timeAttackEnabled;
 	//public RecordSet records;
-	public Map<UUID, PlayerConnection> connections = new HashMap<>();
-	public boolean enable;
+	private Map<UUID, PlayerConnection> connections = new HashMap<>();
+	private boolean enable;
 
 
 	public Course(Yaml yaml){
@@ -50,15 +53,15 @@ public class Course {
 			text -> Deserializer.stream(text)
 			.map(Integer::parseInt, int.class, 1, 3)
 			.deserializeTo(Color.class)
-		).ifJustOrElse(this::setBoundaryColor, () -> Color.WHITE);
+		).ifJustOrElse(this::setBoundaryColor, () -> new Color(0, 0, 0));
 
 		yaml.get(yml -> yml.getString("Spawn location"))
 		.bind(ImmutableLocation::deserialize)
-		.ifJustOrElse(this::setSpawnLocation, () -> new ImmutableLocation(MAIN_WORLD, 0, 0, 0));
+		.ifJust(this::setSpawnLocation);
 
 		yaml.get(yml -> yml.getString("Region"))
 		.bind(Region::deserialize)
-		.ifJustOrElse(this::setRegion, () -> new Region(MAIN_WORLD, 0, 0, 0, 0, 0, 0));
+		.ifJust(this::setRegion);
 	}
 
 	public String description(){
@@ -99,8 +102,8 @@ public class Course {
 		safeSet(value, () -> spawnLocation = value);
 	}
 
-	public Region region(){
-		return region;
+	public Maybe<Region> region(){
+		return Maybe.unit(region);
 	}
 
 	public void setRegion(Region region){
@@ -149,6 +152,12 @@ public class Course {
 
 	public void setTimeAttackEnabled(boolean value){
 		timeAttackEnabled = value;
+	}
+
+	public boolean isNothingConnection
+
+	public void runForTraceurConnections(Consumer<PlayerConnection> action){
+		connections.values().forEach(action);
 	}
 
 	private <T> void safeSet(T value, Runnable setter){

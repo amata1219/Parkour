@@ -21,7 +21,7 @@ public class LocationOnBorderCollector {
 		int divisor = howManyPointsInBlock - 1;
 
 		//予想されるサイズを予め指定しておく
-		List<ImmutableLocation> locations = new ArrayList<>((region.getWidth() * divisor + region.getLength() * divisor) * 2);
+		List<ImmutableLocation> locations = new ArrayList<>((int) (region.getWidth() * divisor + region.getLength() * divisor) * 2);
 
 		World world = lesserBoundaryCorner.world;
 		double y = lesserBoundaryCorner.y;
