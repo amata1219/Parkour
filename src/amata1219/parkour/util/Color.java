@@ -34,7 +34,7 @@ public class Color {
 	}
 
 	private int adjust(int value, int width){
-		return Math.max(Math.min(value + random.nextInt(width) - (width / 2 - 1), 255), 0);
+		return Range.max(Range.min(value + random.nextInt(width) - (width / 2 - 1), 255), 0);
 	}
 
 	public String serialize(){

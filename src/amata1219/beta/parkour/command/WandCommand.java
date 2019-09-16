@@ -1,10 +1,7 @@
-package amata1219.parkour.command;
-
-import static graffiti.Maybe.*;
+package amata1219.beta.parkour.command;
 
 import java.util.UUID;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -12,24 +9,22 @@ import amata1219.beta.parkour.course.Course;
 import amata1219.beta.parkour.course.CourseSet;
 import amata1219.parkour.selection.RegionSelectionSet;
 import graffiti.ArgList;
-import graffiti.Command;
-import graffiti.SafeCast;
+import graffiti.PlayerCommand;
 import graffiti.Text;
 
-public class WandCommand implements Command {
+public class WandCommand implements PlayerCommand {
 
 	private final RegionSelectionSet selections = RegionSelectionSet.getInstance();
 
 	@Override
-	public void onCommand(CommandSender sender, ArgList args) {
-		unit(SafeCast.down(sender, Player.class)).flatBind(
-			p -> args.next().flatBind(
+	public void onCommand(Player player, ArgList args) {
+		args.next().flatBind(
 			n -> CourseSet.instance().get(n)).ifJust(
-			c -> execute(p, c)
-		)).ifNothing(() -> Text.of("&c-/parkouredit [アスレ名]").sendTo(sender));
+			c -> execute(player, c)
+		).ifNothing(() -> Text.of("&c-/parkouredit [アスレ名]").sendTo(player));
 	}
 
-	public void execute(Player player, Course course){
+	private void execute(Player player, Course course){
 		UUID uuid = player.getUniqueId();
 		String courseName = course.name;
 

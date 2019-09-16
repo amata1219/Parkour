@@ -1,4 +1,4 @@
-package amata1219.parkour.command;
+package amata1219.beta.parkour.command;
 
 import org.bukkit.entity.Player;
 
@@ -13,7 +13,7 @@ public class TweetCommand implements PlayerCommand {
 	public void onCommand(Player player, ArgList args) {
 		args.join(0, args.length()).ifJust(
 			t -> Tweet.display(player, t)
-		).ifNothing(() -> Text.of("&b-テキストを入力して下さい。", "&c-Please enter text.", player).displayOnActionBar(player));
+		).ifNothing(() -> Text.of("&b-/tweet [text]").actionbar(player));
 	}
 
 }
