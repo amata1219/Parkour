@@ -10,21 +10,22 @@ import org.bukkit.inventory.ItemStack;
 
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.selection.RegionSelectionSet;
+import graffiti.Args;
 import graffiti.Command;
 import graffiti.SafeCast;
 import graffiti.Text;
 
-public class NewParkourEditCommand implements Command {
+public class WandCommand implements Command {
 
 	private final RegionSelectionSet selections = RegionSelectionSet.getInstance();
 
 	@Override
-	public void onCommand(CommandSender sender, String[] args) {
+	public void onCommand(CommandSender sender, Args args) {
 		unit(SafeCast.down(sender, Player.class)).flatBind(
-			p -> unit(args[0]).flatBind(
+			p -> args.next().flatBind(
 			n -> unit(ParkourSet.getInstance().getParkour(n)).ifJust(
 			c -> execute(p, n)
-		))).ifNothing(this::failure);
+		))).ifNothing(() -> Text.of("&c-/parkouredit [アスレ名]").sendTo(sender));
 	}
 
 	public void execute(Player player, String parkourName){
@@ -35,11 +36,7 @@ public class NewParkourEditCommand implements Command {
 		ItemStack selectionTool = selections.makeNewSelectionTool(uuid);
 		player.getInventory().addItem(selectionTool);
 
-		Text.of("%s-&r-用の範囲選択ツールを与えました。").format(parkourName).accept(player::sendMessage);
-	}
-
-	private void failure(){
-		Text.of("&c-/parkouredit [アスレ名]");
+		Text.of("%s-&r-用の範囲選択ツールを与えました。").format(parkourName).sendTo(player);
 	}
 
 }
