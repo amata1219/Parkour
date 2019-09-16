@@ -34,8 +34,12 @@ public class CourseSet {
 	private CourseSet(){
 		if(!folder.exists()) folder.mkdirs();
 
-		Maybe.unit(folder.listFiles()).bind(Arrays::stream)
-		.ifJust(stream -> stream.map(file -> new Yaml(plugin, file, "course.yml")).map(Course::new).forEach(this::register));
+		Maybe.unit(folder.listFiles())
+		.bind(Arrays::stream)
+		.ifJust(stream -> stream.map(file -> new Yaml(plugin, file, "course.yml"))
+								.map(Course::new)
+								.forEach(this::register)
+		);
 	}
 
 	public void register(Course course){
@@ -64,6 +68,10 @@ public class CourseSet {
 
 	public boolean contains(String courseName){
 		return courses.containsKey(courseName);
+	}
+
+	public Maybe<Course> get(String courseName){
+		return Maybe.unit(courses.get(courseName));
 	}
 
 }
