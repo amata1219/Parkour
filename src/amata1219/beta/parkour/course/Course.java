@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,8 +21,6 @@ import net.minecraft.server.v1_13_R2.PlayerConnection;
 
 public class Course {
 
-	private static final World MAIN_WORLD = Bukkit.getWorld("world");
-
 	public final String name;
 	private String description;
 	private Category category;
@@ -36,7 +33,7 @@ public class Course {
 	private int[] rewards;
 	private boolean timeAttackEnabled;
 	//public RecordSet records;
-	private Map<UUID, PlayerConnection> connections = new HashMap<>();
+	public final ConnectionSet connections = new ConnectionSet();
 	private boolean enable;
 
 
@@ -152,12 +149,6 @@ public class Course {
 
 	public void setTimeAttackEnabled(boolean value){
 		timeAttackEnabled = value;
-	}
-
-	public boolean isNothingConnection
-
-	public void runForTraceurConnections(Consumer<PlayerConnection> action){
-		connections.values().forEach(action);
 	}
 
 	private <T> void safeSet(T value, Runnable setter){
