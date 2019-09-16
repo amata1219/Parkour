@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import amata1219.beta.parkour.course.Course;
 import amata1219.beta.parkour.course.CourseSet;
 import amata1219.parkour.selection.RegionSelectionSet;
-import graffiti.Args;
+import graffiti.ArgList;
 import graffiti.Command;
 import graffiti.SafeCast;
 import graffiti.Text;
@@ -21,7 +21,7 @@ public class WandCommand implements Command {
 	private final RegionSelectionSet selections = RegionSelectionSet.getInstance();
 
 	@Override
-	public void onCommand(CommandSender sender, Args args) {
+	public void onCommand(CommandSender sender, ArgList args) {
 		unit(SafeCast.down(sender, Player.class)).flatBind(
 			p -> args.next().flatBind(
 			n -> CourseSet.instance().get(n)).ifJust(
