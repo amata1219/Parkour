@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import amata1219.beta.parkour.util.TimeFormat;
 import amata1219.parkour.inventory.ui.InventoryLine;
 import amata1219.parkour.inventory.ui.dsl.InventoryUI;
 import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
@@ -25,7 +26,6 @@ import amata1219.parkour.text.TextStream;
 import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
-import amata1219.parkour.util.TimeFormat;
 
 public abstract class AbstractParkourListUI<T extends Parkour> implements InventoryUI {
 

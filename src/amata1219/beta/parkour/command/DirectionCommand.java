@@ -3,7 +3,7 @@ package amata1219.beta.parkour.command;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import amata1219.parkour.util.Range;
+import amata1219.beta.parkour.util.Range;
 import graffiti.ArgList;
 import graffiti.PlayerCommand;
 import graffiti.Text;

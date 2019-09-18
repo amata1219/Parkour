@@ -13,7 +13,7 @@ import amata1219.beta.parkour.location.ImmutableLocation;
 import amata1219.beta.parkour.region.VisibleRegion;
 import amata1219.beta.parkour.serialize.Deserializer;
 import amata1219.beta.parkour.util.ApproximateChatColorFinder;
-import amata1219.beta.parkour.util.Color;
+import amata1219.beta.parkour.util.RGBColor;
 import amata1219.parkour.region.Region;
 import graffiti.Maybe;
 import graffiti.Yaml;
@@ -24,7 +24,7 @@ public class Course {
 	public final String name;
 	private String description;
 	private Category category;
-	private Color boundaryColor;
+	private RGBColor boundaryColor;
 	private ChatColor courseColor;
 	private ImmutableLocation spawnLocation;
 	private Region region;
@@ -49,8 +49,8 @@ public class Course {
 		.bind(
 			text -> Deserializer.stream(text)
 			.map(Integer::parseInt, int.class, 1, 3)
-			.deserializeTo(Color.class)
-		).ifJustOrElse(this::setBoundaryColor, () -> new Color(0, 0, 0));
+			.deserializeTo(RGBColor.class)
+		).ifJustOrElse(this::setBoundaryColor, () -> new RGBColor(0, 0, 0));
 
 		yaml.get(yml -> yml.getString("Spawn location"))
 		.bind(ImmutableLocation::deserialize)
@@ -81,11 +81,11 @@ public class Course {
 		return courseColor;
 	}
 
-	public Color boundaryColor(){
+	public RGBColor boundaryColor(){
 		return boundaryColor;
 	}
 
-	public void setBoundaryColor(Color value){
+	public void setBoundaryColor(RGBColor value){
 		safeSet(value, () -> boundaryColor = value);
 		ChatColor color = ApproximateChatColorFinder.find(boundaryColor);
 		safeSet(color, () -> courseColor = color);

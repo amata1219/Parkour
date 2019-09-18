@@ -4,7 +4,7 @@ import org.bukkit.World;
 
 public class MutableLocation implements Location {
 
-	public static ImmutableLocation deserialize(String text){
+	public static MutableLocation deserialize(String text){
 		return Location.deserialize(text).deserializeTo(MutableLocation.class);
 	}
 

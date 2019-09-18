@@ -1,4 +1,4 @@
-package amata1219.parkour.util;
+package amata1219.beta.parkour.util;
 
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;

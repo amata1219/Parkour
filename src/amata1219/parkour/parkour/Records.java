@@ -10,9 +10,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import amata1219.beta.parkour.util.TimeFormat;
 import amata1219.parkour.schedule.Async;
 import amata1219.parkour.tuplet.Tuple;
-import amata1219.parkour.util.TimeFormat;
 import graffiti.Maybe;
 import graffiti.Yaml;
 

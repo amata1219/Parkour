@@ -135,7 +135,7 @@ public class ParkourSettingCommand implements Command {
 			int[] values = Splitter.splitToIntArguments(text);
 
 			//各アスレのパーティクル色を更新する
-			parkour.borderColor =  new Color(values[0], values[1], values[2]);
+			parkour.borderColor =  new RGBColor(values[0], values[1], values[2]);
 			parkour.startLine.recolorParticles();
 			parkour.finishLine.recolorParticles();
 			parkour.checkAreas.recolorAll();

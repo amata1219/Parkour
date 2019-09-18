@@ -2,9 +2,9 @@ package amata1219.parkour.user;
 
 import org.bukkit.scheduler.BukkitTask;
 
+import amata1219.beta.parkour.util.TimeFormat;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.schedule.Async;
-import amata1219.parkour.util.TimeFormat;
 import amata1219.parkour.yaml.Yaml;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;

@@ -23,7 +23,7 @@ public class Parkour {
 	public final String prefixColor;
 	public boolean enable;
 	public ParkourCategory category;
-	public Color borderColor;
+	public RGBColor borderColor;
 	public Region region;
 	public ImmutableLocation spawn;
 	public ParkourRegion startLine, finishLine;
@@ -60,7 +60,7 @@ public class Parkour {
 		spawn = origin.add(relativeSpawn);
 
 		//ボーダーカラーはParkourRegionより先に読み込む
-		borderColor = Color.deserialize(yaml.getString("Border color"));
+		borderColor = RGBColor.deserialize(yaml.getString("Border color"));
 
 		//スタートラインを設定する
 		Region relativeStartLine = Region.deserialize(yaml.getString("Start line"));

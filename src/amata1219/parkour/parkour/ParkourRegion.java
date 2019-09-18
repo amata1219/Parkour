@@ -55,7 +55,7 @@ public class ParkourRegion extends Region {
 
 		List<ImmutableLocation> locations = LocationOnBorderCollector.collect(this, 4);
 
-		Color color = parkour.borderColor;
+		RGBColor color = parkour.borderColor;
 
 		//各座標に対応したパーティクルパケットを作成する
 		packets = locations.stream()

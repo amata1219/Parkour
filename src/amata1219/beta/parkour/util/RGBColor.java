@@ -4,21 +4,20 @@ import java.util.Random;
 
 import amata1219.beta.parkour.serialize.Deserializer;
 import amata1219.beta.parkour.serialize.Serializer;
-import amata1219.parkour.util.Range;
 
-public class Color {
+public class RGBColor {
 
 	private static final Random RANDOM = new Random();
 
-	public static Color deserialize(String text){
+	public static RGBColor deserialize(String text){
 		return Deserializer.stream(text)
 							.map(Integer::parseInt, 0 ,2)
-							.deserializeTo(Color.class);
+							.deserializeTo(RGBColor.class);
 	}
 
 	public final int red, green, blue;
 
-	public Color(int red, int green, int blue){
+	public RGBColor(int red, int green, int blue){
 		this.red = red;
 		this.green = green;
 		this.blue = blue;

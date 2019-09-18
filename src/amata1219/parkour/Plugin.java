@@ -13,12 +13,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import amata1219.beta.parkour.util.Reflection;
 import amata1219.parkour.command.Arguments;
 import amata1219.parkour.command.Command;
 import amata1219.parkour.command.Sender;
 import amata1219.parkour.listener.PlayerJoinListener;
 import amata1219.parkour.listener.PlayerQuitListener;
-import amata1219.parkour.util.Reflection;
 
 public class Plugin extends JavaPlugin {
 
