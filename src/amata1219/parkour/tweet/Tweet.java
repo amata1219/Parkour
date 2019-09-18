@@ -3,9 +3,9 @@ package amata1219.parkour.tweet;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import amata1219.beta.parkour.sound.SoundMetadata;
 import amata1219.parkour.message.ClickableMessage;
 import amata1219.parkour.message.ClickableMessage.ClickAction;
-import amata1219.parkour.sound.SoundMetadata;
 import amata1219.parkour.text.BilingualText;
 
 public class Tweet {

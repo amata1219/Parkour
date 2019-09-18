@@ -1,4 +1,4 @@
-package amata1219.beta.parkour.util;
+package amata1219.beta.parkour.color;
 
 import static java.lang.Math.*;
 import static org.bukkit.ChatColor.*;
@@ -35,7 +35,7 @@ public class ApproximateChatColorFinder {
 		return new Color(r, g, b);
 	}
 
-	public static ChatColor find(amata1219.beta.parkour.util.RGBColor color){
+	public static ChatColor find(amata1219.beta.parkour.color.RGBColor color){
 		TreeMap<Integer, ChatColor> distanceMap = new TreeMap<>();
 		COLORS.forEach((key, value) -> distanceMap.put(value.distance(color), key));
 		return distanceMap.firstEntry().getValue();
@@ -52,7 +52,7 @@ public class ApproximateChatColorFinder {
 			this.b = b;
 		}
 
-		public int distance(amata1219.beta.parkour.util.RGBColor color){
+		public int distance(amata1219.beta.parkour.color.RGBColor color){
 			int rd = abs(r - color.red);
 			int gd = abs(g - color.green);
 			int bd = abs(b - color.blue);

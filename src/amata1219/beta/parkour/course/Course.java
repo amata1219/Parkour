@@ -9,11 +9,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 
+import amata1219.beta.parkour.color.ApproximateChatColorFinder;
+import amata1219.beta.parkour.color.RGBColor;
 import amata1219.beta.parkour.location.ImmutableLocation;
 import amata1219.beta.parkour.region.VisibleRegion;
 import amata1219.beta.parkour.serialize.Deserializer;
-import amata1219.beta.parkour.util.ApproximateChatColorFinder;
-import amata1219.beta.parkour.util.RGBColor;
 import amata1219.parkour.region.Region;
 import graffiti.Maybe;
 import graffiti.Yaml;
@@ -107,16 +107,16 @@ public class Course {
 		//update
 	}
 
-	public VisibleRegion startLine(){
-		return startLine;
+	public Maybe<VisibleRegion> startLine(){
+		return Maybe.unit(startLine);
 	}
 
 	public void setStartLine(VisibleRegion startLine){
 		//update
 	}
 
-	public VisibleRegion finishLine(){
-		return finishLine;
+	public Maybe<VisibleRegion> finishLine(){
+		return Maybe.unit(finishLine);
 	}
 
 	public void setFinishLine(VisibleRegion finishLine){

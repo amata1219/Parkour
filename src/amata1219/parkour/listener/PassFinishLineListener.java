@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import amata1219.beta.parkour.sound.SoundMetadata;
 import amata1219.parkour.function.ImprintRank;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
@@ -16,7 +17,6 @@ import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.parkour.RankColor;
 import amata1219.parkour.parkour.RankUpParkour;
 import amata1219.parkour.parkour.Records;
-import amata1219.parkour.sound.SoundMetadata;
 import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.user.StatusBoard;
 import amata1219.parkour.user.User;

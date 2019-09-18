@@ -1,9 +1,10 @@
-package amata1219.beta.parkour.util;
+package amata1219.beta.parkour.color;
 
 import java.util.Random;
 
 import amata1219.beta.parkour.serialize.Deserializer;
 import amata1219.beta.parkour.serialize.Serializer;
+import amata1219.beta.parkour.util.Range;
 
 public class RGBColor {
 

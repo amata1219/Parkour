@@ -1,4 +1,4 @@
-package amata1219.parkour.sound;
+package amata1219.beta.parkour.sound;
 
 import java.util.Collection;
 

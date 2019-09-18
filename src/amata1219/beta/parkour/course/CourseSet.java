@@ -47,8 +47,14 @@ public class CourseSet {
 
 		courses.put(course.name, course);
 
-		chunksToStartLinesMap.putAll(course.startLine);
-		chunksToFinishLinesMap.putAll(course.finishLine);
+		course.startLine().flatBind(
+			s -> course.finishLine().ifJust(
+			f -> {
+				chunksToStartLinesMap.putAll(s);
+				chunksToFinishLinesMap.putAll(f);
+			}
+		));
+
 		//course.checkAreas.
 	}
 

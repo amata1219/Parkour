@@ -6,12 +6,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
+import amata1219.beta.parkour.sound.SoundMetadata;
 import amata1219.parkour.function.hotbar.ControlFunctionalItem;
 import amata1219.parkour.function.hotbar.ItemType;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
 import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.sound.SoundMetadata;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;
 
