@@ -29,7 +29,7 @@ public class ConnectionSet {
 		connections.remove(player.getUniqueId());
 	}
 
-	public void runForTraceurConnections(Consumer<PlayerConnection> action){
+	public void forEach(Consumer<PlayerConnection> action){
 		connections.values().forEach(action);
 	}
 

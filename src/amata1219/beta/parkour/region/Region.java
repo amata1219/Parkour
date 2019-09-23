@@ -11,7 +11,7 @@ import amata1219.beta.parkour.serialize.Serializer;
 public class Region {
 
 	public final World world;
-	public final ImmutableLocation lesserBoundaryCorner, greaterBoundaryCorner;
+	public final ImmutableLocation min, max;
 
 	public static Region deserialize(String text){
 		return Deserializer.stream(text)
@@ -22,14 +22,14 @@ public class Region {
 
 	public Region(ImmutableLocation lesserBoundaryCorner, ImmutableLocation greaterBoundaryCorner){
 		this.world = lesserBoundaryCorner.world;
-		this.lesserBoundaryCorner = lesserBoundaryCorner;
-		this.greaterBoundaryCorner = greaterBoundaryCorner;
+		this.min = lesserBoundaryCorner;
+		this.max = greaterBoundaryCorner;
 	}
 
 	public Region(World world, double minX, double minY, double minZ, double maxX, double maxY, double maxZ){
 		this.world = world;
-		lesserBoundaryCorner = new ImmutableLocation(world, minX, minY, minZ);
-		greaterBoundaryCorner = new ImmutableLocation(world, maxX, maxY, maxZ);
+		min = new ImmutableLocation(world, minX, minY, minZ);
+		max = new ImmutableLocation(world, maxX, maxY, maxZ);
 	}
 
 	public boolean isIn(Location location){
@@ -37,22 +37,22 @@ public class Region {
 	}
 
 	public boolean isIn(World world, double x, double y, double z){
-		return lesserBoundaryCorner.x <= x && x <= greaterBoundaryCorner.x
-				&& lesserBoundaryCorner.y <= y && y <= greaterBoundaryCorner.y
-				&& lesserBoundaryCorner.z <= z && z <= greaterBoundaryCorner.z
+		return min.x <= x && x <= max.x
+				&& min.y <= y && y <= max.y
+				&& min.z <= z && z <= max.z
 				&& world.equals(world);
 	}
 
 	public double getLength(){
-		return greaterBoundaryCorner.getIntX() - lesserBoundaryCorner.getIntX();
+		return max.getIntX() - min.getIntX();
 	}
 
 	public double getHeight(){
-		return greaterBoundaryCorner.getIntY() - lesserBoundaryCorner.getIntY();
+		return max.getIntY() - min.getIntY();
 	}
 
 	public double getWidth(){
-		return greaterBoundaryCorner.getIntZ() - lesserBoundaryCorner.getIntZ();
+		return max.getIntZ() - min.getIntZ();
 	}
 
 	public double getArea(){
@@ -64,11 +64,11 @@ public class Region {
 	}
 
 	public Region extend(double x, double y, double z){
-		return new Region(lesserBoundaryCorner.add(Math.min(x, 0), Math.min(y, 0), Math.min(z, 0)), greaterBoundaryCorner.add(Math.max(x, 0), Math.max(y, 0), Math.max(z, 0)));
+		return new Region(min.add(Math.min(x, 0), Math.min(y, 0), Math.min(z, 0)), max.add(Math.max(x, 0), Math.max(y, 0), Math.max(z, 0)));
 	}
 
 	public Region add(double x, double y, double z){
-		return new Region(lesserBoundaryCorner.add(x, y, z), greaterBoundaryCorner.add(x, y, z));
+		return new Region(min.add(x, y, z), max.add(x, y, z));
 	}
 
 	public Region add(Location location){
@@ -76,7 +76,7 @@ public class Region {
 	}
 
 	public Region sub(double x, double y, double z){
-		return new Region(lesserBoundaryCorner.sub(x, y, z), greaterBoundaryCorner.sub(x, y, z));
+		return new Region(min.sub(x, y, z), max.sub(x, y, z));
 	}
 
 	public Region sub(Location location){
@@ -84,7 +84,7 @@ public class Region {
 	}
 
 	public Region relative(double x, double y, double z){
-		return new Region(world, lesserBoundaryCorner.x - x, lesserBoundaryCorner.y - y, lesserBoundaryCorner.z - z, greaterBoundaryCorner.x - x, greaterBoundaryCorner.y - y, greaterBoundaryCorner.z - z);
+		return new Region(world, min.x - x, min.y - y, min.z - z, max.x - x, max.y - y, max.z - z);
 	}
 
 	public Region relative(Location location){
@@ -92,8 +92,8 @@ public class Region {
 	}
 
 	public String serialize(){
-		return Serializer.serialize(world.getName(), lesserBoundaryCorner.x, lesserBoundaryCorner.y, lesserBoundaryCorner.z,
-				greaterBoundaryCorner.x, greaterBoundaryCorner.y, greaterBoundaryCorner.z);
+		return Serializer.serialize(world.getName(), min.x, min.y, min.z,
+				max.x, max.y, max.z);
 	}
 
 }

@@ -16,7 +16,7 @@ public class LocationOnBorderCollector {
 
 		region = region.extend(1, 0, 1);
 
-		ImmutableLocation lesserBoundaryCorner = region.lesserBoundaryCorner;
+		ImmutableLocation lesserBoundaryCorner = region.min;
 
 		int divisor = howManyPointsInBlock - 1;
 
