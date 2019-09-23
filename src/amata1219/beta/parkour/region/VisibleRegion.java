@@ -10,7 +10,6 @@ import amata1219.beta.parkour.color.RGBColor;
 import amata1219.beta.parkour.course.ConnectionSet;
 import amata1219.beta.parkour.course.Course;
 import amata1219.beta.parkour.location.ImmutableLocation;
-import amata1219.parkour.schedule.Async;
 import net.minecraft.server.v1_13_R2.EntityPlayer;
 import net.minecraft.server.v1_13_R2.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_13_R2.ParticleParamRedstone;
