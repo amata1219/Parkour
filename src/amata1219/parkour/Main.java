@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 
+import amata1219.beta.parkour.event.PlayerJumpEvent.PlayerJumpListener;
 import amata1219.parkour.command.CheckAreaCommand;
 import amata1219.parkour.command.CoinCommand;
 import amata1219.parkour.command.ParkourEditCommand;
@@ -16,7 +17,6 @@ import amata1219.parkour.command.RelayoutCommand;
 import amata1219.parkour.command.TestCommand;
 import amata1219.parkour.command.TweetCommand;
 import amata1219.parkour.enchantment.GleamEnchantment;
-import amata1219.parkour.event.PlayerJumpEvent.PlayerJumpListener;
 import amata1219.parkour.function.PlayerLocaleChange;
 import amata1219.parkour.function.hotbar.ControlFunctionalItem;
 import amata1219.parkour.inventory.ui.dsl.InventoryUI;

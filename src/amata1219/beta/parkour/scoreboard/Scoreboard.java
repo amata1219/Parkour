@@ -1,4 +1,4 @@
-package amata1219.parkour.scoreboard;
+package amata1219.beta.parkour.scoreboard;
 
 import java.util.UUID;
 

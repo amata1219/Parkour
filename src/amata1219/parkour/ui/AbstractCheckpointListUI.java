@@ -9,13 +9,13 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import amata1219.beta.parkour.location.ImmutableLocation;
+import amata1219.beta.parkour.tuplet.Tuple;
 import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourCategory;
 import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.text.Text;
-import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.user.CheckpointSet;
 import amata1219.parkour.user.User;
 import amata1219.parkour.util.Optional;

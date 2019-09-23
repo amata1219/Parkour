@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
 import org.bukkit.configuration.ConfigurationSection;
 
 import amata1219.beta.parkour.location.ImmutableLocation;
+import amata1219.beta.parkour.tuplet.Tuple;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourSet;
-import amata1219.parkour.tuplet.Tuple;
 import amata1219.parkour.util.Optional;
 import amata1219.parkour.yaml.Yaml;
 

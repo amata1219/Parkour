@@ -15,9 +15,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import amata1219.beta.parkour.tuplet.Tuple;
 import amata1219.parkour.enchantment.GleamEnchantment;
 import amata1219.parkour.text.Text;
-import amata1219.parkour.tuplet.Tuple;
 
 public class RegionSelectionSet implements Listener {
 

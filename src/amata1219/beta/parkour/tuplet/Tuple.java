@@ -1,4 +1,4 @@
-package amata1219.parkour.tuplet;
+package amata1219.beta.parkour.tuplet;
 
 public class Tuple<F, S> {
 

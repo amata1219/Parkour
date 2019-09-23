@@ -13,14 +13,14 @@ import org.bukkit.inventory.ItemStack;
 
 import com.google.common.collect.ImmutableList;
 
+import amata1219.beta.parkour.tuplet.Quadruple;
+import amata1219.beta.parkour.tuplet.Triple;
 import amata1219.parkour.inventory.ui.InventoryLine;
 import amata1219.parkour.inventory.ui.dsl.InventoryUI;
 import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
-import amata1219.parkour.item.SkullCreator;
+import amata1219.parkour.item.Skull;
 import amata1219.parkour.text.BilingualText;
 import amata1219.parkour.text.Text;
-import amata1219.parkour.tuplet.Quadruple;
-import amata1219.parkour.tuplet.Triple;
 import amata1219.parkour.user.User;
 
 public class MyProfileUI implements InventoryUI {
@@ -110,7 +110,7 @@ public class MyProfileUI implements InventoryUI {
 			//自分のステータス表示
 			l.put((s) -> {
 				//プレイヤーのスカルヘッドを作成する
-				ItemStack skull = SkullCreator.fromPlayerUniqueId(user.uuid);
+				ItemStack skull = Skull.createFrom(user.uuid);
 
 				s.icon(skull, i -> {
 					i.displayName = "§b" + player.getName();

@@ -9,12 +9,12 @@ import org.bukkit.entity.Player;
 
 import com.google.common.collect.ImmutableList;
 
+import amata1219.beta.parkour.tuplet.Quintuple;
 import amata1219.parkour.inventory.ui.InventoryLine;
 import amata1219.parkour.inventory.ui.dsl.InventoryUI;
 import amata1219.parkour.inventory.ui.dsl.component.Icon;
 import amata1219.parkour.inventory.ui.dsl.component.InventoryLayout;
 import amata1219.parkour.text.BilingualText;
-import amata1219.parkour.tuplet.Quintuple;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.StatusBoardSetting;
 

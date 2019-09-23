@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import amata1219.beta.parkour.tuplet.Tuple;
 import amata1219.parkour.parkour.CheckAreas;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.parkour.ParkourRegion;
@@ -15,7 +16,6 @@ import amata1219.parkour.parkour.ParkourSet;
 import amata1219.parkour.selection.RegionSelection;
 import amata1219.parkour.selection.RegionSelectionSet;
 import amata1219.parkour.text.Text;
-import amata1219.parkour.tuplet.Tuple;
 
 public class CheckAreaCommand implements Command {
 

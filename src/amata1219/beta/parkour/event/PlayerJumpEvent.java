@@ -1,4 +1,4 @@
-package amata1219.parkour.event;
+package amata1219.beta.parkour.event;
 
 import java.util.HashMap;
 import java.util.UUID;

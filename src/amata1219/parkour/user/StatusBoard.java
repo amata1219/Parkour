@@ -12,9 +12,9 @@ import org.bukkit.entity.Player;
 
 import com.google.common.collect.ImmutableList;
 
-import amata1219.parkour.scoreboard.Scoreboard;
+import amata1219.beta.parkour.scoreboard.Scoreboard;
+import amata1219.beta.parkour.tuplet.Quadruple;
 import amata1219.parkour.text.Text;
-import amata1219.parkour.tuplet.Quadruple;
 import amata1219.parkour.ui.LocaleFunction;
 
 public class StatusBoard {

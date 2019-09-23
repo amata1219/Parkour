@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import amata1219.beta.parkour.Parkour;
+import amata1219.beta.parkour.chunk.ChunksToRegionsMap;
 import amata1219.beta.parkour.region.CheckArea;
 import amata1219.beta.parkour.region.VisibleRegion;
-import amata1219.parkour.chunk.ChunksToRegionsMap;
 import graffiti.Maybe;
 import graffiti.Yaml;
 

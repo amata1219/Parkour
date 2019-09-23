@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import amata1219.beta.parkour.chunk.ChunksToObjectsMap;
 import amata1219.parkour.Main;
-import amata1219.parkour.chunk.ChunksToObjectsMap;
 import amata1219.parkour.yaml.Yaml;
 import net.md_5.bungee.api.ChatColor;
 

@@ -1,19 +1,17 @@
-package amata1219.parkour.tuplet;
+package amata1219.beta.parkour.tuplet;
 
-public class Quintuple<F, S, T, FO, FI> {
+public class Quadruple<F, S, T, FO> {
 
 	public final F first;
 	public final S second;
 	public final T third;
 	public final FO fourth;
-	public final FI fifth;
 
-	public Quintuple(F first, S second, T third, FO fourth, FI fifth){
+	public Quadruple(F first, S second, T third, FO fourth){
 		this.first = first;
 		this.second = second;
 		this.third = third;
 		this.fourth = fourth;
-		this.fifth = fifth;
 	}
 
 }

@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import amata1219.parkour.parkour.ParkourRegion;
-import amata1219.parkour.chunk.ChunksToObjectsMap;
+import amata1219.beta.parkour.chunk.ChunksToObjectsMap;
 import amata1219.parkour.parkour.Parkour;
 import amata1219.parkour.user.User;
 import amata1219.parkour.user.UserSet;

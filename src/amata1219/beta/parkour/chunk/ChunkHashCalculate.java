@@ -1,4 +1,4 @@
-package amata1219.parkour.chunk;
+package amata1219.beta.parkour.chunk;
 
 import java.util.ArrayList;
 import java.util.List;
