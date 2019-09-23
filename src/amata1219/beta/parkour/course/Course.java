@@ -1,23 +1,15 @@
 package amata1219.beta.parkour.course;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.function.Consumer;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.World;
-
 import amata1219.beta.parkour.color.ApproximateChatColorFinder;
 import amata1219.beta.parkour.color.RGBColor;
 import amata1219.beta.parkour.location.ImmutableLocation;
+import amata1219.beta.parkour.region.Region;
 import amata1219.beta.parkour.region.VisibleRegion;
 import amata1219.beta.parkour.serialize.Deserializer;
-import amata1219.parkour.region.Region;
 import graffiti.Maybe;
 import graffiti.Yaml;
-import net.minecraft.server.v1_13_R2.PlayerConnection;
 
 public class Course {
 
@@ -34,31 +26,53 @@ public class Course {
 	private boolean timeAttackEnabled;
 	//public RecordSet records;
 	public final ConnectionSet connections = new ConnectionSet();
-	private boolean enable;
+	boolean enable;
 
 
 	public Course(Yaml yaml){
 		name = yaml.name;
 		description = yaml.getString("Description");
 
-		yaml.get(yml -> yml.getString("Category"))
+		yaml.getText("Category")
 		.bind(Category::valueOf)
 		.ifJustOrElse(this::setCategory, () -> Category.NORMAL);
 
-		yaml.get(yml -> yml.getString("Boundary color"))
+		yaml.getText("Boundary color")
 		.bind(
 			text -> Deserializer.stream(text)
 			.map(Integer::parseInt, int.class, 1, 3)
 			.deserializeTo(RGBColor.class)
 		).ifJustOrElse(this::setBoundaryColor, () -> new RGBColor(0, 0, 0));
 
-		yaml.get(yml -> yml.getString("Spawn location"))
+		yaml.getText("Spawn location")
 		.bind(ImmutableLocation::deserialize)
 		.ifJust(this::setSpawnLocation);
 
-		yaml.get(yml -> yml.getString("Region"))
-		.bind(Region::deserialize)
-		.ifJust(this::setRegion);
+		yaml.getText("Region")
+		.bind(
+			text -> Deserializer.stream(text)
+			.map(Bukkit::getWorld, 0)
+			.map(Double::parseDouble, double.class, 1, 6)
+			.deserializeTo(Region.class)
+		).ifJust(this::setRegion);
+		
+		yaml.getText("Start line")
+		.bind(
+			text -> Deserializer.stream(text)
+			.map(Bukkit::getWorld, 0)
+			.map(Double::parseDouble, double.class, 1, 6)
+			.map(s -> this, 7)
+			.deserializeTo(VisibleRegion.class)
+		).ifJust(this::setStartLine);
+		
+		yaml.getText("Finish line")
+		.bind(
+			text -> Deserializer.stream(text)
+			.map(Bukkit::getWorld, 0)
+			.map(Double::parseDouble, double.class, 1, 6)
+			.map(s -> this, 7)
+			.deserializeTo(VisibleRegion.class)
+		).ifJust(this::setStartLine);
 	}
 
 	public String description(){

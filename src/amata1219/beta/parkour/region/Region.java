@@ -1,24 +1,15 @@
 package amata1219.beta.parkour.region;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 import amata1219.beta.parkour.location.ImmutableLocation;
 import amata1219.beta.parkour.location.Location;
-import amata1219.beta.parkour.serialize.Deserializer;
 import amata1219.beta.parkour.serialize.Serializer;
 
 public class Region {
 
 	public final World world;
 	public final ImmutableLocation min, max;
-
-	public static Region deserialize(String text){
-		return Deserializer.stream(text)
-		.map(Bukkit::getWorld, 0)
-		.map(Double::parseDouble, double.class, 1, 6)
-		.deserializeTo(Region.class);
-	}
 
 	public Region(ImmutableLocation lesserBoundaryCorner, ImmutableLocation greaterBoundaryCorner){
 		this.world = lesserBoundaryCorner.world;

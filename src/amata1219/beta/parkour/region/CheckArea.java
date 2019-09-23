@@ -8,8 +8,9 @@ public class CheckArea extends VisibleRegion {
 
 	public final int number;
 
-	public CheckArea(World world, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, Course course) {
+	public CheckArea(World world, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, Course course, int number) {
 		super(world, minX, minY, minZ, maxX, maxY, maxZ, course);
+		this.number = number;
 	}
 
 }
