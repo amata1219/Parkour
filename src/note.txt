@@ -1,0 +1,5 @@
+beta: 本流
+obsolete: 廃止
+masquarade: BukkitInventoryUIDSL
+slash: BukkitCommandDSL
+graffiti: 遊びの領域

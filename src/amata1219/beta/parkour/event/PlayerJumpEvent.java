@@ -14,8 +14,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import amata1219.parkour.listener.PlayerJoinListener;
-import amata1219.parkour.listener.PlayerQuitListener;
+import amata1219.obsolete.parkour.listener.PlayerJoinListener;
+import amata1219.obsolete.parkour.listener.PlayerQuitListener;
 
 public class PlayerJumpEvent extends PlayerEvent {
 
