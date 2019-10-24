@@ -1,5 +1,7 @@
-beta: 本流
+著作権放棄
+
+beta: メイン
 obsolete: 廃止
 masquarade: BukkitInventoryUIDSL
 slash: BukkitCommandDSL
-graffiti: 遊びの領域
+graffiti: 遊び
