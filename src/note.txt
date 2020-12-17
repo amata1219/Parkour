@@ -1,7 +1,0 @@
-著作権放棄
-
-beta: メイン
-obsolete: 廃止
-masquarade: BukkitInventoryUIDSL
-slash: BukkitCommandDSL
-graffiti: 遊び
